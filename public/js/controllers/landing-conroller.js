@@ -1,7 +1,7 @@
 'use strict';
 
-import Controller from '../core/controller';
-import LandingView from '../views/landing-view';
+import Controller from '../core/controller.js';
+import LandingView from '../views/landing-view.js';
 
 export default class LandingController extends Controller {
 

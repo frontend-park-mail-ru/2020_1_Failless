@@ -1,7 +1,7 @@
 'use strict';
 
-import LandingController from './controllers/landing-conroller';
+import LandingController from './controllers/landing-conroller.js';
 
-let application = document.querySelector('#application')[0];
+let application = document.getElementById('application');
 const landing = new LandingController(application);
 landing.action();

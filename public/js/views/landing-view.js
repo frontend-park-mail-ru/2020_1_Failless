@@ -1,6 +1,6 @@
 'use strict';
 
-import View from '../core/view';
+import View from '../core/view.js';
 
 /**
  *
