@@ -14,7 +14,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "sass ./public/style.scss:./public/static/css/style.css",
     "build:bundle": "node ./scripts/main.js ./public/js ./public/blocks",
-    "build:all": "bpm run build:css && npm run build:bundle"
+    "build:all": "npm run build:css && npm run build:bundle"
   },
   "repository": {
     "type": "git",
