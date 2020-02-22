@@ -1,5 +1,5 @@
 class NetworkModule {
-    #_baseUrl = `${window.location.protocol}//localhost:3001`;
+    #_baseUrl = `${window.location.protocol}//${window.location.host}`;
 
     fetchGet = ({
                 path = '/',
