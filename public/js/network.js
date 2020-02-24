@@ -1,27 +1,24 @@
-class NetworkModule {
-    #_baseUrl = `${window.location.protocol}//${window.location.host}`;
+import settings from '../settings/config.js';
 
-    fetchGet = ({
+// TODO: rewrite settings.url + window.location.pathname + path
+export default class NetworkModule {
+
+    static fetchGet = ({
                 path = '/',
-                body = null,
             } = {}) => {
-        return this.#_fetch({method: 'GET', path, body});
+        return fetch(settings.url + window.location.pathname + path, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+        });
     };
 
-    fetchPost = ({
+    static fetchPost = ({
                     path = '/',
                     body = null,
                 } = {}) => {
-        return this.#_fetch({method: 'POST', path, body});
-    };
-
-    #_fetch = ({
-                method = 'GET',
-                path = '/',
-                body = null,
-            } = {}) => {
-        return fetch(this.#_baseUrl + path, {
-            method: method,
+        return fetch(settings.url + window.location.pathname + path, {
+            method: 'POST',
             mode: 'cors',
             credentials: 'include',
             headers: {
@@ -30,6 +27,5 @@ class NetworkModule {
             body: JSON.stringify(body)
         });
     };
-}
 
-export default new NetworkModule();
+}
