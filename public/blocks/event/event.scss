@@ -1,15 +1,31 @@
 .event {
+  display: block;
   width: 100%;
-  padding: 0 10px;
+  align-items: center;
+  text-align: center;
 
   &__item {
-    width: 100%;
+    width: 84%;
     border-radius: 13px;
     background-color: white;
     margin-bottom: 20px;
   }
 
-  &__photo {
+  &__title {
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+  }
+
+  &__place {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+  }
+
+  &__photos {
     height: 150px;
     width: auto;
     overflow: auto;

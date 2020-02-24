@@ -2,6 +2,48 @@
 
 import View from '../core/view.js';
 
+let profilePhotos = ['ProfilePhotos/1.jpg', 'ProfilePhotos/2.jpg', 'ProfilePhotos/3.jpg'];
+const getBlocks = (profilePhotos) => {
+    let blocks = [];
+    profilePhotos.forEach(elem => {
+        blocks.push({
+            block: 'profile',
+            elem: 'photo',
+            mods: {'me': true},
+            tag: 'img',
+            attrs: {src: '' + elem}
+        })
+    });
+    return blocks;
+};
+
+const tagNames = ['#хочувБАР', '#хочувКИНО', '#хочунаКАТОК', '#хочуГУЛЯТЬ', '#хочуКУШАЦ', '#хочуСПАТЬ'];
+
+const getTags = (tagNames) => {
+    let blocks = [];
+    tagNames.forEach(elem => {
+        blocks.push({
+            block: 'tag',
+            mods: {'size': 'middle'},
+            content: elem,
+        })
+    });
+    return blocks;
+};
+
+const eventPhotos = ['EventPhotos/3.jpg', 'EventPhotos/4.jpg'];
+const getEventPhotos = (eventPhotos) => {
+    let blocks = [];
+    eventPhotos.forEach((elem) => {
+        blocks.push({
+            elem: 'item',
+            mix: {block: 'event__item', mods: {'one': true}},
+            tag: 'img',
+            attrs: {src: elem}
+        });
+    });
+    return blocks;
+};
 /**
  *
  */
@@ -17,20 +59,7 @@ export default class ProfileView extends View {
     }
 
     render() {
-        let profilePhotos = ['ProfilePhotos/1.jpg', 'ProfilePhotos/2.jpg', 'ProfilePhotos/3.jpg'];
-        const getBlocks = (profilePhotos) => {
-          let blocks = [];
-          profilePhotos.forEach(elem => {blocks.push({
-              block: 'profile',
-              elem: 'photo',
-              mods: {'me': true},
-              tag: 'img',
-              attrs: {src: '' + elem}
-          })});
-          return blocks;
-        };
-        const photos = [
-        ];
+
         let allowEdit = true;
         const template = [
             {
@@ -55,8 +84,8 @@ export default class ProfileView extends View {
                                         content: 'О себе',
                                     },
                                     {
-                                        tag: 'input',
-                                        filedName: 'Расскажите о себе и своих увлечениях'
+                                        tag: 'textarea',
+                                        attrs: {placeholders: 'Расскажите о себе и своих увлечениях'},
                                     },
                                     {
                                         elem: 'btn',
@@ -96,6 +125,62 @@ export default class ProfileView extends View {
                                     },
                                 ],
                             },
+                            {
+                                elem: 'column',
+                                mix: {block: 'profile', elem: 'filed'},
+                                content: [
+                                    {
+                                        elem: 'title',
+                                        mix: {block: 'profile__title_blue'},
+                                        tag: 'h3',
+                                        content: 'Ваши тэги',
+                                    },
+                                    {
+                                        block: 'icon',
+                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'x'}}],
+                                    },
+                                    {
+                                        elem: 'tags',
+                                        content: getTags(tagNames),
+                                    },
+                                    {
+                                        elem: 'title',
+                                        mix: {block: 'profile__title_blue'},
+                                        tag: 'h3',
+                                        content: 'Ваши эвенты',
+                                    },
+                                    {
+                                        block: 'icon',
+                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'x'}}],
+                                    },
+                                    {
+                                        elem: 'events',
+                                        content: [
+                                            {
+                                                block: 'event',
+                                                content: [
+                                                    {
+                                                        elem: 'photos',
+                                                        content: getEventPhotos(eventPhotos),
+                                                    },
+                                                    {
+                                                        elem: 'title',
+                                                        content: 'Концерт',
+                                                    },
+                                                    {
+                                                        elem: 'place',
+                                                        content: 'Москва',
+                                                    },
+                                                    {
+                                                        elem: 'description',
+                                                        content: 'Ну как его похвалить? Ну классный концерт, шикарный концерт, как его ещё похвалить?'
+                                                    }
+                                                ],
+                                            },
+                                        ],
+                                    },
+                                ],
+                            }
                         ],
                     },
                 ]

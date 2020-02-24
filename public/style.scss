@@ -4,11 +4,15 @@
 @import "blocks/screen/screen";
 @import "blocks/landing/landing";
 @import "blocks/profile/profile";
+@import "blocks/tag/tag";
+@import "blocks/auth/auth";
+@import "blocks/input/input";
+@import "blocks/search/search";
+@import "blocks/event/event";
 @import "modules/variables";
 @import "modules/efont";
 
 body {
-  width: 100vw;
   height: 100vh;
   background: linear-gradient(
                   135deg,

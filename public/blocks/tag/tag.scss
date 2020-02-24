@@ -1,20 +1,15 @@
-.tag {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
+@import "../../modules/variables";
 
-  &__item {
-    padding: 4px;
-    border-radius: 4px;
-    margin: 0 5px 5px 0;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-    background: linear-gradient(
-                    135deg,
-                    $color-blue 0%,
-                    $color-purple 50%,
-                    $color-red 100%);
-  }
+.tag {
+  padding: 4px;
+  border-radius: 4px;
+  margin: 0 5px 5px 0;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  background: linear-gradient(
+                  135deg,
+                  $color-blue 0%,
+                  $color-purple 50%,
+                  $color-red 100%);
 }

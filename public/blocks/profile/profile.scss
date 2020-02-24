@@ -23,8 +23,8 @@
   }
 
   &__page {
+    display: flex;
     text-align: left;
-    color: $color-red;
     column-count: 3;
     -webkit-column-count: 3;
     -moz-column-count: 3;
@@ -38,7 +38,6 @@
 
   &__filed {
     width: 30%;
-    height: 100%;
     margin: 10px;
     display: inline-block;
     overflow: auto;
@@ -53,5 +52,12 @@
       height: auto;
       border-radius: 7px;
     }
+  }
+
+  &__tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
   }
 }
