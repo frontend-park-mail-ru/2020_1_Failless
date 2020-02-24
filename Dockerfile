@@ -1,5 +1,4 @@
 # TODO: REWRITE ASAP
-
 FROM nginx
 
 # update 
@@ -21,3 +20,4 @@ COPY scripts scripts/
 ADD package.json ./
 
 RUN npm install
+RUN npm run build:all
