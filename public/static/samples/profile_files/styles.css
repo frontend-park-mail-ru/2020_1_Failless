@@ -1,0 +1,287 @@
+/*@import url();*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+   text-decoration: none;
+    font-family: "Helvetica Neue", sans-serif;
+
+    --red_color: #F64F59;
+    --purple_color: #C471ED;
+    --blue_color: #12C2E9;
+    --black_color: #191919;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(
+            135deg,
+            var(--blue_color) 0%,
+            var(--purple_color) 50%,
+            var(--red_color) 100%);
+}
+
+/*-------------------------------------------*\
+    Navigation
+\*-------------------------------------------*/
+
+nav {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--black_color);
+    margin-top: 0;
+}
+
+nav > ul {
+    list-style: none;
+    display: flex;
+}
+
+nav > ul > li {
+    margin-right: 1rem;
+}
+
+nav > ul > li > a {
+    font-size: 1rem;
+    color: white;
+}
+
+.logo {
+    height: 40px;
+    margin-left: 5px;
+}
+
+/*-------------------------------------------*\
+    Application window
+\*-------------------------------------------*/
+
+#application {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
+
+
+
+/*-------------------------------------------*\
+    Profile Page
+\*-------------------------------------------*/
+
+.profile-page {
+    height: 90vh;
+    max-width: 900px;
+    margin: 10px auto;
+    text-align: center;
+    background-color: white;
+    border-radius: 13px;
+    padding: 20px;
+}
+
+.profile-page > h1 {
+    text-align: left;
+    color: var(--red_color);
+}
+
+.profile-main {
+    display: flex;
+    height: 100%;
+    align-items: flex-start;
+}
+
+.profile-field {
+    width: 30%;
+    height: 100%;
+    margin: 10px;
+    display: inline-block;
+    overflow: auto;
+}
+
+.profile-left > form {
+    width: 100%;
+    /*http://www.css-tricks.ru/articles/js/textarea-tricks*/
+}
+
+.profile-left > form > textarea {
+    width: 100%;
+    display: block;
+    resize: none;
+}
+
+.profile-center {
+}
+
+.profile-right {
+    height: 100%;
+}
+
+.profile-blue-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--blue_color);
+    margin-bottom: 10px;
+}
+
+.profile-blue-title > img {
+    height: 20px;
+    width: 20px;
+}
+
+.profile-photo {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.profile-photo > img {
+    width: 100%;
+    height: auto;
+    border-radius: 7px;
+}
+
+/*-------------------------------------------*\
+    Tags
+\*-------------------------------------------*/
+
+.tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.tag {
+    padding: 4px;
+    border-radius: 4px;
+    margin: 0 5px 5px 0;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    background: linear-gradient(
+            135deg,
+            var(--blue_color) 0%,
+            var(--purple_color) 50%,
+            var(--red_color) 100%);
+}
+
+/*-------------------------------------------*\
+    Events
+\*-------------------------------------------*/
+
+.events {
+    width: 100%;
+    padding: 0 10px;
+}
+
+.event {
+    width: 100%;
+    border-radius: 13px;
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+.event-photos {
+    height: 150px;
+    width: auto;
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.event-photo {
+    max-height: 100%;
+    width: auto;
+    margin-right: 2px;
+}
+
+/*-------------------------------------------*\
+    Settings Modal Window
+\*-------------------------------------------*/
+
+#settings-container {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.settings-modal {
+    background-color: white;
+    width: 360px;
+    height: auto;
+    overflow: auto;
+    margin: auto;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+/*-------------------------------------------*\
+    Registration Page
+\*-------------------------------------------*/
+
+.auth-container {
+    max-width: 700px;
+    height: auto;
+    position: relative;
+    margin: 10px auto;
+    text-align: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-main {
+    width: 50%;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.4);
+}
+
+.auth-main > h1 {
+    color: var(--red_color);
+}
+
+.auth-second {
+    width: 50%;
+    display: flex;
+    flex-flow: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    /*align-items: ;*/
+    padding: 20px;
+    background-color: var(--blue_color);
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.4);
+}
+
+.auth-second > h2 {
+    color: white;
+}
+
+.white-button {
+
+}

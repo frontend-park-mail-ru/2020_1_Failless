@@ -1,0 +1,57 @@
+@import "../../modules/variables";
+
+.profile {
+  height: 90vh;
+  max-width: 900px;
+  margin: 10px auto;
+  text-align: center;
+  background-color: white;
+  border-radius: 13px;
+  padding: 20px;
+
+  &__title {
+    text-align: left;
+    color: $color-red;
+
+    &_blue {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: $color-blue;
+      margin-bottom: 10px;
+    }
+  }
+
+  &__page {
+    text-align: left;
+    color: $color-red;
+    column-count: 3;
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+  }
+
+  &_main {
+    display: flex;
+    height: 100%;
+    align-items: flex-start;
+  }
+
+  &__filed {
+    width: 30%;
+    height: 100%;
+    margin: 10px;
+    display: inline-block;
+    overflow: auto;
+  }
+
+  &__photo {
+    width: 100%;
+    margin-bottom: 5px;
+
+    &_img {
+      width: 100%;
+      height: auto;
+      border-radius: 7px;
+    }
+  }
+}

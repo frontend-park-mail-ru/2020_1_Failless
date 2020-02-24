@@ -1,0 +1,99 @@
+.icon {
+  display: inline-block;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  background-color: transparent;
+}
+.icon_size_small {
+  width: 8px;
+  height: 8px;
+}
+.icon_size_x {
+  width: 14px;
+  height: 14px;
+}
+.icon_size_xx {
+  width: 24px;
+  height: 24px;
+}
+.icon_size_xxx {
+  width: 36px;
+  height: 36px;
+}
+.icon__search {
+  -webkit-mask-image: url("../icons/search.svg");
+  mask-image: url("../icons/search.svg");
+}
+.icon__eventum {
+  -webkit-mask-image: url("../icons/eventum.svg");
+  mask-image: url("../icons/eventum.svg");
+}
+.icon__more {
+  -webkit-mask-image: url("../icons/more.svg");
+  mask-image: url("../icons/more.svg");
+}
+.icon_btn {
+  cursor: pointer;
+}
+.icon__main {
+  color: red;
+}
+
+.profile {
+  height: 90vh;
+  max-width: 900px;
+  margin: 10px auto;
+  text-align: center;
+  background-color: white;
+  border-radius: 13px;
+  padding: 20px;
+}
+.profile__title {
+  text-align: left;
+  color: #F64F59;
+}
+.profile__title_blue {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #12C2E9;
+  margin-bottom: 10px;
+}
+.profile__page {
+  text-align: left;
+  color: #F64F59;
+  column-count: 3;
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+}
+.profile_main {
+  display: flex;
+  height: 100%;
+  align-items: flex-start;
+}
+.profile__filed {
+  width: 30%;
+  height: 100%;
+  margin: 10px;
+  display: inline-block;
+  overflow: auto;
+}
+.profile__photo {
+  width: 100%;
+  margin-bottom: 5px;
+}
+.profile__photo_img {
+  width: 100%;
+  height: auto;
+  border-radius: 7px;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  text-decoration: none;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+/*# sourceMappingURL=style.css.map */
