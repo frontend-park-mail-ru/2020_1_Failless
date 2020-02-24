@@ -1,0 +1,29 @@
+{
+  "name": "eventum",
+  "version": "1.0.0",
+  "description": "хочувБАР",
+  "main": "index.js",
+  "dependencies": {
+    "bem-xjst": "^8.9.6",
+    "sass": "^1.25.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "sass ./public/style.scss:./public/static/css/style.css",
+    "build:bundle": "node ./scripts/main.js ./public/js ./public/blocks",
+    "build:all": "npm run build:css && npm run build:bundle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontend-park-mail-ru/2020_1_Failless.git"
+  },
+  "author": "Failless",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frontend-park-mail-ru/2020_1_Failless/issues"
+  },
+  "homepage": "https://github.com/frontend-park-mail-ru/2020_1_Failless#readme"
+}
