@@ -14,9 +14,12 @@ export default class Router {
         let controller = this.urls.get(current);
         if (!controller) {
             // todo: 404 handler
+            console.log(current);
+            console.log(this.urls);
             console.error('Controller not found');
             return
         }
+        console.log(controller);
         controller.action();
     }
 }

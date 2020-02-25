@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Draw header
+ * @param {HTMLElement} base
+ */
 export default function createHeader(base) {
     const headerItems = {
         search: 'Поиск',
