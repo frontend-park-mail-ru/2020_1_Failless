@@ -3,7 +3,7 @@
 import View from '../core/view.js';
 
 /**
- *
+ * @class create LoginView class
  */
 export default class LoginView extends View {
 
@@ -16,6 +16,9 @@ export default class LoginView extends View {
         this.parent = parent;
     }
 
+    /**
+     * Render template
+     */
     render() {
         const template = [
             {

@@ -3,10 +3,13 @@
 import Controller from '../core/controller.js';
 import SingUpView from '../views/singup-view.js';
 
+/**
+ * @class SignUpController
+ */
 export default class SignUpController extends Controller {
 
     /**
-     *
+     * construct object of SignUpController class
      * @param {HTMLElement} parent
      */
     constructor(parent) {
@@ -14,6 +17,9 @@ export default class SignUpController extends Controller {
         this.view = new SingUpView(parent);
     }
 
+    /**
+     * Create action
+     */
     action() {
         this.view.render();
     }

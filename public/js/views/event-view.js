@@ -8,7 +8,7 @@ import View from '../core/view.js';
 export default class EventView extends View {
 
     /**
-     *
+     * Construct obj of EventView class
      * @param {HTMLElement} parent
      */
     constructor(parent) {
