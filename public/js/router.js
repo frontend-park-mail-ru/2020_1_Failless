@@ -10,7 +10,14 @@ export default class Router {
     }
 
     route() {
-        let current = window.location.pathname;
+        window.addEventListener('popstate', () => {
+            const currentPath = window.location.pathname;
+            this._handle(currentPath);
+        });
+        this._handle(window.location.pathname);
+    }
+
+    _handle(current) {
         let controller = this.urls.get(current);
         if (!controller) {
             // todo: 404 handler

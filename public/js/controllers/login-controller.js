@@ -16,5 +16,6 @@ export default class LoginController extends Controller {
 
     action() {
         this.view.render();
+        const form = document.getElementById('form');
     }
 }
