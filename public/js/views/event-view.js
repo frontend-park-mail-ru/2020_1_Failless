@@ -2,12 +2,23 @@
 
 import View from '../core/view.js';
 
+/**
+ * @class EventView
+ */
 export default class EventView extends View {
 
+    /**
+     *
+     * @param {HTMLElement} parent
+     */
     constructor(parent) {
         super(parent);
     }
 
+    /**
+     * Create Event page
+     * @param {JSON} event data
+     */
     render(event) {
         const template = [
             { block: 'link' },
