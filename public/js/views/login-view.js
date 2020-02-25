@@ -41,7 +41,7 @@ export default class LoginView extends View {
                                         block: 'input',
                                         mix: {'block': 'input__auth'},
                                         tag: 'input',
-                                        attrs: {placeholder: 'email', type: 'email'},
+                                        attrs: {placeholder: 'me@example.com', type: 'email'},
                                     },
                                 ]
                             },
@@ -56,7 +56,7 @@ export default class LoginView extends View {
                                         block: 'input',
                                         mix: {'block': 'input__auth'},
                                         tag: 'input',
-                                        attrs: {placeholder: 'password', type: 'password'},
+                                        attrs: {placeholder: '*******', type: 'password'},
                                     },
                                 ]
                             },
@@ -64,7 +64,7 @@ export default class LoginView extends View {
                                 elem: 'btn',
                                 content: [{
                                     block: 'btn',
-                                    mods: {color: 'muted', size: 'middle'},
+                                    mods: {color: 'ok', size: 'middle'},
                                     btnText: 'Войти',
                                     attrs: {type: 'submit'},
                                 }],
@@ -86,8 +86,9 @@ export default class LoginView extends View {
                                 elem: 'btn',
                                 content: [{
                                     block: 'btn',
-                                    mods: {color: 'muted', size: 'large'},
+                                    mods: {color: 'w', size: 'large'},
                                     btnText: 'Зарегестриророваться',
+                                    color: 'blue',
                                     attrs: {type: 'submit'},
                                 }],
                             }

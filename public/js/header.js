@@ -15,8 +15,8 @@ export default function createHeader(base) {
     let header = document.createElement('nav');
     // let header = document.getElementsByTagName('nav');
     let logo = document.createElement('img');
-    logo.className = 'logo';
-    logo.src = './logo.png';
+    logo.className = 'icon_btn icon__size_m header__item';
+    logo.src = './static/images/logo.png';
     logo.alt = 'Eventum';
     let list = document.createElement('div');
     list.className = 'header__manage';

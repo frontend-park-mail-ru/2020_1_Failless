@@ -18,4 +18,3 @@ router.addRoute('/me', new ProfileController(application));
 router.addRoute('/profile', new ProfileController(application));
 
 router.route();
-

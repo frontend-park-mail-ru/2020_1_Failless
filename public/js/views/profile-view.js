@@ -84,6 +84,8 @@ export default class ProfileView extends View {
                                         content: 'О себе',
                                     },
                                     {
+                                        block: 'input',
+                                        mix: {block: 'input__text_small'},
                                         tag: 'textarea',
                                         attrs: {placeholders: 'Расскажите о себе и своих увлечениях'},
                                     },

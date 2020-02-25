@@ -71,7 +71,7 @@ export default class SignUpView extends View {
                                         block: 'input',
                                         mix: {'block': 'input__auth'},
                                         tag: 'input',
-                                        attrs: {type: 'tel'},
+                                        attrs: {placeholder: '+7 (999) 555-35-35', type: 'tel'},
                                     },
                                 ]
                             },
@@ -86,7 +86,7 @@ export default class SignUpView extends View {
                                         block: 'input',
                                         mix: {'block': 'input__auth'},
                                         tag: 'input',
-                                        attrs: {placeholder: 'password', type: 'password'},
+                                        attrs: {placeholder: '*******', type: 'password'},
                                     },
                                 ]
                             },
@@ -101,7 +101,7 @@ export default class SignUpView extends View {
                                         block: 'input',
                                         mix: {'block': 'input__auth'},
                                         tag: 'input',
-                                        attrs: {placeholder: 'password', type: 'password'},
+                                        attrs: {placeholder: '*******', type: 'password'},
                                     },
                                 ]
                             },
@@ -109,7 +109,7 @@ export default class SignUpView extends View {
                                 elem: 'btn',
                                 content: [{
                                     block: 'btn',
-                                    mods: {color: 'muted', size: 'large'},
+                                    mods: {color: 'ok', size: 'large'},
                                     btnText: 'Зарегестриророваться',
                                     attrs: {type: 'submit'},
                                 }],
@@ -132,8 +132,9 @@ export default class SignUpView extends View {
                                 elem: 'btn',
                                 content: [{
                                     block: 'btn',
-                                    mods: {color: 'muted', size: 'middle'},
+                                    mods: {color: 'w', size: 'middle'},
                                     btnText: 'Войти',
+                                    color: 'blue',
                                     attrs: {type: 'submit'},
                                 }],
                             }

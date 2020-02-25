@@ -13,6 +13,7 @@
 @import "modules/efont";
 
 body {
+  margin: 0;
   height: 100vh;
   background: linear-gradient(
                   135deg,
@@ -21,5 +22,4 @@ body {
                   $color-red 100%);
   text-decoration: none;
   font-family: "Helvetica Neue", sans-serif;
-
 }

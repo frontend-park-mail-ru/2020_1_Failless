@@ -1,9 +1,10 @@
 @import "../../modules/variables";
 
 $icons-path: "../icons/";
+$images-path: "../images/";
 
 $search-icon: $icons-path + "search.svg";
-$eventum-icon: $icons-path + "eventum.svg";
+$eventum-icon: $images-path + "logo.png";
 $more-icon: $icons-path + "more.svg";
 
 $icon-size: 14px, 14px;
@@ -42,8 +43,8 @@ $icon-size: 14px, 14px;
   }
 
   &__eventum {
-    -webkit-mask-image: url($eventum-icon);
-    mask-image: url($eventum-icon);
+    //-webkit-mask-image: url($eventum-icon);
+    //mask-image: url($eventum-icon);
   }
 
   &__more {
@@ -57,6 +58,11 @@ $icon-size: 14px, 14px;
 
   &__main {
     color: red;
+  }
+
+  &__size_m {
+    width: 90px;
+    height: 35px;
   }
 }
 
