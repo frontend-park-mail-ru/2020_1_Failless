@@ -1,0 +1,25 @@
+@import "blocks/btn/btn";
+@import "blocks/header/header";
+@import "blocks/icon/icon";
+@import "blocks/screen/screen";
+@import "blocks/landing/landing";
+@import "blocks/profile/profile";
+@import "blocks/tag/tag";
+@import "blocks/auth/auth";
+@import "blocks/input/input";
+@import "blocks/search/search";
+@import "blocks/event/event";
+@import "modules/variables";
+@import "modules/efont";
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(
+                  135deg,
+                  $color-blue 0%,
+                  $color-purple 50%,
+                  $color-red 100%);
+  text-decoration: none;
+  font-family: "Helvetica Neue", sans-serif;
+}

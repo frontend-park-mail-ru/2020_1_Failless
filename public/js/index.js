@@ -1,20 +1,21 @@
 'use strict';
 
-import Router from './core/router.js';
+import LandingController from './controllers/landing-conroller.js';
+import ProfileController from './controllers/profile-controller.js';
+import LoginController from './controllers/login-controller.js';
+import SignUpController from './controllers/singnup-controller.js';
 import EventController from './controllers/event-controller.js';
+import createHeader from "./header.js";
+import Router from './router.js';
 
-const application = document.getElementById('application');
+let application = document.getElementById('application');
+createHeader(application);
 
-application.insertAdjacentHTML('beforeend', '<div id="main"></div>');
-const main = document.getElementById('main');
+let router = new Router();
+router.addRoute('/', new SignUpController(application));
+router.addRoute('/login', new LoginController(application));
+router.addRoute('/me', new ProfileController(application));
+router.addRoute('/profile', new ProfileController(application));
+router.addRoute('/event', new EventController(application));
 
-const inst = new EventController(main);
-console.log("EventController->", inst);
-const router = new Router('', application).addRoute('test', new EventController(main));
-router.start();
-
-// import LandingController from './controllers/landing-conroller.js';
-
-// let application = document.getElementById('application');
-// const landing = new LandingController(application);
-// landing.action();
+router.route();

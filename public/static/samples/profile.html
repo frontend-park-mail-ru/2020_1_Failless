@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!-- saved from url=(0089)http://localhost:63342/Eventum-front/templates/index.html?_ijt=h1u2hmphuchbhfk9oqjpahrlp9 -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Eventum</title>
+    <link rel="stylesheet" href="../../../templates/styles.css">
+</head>
+<body>
+<nav><img class="logo" src="../../static/icons/eventum.svg" alt="Eventum">
+    <ul>
+        <li><a href="http://localhost:63342/search">Поиск</a></li>
+        <li><a href="http://localhost:63342/reg">Рега</a></li>
+        <li><a href="http://localhost:63342/login">Войти</a></li>
+        <li><a href="http://localhost:63342/profile">Профиль</a></li>
+    </ul>
+</nav>
+<div id="application">
+    <div class="profile-page">
+        <h1>Профиль</h1>
+        <div class="profile-main">
+            <div class="profile-field profile-left">
+                <div class="profile-blue-title"><h3>О себе</h3></div>
+                <form><textarea placeholder="Расскажите о себе и своих увлечениях" rows="10"></textarea>
+                    <button>Готово</button>
+                    <button>Настройки</button>
+                </form>
+            </div>
+            <div class="profile-field profile-center">
+                <div class="profile-blue-title"><h3>Ваши фото</h3>
+                    <img src="./profile_files/GradientButton.png">
+                </div>
+                <div class="profile-photo"><img src="./profile_files/1.jpg"></div>
+                <div class="profile-photo"><img src="./profile_files/2.jpg"></div>
+                <div class="profile-photo"><img src="./profile_files/3.jpg"></div>
+            </div>
+            <div class="profile-field profile-right">
+                <div class="profile-blue-title"><h3>Ваши тэги</h3><img src="./profile_files/GradientButton.png"></div>
+                <div class="tags">
+                    <div class="tag">#хочувБАР</div>
+                    <div class="tag">#хочувКИНО</div>
+                    <div class="tag">#хочунаКАТОК</div>
+                    <div class="tag">#хочуГУЛЯТЬ</div>
+                    <div class="tag">#хочуКУШАЦ</div>
+                    <div class="tag">#хочуСПАТЬ</div>
+                </div>
+                <div class="profile-blue-title"><h3>Ваши эвенты</h3><img src="./profile_files/GradientButton.png"></div>
+                <div class="events">
+                    <div class="event">
+                        <div class="event-photos"><img class="event-photo" src="./profile_files/3(1).jpg"
+                                                       alt="EventPhotos/3.jpg"><img class="event-photo"
+                                                                                    src="./profile_files/4.jpg"
+                                                                                    alt="EventPhotos/4.jpg"></div>
+                        <h3 class="event-title">Концерт</h3><h5 class="event-place">Москва</h5>
+                        <p class="event-description">Ну как его похвалить? Ну классный концерт, шикарный концерт, как
+                            его ещё похвалить?</p></div>
+                    <div class="event">
+                        <div class="event-photos"><img class="event-photo" src="./profile_files/2(1).jpg"
+                                                       alt="EventPhotos/2.jpg"><img class="event-photo"
+                                                                                    src="./profile_files/1(1).jpg"
+                                                                                    alt="EventPhotos/1.jpg"></div>
+                        <h3 class="event-title">Выставка</h3><h5 class="event-place">Ленинград</h5>
+                        <p class="event-description">Выставка Ван-Гога. Обещают привезти главный экспонат</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./profile_files/main.js"></script>
+<div id="settings-container" style="display: none;">
+    <div class="settings-modal">
+        <form><h5>username</h5><input type="text" placeholder="Username" readonly="true"><h5>email</h5><input
+                type="email" placeholder="Email"><h5>phone</h5><input type="text" placeholder="Phone"><h5>
+            oldPassword</h5><input type="password" placeholder="Old password"><h5>newPassword</h5><input type="password"
+                                                                                                         placeholder="Old password">
+            <h5>checkPassword</h5><input type="password" placeholder="Old password"></form>
+        <button>Изменить</button>
+        <button>Назад</button>
+    </div>
+</div>
+
+</body>
+</html>
