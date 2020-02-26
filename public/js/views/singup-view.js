@@ -16,6 +16,9 @@ export default class SignUpView extends View {
         this.parent = parent;
     }
 
+    /**
+     * Render template
+     */
     render() {
         const template = [
             {

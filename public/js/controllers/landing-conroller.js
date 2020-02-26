@@ -3,10 +3,13 @@
 import Controller from '../core/controller.js';
 import LandingView from '../views/landing-view.js';
 
+/**
+ * @class LandingController
+ */
 export default class LandingController extends Controller {
 
     /**
-     *
+     * construct object of LandingController class
      * @param {HTMLElement} parent
      */
     constructor(parent) {
@@ -14,6 +17,9 @@ export default class LandingController extends Controller {
         this.view = new LandingView(parent);
     }
 
+    /**
+     * Create action
+     */
     action() {
         this.view.render();
     }
