@@ -28,7 +28,7 @@ export default class EventView extends View {
             { block: 'link', target: '_blank', url: '/' },
             { tag: 'br' },
             { block: 'link', mods: { disabled: true }, url: '/' }
-          ];
+        ];
         this.parent.insertAdjacentHTML('beforeend', bemhtml.apply(template));
     }
 }

@@ -30,15 +30,15 @@ export default function createHeader(base) {
         headerItemLink.addEventListener('click', function (evt) {
             evt.preventDefault();
             switch (headerItems[key]) {
-                case headerItems.profile:
-                    // createProfilePage();
-                    break;
-                case headerItems.reg:
-                    // createLoginOrSignupPage(signupFields, signupData);
-                    break;
-                case headerItems.login:
-                    // createLoginOrSignupPage(loginFields, loginData);
-                    break;
+            case headerItems.profile:
+                // createProfilePage();
+                break;
+            case headerItems.reg:
+                // createLoginOrSignupPage(signupFields, signupData);
+                break;
+            case headerItems.login:
+                // createLoginOrSignupPage(loginFields, loginData);
+                break;
             }
         });
 

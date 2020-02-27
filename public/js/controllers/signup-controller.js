@@ -20,7 +20,7 @@ export default class SignUpController extends Controller {
      * (быдлокод тянется на this.events & _signUpHandler)
     */
     action(routerInstance) {
-        this.parent.innerHTML = "";
+        this.parent.innerHTML = '';
         this.view.render();
 
         const signUp = document.getElementsByClassName('btn btn_color_ok btn_size_large')[0];

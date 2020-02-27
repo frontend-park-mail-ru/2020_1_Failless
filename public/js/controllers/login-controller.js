@@ -23,7 +23,7 @@ export default class LoginController extends Controller {
      * (быдлокод тянется на this.events & _loginHandler)
      */
     action(routerInstance) {
-        this.parent.innerHTML = "";
+        this.parent.innerHTML = '';
         this.view.render();
 
         const login = document.getElementsByClassName('btn__text btn__text_w')[0];

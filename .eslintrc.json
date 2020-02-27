@@ -10,5 +10,18 @@
         "sourceType": "module"
     },
     "rules": {
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "eqeqeq": "warn",
+        "indent": [
+            "warn",
+            4
+        ]
     }
 }
