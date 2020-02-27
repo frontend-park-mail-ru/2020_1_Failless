@@ -1,5 +1,7 @@
 'use strict';
 
+import UserModel from '../models/user-model.js'
+
 /**
  * @class create Router class
  */
@@ -29,6 +31,10 @@ export default class Router {
         this._handle(window.location.pathname);
     }
 
+    _checkUserExist() {
+        return UserModel.getLogin();
+    }
+
     _handle(current) {
         let controller = this.urls.get(current);
         if (!controller) {
@@ -43,11 +49,10 @@ export default class Router {
         }
         this.currentController = controller;
         console.log(controller);
-
-        // if (document.getElementsByClassName('header').length === 0) {
-        //     this.urls.get('/').action(this);
-        // }
-        // controller.action(this);
-        this.currentController.action();
+        this._checkUserExist().then(user => {
+            console.log(user);
+            const userLogged = user.Logged;
+            this.currentController.action(userLogged);
+        });
     }
 }
