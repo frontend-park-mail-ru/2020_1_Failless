@@ -1,6 +1,6 @@
 'use strict';
 
-import UserModel from '../models/user-model.js'
+import UserModel from '../models/user-model.js';
 
 /**
  * @class create Router class
@@ -39,6 +39,9 @@ export default class Router {
         let controller = this.urls.get(current);
         if (!controller) {
             // todo: 404 handler
+            let app = document.getElementById('application');
+            app.innerHTML = '404 Not Found';
+            
             console.log(current);
             console.log(this.urls);
             console.error('Controller not found');

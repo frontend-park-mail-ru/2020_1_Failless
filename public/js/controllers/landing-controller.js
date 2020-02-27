@@ -22,6 +22,7 @@ export default class LandingController extends Controller {
      * Create action
      */
     action() {
+        super.action();
         this.view.render();
     }
 }

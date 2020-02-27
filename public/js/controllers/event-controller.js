@@ -24,6 +24,7 @@ export default class EventController extends Controller {
      * Create action
      */
     action() {
+        super.action();
         EventModel.getEvent().then(
             (event) => {
                 this.event = event;

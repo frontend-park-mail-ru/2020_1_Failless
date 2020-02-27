@@ -4,50 +4,85 @@
  * Draw header
  * @param {HTMLElement} base
  */
-export default function createHeader(base) {
-    const headerItems = {
-        search: 'Поиск',
-        reg: 'Рега',
-        login: 'Войти',
-        profile: 'Профиль',
-    };
+export default function createHeader(base, logged) {
+    if (document.getElementsByClassName('header').length !== 0) {
+        document.getElementsByClassName('header')[0].remove();
+    }
 
-    let header = document.createElement('nav');
-    // let header = document.getElementsByTagName('nav');
-    let logo = document.createElement('img');
-    logo.className = 'logo';
-    logo.src = './logo.png';
-    logo.alt = 'Eventum';
-    let list = document.createElement('div');
-    list.className = 'header__manage';
-
-    Object.keys(headerItems).forEach(function (key) {
-        // const headerItem = document.createElement('div');
-        const headerItemLink = document.createElement('a');
-        headerItemLink.className = 'header__item';
-        headerItemLink.innerText = headerItems[key];
-        headerItemLink.href = `/${key}`;
-        headerItemLink.addEventListener('click', function (evt) {
-            evt.preventDefault();
-            switch (headerItems[key]) {
-            case headerItems.profile:
-                // createProfilePage();
-                break;
-            case headerItems.reg:
-                // createLoginOrSignupPage(signupFields, signupData);
-                break;
-            case headerItems.login:
-                // createLoginOrSignupPage(loginFields, loginData);
-                break;
+    let template = [];
+    if (!logged) {
+        template = [
+            {
+                block: 'header',
+                tag: 'nav',
+                content: [
+                    {
+                        block: 'image',
+                        tag: 'img',
+                        url: './static/images/logo.png',
+                        mix: {'block': 'icon_btn icon__size_m header__item'},
+                        attrs: {src: './static/images/logo.png', alt: 'Eventum'}
+                    },
+                    {
+                        block: 'header__manage',
+                        content: [
+                            {
+                                block: 'header__item',
+                                tag: 'a',
+                                attrs: {href: '/signup'},
+                                content: 'Рега'
+                            },
+                            {
+                                block: 'header__item',
+                                tag: 'a',
+                                attrs: {href: '/login'},
+                                content: 'Войти'
+                            }
+                        ]
+                    }
+                ]
             }
-        });
-
-        // headerItem.appendChild(headerItemLink);
-        list.appendChild(headerItemLink);
-    });
-
-    const application = document.getElementById('application');
-    header.append(logo, list);
-    header.className = 'header';
-    application.insertAdjacentElement('beforeend', header);
+        ];
+    } else {
+        template = [
+            {
+                block: 'header',
+                tag: 'nav',
+                content: [
+                    {
+                        block: 'image',
+                        tag: 'img',
+                        url: './static/images/logo.png',
+                        mix: {'block': 'icon_btn icon__size_m header__item'},
+                        attrs: {src: './static/images/logo.png', alt: 'Eventum'}
+                    },
+                    {
+                        block: 'header__manage',
+                        content: [
+                            {
+                                block: 'header__item',
+                                tag: 'a',
+                                attrs: {href: '/search'},
+                                content: 'Поиск'
+                            }
+                            ,
+                            {
+                                block: 'header__item',
+                                tag: 'a',
+                                attrs: {href: '/logout'},
+                                content: 'Выйти'
+                            },
+                            {
+                                block: 'header__item',
+                                tag: 'a',
+                                attrs: {href: '/profile'},
+                                content: 'Профиль'
+                            },
+                        ]
+                    }
+                ]
+            }
+        ];
+    }
+    base.insertAdjacentHTML('afterbegin', bemhtml.apply(template));
 }
