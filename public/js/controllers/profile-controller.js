@@ -2,6 +2,7 @@
 
 import Controller from '../core/controller.js';
 import ProfileView from '../views/profile-view.js';
+import Header from '../core/header.js'
 
 /**
  * @class ProfileController
@@ -17,8 +18,8 @@ export default class ProfileController extends Controller {
         this.view = new ProfileView(parent);
     }
 
-    action(routerInstance) {
-        this.parent.innerHTML = '';
+    action(userLogged) {
+        Header.create(userLogged, this.parent);
         this.view.render();
     }
 }

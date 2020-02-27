@@ -3,6 +3,7 @@
 import Controller from '../core/controller.js';
 import EventView from '../views/event-view.js';
 import EventModel from '../models/event-model.js';
+import Header from '../core/header.js'
 
 /**
  * @class EventController
@@ -22,13 +23,13 @@ export default class EventController extends Controller {
     /**
      * Create action
      */
-    action(routerInstance) {
+    action(userLogged) {
+        Header.create(userLogged, this.parent);
+
         EventModel.getEvent().then(
             (event) => {
                 this.event = event;
-                this.parent.innerHTML = '';
-
-                this.view.render(this.event);
+                this.view.render(this.event, this.user);
             },
             (error) => {}
         );
