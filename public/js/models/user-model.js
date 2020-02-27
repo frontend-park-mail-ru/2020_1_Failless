@@ -53,12 +53,12 @@ export default class UserModel extends Model {
      * Send user signup data from server
      * @return {Promise} promise to set new user data
      */
-    static postSignup(name, email, phone, pass) {
+    static postSignup({userName, userPass, userPhone, userEmail}) {
         const newUserData = {
-            name: name,
-            email: email,
-            phone: phone,
-            pass: pass,
+            name: userName,
+            email: userEmail,
+            phone: userPhone,
+            pass: userPass,
         };
         return NetworkModule.fetchPost({path: '/signup', body: newUserData}).then((response) => {
             if (response.status > 499) {
