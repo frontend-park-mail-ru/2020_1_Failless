@@ -1,6 +1,7 @@
 import settings from '../settings/config.js';
 
-// TODO: rewrite settings.url + window.location.pathname + path
+// TODO: rewrite settings.url + ':' + settings.port + settings.api + path
+// TODO: FOrm headers with const myHeaders = new Headers();
 
 /**
  * The class implements methods for calling communicating with the server API
@@ -14,7 +15,7 @@ export default class NetworkModule {
     static fetchGet = ({
                 path = '/',
             } = {}) => {
-        return fetch(settings.url + path, {
+        return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
@@ -30,7 +31,7 @@ export default class NetworkModule {
                     path = '/',
                     body = null,
                 } = {}) => {
-        return fetch(settings.url + window.location.pathname + path, {
+        return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'POST',
             mode: 'cors',
             credentials: 'include',
