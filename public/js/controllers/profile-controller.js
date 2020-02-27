@@ -17,10 +17,8 @@ export default class ProfileController extends Controller {
         this.view = new ProfileView(parent);
     }
 
-    /**
-     * Create action
-     */
-    action() {
+    action(routerInstance) {
+        this.parent.innerHTML = "";
         this.view.render();
     }
 }

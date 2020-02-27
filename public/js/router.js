@@ -31,6 +31,10 @@ export default class Router {
             return
         }
         console.log(controller);
-        controller.action();
+
+        if (document.getElementsByClassName('header').length === 0) {
+            this.urls.get('/').action(this);
+        }
+        controller.action(this);
     }
 }
