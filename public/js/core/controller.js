@@ -36,23 +36,48 @@ export default class Controller {
         const sweetHomePage = document.getElementsByClassName('image icon_btn icon__size_m header__item')[0];
         sweetHomePage.addEventListener('click', this._homeRedirect);
 
-        if (!logged) {
-            console.log(logged);
-            const userSignUp = document.getElementsByClassName('header__item')[1];
-            userSignUp.addEventListener('click', this._signUpRedirect);
+        UserModel.getLogin()
+            .then((user) => {
+                console.log(logged);
+                if (user.uid <= 0) {
+                    createHeader(this.parent, false);
+                    const userSignUp = document.getElementsByClassName('header__item')[1];
+                    userSignUp.addEventListener('click', this._signUpRedirect);
 
-            const userLogin = document.getElementsByClassName('header__item')[2];
-            userLogin.addEventListener('click', this._loginRedirect);
-        } else {
-            const eventSearch = document.getElementsByClassName('header__item')[1];
-            eventSearch.addEventListener('click', this._eventSearchRedirect);
+                    const userLogin = document.getElementsByClassName('header__item')[2];
+                    userLogin.addEventListener('click', this._loginRedirect);
+                } else {
+                    createHeader(this.parent, true);
+                    const eventSearch = document.getElementsByClassName('header__item')[1];
+                    eventSearch.addEventListener('click', this._eventSearchRedirect);
 
-            const userLogout = document.getElementsByClassName('header__item')[2];
-            userLogout.addEventListener('click', this._logoutRedirect);
+                    const userLogout = document.getElementsByClassName('header__item')[2];
+                    userLogout.addEventListener('click', this._logoutRedirect);
 
-            const userProfile = document.getElementsByClassName('header__item')[3];
-            userProfile.addEventListener('click', this._profileRedirect);
-        }
+                    const userProfile = document.getElementsByClassName('header__item')[3];
+                    userProfile.addEventListener('click', this._profileRedirect);
+                }
+            })
+            .catch((onerror) => {
+                console.error(onerror);
+            });
+        // if (!logged) {
+        //     console.log(logged);
+        //     const userSignUp = document.getElementsByClassName('header__item')[1];
+        //     userSignUp.addEventListener('click', this._signUpRedirect);
+        //
+        //     const userLogin = document.getElementsByClassName('header__item')[2];
+        //     userLogin.addEventListener('click', this._loginRedirect);
+        // } else {
+        //     const eventSearch = document.getElementsByClassName('header__item')[1];
+        //     eventSearch.addEventListener('click', this._eventSearchRedirect);
+        //
+        //     const userLogout = document.getElementsByClassName('header__item')[2];
+        //     userLogout.addEventListener('click', this._logoutRedirect);
+        //
+        //     const userProfile = document.getElementsByClassName('header__item')[3];
+        //     userProfile.addEventListener('click', this._profileRedirect);
+        // }
     }
 
     /**

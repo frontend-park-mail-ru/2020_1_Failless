@@ -42,6 +42,9 @@ export default class UserModel extends Model {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
+            if (response.status > 399) {
+                return {uid: -1};
+            }
             return response.json();
         },
         (error) => {
