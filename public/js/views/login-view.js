@@ -36,6 +36,7 @@ export default class LoginView extends View {
                             {
                                 elem: 'smth',
                                 attrs: {id: 'form'},
+                                tag: 'form',
                                 content: [
                                     {
                                         elem: 'input',

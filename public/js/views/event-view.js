@@ -19,7 +19,7 @@ export default class EventView extends View {
      * Create Event page
      * @param {JSON} event data
      */
-    render(event) {
+    render() {
         const template = [
             { block: 'link' },
             { tag: 'br' },
