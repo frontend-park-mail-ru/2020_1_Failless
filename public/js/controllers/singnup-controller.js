@@ -32,12 +32,12 @@ export default class SignUpController extends Controller {
         event.preventDefault();
         const fields = document.getElementsByClassName('input__auth');
         if (fields.length !== 5) {
-            throw Error
+            throw Error;
         }
         if (fields[3].value !== fields[4].value) {
             // todo: handle error
             console.log('Passwords must be equal');
-            return
+            return;
         }
         let form = {
             name: fields[0].value,

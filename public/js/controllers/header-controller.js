@@ -27,7 +27,7 @@ export default class HeaderController extends Controller {
         if (document.getElementsByClassName('header').length !== 0) {
             document.getElementsByClassName('header')[0].remove();
         }
-        this.parent.innerHTML = "";
+        this.parent.innerHTML = '';
         this.view.render();
 
         const sweetHomePage = document.getElementsByClassName('image icon_btn icon__size_m header__item')[0];

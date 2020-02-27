@@ -12,7 +12,7 @@ const getBlocks = (profilePhotos) => {
             mods: {'me': true},
             tag: 'img',
             attrs: {src: '' + elem}
-        })
+        });
     });
     return blocks;
 };
@@ -26,7 +26,7 @@ const getTags = (tagNames) => {
             block: 'tag',
             mods: {'size': 'middle'},
             content: elem,
-        })
+        });
     });
     return blocks;
 };

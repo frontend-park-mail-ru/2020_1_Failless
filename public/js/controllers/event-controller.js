@@ -26,7 +26,7 @@ export default class EventController extends Controller {
         EventModel.getEvent().then(
             (event) => {
                 this.event = event;
-                this.parent.innerHTML = "";
+                this.parent.innerHTML = '';
 
                 this.view.render(this.event);
             },

@@ -6,11 +6,11 @@ import ProfileController from './controllers/profile-controller.js';
 import LoginController from './controllers/login-controller.js';
 import SignUpController from './controllers/signup-controller.js';
 import EventController from './controllers/event-controller.js';
-import createHeader from "./header.js";
+import createHeader from './header.js';
 import Router from './router.js';
 
 let application = document.getElementById('application');
-// createHeader(application);
+createHeader(application);
 
 let router = new Router();
 router.addRoute('/', new HeaderController(application));

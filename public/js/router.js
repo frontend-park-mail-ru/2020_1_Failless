@@ -15,7 +15,7 @@ export default class Router {
      * @param controller
      */
     addRoute(path, controller) {
-        this.urls.set(path, controller)
+        this.urls.set(path, controller);
     }
 
     /**
@@ -36,7 +36,7 @@ export default class Router {
             console.log(current);
             console.log(this.urls);
             console.error('Controller not found');
-            return
+            return;
         }
         if (this.currentController) {
             this.currentController.destructor();
