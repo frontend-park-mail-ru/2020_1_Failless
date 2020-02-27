@@ -1,5 +1,7 @@
 'use strict';
 
+import UserModel from '../models/user-model.js';
+
 export default class Header {
 
     /**
@@ -93,9 +95,15 @@ export default class Header {
     static _logoutRedirect(event) {
         event.preventDefault();
         
-        window.history.pushState({}, '', '/');
-        window.history.pushState({}, '', '/');
-        window.history.back();
+        UserModel.getLogout().then((ok) => {
+            if (ok) {
+                window.history.pushState({}, '', '/');
+                window.history.pushState({}, '', '/');
+                window.history.back();
+            } else {
+                console.log('Client error, stay here');
+            }
+        });
     }
 
     /**
