@@ -12,7 +12,7 @@ const getBlocks = (profilePhotos) => {
             mods: {'me': true},
             tag: 'img',
             attrs: {src: '' + elem}
-        })
+        });
     });
     return blocks;
 };
@@ -26,7 +26,7 @@ const getTags = (tagNames) => {
             block: 'tag',
             mods: {'size': 'middle'},
             content: elem,
-        })
+        });
     });
     return blocks;
 };
@@ -58,6 +58,9 @@ export default class ProfileView extends View {
         this.parent = parent;
     }
 
+    /**
+     * Render template
+     */
     render() {
 
         let allowEdit = true;
@@ -84,6 +87,8 @@ export default class ProfileView extends View {
                                         content: 'О себе',
                                     },
                                     {
+                                        block: 'input',
+                                        mix: {block: 'input__text_small'},
                                         tag: 'textarea',
                                         attrs: {placeholders: 'Расскажите о себе и своих увлечениях'},
                                     },

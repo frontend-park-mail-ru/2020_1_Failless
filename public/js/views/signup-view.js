@@ -3,9 +3,9 @@
 import View from '../core/view.js';
 
 /**
- * @class create LoginView class
+ *
  */
-export default class LoginView extends View {
+export default class SignUpView extends View {
 
     /**
      * Create view
@@ -31,13 +31,27 @@ export default class LoginView extends View {
                             {
                                 elem: 'title',
                                 mix: {block: 'auth__title_main'},
-                                content: 'Вход',
+                                content: 'Регистрация',
                             },
                             {
-                                elem: 'smth',
-                                attrs: {id: 'form'},
                                 tag: 'form',
+                                attrs: {id: 'form'},
                                 content: [
+                                    {
+                                        elem: 'input',
+                                        content: [
+                                            {
+                                                elem: 'help',
+                                                content: 'Имя',
+                                            },
+                                            {
+                                                block: 'input',
+                                                mix: {'block': 'input__auth'},
+                                                tag: 'input',
+                                                attrs: {placeholder: 'Илья', type: 'text'},
+                                            },
+                                        ]
+                                    },
                                     {
                                         elem: 'input',
                                         content: [
@@ -49,7 +63,7 @@ export default class LoginView extends View {
                                                 block: 'input',
                                                 mix: {'block': 'input__auth'},
                                                 tag: 'input',
-                                                attrs: {placeholder: 'me@example.com', type: 'email'},
+                                                attrs: {placeholder: 'ilya@mail.com', type: 'email'},
                                             },
                                         ]
                                     },
@@ -58,7 +72,37 @@ export default class LoginView extends View {
                                         content: [
                                             {
                                                 elem: 'help',
-                                                content: 'Password',
+                                                content: 'Телефон',
+                                            },
+                                            {
+                                                block: 'input',
+                                                mix: {'block': 'input__auth'},
+                                                tag: 'input',
+                                                attrs: {placeholder: '+7 (999) 555-35-35', type: 'tel'},
+                                            },
+                                        ]
+                                    },
+                                    {
+                                        elem: 'input',
+                                        content: [
+                                            {
+                                                elem: 'help',
+                                                content: 'Пароль',
+                                            },
+                                            {
+                                                block: 'input',
+                                                mix: {'block': 'input__auth'},
+                                                tag: 'input',
+                                                attrs: {placeholder: '*******', type: 'password'},
+                                            },
+                                        ]
+                                    },
+                                    {
+                                        elem: 'input',
+                                        content: [
+                                            {
+                                                elem: 'help',
+                                                content: 'Повтороите пароль',
                                             },
                                             {
                                                 block: 'input',
@@ -72,8 +116,8 @@ export default class LoginView extends View {
                                         elem: 'btn',
                                         content: [{
                                             block: 'btn',
-                                            mods: {color: 'ok', size: 'middle'},
-                                            btnText: 'Войти',
+                                            mods: {color: 'ok', size: 'large'},
+                                            btnText: 'Зарегестриророваться',
                                             attrs: {type: 'submit'},
                                         }],
                                     }
@@ -86,18 +130,19 @@ export default class LoginView extends View {
                         content: [
                             {
                                 elem: 'title',
-                                content: 'Регистрация',
+                                content: 'Вход',
                             },
                             {
                                 elem: 'text',
-                                content: 'Ещё нет аккаунта? Пора его завести!',
+                                content: 'Уже зарегистрированы?\n' +
+                                    'Войдите с существующим аккаунтом!',
                             },
                             {
                                 elem: 'btn',
                                 content: [{
                                     block: 'btn',
-                                    mods: {color: 'w', size: 'large'},
-                                    btnText: 'Зарегистриророваться',
+                                    mods: {color: 'w', size: 'middle'},
+                                    btnText: 'Войти',
                                     color: 'blue',
                                     attrs: {type: 'submit'},
                                 }],

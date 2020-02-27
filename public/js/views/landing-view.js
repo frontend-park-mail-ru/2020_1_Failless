@@ -3,7 +3,7 @@
 import View from '../core/view.js';
 
 /**
- *
+ * @class create LandingView class
  */
 export default class LandingView extends View {
 
@@ -16,6 +16,9 @@ export default class LandingView extends View {
         this.parent = parent;
     }
 
+    /**
+     * Render template
+     */
     render() {
         const template = [
             {

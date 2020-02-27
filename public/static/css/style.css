@@ -1,10 +1,30 @@
+.btn {
+  border-radius: 18px;
+  border: none;
+  text-align: center;
+}
 .btn_size_large {
-  width: 184px;
-  height: 30px;
+  width: 284px;
+  height: 36px;
 }
 .btn_size_middle {
-  width: 72px;
-  height: 30px;
+  width: 116px;
+  height: 36px;
+}
+.btn_color_ok {
+  background-color: #F64F59;
+}
+.btn_color_w {
+  background-color: white;
+}
+.btn__text {
+  font-size: 24px;
+}
+.btn__text_w {
+  color: white;
+}
+.btn__text_b {
+  color: #12C2E9;
 }
 
 .header {
@@ -21,7 +41,8 @@
   display: flex;
 }
 .header__item {
-  margin: 2px;
+  text-decoration: none;
+  margin: 12px;
   color: white;
   font-size: 1rem;
 }
@@ -52,10 +73,6 @@
   -webkit-mask-image: url("../icons/search.svg");
   mask-image: url("../icons/search.svg");
 }
-.icon__eventum {
-  -webkit-mask-image: url("../icons/eventum.svg");
-  mask-image: url("../icons/eventum.svg");
-}
 .icon__more {
   -webkit-mask-image: url("../icons/more.svg");
   mask-image: url("../icons/more.svg");
@@ -65,6 +82,10 @@
 }
 .icon__main {
   color: red;
+}
+.icon__size_m {
+  width: 90px;
+  height: 35px;
 }
 
 .profile {
@@ -132,7 +153,7 @@
 }
 
 .auth {
-  max-width: 700px;
+  max-width: 752px;
   height: auto;
   position: relative;
   margin: 10px auto;
@@ -144,17 +165,20 @@
 .auth__item {
   width: 50%;
   padding: 20px;
-  border-radius: 15px;
-  box-shadow: rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+  box-shadow: 6px 8px 12px 1px rgba(0, 0, 0, 0.4);
   background-color: #12C2E9;
 }
 .auth__item_main {
+  z-index: 0;
   background-color: white;
 }
 .auth__title {
+  margin-left: 10%;
   color: white;
   font-weight: bold;
-  font-size: 32px;
+  font-size: 40px;
+  padding-bottom: 12%;
 }
 .auth__title_main {
   color: #F64F59;
@@ -163,6 +187,40 @@
   font-weight: bolder;
   font-size: 12px;
   color: #191919;
+  padding-bottom: 6px;
+}
+.auth__input {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  height: 70px;
+}
+.auth__text {
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+.auth__btn {
+  padding-top: 20px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.input__text_small {
+  height: 100px;
+  width: 232px;
+}
+.input__text_middle {
+  height: 120px;
+  width: 300px;
+}
+.input__auth {
+  width: 100%;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
 }
 
 .event {
@@ -204,6 +262,7 @@
 }
 
 body {
+  margin: 0;
   height: 100vh;
   background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
   text-decoration: none;
