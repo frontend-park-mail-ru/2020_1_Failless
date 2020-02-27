@@ -22,10 +22,12 @@ export default class EventController extends Controller {
     /**
      * Create action
      */
-    action = () => {
+    action(routerInstance) {
         EventModel.getEvent().then(
             (event) => {
                 this.event = event;
+                this.parent.innerHTML = "";
+
                 this.view.render(this.event);
             },
             (error) => {}
