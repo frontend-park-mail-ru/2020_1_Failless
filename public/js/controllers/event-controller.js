@@ -10,7 +10,7 @@ import EventModel from '../models/event-model.js';
 export default class EventController extends Controller {
 
     /**
-     * Construct obj
+     * Construct obj of EventController class
      * @param {HTMLElement} parent
      */
     constructor(parent) {

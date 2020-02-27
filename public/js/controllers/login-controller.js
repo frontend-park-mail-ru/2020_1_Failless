@@ -4,10 +4,13 @@ import Controller from '../core/controller.js';
 import LoginView from '../views/login-view.js';
 import UserModel from '../models/user-model.js';
 
+/**
+ * @class LoginController
+ */
 export default class LoginController extends Controller {
 
     /**
-     *
+     * construct object of LoginController class
      * @param {HTMLElement} parent
      */
     constructor(parent) {
@@ -18,7 +21,7 @@ export default class LoginController extends Controller {
 
     /* [HIGH-PRIORITY] TODO Пиздос с routerInstance надо перепроектировать ASAP 
      * (быдлокод тянется на this.events & _loginHandler)
-    */
+     */
     action(routerInstance) {
         this.parent.innerHTML = "";
         this.view.render();

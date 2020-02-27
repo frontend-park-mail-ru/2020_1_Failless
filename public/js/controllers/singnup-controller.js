@@ -1,20 +1,20 @@
 'use strict';
 
 import Controller from '../core/controller.js';
-import LandingView from '../views/landing-view.js';
+import SingUpView from '../views/singup-view.js';
 
 /**
- * @class LandingController
+ * @class SignUpController
  */
-export default class LandingController extends Controller {
+export default class SignUpController extends Controller {
 
     /**
-     * construct object of LandingController class
+     * construct object of SignUpController class
      * @param {HTMLElement} parent
      */
     constructor(parent) {
         super(parent);
-        this.view = new LandingView(parent);
+        this.view = new SingUpView(parent);
     }
 
     /**

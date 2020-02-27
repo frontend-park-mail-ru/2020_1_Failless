@@ -58,6 +58,9 @@ export default class ProfileView extends View {
         this.parent = parent;
     }
 
+    /**
+     * Render template
+     */
     render() {
 
         let allowEdit = true;
