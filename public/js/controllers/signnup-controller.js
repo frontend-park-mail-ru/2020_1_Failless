@@ -1,10 +1,10 @@
 'use strict';
 
 import Controller from '../core/controller.js';
-import LoginView from '../views/login-view.js';
+import SignUpView from '../views/singup-view.js';
 import UserModel from '../models/user-model.js';
 
-export default class LoginController extends Controller {
+export default class SignUpController extends Controller {
 
     /**
      *
@@ -12,61 +12,63 @@ export default class LoginController extends Controller {
      */
     constructor(parent) {
         super(parent);
-        this.view = new LoginView(parent);
+        this.view = new SignUpView(parent);
         this.events = [];
     }
 
     /* [HIGH-PRIORITY] TODO Пиздос с routerInstance надо перепроектировать ASAP 
-     * (быдлокод тянется на this.events & _loginHandler)
+     * (быдлокод тянется на this.events & _signUpHandler)
     */
     action(routerInstance) {
         this.parent.innerHTML = "";
         this.view.render();
 
-        const login = document.getElementsByClassName('btn__text btn__text_w')[0];
-        login.addEventListener('click', this._loginHandler.bind(this));
+        const signUp = document.getElementsByClassName('btn btn_color_ok btn_size_large')[0];
+        signUp.addEventListener('click', this._signUpHandler.bind(this));
 
-        const signUpRedirect = document.getElementsByClassName('btn__text btn__text_b')[0];
-        signUpRedirect.addEventListener('click', this._signUpRedirect.bind(this));
+        const loginRedirect = document.getElementsByClassName('btn__text btn__text_b')[0];
+        loginRedirect.addEventListener('click', this._loginRedirect.bind(this));
 
         this.events.push(
-            {item: login, type: 'click', handler: this._loginHandler.bind(this), router: routerInstance},
-            {item: signUpRedirect, type: 'click', handler: this._signUpRedirect.bind(this), router: routerInstance},
+            {item: signUp, type: 'click', handler: this._signUpHandler.bind(this), router: routerInstance},
+            {item: loginRedirect, type: 'click', handler: this._loginRedirect.bind(this), router: routerInstance},
         );
     }
 
     // [HIGH-PRIORITY] TODO Добавить валидацию на пароль и прочий мусор
 
     /**
-     * Get data from input form on login page
+     * Get data from input form on sign up page
      * @param {event} event
      * @return {Object} input form
      */
-    _getFromLogin(event) {
+    _getFromSignUp(event) {
         const form = document.getElementsByClassName('auth__item auth__item_main')[0].getElementsByClassName('auth__input');
 
-        const userEmail = form[0].getElementsByClassName('input input__auth')[0].value;
-        const userPass = form[1].getElementsByClassName('input input__auth')[0].value;
+        const userName = form[0].getElementsByClassName('input input__auth')[0].value;
+        const userEmail = form[1].getElementsByClassName('input input__auth')[0].value;
+        const userPhone = form[2].getElementsByClassName('input input__auth')[0].value;
+        const userPass = form[3].getElementsByClassName('input input__auth')[0].value;
+        const userPassAgain = form[4].getElementsByClassName('input input__auth')[0].value;
 
-        return {userEmail, userPass};
+        return {userName, userPass, userPhone, userEmail};
     }
 
     // [HIGH-PRIORITY] TODO Половина функции - костыли и говно
     /**
-     * Handle click on login event
+     * Handle click on submit event
      * @param {event} event
      */
-    _loginHandler(event) {
+    _signUpHandler(event) {
         event.preventDefault();
 
-        const body = this._getFromLogin(event);
+        const body = this._getFromSignUp(event);
 
-        UserModel.postLogin(body).then((ok) => {
+        UserModel.postSignup(body).then((ok) => {
             if (ok) {
                 document.getElementsByClassName('auth')[0].remove();
                 window.history.pushState({}, '', '/profile');
                 this.events[0].router.route();
-                console.log(document.cookie);
             } else {
                 console.log('Client error, stay here');
             }
@@ -78,11 +80,11 @@ export default class LoginController extends Controller {
      * Handle click on login event
      * @param {event} event
      */
-    _signUpRedirect(event) {
+    _loginRedirect(event) {
         event.preventDefault();
         
         document.getElementsByClassName('auth')[0].remove();
-        window.history.pushState({}, '', '/signup');
+        window.history.pushState({}, '', '/login');
         this.events[1].router.route();
     }
 }
