@@ -1,4 +1,4 @@
-import NetworkModule from '../network.js';
+import NetworkModule from '../core/network.js';
 import Model from '../core/model.js';
 
 /**
