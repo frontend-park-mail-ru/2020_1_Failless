@@ -1,7 +1,7 @@
 'use strict';
 
 import Controller from '../core/controller.js';
-import SignUpView from '../views/singup-view.js';
+import SignUpView from '../views/signup-view.js';
 import UserModel from '../models/user-model.js';
 
 export default class SignUpController extends Controller {
