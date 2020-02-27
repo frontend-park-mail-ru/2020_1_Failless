@@ -18,8 +18,9 @@ export default class ProfileController extends Controller {
         this.view = new ProfileView(parent);
     }
 
-    action(userLogged) {
-        Header.create(userLogged, this.parent);
+    action() {
+        // Header.create(userLogged, this.parent);
+        // todo: check is user allowed to see this
         this.view.render();
     }
 }

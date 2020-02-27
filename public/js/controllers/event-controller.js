@@ -23,9 +23,7 @@ export default class EventController extends Controller {
     /**
      * Create action
      */
-    action(userLogged) {
-        Header.create(userLogged, this.parent);
-
+    action() {
         EventModel.getEvent().then(
             (event) => {
                 this.event = event;

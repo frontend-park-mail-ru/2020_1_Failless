@@ -3,7 +3,7 @@
 import Controller from '../core/controller.js';
 import SignUpView from '../views/signup-view.js';
 import UserModel from '../models/user-model.js';
-import Header from '../core/header.js'
+import Header from '../core/header.js';
 
 export default class SignUpController extends Controller {
 
@@ -16,15 +16,26 @@ export default class SignUpController extends Controller {
         this.view = new SignUpView(parent);
     }
 
-    action(userLogged) {
-        Header.create(userLogged, this.parent);
+    action() {
+        super.action();
+        // Header.create(userLogged, this.parent);
+        // this.view.render();
         this.view.render();
+        const form = document.getElementById('form');
+        form.addEventListener('submit', this._submitHandler);
+        const regBtn = document.getElementsByClassName('btn_color_w')[0];
+        regBtn.addEventListener('click', function (event) {
+            event.preventDefault();
 
-        const signUp = document.getElementsByClassName('btn btn_color_ok btn_size_large')[0];
-        signUp.addEventListener('click', this._signUpHandler.bind(this));
+            window.history.pushState({}, '', '/login');
+            window.history.pushState({}, '', '/login');
+            window.history.back();
+        });
+        // const signUp = document.getElementsByClassName('btn btn_color_ok btn_size_large')[0];
+        // signUp.addEventListener('click', this._signUpHandler.bind(this));
 
-        const loginRedirect = document.getElementsByClassName('btn btn_color_w btn_size_middle')[0];
-        loginRedirect.addEventListener('click', this._loginRedirect.bind(this));
+        // const loginRedirect = document.getElementsByClassName('btn btn_color_w btn_size_middle')[0];
+        // loginRedirect.addEventListener('click', this._loginRedirect.bind(this));
     }
 
     // [HIGH-PRIORITY] TODO Добавить валидацию на пароль и прочий мусор

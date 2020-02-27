@@ -49,10 +49,13 @@ export default class Router {
         }
         this.currentController = controller;
         console.log(controller);
-        this._checkUserExist().then(user => {
-            console.log(user);
-            const userLogged = user.Logged;
-            this.currentController.action(userLogged);
-        });
+        this.currentController.action();
+        // this._checkUserExist().then(user => {
+        //     console.log(user);
+        //     const userLogged = user.Logged;
+        // }).catch((onerror) => {
+        //     console.log(onerror.toString());
+        //     this.currentController.action();
+        // });
     }
 }

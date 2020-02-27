@@ -50,8 +50,4 @@ export default function createHeader(base) {
     header.append(logo, list);
     header.className = 'header';
     application.insertAdjacentElement('beforeend', header);
-    // application.insertAdjacentHTML('beforeend', bemhtml.applay(header));
-    // application.insertAdjacentHTML('beforeend', '<div class="header"></div>');
-    // const headerDiv = document.getElementsByClassName('header')[0];
-    // headerDiv.insertAdjacentHTML('beforeend', bemhtml.apply(header));
 }

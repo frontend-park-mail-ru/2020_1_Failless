@@ -21,8 +21,7 @@ export default class LandingController extends Controller {
     /**
      * Create action
      */
-    action(userLogged) {
-        Header.create(userLogged, this.parent);
+    action() {
         this.view.render();
     }
 }

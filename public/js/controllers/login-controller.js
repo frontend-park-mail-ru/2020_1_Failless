@@ -20,15 +20,24 @@ export default class LoginController extends Controller {
         this.events = [];
     }
 
-    action(userLogged) {
-        Header.create(userLogged, this.parent);
+    action() {
+        super.action();
         this.view.render();
-
-        const login = document.getElementsByClassName('btn btn_color_ok btn_size_middle')[0];
-        login.addEventListener('click', this._loginHandler.bind(this));
-
-        const signUpRedirect = document.getElementsByClassName('btn btn_color_w btn_size_large')[0];
-        signUpRedirect.addEventListener('click', this._signUpRedirect.bind(this));
+        const form = document.getElementById('form');
+        form.addEventListener('submit', this._submitHandler);
+        const regBtn = document.getElementsByClassName('btn_color_w')[0];
+        regBtn.addEventListener('click', function (event) {
+            event.preventDefault();
+            window.history.pushState({}, '', '/signup');
+            window.history.pushState({}, '', '/signup');
+            window.history.back();
+        });
+        // this.view.render();
+        // const login = document.getElementsByClassName('btn btn_color_ok btn_size_middle')[0];
+        // login.addEventListener('click', this._loginHandler.bind(this));
+        //
+        // const signUpRedirect = document.getElementsByClassName('btn btn_color_w btn_size_large')[0];
+        // signUpRedirect.addEventListener('click', this._signUpRedirect.bind(this));
     }
 
     // [HIGH-PRIORITY] TODO Добавить валидацию на пароль и прочий мусор

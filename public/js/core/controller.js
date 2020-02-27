@@ -1,5 +1,7 @@
 'use strict';
 
+import createHeader from '../header.js';
+
 /**
  * @class Basic controller class
  */
@@ -17,6 +19,7 @@ export default class Controller {
      * virtual destructor
      */
     destructor() {
+        console.log('I call the police');
         this.parent.innerHTML = '';
     }
 
@@ -24,5 +27,7 @@ export default class Controller {
      * Create action
      */
     action() {
+        console.log('She\'s kind of cute');
+        createHeader(this.parent);
     }
 }
