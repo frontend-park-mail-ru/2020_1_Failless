@@ -3,6 +3,7 @@
 export default class Router {
     constructor() {
         this.urls = new Map();
+        this.currentController = null;
     }
 
     addRoute(path, controller) {
@@ -26,7 +27,11 @@ export default class Router {
             console.error('Controller not found');
             return
         }
+        if (this.currentController) {
+            this.currentController.destructor();
+        }
+        this.currentController = controller;
         console.log(controller);
-        controller.action();
+        this.currentController.action();
     }
 }

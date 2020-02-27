@@ -14,6 +14,7 @@ export default class Controller {
     }
 
     destructor() {
+        this.parent.innerHTML = '';
     }
 
     action() {

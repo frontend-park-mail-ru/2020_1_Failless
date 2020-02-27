@@ -22,8 +22,9 @@ export default class SignUpController extends Controller {
         loginBtn.addEventListener('click', function (event) {
             event.preventDefault();
 
-            window.history.pushState({}, '', 'login');
-            window.history.forward();
+            window.history.pushState({}, '', '/login');
+            window.history.pushState({}, '', '/login');
+            window.history.back();
         });
     }
 
