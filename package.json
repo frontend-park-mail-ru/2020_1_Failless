@@ -15,7 +15,7 @@
     "build:css": "sass ./public/style.scss:./public/static/css/style.css",
     "build:bundle": "node ./scripts/main.js ./public/js ./public/blocks",
     "build:all": "npm run build:css && npm run build:bundle",
-    "linter": "eslint -c .eslintrc.json './public/js/'"
+    "linter": "eslint -c .eslintrc.json './public/js/**'"
   },
   "repository": {
     "type": "git",
