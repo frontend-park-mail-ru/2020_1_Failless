@@ -6,6 +6,7 @@
 export default class Router {
     constructor() {
         this.urls = new Map();
+        this.currentController = null;
     }
 
     /**
@@ -21,7 +22,14 @@ export default class Router {
      * route func
      */
     route() {
-        let current = window.location.pathname;
+        window.addEventListener('popstate', () => {
+            const currentPath = window.location.pathname;
+            this._handle(currentPath);
+        });
+        this._handle(window.location.pathname);
+    }
+
+    _handle(current) {
         let controller = this.urls.get(current);
         if (!controller) {
             // todo: 404 handler
@@ -30,11 +38,16 @@ export default class Router {
             console.error('Controller not found');
             return
         }
+        if (this.currentController) {
+            this.currentController.destructor();
+        }
+        this.currentController = controller;
         console.log(controller);
 
-        if (document.getElementsByClassName('header').length === 0) {
-            this.urls.get('/').action(this);
-        }
-        controller.action(this);
+        // if (document.getElementsByClassName('header').length === 0) {
+        //     this.urls.get('/').action(this);
+        // }
+        // controller.action(this);
+        this.currentController.action();
     }
 }

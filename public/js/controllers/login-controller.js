@@ -46,6 +46,8 @@ export default class LoginController extends Controller {
      * @return {Object} input form
      */
     _getFromLogin(event) {
+        // const form = document.getElementById('form');
+
         const form = document.getElementsByClassName('auth__item auth__item_main')[0].getElementsByClassName('auth__input');
 
         const userEmail = form[0].getElementsByClassName('input input__auth')[0].value;
