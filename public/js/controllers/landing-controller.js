@@ -2,6 +2,7 @@
 
 import Controller from '../core/controller.js';
 import LandingView from '../views/landing-view.js';
+import Header from '../core/header.js'
 
 /**
  * @class LandingController
@@ -20,7 +21,12 @@ export default class LandingController extends Controller {
     /**
      * Create action
      */
-    action() {
-        this.view.render();
+    action(userLogged) {
+        // this.parent.innerHTML = "";
+        Header.create(userLogged, this.parent);
+        // if (!this.view.viewExist()) {
+            this.view.render();
+            // this.view.exist = true;
+        // }
     }
 }
