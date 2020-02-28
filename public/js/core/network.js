@@ -1,8 +1,5 @@
 import settings from '../../settings/config.js';
 
-// TODO: rewrite settings.url + ':' + settings.port + settings.api + path
-// TODO: FOrm headers with const myHeaders = new Headers();
-
 /**
  * The class implements methods for calling communicating with the server API
  */

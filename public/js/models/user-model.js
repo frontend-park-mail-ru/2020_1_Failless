@@ -31,8 +31,8 @@ export default class UserModel extends Model {
     }
 
     /**
-     * Send user login data to server
-     * @return {Promise} promise to set user login data
+     * Get user login data from server
+     * @return {Promise} promise to get user login data
      */
     static getLogin() {
         return NetworkModule.fetchGet({path: '/getuser'}).then((response) => {
@@ -47,7 +47,7 @@ export default class UserModel extends Model {
     }
 
     /**
-     * Make user logout data on server
+     * Make user logout on server
      * @return {Promise} promise to get user logout data
      */
     static getLogout() {
@@ -90,7 +90,22 @@ export default class UserModel extends Model {
             return response.json();
         },
         (error) => {
-            console.log('JSJNSLDSNJSDS')
+            throw new Error(error);
+        });
+    }
+
+    /**
+     * Send user profile data to server
+     * @return {Promise} promise to set new user data
+     */
+    static getProfile() {
+        return NetworkModule.fetchGet({path: '/profile'}).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
             throw new Error(error);
         });
     }
