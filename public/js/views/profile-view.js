@@ -121,12 +121,22 @@ export default class ProfileView extends View {
                                         content: 'Ваши фото'
                                     },
                                     {
-                                        block: 'icon',
-                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'x'}}],
+                                        elem: 'photos',
+                                        content: {
+                                            block: 'profile',
+                                            elem: 'photo_container',
+                                            mods: {'me': true},
+                                            tag: 'img',
+                                            attrs: {src: ''}
+                                        },//getBlocks(profilePhotos),
                                     },
                                     {
-                                        elem: 'photos',
-                                        content: getBlocks(profilePhotos),
+                                        block: 'icon',
+                                        elem: 'input',
+                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'x'}}],
+                                        tag: 'input',
+                                        attrs: { type: 'file' },
+                                        content: 'Добавить фото'
                                     },
                                 ],
                             },
