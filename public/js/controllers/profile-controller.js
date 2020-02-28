@@ -22,10 +22,17 @@ export default class ProfileController extends Controller {
     action() {
         super.action();
         // todo: check is user allowed to see this
-        this.view.render();
-
-        const photoInput = document.getElementsByClassName('icon__input icon__add icon icon_size_x')[0];
-        photoInput.addEventListener("change", this._handleFile.bind(this), false);
+        UserModel.getProfile()
+            .then((profile) => {
+                if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
+                    this.view.render(profile);
+                    const photoInput = document.getElementsByClassName('icon__input icon__add icon icon_size_large')[0];
+                    photoInput.addEventListener('change', this._handleFile.bind(this), false);
+                } else {
+                    console.error('You have no rights');
+                    console.log(profile);
+                }
+            }).catch();
     }
 
     _handleFile(event) {
@@ -33,12 +40,12 @@ export default class ProfileController extends Controller {
             let FR = new FileReader();
             FR.addEventListener('load', this._photoUploadHandler.bind(this));
             FR.readAsDataURL(event.target.files[0]);
-          }
+        }
     }
 
     _photoUploadHandler(event) {
         this.image = event.target.result;
-        const userPhoto = this.image.split(";")[1].split(",")[1];
+        const userPhoto = this.image.split(';')[1].split(',')[1];
         const userProfile = {
             name: 'hui',
             phone: '82282281488',
@@ -54,8 +61,7 @@ export default class ProfileController extends Controller {
         };
         UserModel.postProfile(userProfile)
             .then(response =>
-                document.getElementsByClassName('profile__photo_container')[0].src = this.image
-                )
-            .catch(reason => console.log('ERROR'));
+                document.getElementsByClassName('profile__photo_img')[0].src = this.image
+            ).catch(reason => console.log('ERROR'));
     }
 }

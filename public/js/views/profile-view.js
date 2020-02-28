@@ -60,9 +60,9 @@ export default class ProfileView extends View {
 
     /**
      * Render template
+     * @param {JSON} profile -  user profile from server
      */
-    render() {
-
+    render(profile) {
         let allowEdit = true;
         const template = [
             {
@@ -71,7 +71,7 @@ export default class ProfileView extends View {
                     {
                         elem: 'title',
                         tag: 'h1',
-                        content: 'Профиль',
+                        content: profile.name,
                     },
                     {
                         elem: 'page',
@@ -91,19 +91,20 @@ export default class ProfileView extends View {
                                         mix: {block: 'input__text_small'},
                                         tag: 'textarea',
                                         attrs: {placeholders: 'Расскажите о себе и своих увлечениях'},
+                                        content: profile.about,
                                     },
                                     {
                                         elem: 'btn',
                                         content: allowEdit ? [
                                             {
                                                 block: 'btn',
-                                                mods: {color: 'muted', size: 'middle'},
+                                                mods: {color: 'ok', size: 'middle'},
                                                 btnText: 'Готово',
                                                 attrs: {type: 'submit'},
                                             },
                                             {
                                                 block: 'btn',
-                                                mods: {color: 'gray', size: 'middle'},
+                                                mods: {color: 'ok', size: 'middle'},
                                                 btnText: 'Настройки',
                                             },
                                         ] : []
@@ -118,22 +119,22 @@ export default class ProfileView extends View {
                                         elem: 'title',
                                         mix: {block: 'profile__title_blue'},
                                         tag: 'h3',
-                                        content: 'Ваши фото'
+                                        content: 'Фото'
                                     },
                                     {
                                         elem: 'photos',
                                         content: {
                                             block: 'profile',
-                                            elem: 'photo_container',
+                                            elem: 'photo_img',
                                             mods: {'me': true},
                                             tag: 'img',
-                                            attrs: {src: ''}
+                                            attrs: {src: profile.avatar.path}
                                         },//getBlocks(profilePhotos),
                                     },
                                     {
                                         block: 'icon',
                                         elem: 'input',
-                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'x'}}],
+                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'large'}}],
                                         tag: 'input',
                                         attrs: { type: 'file' },
                                         content: 'Добавить фото'

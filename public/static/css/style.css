@@ -69,6 +69,10 @@
   width: 36px;
   height: 36px;
 }
+.icon_size_large {
+  width: 178px;
+  height: 40px;
+}
 .icon__search {
   -webkit-mask-image: url("../icons/search.svg");
   mask-image: url("../icons/search.svg");
