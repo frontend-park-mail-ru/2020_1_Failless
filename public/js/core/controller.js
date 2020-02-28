@@ -1,6 +1,6 @@
 'use strict';
 
-import createHeader from '../header.js';
+import createHeader from './header.js';
 import UserModel from '../models/user-model.js';
 
 /**
