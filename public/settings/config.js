@@ -1,5 +1,5 @@
 export default {
     url: 'http://localhost',
-    port: 5000,
+    port: 3001,
     api: '/api',
 };
