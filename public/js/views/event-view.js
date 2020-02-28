@@ -19,15 +19,15 @@ export default class EventView extends View {
      * Create Event page
      * @param {JSON} event data
      */
-    render(event) {
+    render() {
         const template = [
-            { block: 'link' },
-            { tag: 'br' },
-            { block: 'link', url: '/', content: 'Home link' },
-            { tag: 'br' },
-            { block: 'link', target: '_blank', url: '/' },
-            { tag: 'br' },
-            { block: 'link', mods: { disabled: true }, url: '/' }
+            {block: 'link'},
+            {tag: 'br'},
+            {block: 'link', url: '/', content: 'Home link'},
+            {tag: 'br'},
+            {block: 'link', target: '_blank', url: '/'},
+            {tag: 'br'},
+            {block: 'link', mods: {disabled: true}, url: '/'}
         ];
         this.parent.insertAdjacentHTML('beforeend', bemhtml.apply(template));
     }

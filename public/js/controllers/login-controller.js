@@ -19,26 +19,25 @@ export default class LoginController extends Controller {
         this.events = [];
     }
 
-    /* [HIGH-PRIORITY] TODO Пиздос с routerInstance надо перепроектировать ASAP 
-     * (быдлокод тянется на this.events & _loginHandler)
-     */
-    action(routerInstance) {
-        this.parent.innerHTML = '';
+    action() {
+        super.action();
         this.view.render();
-
-        const login = document.getElementsByClassName('btn__text btn__text_w')[0];
-        login.addEventListener('click', this._loginHandler.bind(this));
-
-        const signUpRedirect = document.getElementsByClassName('btn__text btn__text_b')[0];
-        signUpRedirect.addEventListener('click', this._signUpRedirect.bind(this));
-
-        this.events.push(
-            {item: login, type: 'click', handler: this._loginHandler.bind(this), router: routerInstance},
-            {item: signUpRedirect, type: 'click', handler: this._signUpRedirect.bind(this), router: routerInstance},
-        );
+        const form = document.getElementById('form');
+        form.addEventListener('submit', this._submitHandler);
+        const regBtn = document.getElementsByClassName('btn_color_w')[0];
+        regBtn.addEventListener('click', function (event) {
+            event.preventDefault();
+            window.history.pushState({}, '', '/signup');
+            window.history.pushState({}, '', '/signup');
+            window.history.back();
+        });
+        // this.view.render();
+        // const login = document.getElementsByClassName('btn btn_color_ok btn_size_middle')[0];
+        // login.addEventListener('click', this._loginHandler.bind(this));
+        //
+        // const signUpRedirect = document.getElementsByClassName('btn btn_color_w btn_size_large')[0];
+        // signUpRedirect.addEventListener('click', this._signUpRedirect.bind(this));
     }
-
-    // [HIGH-PRIORITY] TODO Добавить валидацию на пароль и прочий мусор
 
     /**
      * Get data from input form on login page
@@ -46,17 +45,14 @@ export default class LoginController extends Controller {
      * @return {Object} input form
      */
     _getFromLogin(event) {
-        // const form = document.getElementById('form');
+        const form = document.getElementById('form').getElementsByClassName('input input__auth');;
 
-        const form = document.getElementsByClassName('auth__item auth__item_main')[0].getElementsByClassName('auth__input');
-
-        const userEmail = form[0].getElementsByClassName('input input__auth')[0].value;
-        const userPass = form[1].getElementsByClassName('input input__auth')[0].value;
+        const userEmail = form[0].value;
+        const userPass = form[1].value;
 
         return {userEmail, userPass};
     }
 
-    // [HIGH-PRIORITY] TODO Половина функции - костыли и говно
     /**
      * Handle click on login event
      * @param {event} event
@@ -68,17 +64,15 @@ export default class LoginController extends Controller {
 
         UserModel.postLogin(body).then((ok) => {
             if (ok) {
-                document.getElementsByClassName('auth')[0].remove();
                 window.history.pushState({}, '', '/profile');
-                this.events[0].router.route();
-                console.log(document.cookie);
+                window.history.pushState({}, '', '/profile');
+                window.history.back();
             } else {
-                console.log('Client error, stay here');
+                console.error('User is not authenticated');
             }
         });
     }
 
-    // [HIGH-PRIORITY] TODO Вся функция - костыли и говно
     /**
      * Handle click on login event
      * @param {event} event
@@ -86,8 +80,9 @@ export default class LoginController extends Controller {
     _signUpRedirect(event) {
         event.preventDefault();
         
-        document.getElementsByClassName('auth')[0].remove();
         window.history.pushState({}, '', '/signup');
-        this.events[1].router.route();
+        window.history.pushState({}, '', '/signup');
+        window.history.back();
+
     }
 }

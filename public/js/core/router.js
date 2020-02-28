@@ -1,5 +1,7 @@
 'use strict';
 
+import UserModel from '../models/user-model.js';
+
 /**
  * @class create Router class
  */
@@ -29,10 +31,17 @@ export default class Router {
         this._handle(window.location.pathname);
     }
 
+    _checkUserExist() {
+        return UserModel.getLogin();
+    }
+
     _handle(current) {
         let controller = this.urls.get(current);
         if (!controller) {
             // todo: 404 handler
+            let app = document.getElementById('application');
+            app.innerHTML = '404 Not Found';
+            
             console.log(current);
             console.log(this.urls);
             console.error('Controller not found');
@@ -43,11 +52,13 @@ export default class Router {
         }
         this.currentController = controller;
         console.log(controller);
-
-        // if (document.getElementsByClassName('header').length === 0) {
-        //     this.urls.get('/').action(this);
-        // }
-        // controller.action(this);
         this.currentController.action();
+        // this._checkUserExist().then(user => {
+        //     console.log(user);
+        //     const userLogged = user.Logged;
+        // }).catch((onerror) => {
+        //     console.log(onerror.toString());
+        //     this.currentController.action();
+        // });
     }
 }

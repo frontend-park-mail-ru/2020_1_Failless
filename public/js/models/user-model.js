@@ -1,4 +1,4 @@
-import NetworkModule from '../network.js';
+import NetworkModule from '../core/network.js';
 import Model from '../core/model.js';
 
 /**
@@ -14,7 +14,7 @@ export default class UserModel extends Model {
     }
 
     /**
-     * Send user login data from server
+     * Send user login data to server
      * @return {Promise} promise to set user login data
      */
     static postLogin(login, pass) {
@@ -22,7 +22,7 @@ export default class UserModel extends Model {
             login: login,
             pass: pass,
         };
-        return NetworkModule.fetchPost({path: '/login', body: userData}).then((response) => {
+        return NetworkModule.fetchPost({path: '/signin', body: userData}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
@@ -34,7 +34,23 @@ export default class UserModel extends Model {
     }
 
     /**
-     * Get user logout data on server
+     * Send user login data to server
+     * @return {Promise} promise to set user login data
+     */
+    static getLogin() {
+        return NetworkModule.fetchGet({path: '/getuser'}).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
+            throw new Error(error);
+        });
+    }
+
+    /**
+     * Make user logout data on server
      * @return {Promise} promise to get user logout data
      */
     static getLogout() {
@@ -53,13 +69,7 @@ export default class UserModel extends Model {
      * Send user signup data from server
      * @return {Promise} promise to set new user data
      */
-    static postSignup({userName, userPass, userPhone, userEmail}) {
-        const newUserData = {
-            name: userName,
-            email: userEmail,
-            phone: userPhone,
-            pass: userPass,
-        };
+    static postSignup(newUserData) {
         return NetworkModule.fetchPost({path: '/signup', body: newUserData}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
@@ -67,6 +77,23 @@ export default class UserModel extends Model {
             return response.json();
         },
         (error) => {
+            throw new Error(error);
+        });
+    }
+
+    /**
+     * Send user profile data to server
+     * @return {Promise} promise to set new user data
+     */
+    static postProfile(profileUserData) {
+        return NetworkModule.fetchPost({path: '/profile', body: profileUserData}).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
+            console.log('JSJNSLDSNJSDS')
             throw new Error(error);
         });
     }

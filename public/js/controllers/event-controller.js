@@ -14,7 +14,7 @@ export default class EventController extends Controller {
      * @param {HTMLElement} parent
      */
     constructor(parent) {
-        super(parent, false);
+        super(parent);
         this.event = null;
         this.view = new EventView(parent);
     }
@@ -22,15 +22,16 @@ export default class EventController extends Controller {
     /**
      * Create action
      */
-    action(routerInstance) {
+    action() {
+        super.action();
         EventModel.getEvent().then(
             (event) => {
                 this.event = event;
-                this.parent.innerHTML = '';
-
-                this.view.render(this.event);
+                this.view.render(this.event, this.user);
             },
-            (error) => {}
+            (error) => {
+                console.error(error.toString());
+            }
         );
     }
 }
