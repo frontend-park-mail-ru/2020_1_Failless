@@ -8,10 +8,11 @@ import EventController from './controllers/event-controller.js';
 import Router from './core/router.js';
 
 let application = document.getElementById('application');
+
 let router = new Router();
 router.addRoute('/', new LandingController(application));
 router.addRoute('/login', new LoginController(application));
-router.addRoute('/me', new ProfileController(application));
+router.addRoute('/profile', new ProfileController(application));
 router.addRoute('/event', new EventController(application));
 router.addRoute('/signup', new SignUpController(application));
 
