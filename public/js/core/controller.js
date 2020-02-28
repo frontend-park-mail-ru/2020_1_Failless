@@ -39,7 +39,7 @@ export default class Controller {
         UserModel.getLogin()
             .then((user) => {
                 console.log(logged);
-                if (user.uid <= 0) {
+                if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
                     createHeader(this.parent, false);
                     const userSignUp = document.getElementsByClassName('header__item')[1];
                     userSignUp.addEventListener('click', this._signUpRedirect);

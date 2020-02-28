@@ -2,6 +2,7 @@
 
 import Controller from '../core/controller.js';
 import SingUpView from '../views/signup-view.js';
+import UserModel from '../models/user-model';
 
 export default class SignUpController extends Controller {
 
@@ -17,7 +18,7 @@ export default class SignUpController extends Controller {
     action() {
         this.view.render();
         const form = document.getElementById('form');
-        form.addEventListener('submit', this._submitHandler);
+        form.addEventListener('submit', this._submitHandler.bind(this));
         const loginBtn = document.getElementsByClassName('btn_color_w')[0];
         loginBtn.addEventListener('click', function (event) {
             event.preventDefault();
@@ -29,6 +30,7 @@ export default class SignUpController extends Controller {
     }
 
     _submitHandler(event) {
+        console.log('I am alive');
         event.preventDefault();
         const fields = document.getElementsByClassName('input__auth');
         if (fields.length !== 5) {
@@ -47,9 +49,22 @@ export default class SignUpController extends Controller {
         };
         console.log(form);
 
-        // Ajax.send(form);
-        window.history.pushState({}, '', '/profile');
-        window.history.pushState({}, '', '/profile');
-        window.history.back();
+        UserModel.postSignup(form).then(response => {
+            if (response.status > 499) {
+                console.log('errors were occurred');
+                return;
+            }
+            if (response.status > 399) {
+                // todo: print error msg to user and msg about his data
+                console.log(response.json().message);
+                return;
+            }
+            window.history.pushState({}, '', '/login');
+            window.history.pushState({}, '', '/login');
+            window.history.back();
+        }).catch(onerror => {
+            console.error('error was occurred');
+            console.error(onerror);
+        });
     }
 }

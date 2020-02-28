@@ -3,7 +3,6 @@
 import Controller from '../core/controller.js';
 import SignUpView from '../views/signup-view.js';
 import UserModel from '../models/user-model.js';
-import Header from '../core/header.js';
 
 export default class SignUpController extends Controller {
 
@@ -18,11 +17,9 @@ export default class SignUpController extends Controller {
 
     action() {
         super.action();
-        // Header.create(userLogged, this.parent);
-        // this.view.render();
         this.view.render();
         const form = document.getElementById('form');
-        form.addEventListener('submit', this._submitHandler);
+        form.addEventListener('submit', this._signUpHandler.bind(this));
         const regBtn = document.getElementsByClassName('btn_color_w')[0];
         regBtn.addEventListener('click', function (event) {
             event.preventDefault();
@@ -48,13 +45,18 @@ export default class SignUpController extends Controller {
     _getFromSignUp(event) {
         const form = document.getElementById('form').getElementsByClassName('input input__auth');
 
-        const userName = form[0].value;
-        const userEmail = form[1].value;
-        const userPhone = form[2].value;
-        const userPass = form[3].value;
-        const userPassAgain = form[4].value;
+        const name = form[0].value;
+        const email = form[1].value;
+        const phone = form[2].value;
+        const password = form[3].value;
+        const password2 = form[4].value;
 
-        return {userName, userPass, userPhone, userEmail};
+        if (password !== password2) {
+            console.log('Passwords must to be equal');
+            return null;
+        }
+
+        return {name, password, phone, email};
     }
 
     // [HIGH-PRIORITY] TODO Половина функции - костыли и говно
@@ -66,17 +68,24 @@ export default class SignUpController extends Controller {
         event.preventDefault();
 
         const body = this._getFromSignUp(event);
+        if (!body) {
+            console.log('do nothing');
+            return;
+        }
 
-        UserModel.postSignup(body).then((ok) => {
-            if (ok) {
+        UserModel.postSignup(body).then((response) => {
+            if (Object.prototype.hasOwnProperty.call(response, 'name')) {
+                console.log('redirect');
                 document.getElementsByClassName('auth')[0].remove();
-                window.history.pushState({}, '', '/profile');
-                window.history.pushState({}, '', '/profile');
+                window.history.pushState({}, '', '/login');
+                window.history.pushState({}, '', '/login');
                 window.history.back();
             } else {
                 console.log('Client error, stay here');
+                console.log(response);
+                // response.json().then(data => { console.log(data.message); });
             }
-        });
+        }).catch(reason => { console.log(reason); });
     }
 
     // [HIGH-PRIORITY] TODO Вся функция - костыли и говно

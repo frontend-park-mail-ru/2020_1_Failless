@@ -42,9 +42,6 @@ export default class UserModel extends Model {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
-            if (response.status > 399) {
-                return {uid: -1};
-            }
             return response.json();
         },
         (error) => {
@@ -72,13 +69,13 @@ export default class UserModel extends Model {
      * Send user signup data from server
      * @return {Promise} promise to set new user data
      */
-    static postSignup({userName, userPass, userPhone, userEmail}) {
-        const newUserData = {
-            name: userName,
-            email: userEmail,
-            phone: userPhone,
-            pass: userPass,
-        };
+    static postSignup(newUserData) {
+        // const newUserData = {
+        //     name: userName,
+        //     phone: userPhone,
+        //     email: userEmail,
+        //     password: userPass,
+        // };
         return NetworkModule.fetchPost({path: '/signup', body: newUserData}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
