@@ -2,7 +2,6 @@
 
 import Controller from '../core/controller.js';
 import LandingView from '../views/landing-view.js';
-import Header from '../core/header.js';
 
 /**
  * @class LandingController

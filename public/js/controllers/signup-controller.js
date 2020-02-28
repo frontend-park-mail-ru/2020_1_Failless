@@ -3,7 +3,6 @@
 import Controller from '../core/controller.js';
 import SignUpView from '../views/signup-view.js';
 import UserModel from '../models/user-model.js';
-import Header from '../core/header.js';
 
 export default class SignUpController extends Controller {
 

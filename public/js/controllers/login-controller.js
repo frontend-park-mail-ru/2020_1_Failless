@@ -3,7 +3,6 @@
 import Controller from '../core/controller.js';
 import LoginView from '../views/login-view.js';
 import UserModel from '../models/user-model.js';
-import Header from '../core/header.js';
 
 /**
  * @class LoginController
