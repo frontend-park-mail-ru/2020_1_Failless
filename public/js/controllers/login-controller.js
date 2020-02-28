@@ -23,20 +23,9 @@ export default class LoginController extends Controller {
         super.action();
         this.view.render();
         const form = document.getElementById('form');
-        form.addEventListener('submit', this._submitHandler);
+        form.addEventListener('submit', this._loginHandler);
         const regBtn = document.getElementsByClassName('btn_color_w')[0];
-        regBtn.addEventListener('click', function (event) {
-            event.preventDefault();
-            window.history.pushState({}, '', '/signup');
-            window.history.pushState({}, '', '/signup');
-            window.history.back();
-        });
-        // this.view.render();
-        // const login = document.getElementsByClassName('btn btn_color_ok btn_size_middle')[0];
-        // login.addEventListener('click', this._loginHandler.bind(this));
-        //
-        // const signUpRedirect = document.getElementsByClassName('btn btn_color_w btn_size_large')[0];
-        // signUpRedirect.addEventListener('click', this._signUpRedirect.bind(this));
+        regBtn.addEventListener('click', this._signUpRedirect);
     }
 
     /**
@@ -45,25 +34,36 @@ export default class LoginController extends Controller {
      * @return {Object} input form
      */
     _getFromLogin(event) {
-        const form = document.getElementById('form').getElementsByClassName('input input__auth');;
-
-        const userEmail = form[0].value;
-        const userPass = form[1].value;
-
-        return {userEmail, userPass};
+        const form = document.getElementById('form').getElementsByClassName('input input__auth');
+        let data = {
+            password: form[1].value,
+        };
+        let isMail = false;
+        for (let item in form[0].value) {
+            if (item === '@') {
+                data.email = form[0].value;
+                data.phone = '';
+                isMail = true;
+            }
+        }
+        if (!isMail) {
+            data.phone = form[0].value;
+            data.email = '';
+        }
+        return data
     }
 
     /**
      * Handle click on login event
      * @param {event} event
      */
-    _loginHandler(event) {
+    _loginHandler = (event) => {
         event.preventDefault();
 
         const body = this._getFromLogin(event);
 
-        UserModel.postLogin(body).then((ok) => {
-            if (ok) {
+        UserModel.postLogin(body).then((user) => {
+            if (Object.prototype.hasOwnProperty.call(user, 'name')) {
                 window.history.pushState({}, '', '/profile');
                 window.history.pushState({}, '', '/profile');
                 window.history.back();
@@ -71,18 +71,18 @@ export default class LoginController extends Controller {
                 console.error('User is not authenticated');
             }
         });
-    }
+    };
 
     /**
      * Handle click on login event
      * @param {event} event
      */
-    _signUpRedirect(event) {
+    _signUpRedirect = (event) => {
         event.preventDefault();
         
         window.history.pushState({}, '', '/signup');
         window.history.pushState({}, '', '/signup');
         window.history.back();
 
-    }
+    };
 }

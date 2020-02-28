@@ -15,13 +15,10 @@ export default class UserModel extends Model {
 
     /**
      * Send user login data to server
+     * @param {Object} userData - json with login data
      * @return {Promise} promise to set user login data
      */
-    static postLogin(login, pass) {
-        const userData = {
-            login: login,
-            pass: pass,
-        };
+    static postLogin(userData) {
         return NetworkModule.fetchPost({path: '/signin', body: userData}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');

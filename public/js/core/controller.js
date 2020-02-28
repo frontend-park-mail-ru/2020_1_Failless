@@ -61,23 +61,6 @@ export default class Controller {
             .catch((onerror) => {
                 console.error(onerror);
             });
-        // if (!logged) {
-        //     console.log(logged);
-        //     const userSignUp = document.getElementsByClassName('header__item')[1];
-        //     userSignUp.addEventListener('click', this._signUpRedirect);
-        //
-        //     const userLogin = document.getElementsByClassName('header__item')[2];
-        //     userLogin.addEventListener('click', this._loginRedirect);
-        // } else {
-        //     const eventSearch = document.getElementsByClassName('header__item')[1];
-        //     eventSearch.addEventListener('click', this._eventSearchRedirect);
-        //
-        //     const userLogout = document.getElementsByClassName('header__item')[2];
-        //     userLogout.addEventListener('click', this._logoutRedirect);
-        //
-        //     const userProfile = document.getElementsByClassName('header__item')[3];
-        //     userProfile.addEventListener('click', this._profileRedirect);
-        // }
     }
 
     /**

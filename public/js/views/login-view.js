@@ -43,13 +43,13 @@ export default class LoginView extends View {
                                         content: [
                                             {
                                                 elem: 'help',
-                                                content: 'Email',
+                                                content: 'Телефон или Email',
                                             },
                                             {
                                                 block: 'input',
                                                 mix: {'block': 'input__auth'},
                                                 tag: 'input',
-                                                attrs: {placeholder: 'me@example.com', type: 'email'},
+                                                attrs: {placeholder: 'me@example.com'},
                                             },
                                         ]
                                     },
