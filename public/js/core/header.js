@@ -9,7 +9,7 @@ export default function createHeader(base, logged) {
         document.getElementsByClassName('header')[0].remove();
     }
 
-    let template = logged ? [
+    let template = !logged ? [
         {
             block: 'header',
             tag: 'nav',
