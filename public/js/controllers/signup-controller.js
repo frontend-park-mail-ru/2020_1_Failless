@@ -17,8 +17,6 @@ export default class SignUpController extends Controller {
 
     action() {
         super.action();
-        // Header.create(userLogged, this.parent);
-        // this.view.render();
         this.view.render();
         const form = document.getElementById('form');
         form.addEventListener('submit', this._submitHandler);
@@ -37,8 +35,6 @@ export default class SignUpController extends Controller {
         // loginRedirect.addEventListener('click', this._loginRedirect.bind(this));
     }
 
-    // [HIGH-PRIORITY] TODO Добавить валидацию на пароль и прочий мусор
-
     /**
      * Get data from input form on sign up page
      * @param {event} event
@@ -56,7 +52,6 @@ export default class SignUpController extends Controller {
         return {userName, userPass, userPhone, userEmail};
     }
 
-    // [HIGH-PRIORITY] TODO Половина функции - костыли и говно
     /**
      * Handle click on submit event
      * @param {event} event
@@ -78,7 +73,6 @@ export default class SignUpController extends Controller {
         });
     }
 
-    // [HIGH-PRIORITY] TODO Вся функция - костыли и говно
     /**
      * Handle click on login event
      * @param {event} event

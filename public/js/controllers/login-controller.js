@@ -39,16 +39,12 @@ export default class LoginController extends Controller {
         // signUpRedirect.addEventListener('click', this._signUpRedirect.bind(this));
     }
 
-    // [HIGH-PRIORITY] TODO Добавить валидацию на пароль и прочий мусор
-
     /**
      * Get data from input form on login page
      * @param {event} event
      * @return {Object} input form
      */
     _getFromLogin(event) {
-        // const form = document.getElementById('form');
-
         const form = document.getElementById('form').getElementsByClassName('input input__auth');;
 
         const userEmail = form[0].value;
@@ -57,7 +53,6 @@ export default class LoginController extends Controller {
         return {userEmail, userPass};
     }
 
-    // [HIGH-PRIORITY] TODO Половина функции - костыли и говно
     /**
      * Handle click on login event
      * @param {event} event
@@ -78,7 +73,6 @@ export default class LoginController extends Controller {
         });
     }
 
-    // [HIGH-PRIORITY] TODO Вся функция - костыли и говно
     /**
      * Handle click on login event
      * @param {event} event
