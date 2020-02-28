@@ -3,7 +3,6 @@
 import Controller from '../core/controller.js';
 import EventView from '../views/event-view.js';
 import EventModel from '../models/event-model.js';
-import Header from '../core/header.js';
 
 /**
  * @class EventController
