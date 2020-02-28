@@ -1,0 +1,20 @@
+.input {
+
+  &__text {
+    &_small {
+      height: 100px;
+      width: 232px;
+    }
+    &_middle {
+      height: 120px;
+      width: 300px;
+    }
+  }
+
+  &__auth {
+    width: 100%;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+  }
+}

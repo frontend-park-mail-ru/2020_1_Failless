@@ -1,0 +1,73 @@
+@import "../../modules/variables";
+
+$icons-path: "../icons/";
+$images-path: "../images/";
+
+$search-icon: $icons-path + "search.svg";
+$eventum-icon: $images-path + "logo.png";
+$more-icon: $icons-path + "more.svg";
+
+$icon-size: 14px, 14px;
+
+.icon {
+  display: inline-block;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  background-color: transparent;
+
+  &_size {
+    &_small {
+      width: 8px;
+      height: 8px;
+    }
+
+    &_x {
+      width: 14px;
+      height: 14px;
+    }
+
+    &_xx {
+      width: 24px;
+      height: 24px;
+    }
+
+    &_xxx {
+      width: 36px;
+      height: 36px;
+    }
+
+    &_large {
+      width: 178px;
+      height: 40px;
+    }
+  }
+
+  &__search {
+    -webkit-mask-image: url($search-icon);
+    mask-image: url($search-icon);
+  }
+
+  &__eventum {
+    //-webkit-mask-image: url($eventum-icon);
+    //mask-image: url($eventum-icon);
+  }
+
+  &__more {
+    -webkit-mask-image: url($more-icon);
+    mask-image: url($more-icon);
+  }
+
+  &_btn {
+    cursor: pointer;
+  }
+
+  &__main {
+    color: red;
+  }
+
+  &__size_m {
+    width: 90px;
+    height: 35px;
+  }
+}
+

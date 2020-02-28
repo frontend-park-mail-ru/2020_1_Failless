@@ -1,0 +1,41 @@
+@import "../../modules/variables";
+
+.btn {
+  border-radius: 18px;
+  border: none;
+  text-align: center;
+
+  &_size {
+    &_large {
+      width: 284px;
+      height: 36px;
+    }
+
+    &_middle {
+      width: 116px;
+      height: 36px;
+    }
+  }
+
+  &_color_ok {
+    background-color: $color-red;
+  }
+
+  &_color_b {
+    background-color: $color-blue;
+  }
+
+  &_color_w {
+    background-color: $color-white;
+  }
+
+  &__text {
+    font-size: 24px;
+    &_w {
+      color: $color-white;
+    }
+    &_b {
+      color: $color-blue;
+    }
+  }
+}
