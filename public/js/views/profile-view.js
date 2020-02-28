@@ -104,7 +104,7 @@ export default class ProfileView extends View {
                                             },
                                             {
                                                 block: 'btn',
-                                                mods: {color: 'ok', size: 'middle'},
+                                                mods: {color: 'b', size: 'middle'},
                                                 btnText: 'Настройки',
                                             },
                                         ] : []
