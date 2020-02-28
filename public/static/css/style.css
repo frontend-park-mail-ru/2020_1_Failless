@@ -1080,6 +1080,9 @@
 .input__auth:focus {
   border-bottom-color: #C471ED;
 }
+.input__auth__incorrect {
+  border-bottom-color: red;
+}
 .input__auth::placeholder {
   color: #D5D5D5;
 }
@@ -1583,6 +1586,12 @@ input[type=range]::-ms-fill-upper {
 }
 .link-uploader input {
   display: none;
+}
+
+.validation-error {
+  font-size: 10px;
+  font-weight: 400;
+  color: red;
 }
 
 .gradient-text {
