@@ -68,6 +68,7 @@ export default class LoginController extends Controller {
                 window.history.pushState({}, '', '/profile');
                 window.history.back();
             } else {
+                console.log(user);
                 console.error('User is not authenticated');
             }
         });

@@ -38,5 +38,4 @@ export default class NetworkModule {
             body: JSON.stringify(body)
         });
     };
-
 }

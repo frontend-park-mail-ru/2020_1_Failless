@@ -13,8 +13,8 @@ export default class Router {
 
     /**
      * adding route function
-     * @param path
-     * @param controller
+     * @param {string} path
+     * @param {Controller} controller
      */
     addRoute(path, controller) {
         this.urls.set(path, controller);
@@ -35,6 +35,11 @@ export default class Router {
         return UserModel.getLogin();
     }
 
+    /**
+     * Handle current url path
+     * @param {string} current
+     * @private
+     */
     _handle(current) {
         let controller = this.urls.get(current);
         if (!controller) {
@@ -53,12 +58,5 @@ export default class Router {
         this.currentController = controller;
         console.log(controller);
         this.currentController.action();
-        // this._checkUserExist().then(user => {
-        //     console.log(user);
-        //     const userLogged = user.Logged;
-        // }).catch((onerror) => {
-        //     console.log(onerror.toString());
-        //     this.currentController.action();
-        // });
     }
 }
