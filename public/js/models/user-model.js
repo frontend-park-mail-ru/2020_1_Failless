@@ -45,7 +45,7 @@ export default class UserModel extends Model {
                 resolve(this.user);
             });
         }
-        return NetworkModule.fetchGet({path: '/getuser/' + this.user.uid}).then((response) => {
+        return NetworkModule.fetchGet({path: '/getuser'}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
@@ -117,28 +117,20 @@ export default class UserModel extends Model {
      * @return {Promise} promise to set new user data
      */
     static getProfile() {
-        if (this.user) {
-            return NetworkModule.fetchGet({path: '/profile/' + this.user.uid}).then((response) => {
-                if (response.status > 499) {
-                    throw new Error('Server error');
-                }
-                return response.json();
-            },
-            (error) => {
-                throw new Error(error);
-            });
-        } else {
-            return new Promise((resolve => resolve({message: 'Authentication required', status: 409})));
-        }
-    }
-
-    static isAuth() {
-        if (this.user) {
-            return new Promise((resolve) => {
-                resolve(this.user);
-            });
-        } else {
-            return new Promise((resolve => resolve({message: 'Not authenticated', status: 401})));
-        }
+        return this.getLogin().then(user => {
+            if (user) {
+                return NetworkModule.fetchGet({path: '/profile/' + user.uid}).then((response) => {
+                    if (response.status > 499) {
+                        throw new Error('Server error');
+                    }
+                    return response.json();
+                },
+                (error) => {
+                    throw new Error(error);
+                });
+            } else {
+                return new Promise((resolve => resolve({message: 'Authentication required', status: 409})));
+            }
+        });
     }
 }
