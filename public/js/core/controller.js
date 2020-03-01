@@ -29,43 +29,37 @@ export default class Controller {
      * Create action
      */
     action() {
-        let logged = false; // todo: rewrite to ajax
+        UserModel.isAuth().then((user) => {
+            if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
+                createHeader(this.parent, false);
+                const sweetHomePage = document.getElementsByClassName('image icon_btn icon__size_m header__item')[0];
+                sweetHomePage.addEventListener('click', this._homeRedirect);
+
+                const userSignUp = document.getElementsByClassName('header__item')[1];
+                userSignUp.addEventListener('click', this._signUpRedirect);
+
+                const userLogin = document.getElementsByClassName('header__item')[2];
+                userLogin.addEventListener('click', this._loginRedirect);
+            } else {
+                createHeader(this.parent, true);
+                const sweetHomePage = document.getElementsByClassName('image icon_btn icon__size_m header__item')[0];
+                sweetHomePage.addEventListener('click', this._homeRedirect);
+                const eventSearch = document.getElementsByClassName('header__item')[1];
+                eventSearch.addEventListener('click', this._eventSearchRedirect);
+
+                const userLogout = document.getElementsByClassName('header__item')[2];
+                userLogout.addEventListener('click', this._logoutRedirect);
+
+                const userProfile = document.getElementsByClassName('header__item')[3];
+                userProfile.addEventListener('click', this._profileRedirect);
+            }
+        });
         console.log('She\'s kind of cute');
-        createHeader(this.parent, false);
-
-        const sweetHomePage = document.getElementsByClassName('image icon_btn icon__size_m header__item')[0];
-        sweetHomePage.addEventListener('click', this._homeRedirect);
-
-        UserModel.getLogin()
-            .then((user) => {
-                console.log(logged);
-                if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
-                    createHeader(this.parent, false);
-                    const userSignUp = document.getElementsByClassName('header__item')[1];
-                    userSignUp.addEventListener('click', this._signUpRedirect);
-
-                    const userLogin = document.getElementsByClassName('header__item')[2];
-                    userLogin.addEventListener('click', this._loginRedirect);
-                } else {
-                    createHeader(this.parent, true);
-                    const eventSearch = document.getElementsByClassName('header__item')[1];
-                    eventSearch.addEventListener('click', this._eventSearchRedirect);
-
-                    const userLogout = document.getElementsByClassName('header__item')[2];
-                    userLogout.addEventListener('click', this._logoutRedirect);
-
-                    const userProfile = document.getElementsByClassName('header__item')[3];
-                    userProfile.addEventListener('click', this._profileRedirect);
-                }
-            })
-            .catch((onerror) => {
-                console.error(onerror);
-            });
     }
 
     /**
      * Handle click on home event
-     * @param {event} event
+     * @param {Event} event
      */
     _homeRedirect(event) {
         event.preventDefault();
@@ -89,7 +83,7 @@ export default class Controller {
 
     /**
      * Handle click on sign up event
-     * @param {event} event
+     * @param {Event} event
      */
     _signUpRedirect(event) {
         event.preventDefault();
@@ -101,7 +95,7 @@ export default class Controller {
 
     /**
      * Handle click on login event
-     * @param {event} event
+     * @param {Event} event
      */
     _loginRedirect(event) {
         event.preventDefault();
@@ -113,7 +107,7 @@ export default class Controller {
 
     /**
      * Handle click on login event
-     * @param {event} event
+     * @param {Event} event
      */
     _logoutRedirect(event) {
         event.preventDefault();
@@ -131,7 +125,7 @@ export default class Controller {
 
     /**
      * Handle click on home event
-     * @param {event} event
+     * @param {Event} event
      */
     _profileRedirect(event) {
         event.preventDefault();

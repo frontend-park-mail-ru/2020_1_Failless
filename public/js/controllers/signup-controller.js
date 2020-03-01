@@ -15,6 +15,9 @@ export default class SignUpController extends Controller {
         this.view = new SignUpView(parent);
     }
 
+    /**
+     * Create base business logic of SignUp
+     */
     action() {
         super.action();
         this.view.render();
@@ -28,19 +31,15 @@ export default class SignUpController extends Controller {
             window.history.pushState({}, '', '/login');
             window.history.back();
         });
-        // const signUp = document.getElementsByClassName('btn btn_color_ok btn_size_large')[0];
-        // signUp.addEventListener('click', this._signUpHandler.bind(this));
-
-        // const loginRedirect = document.getElementsByClassName('btn btn_color_w btn_size_middle')[0];
-        // loginRedirect.addEventListener('click', this._loginRedirect.bind(this));
     }
 
     /**
      * Get data from input form on sign up page
-     * @param {event} event
-     * @return {Object} input form
+     * @param {Event} event
+     * @return {{password: *, phone: *, name: *, email: *}} input form
      */
     _getFromSignUp(event) {
+        // todo: rewrite get data from form by id to using event object
         const form = document.getElementById('form').getElementsByClassName('input input__auth');
 
         const name = form[0].value;
@@ -59,7 +58,7 @@ export default class SignUpController extends Controller {
 
     /**
      * Handle click on submit event
-     * @param {event} event
+     * @param {Event} event
      */
     _signUpHandler(event) {
         event.preventDefault();
@@ -70,7 +69,7 @@ export default class SignUpController extends Controller {
             return;
         }
 
-        UserModel.postSignup(body).then((response) => {
+        UserModel.postSignUp(body).then((response) => {
             if (Object.prototype.hasOwnProperty.call(response, 'name')) {
                 console.log('redirect');
                 document.getElementsByClassName('auth')[0].remove();
