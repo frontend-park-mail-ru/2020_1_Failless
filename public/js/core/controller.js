@@ -29,7 +29,7 @@ export default class Controller {
      * Create action
      */
     action() {
-        UserModel.isAuth().then((user) => {
+        UserModel.getLogin().then((user) => {
             if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
                 createHeader(this.parent, false);
                 const sweetHomePage = document.getElementsByClassName('image icon_btn icon__size_m header__item')[0];
