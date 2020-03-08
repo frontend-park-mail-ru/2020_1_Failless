@@ -38,4 +38,24 @@ export default class NetworkModule {
             body: JSON.stringify(body)
         });
     };
+
+    /**
+     * @param {string} path Path to send the query to
+     * @param {Object} body Body of the query (will be serialized as json)
+     * @return {Promise} Promise for the HTTP request
+     */
+    static fetchPut = ({
+        path = '/',
+        body = null,
+    } = {}) => {
+        return fetch(settings.url + ':' + settings.port + settings.api + path, {
+            method: 'PUT',
+            mode: 'cors',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+            },
+            body: JSON.stringify(body)
+        });
+    };
 }

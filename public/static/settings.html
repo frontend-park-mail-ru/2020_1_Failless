@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <style>
+        .settings {
+            max-width: 600px;
+            max-height: 700px;
+            display: block;
+            align-items: center;
+            background-color: #ffffff;
+            margin-right: auto;
+            margin-left: auto;
+        }
+    </style>
+    <title>Settings</title>
+</head>
+<body>
+<div id="application">
+    <nav class="header">
+        <img class="image icon_btn icon__size_m header__item" src="./Eventum_files/logo.png" alt="Eventum">
+        <div class="header__manage">
+            <a class="header__item" href="http://127.0.0.1:8080/signup">Рега</a>
+            <a class="header__item" href="http://127.0.0.1:8080/login">Войти</a>
+        </div>
+    </nav>
+    <div class="settings">
+        <div class="settings__title">
+            <div class="setting__title_main">Настройки</div>
+        </div>
+        <form id="form">
+            <div class="auth__input">
+                <div class="auth__help">Имя</div>
+                <input class="input input__auth" type="text" value="Илья">
+            </div>
+            <div class="auth__input">
+                <div class="auth__help">Email</div>
+                <input class="input input__auth" type="email" name="email" value="ilya@mail.com">
+            </div>
+            <div class="auth__input">
+                <div class="auth__help">Телефон</div>
+                <input class="input input__auth" type="tel" name="tel" value="+7 (999) 555-35-35">
+            </div>
+            <div class="auth__input">
+                <div class="auth__help">Пароль</div>
+                <input class="input input__auth" type="password" name="password1" value="abcd">
+            </div>
+            <div class="auth__input">
+                <div class="auth__help">Повтороите пароль</div>
+                <input class="input input__auth" type="password" name="password2" value="abcd">
+            </div>
+            <div class="auth__btn">
+                <button class="btn btn_color_ok btn_size_large" type="submit">
+                    <div class="btn__text btn__text_w">Подтвердить</div>
+                </button>
+                <button class="btn btn_color_w btn_size_large" type="button">
+                    <div class="btn__text btn__text_b">Назад</div>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

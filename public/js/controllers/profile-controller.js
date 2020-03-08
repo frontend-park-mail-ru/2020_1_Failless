@@ -71,7 +71,7 @@ export default class ProfileController extends Controller {
             location: {lat: 228.1488, lng: 228.1488, accuracy: 228},
             birthday: '2020-02-28T13:55:04.306347+03:00',
         };
-        UserModel.postProfile(userProfile)
+        UserModel.putProfile(userProfile)
             .then(response => { console.log('ok', response); })
             .catch(reason => console.log('ERROR', reason));
     }
@@ -92,7 +92,7 @@ export default class ProfileController extends Controller {
             location: {lat: 228.1488, lng: 228.1488, accuracy: 228},
             birthday: '2020-02-28T13:55:04.306347+03:00',
         };
-        UserModel.postProfile(userProfile)
+        UserModel.putProfile(userProfile)
             .then(response =>
                 document.getElementsByClassName('profile__photo_img')[0].src = this.image)
             .catch(reason => console.log('ERROR'));
