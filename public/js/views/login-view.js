@@ -108,5 +108,6 @@ export default class LoginView extends View {
             }
         ];
         this.parent.insertAdjacentHTML('beforeend', bemhtml.apply(template));
+        this.parent.innerHTML += Handlebars.templates['public/js/templates/login-template']({ secret: "kek" })
     }
 }
