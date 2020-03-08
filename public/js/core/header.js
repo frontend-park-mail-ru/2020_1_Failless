@@ -9,7 +9,7 @@ export default function createHeader(base, logged) {
         document.getElementsByClassName('header')[0].remove();
     }
 
-    let template = !logged ? [
+    let template = [
         {
             block: 'header',
             tag: 'nav',
@@ -17,13 +17,13 @@ export default function createHeader(base, logged) {
                 {
                     block: 'image',
                     tag: 'img',
-                    url: './static/images/logo.png',
+                    url: 'img/logo.png',
                     mix: {'block': 'icon_btn icon__size_m header__item'},
-                    attrs: {src: './static/images/logo.png', alt: 'Eventum'}
+                    attrs: {src: 'img/logo.png', alt: 'Eventum'}
                 },
                 {
                     block: 'header__manage',
-                    content: [
+                    content: !logged ? [
                         {
                             block: 'header__item',
                             tag: 'a',
@@ -36,25 +36,7 @@ export default function createHeader(base, logged) {
                             attrs: {href: '/login'},
                             content: 'Войти'
                         }
-                    ]
-                }
-            ]
-        }
-    ] : [
-        {
-            block: 'header',
-            tag: 'nav',
-            content: [
-                {
-                    block: 'image',
-                    tag: 'img',
-                    url: './static/images/logo.png',
-                    mix: {'block': 'icon_btn icon__size_m header__item'},
-                    attrs: {src: './static/images/logo.png', alt: 'Eventum'}
-                },
-                {
-                    block: 'header__manage',
-                    content: [
+                    ] : [
                         {
                             block: 'header__item',
                             tag: 'a',
@@ -74,7 +56,7 @@ export default function createHeader(base, logged) {
                             attrs: {href: '/profile'},
                             content: 'Профиль'
                         },
-                    ]
+                    ],
                 }
             ]
         }

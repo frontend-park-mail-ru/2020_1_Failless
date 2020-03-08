@@ -26,11 +26,13 @@ export default class UserModel extends Model {
                 throw new Error('Server error');
             }
             return response.json().then(user => {
+                console.log(this.user);
                 this.user = user;
                 return user;
             });
         },
         (error) => {
+            console.log(error.toString());
             throw new Error(error);
         });
     }
@@ -40,6 +42,7 @@ export default class UserModel extends Model {
      * @return {Promise} promise to get user login data
      */
     static getLogin() {
+        console.log(this.user);
         if (this.user) {
             return new Promise((resolve) => {
                 resolve(this.user);
@@ -119,6 +122,7 @@ export default class UserModel extends Model {
     static getProfile() {
         return this.getLogin().then(user => {
             if (user) {
+                console.log('Get profile page of user ', user);
                 return NetworkModule.fetchGet({path: '/profile/' + user.uid}).then((response) => {
                     if (response.status > 499) {
                         throw new Error('Server error');

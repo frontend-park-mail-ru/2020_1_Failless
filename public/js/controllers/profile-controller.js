@@ -25,6 +25,12 @@ export default class ProfileController extends Controller {
         // todo: check is user allowed to see this
         UserModel.getProfile()
             .then((profile) => {
+                console.log(profile);
+                if (!profile) {
+                    console.error('Server error');
+                    console.log(profile);
+                    return;
+                }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
                     this.user = profile;

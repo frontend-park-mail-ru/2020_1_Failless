@@ -1,21 +1,7 @@
 'use strict';
 
 import View from '../core/view.js';
-
-let profilePhotos = ['ProfilePhotos/1.jpg', 'ProfilePhotos/2.jpg', 'ProfilePhotos/3.jpg'];
-const getBlocks = (profilePhotos) => {
-    let blocks = [];
-    profilePhotos.forEach(elem => {
-        blocks.push({
-            block: 'profile',
-            elem: 'photo',
-            mods: {'me': true},
-            tag: 'img',
-            attrs: {src: '' + elem}
-        });
-    });
-    return blocks;
-};
+import settings from '../../settings/config.js';
 
 const tagNames = ['#хочувБАР', '#хочувКИНО', '#хочунаКАТОК', '#хочуГУЛЯТЬ', '#хочуКУШАЦ', '#хочуСПАТЬ'];
 
@@ -128,7 +114,7 @@ export default class ProfileView extends View {
                                             elem: 'photo_img',
                                             mods: {'me': true},
                                             tag: 'img',
-                                            attrs: {src: profile.avatar.path}
+                                            attrs: {src: settings.img + profile.avatar.path}
                                         },//getBlocks(profilePhotos),
                                     },
                                     {
