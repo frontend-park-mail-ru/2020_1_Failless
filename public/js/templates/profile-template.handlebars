@@ -22,7 +22,7 @@
         </div>
         <div class="profile__column profile__filed">
             <h3 class="profile__title profile__title_blue">Ваши тэги</h3>
-            <div class="icon icon__add icon_size_x"></div>
+            <div class="icon icon__add icon_size_x">ADD</div>
             <div class="profile__tags">
                 <div class="tag tag_size_middle">#хочувБАР</div>
                 <div class="tag tag_size_middle">#хочувКИНО</div>
@@ -32,21 +32,20 @@
                 <div class="tag tag_size_middle">#хочуСПАТЬ</div>
             </div>
             <h3 class="profile__title profile__title_blue">Ваши эвенты</h3>
-            <div class="icon icon__add icon_size_x"></div>
+            <div class="icon icon__add icon_size_x">ADD</div>
             <div class="profile__events">
+                {{#each events}}
                 <div class="event">
                     <div class="event__photos">
-                        <img class="event__item event__item event__item_one"
-                             src="EventPhotos/3.jpg">
-                        <img class="event__item event__item event__item_one"
-                             src="EventPhotos/4.jpg">
+                        {{#each this.photos }}
+                        <img class="event__item event__item event__item_one" src="{{this}}" alt="{{this}}">
+                        {{/each}}
                     </div>
-                    <div class="event__title">Концерт</div>
-                    <div class="event__place">Москва</div>
-                    <div class="event__description">Ну как его похвалить? Ну классный концерт, шикарный концерт, как
-                        его ещё похвалить?
-                    </div>
+                    <div class="event__title">{{ this.title }}</div>
+                    <div class="event__place">{{ this.place }}</div>
+                    <div class="event__description">{{ this.description }}</div>
                 </div>
+                {{/each}}
             </div>
         </div>
     </div>

@@ -1,0 +1,36 @@
+<div id="set-event-container" style="
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);">
+    <div class="set-event-modal" style="
+        background-color: white;
+        width: 360px;
+        height: auto;
+        overflow: auto;
+        margin: auto;
+        padding: 20px;
+        border-radius: 20px;">
+        <form>
+            <h5>Название</h5>
+            <input type="text" placeholder="Концерт BMTH" value="{{ event.title }}">
+            <h5>Место</h5>
+            <input type="text" placeholder="Москва" value="{{ event.place }}">
+            <h5>Описание</h5>
+            <textarea class="input input__text_small" placeholder="Похвалите ещё концерт">{{ event.description }}</textarea>
+            <!-- TODO: add photos here -->
+        </form>
+        <button class="btn btn_color_b btn_size_middle">
+            <div class="btn__text btn__text_w">{{ mode }}</div>
+        </button>
+        <button class="btn btn_color_b btn_size_middle">
+            <div class="btn__text btn__text_w">Назад</div>
+        </button>
+    </div>
+</div>

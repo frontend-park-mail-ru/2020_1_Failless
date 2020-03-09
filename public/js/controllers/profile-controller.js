@@ -41,8 +41,15 @@ export default class ProfileController extends Controller {
                     textInput.addEventListener('click', this._handleInfo.bind(this), false);
                     document.getElementsByClassName('btn__text btn__text_w')[1].addEventListener('click', this._showSettingsModal.bind(this), false);
                     document.getElementsByClassName('btn__text btn__text_w')[3].addEventListener('click', this._hideSettingsModal.bind(this), false);
+                    document.getElementsByClassName('icon icon__add icon_size_x')[1].addEventListener('click', this._showSetEventModal.bind(this), false);
+                    document.getElementsByClassName('btn__text btn__text_w')[5].addEventListener('click', this._hideSetEventModal.bind(this), false);
                 } else {
                     // this.view.render(profile);
+
+                    // document.getElementsByClassName('btn__text btn__text_w')[1].addEventListener('click', this._showSettingsModal.bind(this), false);
+                    // document.getElementsByClassName('btn__text btn__text_w')[3].addEventListener('click', this._hideSettingsModal.bind(this), false);
+                    // document.getElementsByClassName('icon icon__add icon_size_x')[1].addEventListener('click', this._showSetEventModal.bind(this), false);
+                    // document.getElementsByClassName('btn__text btn__text_w')[5].addEventListener('click', this._hideSetEventModal.bind(this), false);
                     console.error('You have no rights');
                     console.log(profile);
                 }
@@ -55,6 +62,14 @@ export default class ProfileController extends Controller {
 
     _hideSettingsModal(event) {
         document.getElementById('settings-container').style.display = 'none';
+    }
+
+    _showSetEventModal(event) {
+        document.getElementById('set-event-container').style.display = 'flex';
+    }
+
+    _hideSetEventModal(event) {
+        document.getElementById('set-event-container').style.display = 'none';
     }
 
     _handleFile(event) {
