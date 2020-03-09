@@ -57,5 +57,7 @@ export default class ProfileView extends View {
 
         this.parent.insertAdjacentHTML('beforeend', profileTemplate);
         // this.parent.innerHTML += Handlebars.templates['public/js/templates/profile-template']({profile: profile})
+        // this.parent.innerHTML += Handlebars.templates['public/js/templates/profile-template']({profile: profile});
+        // this.parent.innerHTML += Handlebars.templates['public/js/templates/settings-template']({profile: profile});
     }
 }
