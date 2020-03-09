@@ -49,5 +49,6 @@ export default class LoginView extends View {
         });
 
         this.parent.insertAdjacentHTML('beforeend', login);
+        // this.parent.innerHTML += Handlebars.templates['public/js/templates/login-template']()
     }
 }

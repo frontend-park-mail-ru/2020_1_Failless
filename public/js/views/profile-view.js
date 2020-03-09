@@ -21,9 +21,10 @@ export default class ProfileView extends View {
 
     /**
      * Render template
-     * @param {JSON} profile -  user profile from server
+     * @param {{birthday: string, password: string, gender: string, phone: string, name: string, about: string, rating: string, location: string, avatar: string, photos: string, email: string}} profile -  user profile from server
      */
     render(profile) {
+        console.log(profile);
         let allowEdit = true;
         const profileTemplate = Handlebars.templates['profile']({
             username: profile.name,
@@ -55,5 +56,6 @@ export default class ProfileView extends View {
 
 
         this.parent.insertAdjacentHTML('beforeend', profileTemplate);
+        // this.parent.innerHTML += Handlebars.templates['public/js/templates/profile-template']({profile: profile})
     }
 }

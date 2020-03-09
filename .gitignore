@@ -3,3 +3,5 @@ node_modules
 package-lock.json
 bundle.*.js
 *.css.map
+.DS_Store
+*.precompiled.js
