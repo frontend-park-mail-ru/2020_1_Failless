@@ -65,6 +65,7 @@ export default class ProfileView extends View {
     render(profile) {
         console.log(profile);
         let allowEdit = true;
-        this.parent.innerHTML += Handlebars.templates['public/js/templates/profile-template']({profile: profile})
+        this.parent.innerHTML += Handlebars.templates['public/js/templates/profile-template']({profile: profile});
+        this.parent.innerHTML += Handlebars.templates['public/js/templates/settings-template']({profile: profile});
     }
 }
