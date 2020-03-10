@@ -1,0 +1,47 @@
+<div class="profile"><h1 class="profile__title">{{ username }}</h1>
+    <div class="profile__page">
+        <div class="profile__column profile__filed">
+            <h3 class="profile__title profile__title_blue">{{ title1 }}</h3>
+            {{#with textarea}}
+                <label>
+                    <textarea class="input input__text_small" placeholder="{{ help }}">{{ about }}</textarea>
+                </label>
+            {{/with}}
+            {{#if edit}}
+                <div class="profile__btn">
+                    <button class="btn btn_color_ok btn_size_middle" type="submit">
+                        <div class="btn__text btn__text_w">{{ buttonOk }}</div>
+                    </button>
+                    <button class="btn btn_color_b btn_size_middle">
+                        <div class="btn__text btn__text_w">{{ buttonSettings }}</div>
+                    </button>
+                </div>
+            {{/if}}
+        </div>
+        <div class="profile__column profile__filed">
+            <h3 class="profile__title profile__title_blue">{{ title2 }}</h3>
+            <div class="profile__photos">
+                <img class="profile__photo_img" src="{{ img }}">
+            </div>
+            {{#if edit}}
+                <input class="icon__input icon__add icon icon_size_large" type="file">
+            {{/if}}
+        </div>
+        <div class="profile__column profile__filed">
+            <h3 class="profile__title profile__title_blue">{{ title3 }}</h3>
+            <div class="icon icon__add icon_size_x"></div>
+            <div class="profile__tags">
+                {{#each tags as | tag |}}
+                    <div class="tag tag_size_middle">{{ tag }}</div>
+                {{/each}}
+            </div>
+            <h3 class="profile__title profile__title_blue">{{ title4 }}</h3>
+            <div class="icon icon__add icon_size_x"></div>
+            <div class="profile__events">
+                {{#each events as |event|}}
+                    {{>event}}
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>

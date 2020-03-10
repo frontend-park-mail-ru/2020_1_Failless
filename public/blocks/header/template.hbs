@@ -1,0 +1,8 @@
+<nav class="header">
+    <img class="image icon_btn icon__size_m header__item" src="{{ logo }}" alt="Eventum">
+    <div class="header__manage">
+        {{#each buttons}}
+            <a class="header__item" href="{{ link }}">{{ name }}</a>
+        {{/each}}
+    </div>
+</nav>

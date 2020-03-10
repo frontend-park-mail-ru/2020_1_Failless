@@ -6,18 +6,18 @@
  * blocks
  * ├── block1
  * │   ├── <some other files>
- * │   └── template.js
+ * │   └── template.hbs
  * ├── block2
  * │   ├── <some other files>
- * │   └── template.js
+ * │   └── template.hbs
  * ├── <other blocks>
- * note: template.js files must be encoded UTF-8 and should not conflict
+ * note: template.hbs files must be encoded UTF-8 and should not conflict
  * with each other (i.e. only affect their own block)
  */
 
 const fs = require('fs');
 const path = require('path');
-const bemxjst = require('bem-xjst');
+const handlebars = require('handlebars');
 
 
 // checking the arguments
@@ -52,58 +52,47 @@ if (!fs.statSync(bundlePath).isDirectory()) {
 }
 
 // options
-const BEMHTML_BUNDLE_NAME = 'bundle.bemhtml.js';
-const BEMHTML_OPTIONS = {exportName: 'bemhtml', escapeContent: true};
+const BEMHTML_BUNDLE_NAME = 'bundle.handlebars.js';
+const BEMHTML_OPTIONS = {exportName: 'handlebars', escapeContent: true};
 const bemhtmlBundlePath = path.resolve(bundlePath, BEMHTML_BUNDLE_NAME);
 
-const BEMTREE_BUNDLE_NAME = 'bundle.bemtree.js';
-const BEMTREE_OPTIONS = {exportName: 'bemtree', runtimeLinting: true};
-const bemtreeBundlePath = path.resolve(bundlePath, BEMTREE_BUNDLE_NAME);
-
-
-let templates = '';
+let output = 'let templates = Handlebars.templates = Handlebars.templates || {};\n' +
+    'const template = Handlebars.template;\n';
 fs.readdir(blocksPath, (err, files) => {
     // extracting templates
     files.forEach((file) => {
         const blockDir = path.resolve(blocksPath, file);
 
         if (fs.statSync(blockDir).isDirectory()) {
-            const templateFile = path.resolve(blockDir, 'template.js');
+            let template = '';
+            const templateFile = path.resolve(blockDir, 'template.hbs');
 
             if (fs.existsSync(templateFile)) {
                 console.log(`adding ${path.basename(blockDir)}`);
                 // \n is needed for the one line comments
-                templates += fs.readFileSync(
+                // templates += fs.readFileSync(
+                //     templateFile, {'encoding': 'utf8'}) + '\n';
+                template = fs.readFileSync(
                     templateFile, {'encoding': 'utf8'}) + '\n';
+                let precomp = handlebars.precompile(template);
+                output +=
+                    'templates[\'' + file + '\'] = template(';
+                output += precomp + ');\n';
+                // output += 'Handlebars.registerPartial( \''+ file +'\' ';
             } else {
                 console.log(
-                    `skipping ${path.basename(blockDir)}: template.js not found`);
+                    `skipping ${path.basename(blockDir)}: template.hbs not found`);
             }
+
         }
     });
+    output += '\nHandlebars.partials = Handlebars.templates;\n';
 
-    // creating & saving bundles
-    const htmlBundle = eval(`bemxjst.bemhtml.generate(() => {
-    ${templates}
-  }, ${JSON.stringify(BEMHTML_OPTIONS)});`);
-
-    const treeBundle = eval(`bemxjst.bemtree.generate(() => {
-    ${templates}
-  }, ${JSON.stringify(BEMTREE_OPTIONS)});`);
-
-    fs.writeFile(bemhtmlBundlePath, htmlBundle, (err) => {
+    fs.writeFile(bemhtmlBundlePath, output, (err) => {
         if (err) {
             console.log(err);
         } else {
             console.log(`HTML bundle written to ${bemhtmlBundlePath}`);
-        }
-    });
-
-    fs.writeFile(bemtreeBundlePath, treeBundle, (err) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(`Tree bundle written to ${bemtreeBundlePath}`);
         }
     });
 });

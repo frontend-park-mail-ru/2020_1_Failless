@@ -95,6 +95,56 @@
   height: 35px;
 }
 
+.landing {
+  display: block;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-color: #12C2E9;
+}
+.landing__screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.landing__screen_photo {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-image: linear-gradient(rgba(0, 0, 1, 0.4), rgba(0, 0, 1, 0.4), rgba(0, 0, 1, 0.4), rgba(0, 0, 1, 0.4)), url("../images/landing.jpg");
+}
+@media screen and (orientation: landscape) {
+  .landing__screen_photo {
+    min-height: 712px !important;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .landing__screen_photo {
+    min-height: 512px !important;
+  }
+}
+.landing__screen_info {
+  display: flex;
+  column-count: 3;
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+}
+.landing__title {
+  font-size: 32px;
+  color: white;
+}
+.landing__title_second {
+  padding-top: 4%;
+  padding-bottom: 4%;
+  font-size: 32px;
+  color: white;
+  font-weight: bold;
+}
+.landing__text {
+  font-weight: bold;
+  font-size: 26px;
+  color: white;
+}
 .profile {
   height: 90vh;
   max-width: 900px;
