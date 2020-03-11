@@ -26,6 +26,7 @@ export default class SearchView extends View {
 
         };
         this.parent.innerHTML += Handlebars.templates['public/js/templates/search-template']({profile: profile, events: events, tags: tags})
+
     }
 }
 
