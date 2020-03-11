@@ -1,9 +1,9 @@
 <div class="search">
     <div class="column search-column">
-        <form action="submit">
+        <form action="submit" id="form">
             <div class="">
                 <div class="auth__help">Поиск по названию</div>
-                <input class="input input__auth" placeholder="Люди как люди">
+                <input class="input input__auth" name="search_text" placeholder="Люди как люди">
             </div>
             
             <div class="separator"></div>
@@ -11,7 +11,7 @@
             <div class="tag-select">
                 <div class="auth__help">Поиск по тегам</div>
                 {{#each tags}}
-                <div class="search_tag">
+                <div class="search_tag" style="opacity: 0.5">
                     <div class="tag tag_size_middle">{{this.title}}</div>
                     <div class="x_btn">X</div>
                 </div>
@@ -124,10 +124,9 @@
         display: flex;
         justify-content: right;
         align-items: center;
-        opacity: 50%;
     }
     .x_btn {
-        opacity: 0;
+        display: none;
     }
     .search_events {
         border-radius: 13px;
