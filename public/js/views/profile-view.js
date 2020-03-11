@@ -5,31 +5,6 @@ import settings from '../../settings/config.js';
 
 const tagNames = ['#хочувБАР', '#хочувКИНО', '#хочунаКАТОК', '#хочуГУЛЯТЬ', '#хочуКУШАЦ', '#хочуСПАТЬ'];
 
-const getTags = (tagNames) => {
-    let blocks = [];
-    tagNames.forEach(elem => {
-        blocks.push({
-            block: 'tag',
-            mods: {'size': 'middle'},
-            content: elem,
-        });
-    });
-    return blocks;
-};
-
-const eventPhotos = ['EventPhotos/3.jpg', 'EventPhotos/4.jpg'];
-const getEventPhotos = (eventPhotos) => {
-    let blocks = [];
-    eventPhotos.forEach((elem) => {
-        blocks.push({
-            elem: 'item',
-            mix: {block: 'event__item', mods: {'one': true}},
-            tag: 'img',
-            attrs: {src: elem}
-        });
-    });
-    return blocks;
-};
 /**
  *
  */
@@ -50,144 +25,35 @@ export default class ProfileView extends View {
      */
     render(profile) {
         let allowEdit = true;
-        const template = [
-            {
-                block: 'profile',
-                content: [
-                    {
-                        elem: 'title',
-                        tag: 'h1',
-                        content: profile.name,
-                    },
-                    {
-                        elem: 'page',
-                        content: [
-                            {
-                                elem: 'column',
-                                mix: {block: 'profile', elem: 'filed'},
-                                content: [
-                                    {
-                                        elem: 'title',
-                                        mix: {block: 'profile__title_blue'},
-                                        tag: 'h3',
-                                        content: 'О себе',
-                                    },
-                                    {
-                                        block: 'input',
-                                        mix: {block: 'input__text_small'},
-                                        tag: 'textarea',
-                                        attrs: {placeholders: 'Расскажите о себе и своих увлечениях'},
-                                        content: profile.about,
-                                    },
-                                    {
-                                        elem: 'btn',
-                                        content: allowEdit ? [
-                                            {
-                                                block: 'btn',
-                                                mods: {color: 'ok', size: 'middle'},
-                                                btnText: 'Готово',
-                                                attrs: {type: 'submit'},
-                                            },
-                                            {
-                                                block: 'btn',
-                                                mods: {color: 'b', size: 'middle'},
-                                                btnText: 'Настройки',
-                                            },
-                                        ] : []
-                                    },
-                                ],
-                            },
-                            {
-                                elem: 'column',
-                                mix: {block: 'profile', elem: 'filed'},
-                                content: [
-                                    {
-                                        elem: 'title',
-                                        mix: {block: 'profile__title_blue'},
-                                        tag: 'h3',
-                                        content: 'Фото'
-                                    },
-                                    {
-                                        elem: 'photos',
-                                        content: {
-                                            block: 'profile',
-                                            elem: 'photo_img',
-                                            mods: {'me': true},
-                                            tag: 'img',
-                                            attrs: {src: settings.img + profile.avatar.path}
-                                        },//getBlocks(profilePhotos),
-                                    },
-                                    {
-                                        block: 'icon',
-                                        elem: 'input',
-                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'large'}}],
-                                        tag: 'input',
-                                        attrs: { type: 'file' },
-                                        content: 'Добавить фото'
-                                    },
-                                ],
-                            },
-                            {
-                                elem: 'column',
-                                mix: {block: 'profile', elem: 'filed'},
-                                content: [
-                                    {
-                                        elem: 'title',
-                                        mix: {block: 'profile__title_blue'},
-                                        tag: 'h3',
-                                        content: 'Ваши тэги',
-                                    },
-                                    {
-                                        block: 'icon',
-                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'x'}}],
-                                    },
-                                    {
-                                        elem: 'tags',
-                                        content: getTags(tagNames),
-                                    },
-                                    {
-                                        elem: 'title',
-                                        mix: {block: 'profile__title_blue'},
-                                        tag: 'h3',
-                                        content: 'Ваши эвенты',
-                                    },
-                                    {
-                                        block: 'icon',
-                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'x'}}],
-                                    },
-                                    {
-                                        elem: 'events',
-                                        content: [
-                                            {
-                                                block: 'event',
-                                                content: [
-                                                    {
-                                                        elem: 'photos',
-                                                        content: getEventPhotos(eventPhotos),
-                                                    },
-                                                    {
-                                                        elem: 'title',
-                                                        content: 'Концерт',
-                                                    },
-                                                    {
-                                                        elem: 'place',
-                                                        content: 'Москва',
-                                                    },
-                                                    {
-                                                        elem: 'description',
-                                                        content: 'Ну как его похвалить? Ну классный концерт, шикарный концерт, как его ещё похвалить?'
-                                                    }
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                ],
-                            }
-                        ],
-                    },
-                ]
-            }
-        ];
-        this.parent.insertAdjacentHTML('beforeend', bemhtml.apply(template));
+        const profileTemplate = Handlebars.templates['profile']({
+            username: profile.name,
+            title1: 'О себе',
+            textarea: {
+                help: 'Расскажите о себе и своих увлечениях',
+                about: profile.about,
+            },
+            edit: allowEdit,
+            buttonOk: 'Готово',
+            buttonSettings: 'Настройки',
+            title2: 'Фото',
+            img: settings.img + profile.avatar.path,
+            title3: 'Ваши тэги',
+            tags: tagNames,
+            title4: 'Ваши мероприятия',
+            events: [
+                {
+                    photos: [
+                        'EventPhotos/3.jpg',
+                        'EventPhotos/4.jpg',
+                    ],
+                    title: 'Концерт',
+                    place: 'Москва',
+                    description: 'Ну как его похвалить? Ну классный концерт, шикарный концерт, как его ещё похвалить?'
+                }
+            ],
+        });
+
+
+        this.parent.insertAdjacentHTML('beforeend', profileTemplate);
     }
 }

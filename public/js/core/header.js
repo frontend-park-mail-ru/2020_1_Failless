@@ -9,58 +9,33 @@ export default function createHeader(base, logged) {
         document.getElementsByClassName('header')[0].remove();
     }
 
-    let template = [
+    const header = Handlebars.templates['header'](
         {
-            block: 'header',
-            tag: 'nav',
-            content: [
+            logo: 'img/logo.png',
+            buttons: !logged ? [
                 {
-                    block: 'image',
-                    tag: 'img',
-                    url: 'img/logo.png',
-                    mix: {'block': 'icon_btn icon__size_m header__item'},
-                    attrs: {src: 'img/logo.png', alt: 'Eventum'}
+                    link: '/signup',
+                    name: 'Регистрация',
                 },
                 {
-                    block: 'header__manage',
-                    content: !logged ? [
-                        {
-                            block: 'header__item',
-                            tag: 'a',
-                            attrs: {href: '/signup'},
-                            content: 'Рега'
-                        },
-                        {
-                            block: 'header__item',
-                            tag: 'a',
-                            attrs: {href: '/login'},
-                            content: 'Войти'
-                        }
-                    ] : [
-                        {
-                            block: 'header__item',
-                            tag: 'a',
-                            attrs: {href: '/search'},
-                            content: 'Поиск'
-                        }
-                        ,
-                        {
-                            block: 'header__item',
-                            tag: 'a',
-                            attrs: {href: '/logout'},
-                            content: 'Выйти'
-                        },
-                        {
-                            block: 'header__item',
-                            tag: 'a',
-                            attrs: {href: '/profile'},
-                            content: 'Профиль'
-                        },
-                    ],
-                }
+                    link: '/login',
+                    name: 'Войти',
+                },
+            ] : [
+                {
+                    link: '/search',
+                    name: 'Поиск',
+                },
+                {
+                    link: '/logout',
+                    name: 'Выход',
+                },
+                {
+                    link: '/profile',
+                    name: 'Профиль',
+                },
             ]
-        }
-    ];
+        });
 
-    base.insertAdjacentHTML('afterbegin', bemhtml.apply(template));
+    base.insertAdjacentHTML('afterbegin', header);
 }

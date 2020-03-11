@@ -1,0 +1,68 @@
+@import "../../modules/images";
+@import "../../modules/variables";
+
+$people-img: $screen-img-path + "landing.jpg";
+
+.landing {
+  display: block;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-blue;
+
+  &__screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &_photo {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      @media screen and (orientation: landscape) {
+        min-height: 712px !important;
+      }
+
+      @media screen and (max-width: 1000px) {
+        min-height: 512px !important;
+      }
+
+      background-image: linear-gradient(
+                      rgba(0, 0, 1, .4),
+                      rgba(0, 0, 1, 0.4),
+                      rgba(0, 0, 1, 0.4),
+                      rgba(0, 0, 1, 0.4)), url($people-img);
+
+    }
+
+    &_info {
+      display: flex;
+      column-count: 3;
+      -webkit-column-count: 3;
+      -moz-column-count: 3;
+    }
+  }
+
+  &__title {
+    font-size: 32px;
+    color: $color-white;
+
+    &_second {
+      padding-top: 4%;
+      padding-bottom: 4%;
+      font-size: 32px;
+      color: $color-white;
+      font-weight: bold;
+    }
+  }
+
+  &__text {
+    font-weight: bold;
+    font-size: 26px;
+    color: $color-white;
+
+    &_main {
+    }
+  }
+
+}

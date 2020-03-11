@@ -20,19 +20,7 @@ export default class LandingView extends View {
      * Render template
      */
     render() {
-        const template = [
-            {
-                block: 'login-popup',
-                content: [
-                    {
-                        block: 'title',
-                        wrappedInside: 'login-popup',
-                        wrappedAs: 'title',
-                        content: 'Вход',
-                    }
-                ]
-            }
-        ];
-        this.parent.insertAdjacentHTML('beforeend', bemhtml.apply(template));
+        const landing = Handlebars.templates['landing']();
+        this.parent.insertAdjacentHTML('beforeend', landing);
     }
 }

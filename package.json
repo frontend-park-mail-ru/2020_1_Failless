@@ -4,8 +4,8 @@
   "description": "хочувБАР",
   "main": "index.js",
   "dependencies": {
-    "bem-xjst": "^8.9.6",
-    "sass": "^1.25.0"
+    "sass": "^1.25.0",
+    "handlebars": "latest"
   },
   "devDependencies": {
     "eslint": "^6.8.0"
