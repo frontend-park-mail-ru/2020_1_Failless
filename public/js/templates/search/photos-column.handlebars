@@ -1,0 +1,39 @@
+<div class="photos-container">
+    <div class="gradient">
+        <img class="search_profile_photo" src="{{profile.photos}}" alt="{{profile.photos}}">
+        <!--TODO: image scroll here-->
+    </div>
+    <div class="search__photos__buttons">
+        <button class="btn btn_color_b btn_size_large">
+            <div class="btn__text btn__text_w">no</div>
+        </button>
+        <button class="btn btn_color_ok btn_size_large">
+            <div class="btn__text btn__text_w">YES!</div>
+        </button>
+    </div>
+</div>
+<h1 class="profile__title">{{ profile.name }}{{#if profile.age}},  {{profile.age}}{{/if}}</h1>
+<p class="search_profile_about">{{ profile.about }}</p>
+
+<style>
+
+    .photos-container {
+        width: 100%;
+        position: relative;
+    }
+    .search_profile_photo {
+        position: relative;
+        width: 100%;
+        height: auto;
+        z-index: -1;
+        display: block;
+    }
+    .gradient {
+        display: inline-block;
+        background: linear-gradient(to bottom, rgba(0,0,0,0) 75%,rgba(0,0,0,1) 100%);
+    }
+    .search__photos__buttons {
+        position: absolute;
+        bottom: 10px;
+    }
+</style>
