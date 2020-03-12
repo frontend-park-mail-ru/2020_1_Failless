@@ -18,6 +18,7 @@ export default class Router {
      */
     addRoute(path, controller) {
         this.urls.set(path, controller);
+        console.log(this.urls);
     }
 
     /**

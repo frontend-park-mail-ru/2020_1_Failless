@@ -1,12 +1,12 @@
 'use strict';
 
 import Controller from '../core/controller.js';
-import SearchView from '../views/search-view.js';
+import MediumEventSearchView from '../views/medium-event-search-view.js';
 
 /**
  * @class SearchController
  */
-export default class SearchController extends Controller {
+export default class MediumEventSearchController extends Controller {
 
     /**
      * Construct obj of SearchController class
@@ -15,12 +15,12 @@ export default class SearchController extends Controller {
     constructor(parent) {
         super(parent);
         this.searching = false;
-        this.view = new SearchView(parent);
+        this.view = new MediumEventSearchView(parent);
     }
 
     searching;
-    currentProfile;
-    currentProfileEvents;
+    currentMediumEvent;
+    currentMediumEventFollowers;
 
     /**
      * Create action
@@ -69,27 +69,29 @@ export default class SearchController extends Controller {
 
         if (!this.searching) {
             this.searching = true;
-            this._getNextPerson();
+            this._getNextMediumEvent();
         } // else don't
         // cause changing settings shouldn't change current person on the screen
     };
 
-    _getNextPerson(event) {
+    _getNextMediumEvent(event) {
         if (event) {
             event.preventDefault();
         }
 
         // TODO: Send request to back and fill currentProfile
 
-        this.currentProfile = {
-            name: 'Another Egor',
-            age: 30,
-            about: 'Вон другой парень',
-            photos: ['ProfilePhotos/2.jpg'],
+        this.currentMediumEvent = {
+            title: 'Another Egor',
+            about: 'Вон другой мидл эвент',
+            photos: ['EventPhotos/2.jpg'],
         };
 
-        let columns = this.parent.getElementsByClassName('column');
-        columns[1].innerHTML = Handlebars.templates['public/js/templates/search/photos-column']({profile: this.currentProfile});
-        columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({profile: this.currentProfile, events: this.currentProfileEvents});
+        alert('Next Medium Event is coming soon...');
+
+        // let columns = this.parent.getElementsByClassName('column');
+        // columns[1].innerHTML = Handlebars.templates['public/js/templates/search/photos-column']({profile: this.currentMediumEvent});
+        // columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({profile: this.currentMediumEvent, events: this.currentMediumEventFollowers});
     }
+
 }
