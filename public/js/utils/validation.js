@@ -19,8 +19,10 @@ export default class ValidationModule {
         if (!attributes.every(val => {
             switch (val) {
                 case 'password':
+                    console.log(password)
                     return this.isNotEmpty(password) && this.isString(password);
                 case 'repeatPassword':
+                    console.log(repeatPassword)
                     return this.isNotEmpty(repeatPassword) && this.isString(repeatPassword);
                 case 'email':
                     return this.isNotEmpty(email) && this.isString(email);
@@ -40,7 +42,7 @@ export default class ValidationModule {
                 case 'repeatPassword':
                     return this.validateRepeatPassword(password, repeatPassword);
                 case 'email':
-                    return this.validateEmail(emai);
+                    return this.validateEmail(email);
                 case 'phone':
                     return this.validatePhone(phone);
                 case 'name':

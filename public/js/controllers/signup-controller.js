@@ -3,6 +3,7 @@
 import Controller from '../core/controller.js';
 import SignUpView from '../views/signup-view.js';
 import UserModel from '../models/user-model.js';
+import ValidationModule from '../utils/validation.js'
 
 export default class SignUpController extends Controller {
 
@@ -46,9 +47,14 @@ export default class SignUpController extends Controller {
         const email = form[1].value;
         const phone = form[2].value;
         const password = form[3].value;
-        const password2 = form[4].value;
+        const repeatPassword = form[4].value;
 
-        if (password !== password2) {
+        console.log(ValidationModule.validateUserData(
+            {name, email, phone, password, repeatPassword}, 
+            ['name', 'email', 'phone', 'password', 'repeatPassword']
+        ));
+
+        if (password !== repeatPassword) {
             console.log('Passwords must to be equal');
             return null;
         }
