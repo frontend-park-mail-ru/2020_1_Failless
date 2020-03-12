@@ -53,7 +53,6 @@ export default class SignUpController extends Controller {
             {name, email, phone, password, repeatPassword}, 
             ['name', 'email', 'phone', 'password', 'repeatPassword']
         ));
-
         if (password !== repeatPassword) {
             console.log('Passwords must to be equal');
             return null;
