@@ -85,7 +85,7 @@ export default class BigEventSearchController extends Controller {
             name: 'Another Egor',
             age: 30,
             about: 'Вон другой парень',
-            photos: ['ProfilePhotos/2.jpg'],
+            photos: ['/ProfilePhotos/2.jpg'],
         };
 
         let columns = this.parent.getElementsByClassName('column');

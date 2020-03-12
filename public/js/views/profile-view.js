@@ -40,12 +40,12 @@ function Event(photos, title, place, description) {
 
 const events = [
     new Event(
-        ['EventPhotos/3.jpg', 'EventPhotos/4.jpg'],
+        ['/EventPhotos/3.jpg', '/EventPhotos/4.jpg'],
         'Концерт',
         'Москва',
         'Ну как его похвалить? Ну классный концерт, шикарный концерт, как его ещё похвалить?'),
     new Event(
-        ['EventPhotos/2.jpg', 'EventPhotos/1.jpg'],
+        ['/EventPhotos/2.jpg', '/EventPhotos/1.jpg'],
         'Выставка',
         'Ленинград',
         'Выставка Ван-Гога. Обещают привезти главный экспонат')

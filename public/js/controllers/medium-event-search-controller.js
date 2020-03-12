@@ -84,7 +84,7 @@ export default class MediumEventSearchController extends Controller {
         this.currentMediumEvent = {
             title: 'Another Egor',
             about: 'Вон другой мидл эвент',
-            photos: ['EventPhotos/2.jpg'],
+            photos: ['/EventPhotos/2.jpg'],
         };
 
         alert('Next Medium Event is coming soon...');
