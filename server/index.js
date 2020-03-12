@@ -14,6 +14,7 @@ app.use(body.json());
 app.use(cookie());
 
 let logged = -1;
+
 console.log(logged);
 
 app.get('/api/event', function (req, res) {
