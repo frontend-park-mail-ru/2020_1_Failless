@@ -21,12 +21,15 @@ export default class SearchView extends View {
      */
     render() {
         const profile = {
-            name: "Egor",
-            about: "Вон парень, на пригорочке",
-
+            name: 'Egor',
+            age: 20,
+            about: 'Вон парень, на пригорочке',
+            photos: ['ProfilePhotos/1.jpg'],
         };
-        this.parent.innerHTML += Handlebars.templates['public/js/templates/search-template']({profile: profile, events: events, tags: tags})
-
+        this.parent.innerHTML += Handlebars.templates['public/js/templates/search/basic-template']({tags: tags});
+        let columns = this.parent.getElementsByClassName('column');
+        columns[1].innerHTML = Handlebars.templates['public/js/templates/search/photos-column']({profile: profile});
+        columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({profile: profile, events: events});
     }
 }
 

@@ -14,8 +14,13 @@ export default class SearchController extends Controller {
      */
     constructor(parent) {
         super(parent);
+        this.searching = false;
         this.view = new SearchView(parent);
     }
+
+    searching;
+    currentProfile;
+    currentProfileEvents;
 
     /**
      * Create action
@@ -26,7 +31,7 @@ export default class SearchController extends Controller {
         document.querySelectorAll('.search_tag').forEach((tag) => {
             tag.addEventListener('click', this._highlightTag);
         });
-        document.getElementById('form').addEventListener('submit', this._searchHandler)
+        document.getElementById('form').addEventListener('submit', this._setOptions)
     }
 
     _highlightTag(event) {
@@ -42,7 +47,7 @@ export default class SearchController extends Controller {
         }
     }
 
-    _searchHandler = (event) => {
+    _setOptions = (event) => {
         event.preventDefault();
 
         const form = document.getElementById('form');
@@ -61,5 +66,30 @@ export default class SearchController extends Controller {
         console.log(searchOptions);
 
         // TODO: Send searchOptions to back-end
+
+        if (!this.searching) {
+            this.searching = true;
+            this._getNextPerson();
+        } // else don't
+        // cause changing settings shouldn't change current person on the screen
+    };
+
+    _getNextPerson(event) {
+        if (event) {
+            event.preventDefault();
+        }
+
+        // TODO: Send request to back and fill currentProfile
+
+        this.currentProfile = {
+            name: 'Another Egor',
+            age: 30,
+            about: 'Вон другой парень',
+            photos: ['ProfilePhotos/2.jpg'],
+        };
+
+        let columns = this.parent.getElementsByClassName('column');
+        columns[1].innerHTML = Handlebars.templates['public/js/templates/search/photos-column']({profile: this.currentProfile});
+        columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({profile: this.currentProfile, events: this.currentProfileEvents});
     }
 }
