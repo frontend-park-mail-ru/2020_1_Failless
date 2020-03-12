@@ -5,7 +5,7 @@ import View from '../core/view.js';
 /**
  * @class create SearchView class
  */
-export default class SearchView extends View {
+export default class ProfileSearchView extends View {
 
     /**
      * Create view
