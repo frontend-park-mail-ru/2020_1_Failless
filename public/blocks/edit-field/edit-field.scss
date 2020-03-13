@@ -1,0 +1,34 @@
+@import "../../modules/variables";
+
+.edit-field {
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    padding: 8px 0 8px 0;
+  }
+
+  &__name {
+    width: 190px;
+  }
+
+  &__input {
+    width: 190px;
+    border-radius: 4px;
+    height: 28px;
+    border: 1px solid $color-gray;
+    box-sizing: border-box;
+  }
+
+  &__buttons {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+}

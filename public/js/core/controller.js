@@ -76,8 +76,8 @@ export default class Controller {
     _eventSearchRedirect(event) {
         event.preventDefault();
 
-        window.history.pushState({}, '', '/event');
-        window.history.pushState({}, '', '/event');
+        window.history.pushState({}, '', '/search');
+        window.history.pushState({}, '', '/search');
         window.history.back();
     }
 

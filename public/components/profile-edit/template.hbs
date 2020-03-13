@@ -1,0 +1,26 @@
+<div class="profile-edit profile-edit__overlay">
+    <div class="profile-edit__popup">
+        <div class="profile-edit__form">
+            <div class="profile-edit__title">
+                <div class="font font__title font__color_black">Основные</div>
+                <div class="profile-edit__icon">
+                    <span class="icon icon__close icon__size_middle icon_btn icon_color_black"></span>
+                </div>
+            </div>
+            <div class="profile-edit__table">
+                {{#each fields }}
+                    <div id="{{id}}" class="profile-edit__filed">
+                        <div class="profile-edit__type">{{ name }}</div>
+                        <div class="profile-edit__value">{{ value }}</div>
+                        {{#if button }}
+                            <a class="profile-edit__btn" role="link">{{ button }}</a>
+                        {{else }}
+                            <a class="profile-edit__btn" role="link" href="">Изменить</a>
+                        {{/if}}
+                    </div>
+                    <hr class="profile-edit__line"/>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>

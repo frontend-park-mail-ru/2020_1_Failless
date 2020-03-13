@@ -17,16 +17,19 @@
     }
   }
 
-  &_color_ok {
-    background-color: $color-red;
-  }
-
-  &_color_b {
-    background-color: $color-blue;
-  }
-
-  &_color_w {
-    background-color: $color-white;
+  &_color {
+    &_dark-blue {
+      background-color: $color-dark-blue;
+    }
+    &_w {
+      background-color: $color-white;
+    }
+    &_b {
+      background-color: $color-blue;
+    }
+    &_ok {
+      background-color: $color-red;
+    }
   }
 
   &__text {
@@ -37,5 +40,9 @@
     &_b {
       color: $color-blue;
     }
+  }
+
+  &_square {
+    border-radius: 4px;
   }
 }

@@ -1,0 +1,43 @@
+@import "variables";
+
+$title-size : 32px;
+$eventum-font: "Helvetica Neue", sans-serif;
+
+.font {
+  font-family: $eventum-font;
+  &__title {
+    font-weight: bold;
+    font-size: $title-size;
+  }
+
+  &__color {
+    &_w {
+      color: $color-white;
+    }
+    &_blue {
+      color: $color-blue;
+    }
+    &_black {
+      color: $color-black;
+    }
+    &_lg {
+      color: $color-light-gray;
+    }
+
+    &_g {
+      color: #696969;
+    }
+  }
+
+  &__size {
+    &_small {
+      font-size: 16px;
+    }
+  }
+
+  &__helper {
+    font-size: 12px;
+    font-weight: bold;
+    font-family: $eventum-font;
+  }
+}

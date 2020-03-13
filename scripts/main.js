@@ -18,81 +18,105 @@
 const fs = require('fs');
 const path = require('path');
 const handlebars = require('handlebars');
-
+const process = require('process');
 
 // checking the arguments
-if (process.argv.length !== 4) {
+if (process.argv.length !== 4 && process.argv.length !== 5) {
     console.log(
         'Usage: node bundle-all path/to/bundle.bemhtml.js path/to/blocks-dir');
     process.exit(1);
 }
 
-const bundlePath = path.resolve(process.cwd(), process.argv[2]);
-const blocksPath = path.resolve(process.cwd(), process.argv[3]);
+/**
+ * Checks is directory exists and is file is directory
+ * @param {string} dirPath - path to dir
+ * @returns {boolean}
+ */
+const checkDir = (dirPath) => {
+    if (!fs.existsSync(dirPath)) {
+        console.log(`blocks path does not exist: ${blocksPath}`);
+        return false;
+    }
 
-if (!fs.existsSync(blocksPath)) {
-    console.log(`blocks path does not exist: ${blocksPath}`);
-    process.exit(1);
-}
+    if (!fs.statSync(dirPath).isDirectory()) {
+        console.log(`blocks path is not a directory: ${blocksPath}`);
+        return false;
+    }
+    return true;
+};
 
-if (!fs.statSync(blocksPath).isDirectory()) {
-    console.log(`blocks path is not a directory: ${blocksPath}`);
-    process.exit(1);
-}
-
-if (!fs.existsSync(bundlePath)) {
-    console.log(`cannot write bundle: directory does not exist: ${bundlePath}`);
-    process.exit(1);
-}
-
-if (!fs.statSync(bundlePath).isDirectory()) {
-    console.log(
-        `cannot write bundle: bundle path is not a directory: ${bundlePath}`);
-    process.exit(1);
-}
-
-// options
-const BEMHTML_BUNDLE_NAME = 'bundle.handlebars.js';
-const BEMHTML_OPTIONS = {exportName: 'handlebars', escapeContent: true};
-const bemhtmlBundlePath = path.resolve(bundlePath, BEMHTML_BUNDLE_NAME);
-
-let output = 'let templates = Handlebars.templates = Handlebars.templates || {};\n' +
-    'const template = Handlebars.template;\n';
-fs.readdir(blocksPath, (err, files) => {
-    // extracting templates
+/**
+ * Extract templates and fill context variable `output`
+ * @param {string[]} files - string array with file's names from directory
+ * @param {string} filesPath - path to the directory with templates folders
+ */
+const readDirCallback = (files, filesPath) => {
     files.forEach((file) => {
-        const blockDir = path.resolve(blocksPath, file);
-
+        const blockDir = path.resolve(filesPath, file);
         if (fs.statSync(blockDir).isDirectory()) {
             let template = '';
             const templateFile = path.resolve(blockDir, 'template.hbs');
-
             if (fs.existsSync(templateFile)) {
                 console.log(`adding ${path.basename(blockDir)}`);
-                // \n is needed for the one line comments
-                // templates += fs.readFileSync(
-                //     templateFile, {'encoding': 'utf8'}) + '\n';
                 template = fs.readFileSync(
                     templateFile, {'encoding': 'utf8'}) + '\n';
                 let precomp = handlebars.precompile(template);
-                output +=
-                    'templates[\'' + file + '\'] = template(';
-                output += precomp + ');\n';
-                // output += 'Handlebars.registerPartial( \''+ file +'\' ';
+                output += `templates['${file}'] = template(${precomp});\n`;
             } else {
                 console.log(
                     `skipping ${path.basename(blockDir)}: template.hbs not found`);
             }
-
         }
     });
-    output += '\nHandlebars.partials = Handlebars.templates;\n';
+};
 
-    fs.writeFile(bemhtmlBundlePath, output, (err) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(`HTML bundle written to ${bemhtmlBundlePath}`);
-        }
-    });
+const blocksPath = path.resolve(process.cwd(), process.argv[3]);
+
+let bundlePath = path.resolve(process.cwd(), process.argv[2]);
+let componentsPath = '';
+let hasComponents = false;
+
+if (process.argv.length === 5) {
+    componentsPath = path.resolve(process.cwd(), process.argv[4]);
+    hasComponents = checkDir(componentsPath);
+}
+
+if (!(checkDir(blocksPath) && checkDir(bundlePath))) {
+    process.exit(1);
+}
+
+// options
+const BUNDLE_NAME = 'bundle.handlebars.js';
+bundlePath = path.resolve(bundlePath, BUNDLE_NAME);
+
+let output =
+    'let templates = Handlebars.templates = Handlebars.templates || {};\n' +
+    'const template = Handlebars.template;\n';
+fs.readdir(blocksPath, (err, files) => {
+    // extracting templates
+    readDirCallback(files, blocksPath);
+
+    if (hasComponents) {
+        console.log('Components were found at ' + componentsPath);
+        fs.readdir(componentsPath, (err, files) => {
+            readDirCallback(files, componentsPath);
+            output += '\nHandlebars.partials = Handlebars.templates;\n';
+            fs.writeFile(bundlePath, output, (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(`HTML bundle written to ${bundlePath}`);
+                }
+            });
+        });
+    } else {
+        output += '\nHandlebars.partials = Handlebars.templates;\n';
+        fs.writeFile(bundlePath, output, (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(`HTML bundle written to ${bundlePath}`);
+            }
+        });
+    }
 });

@@ -13,9 +13,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "sass ./public/style.scss:./public/static/css/style.css",
-    "build:bundle": "node ./scripts/main.js ./public/js ./public/blocks",
     "build:handlebars": "handlebars ./ -f ./public/js/templates.precompiled.js",
     "build:all": "npm run build:css && npm run build:bundle && npm run build:handlebars",
+    "build:bundle": "node ./scripts/main.js ./public/js ./public/blocks ./public/components",
     "linter": "eslint -c .eslintrc.json './public/js/**'"
   },
   "repository": {
