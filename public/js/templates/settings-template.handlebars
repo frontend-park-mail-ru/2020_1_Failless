@@ -1,0 +1,41 @@
+<div id="settings-container" style="
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);">
+    <div class="settings-modal" style="
+        background-color: white;
+        width: 360px;
+        height: auto;
+        overflow: auto;
+        margin: auto;
+        padding: 20px;
+        border-radius: 20px;">
+        <form>
+            <h5>username</h5>
+            <input type="text" placeholder="Username" readonly value="{{ profile.name }}">
+            <h5>email</h5>
+            <input type="email" placeholder="Email" value={{ profile.email }}"">
+            <h5>phone</h5>
+            <input type="text" placeholder="Phone" value="{{ profile.phone }}">
+            <h5>oldPassword</h5>
+            <input type="password" placeholder="Old password">
+            <h5>newPassword</h5>
+            <input type="password" placeholder="Old password">
+            <h5>checkPassword</h5>
+            <input type="password" placeholder="Old password">
+        </form>
+        <button class="btn btn_color_b btn_size_middle">
+            <div class="btn__text btn__text_w">Изменить</div>
+        </button>
+        <button class="btn btn_color_b btn_size_middle">
+            <div class="btn__text btn__text_w">Назад</div>
+        </button>
+    </div>
+</div>

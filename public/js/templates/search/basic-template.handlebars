@@ -1,0 +1,81 @@
+<div class="search">
+    <div class="column search-column">
+        <form action="submit" id="form">
+
+            <div class="tag-select">
+                <div class="auth__help">Фильтр тегов</div>
+                {{#each tags}}
+                <div class="search_tag" style="opacity: 0.5">
+                    <div class="tag tag_size_middle">{{this.title}}</div>
+                    <div class="x_btn">X</div>
+                </div>
+                {{/each}}
+            </div>
+            
+            <div class="separator"></div>
+
+            <div>
+                <div class="auth__help">Ключевое слово</div>
+                <input class="input input__auth" name="search_text" placeholder="Люди как люди">
+            </div>
+
+            <div class="separator"></div>
+
+            <button class="btn btn_color_b btn_size_middle">
+                <div class="btn__text btn__text_w">Search</div>
+            </button>
+        </form>
+    </div>
+    <div class="column photos-column"></div>
+    <div class="column profile-column"></div>
+</div>
+
+<style>
+    .search {
+        height: 90vh;
+        width: 90vw;
+        min-width: 800px;
+        margin: auto;
+        text-align: left;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 5px;
+    }
+    .column {
+        background-color: white;
+        border-radius: 13px;
+        padding: 20px;
+        margin: 5px;
+        max-height: 100%;
+        overflow: auto;
+    }
+    .search-column {
+        width: 20%;
+    }
+    .photos-column {
+        min-width: 40%;
+        max-width: 50%;
+        width: auto;
+        z-index: -2;
+    }
+    .profile-column {
+        width: 30%;
+    }
+
+    .separator {
+        height: 1px;
+        width: auto;
+        margin: 20px 0;
+        background-color: darkgrey;
+    }
+    .search_tag {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+    }
+    .x_btn {
+        display: none;
+    }
+</style>
