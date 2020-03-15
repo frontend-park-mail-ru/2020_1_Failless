@@ -18,19 +18,38 @@ export default class BigEventSearchView extends View {
 
     /**
      * Render template
+     * @param {JSON} events
      */
-    render() {
-        const profile = {
-            name: 'Egor',
-            age: 20,
-            about: 'Вон парень, на пригорочке',
-            photos: ['/ProfilePhotos/1.jpg'],
-        };
-        this.parent.innerHTML += Handlebars.templates['public/js/templates/search/basic-template']({tags: tags});
-        let columns = this.parent.getElementsByClassName('column');
-        columns[1].innerHTML = Handlebars.templates['public/js/templates/search/photos-column']({profile: profile});
-        columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({profile: profile, events: events});
+    render(events) {
+        if (!events) {
+            this.#renderEmptySearch();
+        } else {
+            this.renderResults(events);
+        }
+        // const profile = {
+        //     name: 'Egor',
+        //     age: 20,
+        //     about: 'Вон парень, на пригорочке',
+        //     photos: ['/ProfilePhotos/1.jpg'],
+        // };
+        // this.parent.innerHTML += Handlebars.templates['public/js/templates/search/basic-template']({tags: tags});
+        // let columns = this.parent.getElementsByClassName('column');
+        // columns[1].innerHTML = Handlebars.templates['public/js/templates/search/photos-column']({profile: profile});
+        // columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({profile: profile, events: events});
     }
+
+    #renderEmptySearch = () => {
+        const search = {};
+        const template = Handlebars.templates['big-search'](search);
+        this.parent.insertAdjacentHTML('beforeend', template);
+    };
+
+    renderResults(results) {
+        const search = {};
+        const template = Handlebars.templates['big-search'](search);
+        this.parent.insertAdjacentHTML('beforeend', template);
+    }
+
 }
 
 function Event(photos, title, place, description) {

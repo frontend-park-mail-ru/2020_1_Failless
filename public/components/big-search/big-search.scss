@@ -1,0 +1,65 @@
+@import "../../modules/variables";
+
+.big-search {
+  display: block;
+  align-items: center;
+  text-align: center;
+  padding-top: 64px;
+
+  &__header {
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+
+    &_sizing {
+      padding-bottom: 8%;
+    }
+
+  }
+
+  &__search {
+    height: 100%;
+    width: 504px;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: $color-white;
+    display: flex;
+    border-radius: 4px;
+  }
+
+  &__input {
+  }
+
+  &__grid {
+    //display: grid;
+    //grid-template-columns: 25% 25% 25% 25%;
+    //grid-template-rows: auto;
+
+    //display: flex;
+    //flex-flow: row wrap;
+
+    display: block;
+    /* flex-wrap: wrap; */
+    column-count: 4;
+    column-gap: 0;
+
+
+    //justify-content: space-around;
+  }
+
+  &__results {
+    //display: block;
+    //margin-left: auto;
+    //margin-right: auto;
+
+    @media screen and (orientation: landscape) {
+      width: 1050px;
+    }
+
+    @media screen and (orientation: portrait) {
+      width: 144px * 2;
+    }
+  }
+}

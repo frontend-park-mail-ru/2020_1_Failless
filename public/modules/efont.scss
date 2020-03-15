@@ -8,6 +8,9 @@ $eventum-font: "Helvetica Neue", sans-serif;
   &__title {
     font-weight: bold;
     font-size: $title-size;
+    &_card {
+      font-size: 18px;
+    }
   }
 
   &__color {

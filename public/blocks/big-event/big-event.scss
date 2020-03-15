@@ -1,0 +1,31 @@
+@import "../../modules/variables";
+@import "../../modules/efont";
+
+.big-event {
+  background-color: $color-white;
+  box-shadow: 6px 8px 12px 1px rgba(0, 0, 0, 0.4);
+  //margin: 9px;
+  height: fit-content;
+
+  //display: inline-grid;
+
+  //background: #EC985A;
+  //color: white;
+  display: inline-block;
+  text-align: center;
+  //font-family: system-ui;
+
+  @media screen and (orientation: landscape) {
+    width: $event-width;
+  }
+
+  @media screen and (orientation: portrait) {
+    width: 144px;
+  }
+
+  &__description {
+    //white-space: pre-line;
+    word-break: break-all;
+  }
+
+}

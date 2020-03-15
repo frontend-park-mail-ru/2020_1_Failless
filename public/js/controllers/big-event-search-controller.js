@@ -9,7 +9,7 @@ import BigEventSearchView from '../views/big-event-search-view.js';
 export default class BigEventSearchController extends Controller {
 
     /**
-     * Construct obj of SearchController class
+     * Construct obj of BigEventSearchController class
      * @param {HTMLElement} parent
      */
     constructor(parent) {
@@ -18,23 +18,25 @@ export default class BigEventSearchController extends Controller {
         this.view = new BigEventSearchView(parent);
     }
 
-    searching;
-    currentProfile;
-    currentProfileEvents;
-
     /**
      * Create action
      */
     action() {
         super.action();
+
+        // todo: create request to backend for taking events list
         this.view.render();
         document.querySelectorAll('.search_tag').forEach((tag) => {
-            tag.addEventListener('click', this._highlightTag);
+            tag.addEventListener('click', this.#highlightTag);
         });
         document.getElementById('form').addEventListener('submit', this._setOptions)
     }
 
-    _highlightTag(event) {
+    /**
+     *
+     * @param {Event} event
+     */
+    #highlightTag = (event) => {
         event.preventDefault();
 
         let hideButton = this.querySelector('.x_btn');
@@ -45,7 +47,7 @@ export default class BigEventSearchController extends Controller {
             this.style.opacity = '0.5';
             hideButton.style.display = 'none';
         }
-    }
+    };
 
     _setOptions = (event) => {
         event.preventDefault();

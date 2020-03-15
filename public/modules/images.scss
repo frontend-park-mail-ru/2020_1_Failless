@@ -1,1 +1,10 @@
 $screen-img-path: '../images/';
+
+.img {
+
+  &__event {
+    object-fit: cover;
+    object-position: 100% 0;
+    width: 100%;
+  }
+}
