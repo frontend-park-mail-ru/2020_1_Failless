@@ -3,22 +3,22 @@
 
 .big-event {
   box-sizing: border-box;
-  margin: 8px;
+  break-inside: avoid;
   counter-increment: item-counter;
+
+
+  margin: 8px;
   background-color: $color-white;
   box-shadow: 0 0 12px 3px rgba(0, 0, 0, 0.4);
-  height: fit-content;
 
-  display: inline-block;
+  //display: inline-block;
   text-align: center;
 
-  @media screen and (orientation: landscape) {
-    width: $event-width;
-  }
+  width: $event-width;
 
-  @media screen and (orientation: portrait) {
-    width: 144px;
-  }
+
+  //@media screen and (orientation: landscape) {
+  //}
 
   &__description {
     word-break: break-all;

@@ -2,6 +2,7 @@
 
 import Controller from '../core/controller.js';
 import BigEventSearchView from '../views/big-event-search-view.js';
+import EventModel from '../models/event-model.js';
 
 /**
  * @class SearchController
@@ -23,13 +24,19 @@ export default class BigEventSearchController extends Controller {
      */
     action() {
         super.action();
+        EventModel.getEvents()
+            .then(events => {
+                this.view.render(events);
+                document.querySelectorAll('.search_tag').forEach((tag) => {
+                    tag.addEventListener('click', this.#highlightTag);
+                });
+                document.getElementById('form').addEventListener('submit', this._setOptions)
+            }).catch(onerror => {
+                console.error(onerror);
+            });
 
         // todo: create request to backend for taking events list
-        this.view.render();
-        document.querySelectorAll('.search_tag').forEach((tag) => {
-            tag.addEventListener('click', this.#highlightTag);
-        });
-        document.getElementById('form').addEventListener('submit', this._setOptions)
+
     }
 
     /**

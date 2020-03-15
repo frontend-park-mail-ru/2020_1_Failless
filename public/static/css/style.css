@@ -82,29 +82,28 @@
   border-radius: 4px;
 }
 .big-search__grid {
-  display: flex;
-  flex-flow: column wrap;
-  width: 100%;
-  height: auto;
+  column-count: 1;
+  column-gap: 0;
+  counter-reset: item-counter;
 }
-@media screen and (min-width: 400px) {
+@media screen and (orientation: portrait) {
   .big-search__grid {
-    height: 1600px;
+    column-count: 2;
   }
 }
-@media screen and (min-width: 600px) {
+@media screen and (orientation: landscape) and (min-width: 800px) {
   .big-search__grid {
-    height: 1300px;
-  }
-}
-@media screen and (min-width: 800px) {
-  .big-search__grid {
-    height: 1100px;
+    column-count: 3;
   }
 }
 @media screen and (min-width: 1100px) {
   .big-search__grid {
-    height: 800px;
+    column-count: 4;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .big-search__grid {
+    column-count: 5;
   }
 }
 .big-search__results {
@@ -112,17 +111,26 @@
   margin-left: auto;
   margin-right: auto;
 }
-@media screen and (orientation: landscape) {
-  .big-search__results {
-    width: 1050px;
-  }
-}
 @media screen and (orientation: portrait) {
   .big-search__results {
-    width: 288px;
+    width: 504px;
   }
 }
-
+@media screen and (orientation: landscape) and (min-width: 800px) {
+  .big-search__results {
+    width: 758px;
+  }
+}
+@media screen and (orientation: landscape) and (min-width: 1100px) {
+  .big-search__results {
+    width: 1012px;
+  }
+}
+@media screen and (orientation: landscape) and (min-width: 1400px) {
+  .big-search__results {
+    width: 1270px;
+  }
+}
 .btn {
   border-radius: 18px;
   border: none;
@@ -534,23 +542,13 @@
 
 .big-event {
   box-sizing: border-box;
-  margin: 8px;
+  break-inside: avoid;
   counter-increment: item-counter;
+  margin: 8px;
   background-color: white;
   box-shadow: 0 0 12px 3px rgba(0, 0, 0, 0.4);
-  height: fit-content;
-  display: inline-block;
   text-align: center;
-}
-@media screen and (orientation: landscape) {
-  .big-event {
-    width: 244px;
-  }
-}
-@media screen and (orientation: portrait) {
-  .big-event {
-    width: 144px;
-  }
+  width: 244px;
 }
 .big-event__description {
   word-break: break-all;

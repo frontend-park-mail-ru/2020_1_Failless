@@ -17,8 +17,8 @@ export default class EventModel extends Model {
      * Get event data from server
      * @return {Promise} promise to get user data
      */
-    static getEvent() {
-        return NetworkModule.fetchGet({path: '/event'}).then((response) => {
+    static getEvents() {
+        return NetworkModule.fetchGet({path: '/events/feed'}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
