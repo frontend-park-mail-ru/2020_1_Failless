@@ -1,7 +1,9 @@
 <div class="big-search">
     <div class="big-search__header big-search__header_sizing">
         <div class="big-search__search">
-            <span class="icon icon__size_middle icon__search icon_color_gray"></span>
+            <div class="big-search__icon">
+                <span class="icon icon__size_middle icon__search icon_color_gray"></span>
+            </div>
             <input class="input input__search" type="text" placeholder="Найти мероприятие"
                    name="searchBox" autocomplete="off">
         </div>
@@ -13,115 +15,36 @@
                     <div class="big-event__photo">
                         <img src="{{ img }}" class="img img__event" alt="{{ eventName }}">
                     </div>
-                    <div class="big-event__description big-event__description_act">
-                        <div class="font font__color_black font__size_small">{{ title }}</div>
-                        <div class="big-event__description_inact">
-                            <div class="font font__color_black font__size_small">{{ description }}</div>
+                    <div class="big-event__description">
+                        <div class="big-event__title">
+                            <div class="font font__color_black font__title font__title_card font__size_small">{{ title }}</div>
                         </div>
-                        <div class="font font__color_lg font__size_small">Уже идут: {{ followInfo }}</div>
+                        <div class="big-event__description_inact">
+                            <div class="font font__color_black font__size_small-xx">{{ description }}</div>
+                        </div>
+                        <div class="big-event__date">
+                            <div class="font font__color_lg font__size_small-xx">{{ date }}</div>
+                        </div>
+                        <hr class="big-event__line"/>
+                        <div class="big-event__follow">
+                            <div class="big-event__subscribe">
+                                <span class="icon icon__circle icon__size_small icon__color_{{color}}"></span>
+                                {{#if middle}}
+                                    <a class="big-event__link">Откликнуться</a>
+                                {{else}}
+                                    <a class="big-event__link" href="">Иду</a>
+                                {{/if}}
+                            </div>
+                            <div class="big-event__follow_count">
+                                <div class="big-event__icon">
+                                    <span class="icon icon__size_small icon__users icon_color_black"></span>
+                                </div>
+                                <div class="font font__color_black font__size_small font_bold">{{ followInfo }}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             {{/each}}
-<!--            -->
-
-<!--            <div class="big-event">-->
-<!--                <div class="big-event__photo">-->
-<!--                    <img src="img/lead.jpg" class="img img__event" alt="eventName">-->
-<!--                </div>-->
-<!--                <div class="big-event__description big-event__description_act">-->
-<!--                    <div class="font font__color_w font__title">Event2 title</div>-->
-<!--                    <div class="big-event__description_inact">-->
-<!--                        <div class="font font__color_lg font__size_small">Event description (first 36 symbols)</div>-->
-<!--                    </div>-->
-<!--                    <div class="font font__color_lg font__size_small">Followers: 1010</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="big-event">-->
-<!--                <div class="big-event__photo">-->
-<!--                    <img src="img/default.png" class="img img__event" alt="eventName">-->
-<!--                </div>-->
-<!--                <div class="big-event__description">-->
-<!--                    <div class="font font__color_black font__title_card">Event1 title</div>-->
-<!--                    <div class="big-event__description_inact">-->
-<!--                        <div class="font font__color_black font__size_small">Event description-->
-<!--                            asssssssssssssssssssssssssssssssssssssss assssssssssssssssssss (first 36 symbols)-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="font font__color_lg font__size_small-x">Followers: 10</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="big-event">-->
-<!--                <div class="big-event__photo">-->
-<!--                    <img src="img/default.png" class="img img__event" alt="eventName">-->
-<!--                </div>-->
-<!--                <div class="big-event__description big-event__description_act">-->
-<!--                    <div class="font font__color_w font__title">Event2 title</div>-->
-<!--                    <div class="big-event__description_inact">-->
-<!--                        <div class="font font__color_lg font__size_small">Event description (first 36 symbols)</div>-->
-<!--                    </div>-->
-<!--                    <div class="font font__color_lg font__size_small">Followers: 1010</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="big-event">-->
-<!--                <div class="big-event__photo">-->
-<!--                    <img src="img/default.png" class="img img__event" alt="eventName">-->
-<!--                </div>-->
-<!--                <div class="big-event__description big-event__description_act">-->
-<!--                    <div class="font font__color_w font__title">Event2 title</div>-->
-<!--                    <div class="big-event__description_inact">-->
-<!--                        <div class="font font__color_lg font__size_small">Event description (first 36 symbols)</div>-->
-<!--                    </div>-->
-<!--                    <div class="font font__color_lg font__size_small">Followers: 1010</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="big-event">-->
-<!--                <div class="big-event__photo">-->
-<!--                    <img src="img/lead.jpg" class="img img__event" alt="eventName">-->
-<!--                </div>-->
-<!--                <div class="big-event__description big-event__description_act">-->
-<!--                    <div class="font font__color_w font__title">Event2 title</div>-->
-<!--                    <div class="big-event__description_inact">-->
-<!--                        <div class="font font__color_lg font__size_small">Event description (first 36 symbols)</div>-->
-<!--                    </div>-->
-<!--                    <div class="font font__color_lg font__size_small">Followers: 1010</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="big-event">-->
-<!--                <div class="big-event__photo">-->
-<!--                    <img src="img/default.png" class="img img__event" alt="eventName">-->
-<!--                </div>-->
-<!--                <div class="big-event__description big-event__description_act">-->
-<!--                    <div class="font font__color_w font__title">Event2 title</div>-->
-<!--                    <div class="big-event__description_inact">-->
-<!--                        <div class="font font__color_lg font__size_small">Event description (first 36 symbols)</div>-->
-<!--                    </div>-->
-<!--                    <div class="font font__color_lg font__size_small">Followers: 1010</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="big-event">-->
-<!--                <div class="big-event__photo">-->
-<!--                    <img src="img/default.png" class="img img__event" alt="eventName">-->
-<!--                </div>-->
-<!--                <div class="big-event__description big-event__description_act">-->
-<!--                    <div class="font font__color_w font__title">Event2 title</div>-->
-<!--                    <div class="big-event__description_inact">-->
-<!--                        <div class="font font__color_lg font__size_small">Event description (first 36 symbols)</div>-->
-<!--                    </div>-->
-<!--                    <div class="font font__color_lg font__size_small">Followers: 1010</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="big-event">-->
-<!--                <div class="big-event__photo">-->
-<!--                    <img src="img/lead.jpg" class="img img__event" alt="eventName">-->
-<!--                </div>-->
-<!--                <div class="big-event__description big-event__description_act">-->
-<!--                    <div class="font font__color_w font__title">Event2 title</div>-->
-<!--                    <div class="big-event__description_inact">-->
-<!--                        <div class="font font__color_lg font__size_small">Event description (first 36 symbols)</div>-->
-<!--                    </div>-->
-<!--                    <div class="font font__color_lg font__size_small">Followers: 1010</div>-->
-<!--                </div>-->
-<!--            </div>-->
         </div>
     </div>
 </div>

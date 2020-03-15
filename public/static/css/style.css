@@ -81,6 +81,11 @@
   display: flex;
   border-radius: 4px;
 }
+.big-search__icon {
+  position: relative;
+  left: -10px;
+  top: 4px;
+}
 .big-search__grid {
   column-count: 1;
   column-gap: 0;
@@ -222,6 +227,10 @@
 .icon__close {
   -webkit-mask-image: url("../icons/close.svg");
   mask-image: url("../icons/close.svg");
+}
+.icon__users {
+  -webkit-mask-image: url("../icons/users.svg");
+  mask-image: url("../icons/users.svg");
 }
 .icon__add {
   -webkit-mask-image: url("../icons/add.svg");
@@ -526,10 +535,13 @@
   color: #191919;
 }
 .font__color_lg {
-  color: #f0f9fb;
+  color: #b6bebf;
 }
 .font__color_g {
   color: #696969;
+}
+.font_bold {
+  font-weight: bold;
 }
 .font__size_small {
   font-size: 16px;
@@ -552,6 +564,11 @@
 }
 .big-event__description {
   word-break: break-all;
+  margin: 12px;
+  text-align: left;
+}
+.big-event__title {
+  padding-bottom: 12px;
 }
 
 .edit-field__form {
@@ -601,10 +618,13 @@
   color: #191919;
 }
 .font__color_lg {
-  color: #f0f9fb;
+  color: #b6bebf;
 }
 .font__color_g {
   color: #696969;
+}
+.font_bold {
+  font-weight: bold;
 }
 .font__size_small {
   font-size: 16px;

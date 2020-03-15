@@ -1,13 +1,15 @@
 @import "variables";
 
-$title-size : 32px;
+$title-size: 32px;
 $eventum-font: "Helvetica Neue", sans-serif;
 
 .font {
   font-family: $eventum-font;
+
   &__title {
     font-weight: bold;
     font-size: $title-size;
+
     &_card {
       font-size: 18px;
     }
@@ -17,12 +19,15 @@ $eventum-font: "Helvetica Neue", sans-serif;
     &_w {
       color: $color-white;
     }
+
     &_blue {
       color: $color-blue;
     }
+
     &_black {
       color: $color-black;
     }
+
     &_lg {
       color: $color-light-gray;
     }
@@ -30,6 +35,10 @@ $eventum-font: "Helvetica Neue", sans-serif;
     &_g {
       color: #696969;
     }
+  }
+
+  &_bold {
+    font-weight: bold;
   }
 
   &__size {

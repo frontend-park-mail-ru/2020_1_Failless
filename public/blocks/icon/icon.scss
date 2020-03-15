@@ -8,6 +8,7 @@ $eventum-icon: $images-path + "logo.png";
 $more-icon: $icons-path + "more.svg";
 $close-icon: $icons-path + "close.svg";
 $add-icon: $icons-path + "add.svg";
+$users-icon: $icons-path + "users.svg";
 
 $icon-size: 14px, 14px;
 
@@ -52,6 +53,11 @@ $icon-size: 14px, 14px;
   &__close {
     -webkit-mask-image: url($close-icon);
     mask-image: url($close-icon);
+  }
+
+  &__users {
+    -webkit-mask-image: url($users-icon);
+    mask-image: url($users-icon);
   }
 
   &__add {

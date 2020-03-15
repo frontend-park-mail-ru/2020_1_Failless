@@ -22,6 +22,11 @@
 
   &__description {
     word-break: break-all;
+    margin: 12px;
+    text-align: left;
   }
 
+  &__title {
+    padding-bottom: 12px;
+  }
 }
