@@ -29,31 +29,33 @@
     border-radius: 4px;
   }
 
-  &__input {
-  }
-
   &__grid {
-    //display: grid;
-    //grid-template-columns: 25% 25% 25% 25%;
-    //grid-template-rows: auto;
+    display: flex;
+    flex-flow: column wrap;
+    width: 100%;
+    height: auto;
 
-    //display: flex;
-    //flex-flow: row wrap;
+    @media screen and (min-width: 400px) {
+      height: 1600px;
+    }
 
-    display: block;
-    /* flex-wrap: wrap; */
-    column-count: 4;
-    column-gap: 0;
+    @media screen and (min-width: 600px) {
+      height: 1300px;
+    }
 
+    @media screen and (min-width: 800px) {
+      height: 1100px;
+    }
 
-    //justify-content: space-around;
+    @media screen and (min-width: 1100px) {
+      height: 800px;
+    }
   }
 
   &__results {
-    //display: block;
-    //margin-left: auto;
-    //margin-right: auto;
-
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     @media screen and (orientation: landscape) {
       width: 1050px;
     }
