@@ -45,6 +45,7 @@ export default class BigEventSearchView extends View {
                     eventName: 'middle/' + '1',
                     title: 'Концерт Федук',
                     description: 'Дуэт Артёма Черепанова и Александра Макеева изобрёл себя вновь уже не раз - и едва ли остановится на достигнутом.',
+                    date: '15 марта 2020 19:30',
                     followInfo: '1000',
                 },
                 {
@@ -53,6 +54,7 @@ export default class BigEventSearchView extends View {
                     title: 'Играем в футбол на Водном',
                     description: '«Буерак» стали одной из тотемных групп набиравшего обороты нового русского инди-рока. Выпуская по альбому в год (четвёртый, «Шоу-бизнес», вышел минувшей осенью), дуэт Артёма Черепанова и Александра Макеева изобрёл себя вновь уже не раз - и едва ли остановится на достигнутом.',
                     followInfo: '3/18',
+                    date: '15 марта 2020 19:30',
                     middle: true,
                 },
                 {
@@ -61,6 +63,7 @@ export default class BigEventSearchView extends View {
                     title: 'Мафия',
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
+                    date: '15 марта 2020 19:30',
                     middle: true,
                 },
                 {
@@ -69,6 +72,7 @@ export default class BigEventSearchView extends View {
                     title: 'Мафия',
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
+                    date: '15 марта 2020 19:30',
                     middle: true,
                 },
                 {
@@ -77,6 +81,7 @@ export default class BigEventSearchView extends View {
                     title: 'Мафия',
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
+                    date: '15 марта 2020 19:30',
                     middle: true,
                 },
                 {
@@ -85,6 +90,7 @@ export default class BigEventSearchView extends View {
                     title: 'Мафия',
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
+                    date: '15 марта 2020 19:30',
                     middle: true,
                 },
                 {
@@ -93,6 +99,7 @@ export default class BigEventSearchView extends View {
                     title: 'Выставка Дали',
                     description: 'Впервые в Москве выставка более двухсот работ гениального автора',
                     followInfo: '11232',
+                    date: '15 марта 2020 19:30',
                 },
                 {
                     img: 'img/lead.jpg',
@@ -101,6 +108,7 @@ export default class BigEventSearchView extends View {
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
                     middle: true,
+                    date: '15 марта 2020 19:30',
                 },
                 {
                     img: 'img/lead.jpg',
@@ -109,6 +117,7 @@ export default class BigEventSearchView extends View {
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
                     middle: true,
+                    date: '15 марта 2020 19:30',
                 },
                 {
                     img: 'img/default.png',
@@ -116,6 +125,7 @@ export default class BigEventSearchView extends View {
                     title: 'Выставка Дали',
                     description: 'Впервые в Москве выставка более двухсот работ гениального автора',
                     followInfo: '11232',
+                    date: '15 марта 2020 19:30',
                 },
                 {
                     img: 'img/default.png',
@@ -123,6 +133,7 @@ export default class BigEventSearchView extends View {
                     title: 'Выставка Дали',
                     description: 'Впервые в Москве выставка более двухсот работ гениального автора',
                     followInfo: '11232',
+                    date: '15 марта 2020 19:30',
                 },
                 {
                     img: 'img/lead.jpg',
@@ -131,6 +142,7 @@ export default class BigEventSearchView extends View {
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
                     middle: true,
+                    date: '15 марта 2020 19:30',
                 },
                 {
                     img: 'img/default.png',
@@ -138,6 +150,7 @@ export default class BigEventSearchView extends View {
                     title: 'Выставка Дали',
                     description: 'Впервые в Москве выставка более двухсот работ гениального автора',
                     followInfo: '11232',
+                    date: '15 марта 2020 19:30',
                 }
             ],
         };
