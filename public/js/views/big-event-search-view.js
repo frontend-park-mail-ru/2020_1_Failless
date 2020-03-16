@@ -37,7 +37,7 @@ export default class BigEventSearchView extends View {
                     eventName: 'middle/' + '1',
                     title: 'Концерт Буерак',
                     description: '«Буерак» стали одной из тотемных групп набиравшего обороты нового русского инди-рока. Выпуская по альбому в год (четвёртый, «Шоу-бизнес», вышел минувшей осенью), дуэт Артёма Черепанова и Александра Макеева изобрёл себя вновь уже не раз - и едва ли остановится на достигнутом.',
-                    date: '15 марта 19:30',
+                    date: '15 марта 2020 19:30',
                     followInfo: '100',
                 },
                 {
@@ -53,6 +53,7 @@ export default class BigEventSearchView extends View {
                     title: 'Играем в футбол на Водном',
                     description: '«Буерак» стали одной из тотемных групп набиравшего обороты нового русского инди-рока. Выпуская по альбому в год (четвёртый, «Шоу-бизнес», вышел минувшей осенью), дуэт Артёма Черепанова и Александра Макеева изобрёл себя вновь уже не раз - и едва ли остановится на достигнутом.',
                     followInfo: '3/18',
+                    middle: true,
                 },
                 {
                     img: 'img/lead.jpg',
@@ -60,6 +61,7 @@ export default class BigEventSearchView extends View {
                     title: 'Мафия',
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
+                    middle: true,
                 },
                 {
                     img: 'img/lead.jpg',
@@ -67,6 +69,7 @@ export default class BigEventSearchView extends View {
                     title: 'Мафия',
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
+                    middle: true,
                 },
                 {
                     img: 'img/lead.jpg',
@@ -74,6 +77,7 @@ export default class BigEventSearchView extends View {
                     title: 'Мафия',
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
+                    middle: true,
                 },
                 {
                     img: 'img/lead.jpg',
@@ -81,6 +85,7 @@ export default class BigEventSearchView extends View {
                     title: 'Мафия',
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
+                    middle: true,
                 },
                 {
                     img: 'img/default.png',
@@ -95,6 +100,7 @@ export default class BigEventSearchView extends View {
                     title: 'Мафия',
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
+                    middle: true,
                 },
                 {
                     img: 'img/lead.jpg',
@@ -102,6 +108,7 @@ export default class BigEventSearchView extends View {
                     title: 'Мафия',
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
+                    middle: true,
                 },
                 {
                     img: 'img/default.png',
@@ -123,6 +130,7 @@ export default class BigEventSearchView extends View {
                     title: 'Мафия',
                     description: 'Хотим выйти чисто отдохнуть',
                     followInfo: '5/6',
+                    middle: true,
                 },
                 {
                     img: 'img/default.png',

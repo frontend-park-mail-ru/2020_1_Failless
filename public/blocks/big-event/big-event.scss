@@ -5,28 +5,61 @@
   box-sizing: border-box;
   break-inside: avoid;
   counter-increment: item-counter;
-
-
+  text-align: left;
+  border-radius: 2px;
   margin: 8px;
   background-color: $color-white;
   box-shadow: 0 0 12px 3px rgba(0, 0, 0, 0.4);
-
-  //display: inline-block;
-  text-align: center;
-
   width: $event-width;
 
-
-  //@media screen and (orientation: landscape) {
-  //}
-
   &__description {
-    word-break: break-all;
-    margin: 12px;
-    text-align: left;
+    margin: 0 12px 12px;
+    word-break: break-word;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   &__title {
-    padding-bottom: 12px;
+    padding-top: $padding-event;
+    padding-bottom: $padding-event;
+    padding-left: 12px;
+  }
+
+  &__subscribe {
+    list-style-type: disc;
+    width: 160px;
+
+    &_big {
+      color: $color-red;
+    }
+
+    &_middle {
+      color: $color-blue;
+    }
+  }
+
+  &__link {
+    position: relative;
+    left: -10px;
+    display: inline-block;
+  }
+
+  &__date {
+    padding-top: $padding-event;
+    padding-bottom: $padding-event;
+  }
+
+  &__follow {
+    display: flex;
+    padding: 4px 0 12px;
+
+    &_count {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__icon {
+    padding-right: 8px;
   }
 }

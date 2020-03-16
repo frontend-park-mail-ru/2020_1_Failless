@@ -1,7 +1,7 @@
 @import "variables";
 
 $title-size: 32px;
-$eventum-font: "Helvetica Neue", sans-serif;
+$eventum-font: Helvetica, Arial, sans-serif;
 
 .font {
   font-family: $eventum-font;
@@ -45,11 +45,31 @@ $eventum-font: "Helvetica Neue", sans-serif;
     &_small {
       font-size: 16px;
     }
+    &_small-x {
+      font-size: 14px;
+    }
+
+    &_small-xx {
+      font-size: 12px;
+    }
+
+    &_small-xxx {
+      font-size: 8px;
+    }
+
   }
 
   &__helper {
     font-size: 12px;
     font-weight: bold;
     font-family: $eventum-font;
+  }
+
+  &_pointer {
+    cursor: pointer;
+  }
+
+  &_underline {
+    text-decoration: underline;
   }
 }
