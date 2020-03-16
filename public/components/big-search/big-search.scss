@@ -1,0 +1,86 @@
+@import "../../modules/variables";
+
+.big-search {
+  display: block;
+  align-items: center;
+  text-align: center;
+  padding-top: 64px;
+
+  &__header {
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+
+    &_sizing {
+      padding-bottom: 4%;
+    }
+
+  }
+
+  &__search {
+    height: 100%;
+    width: 504px;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: $color-white;
+    display: flex;
+    border-radius: 4px;
+  }
+
+  &__icon {
+    position: relative;
+    left: -10px;
+    top: 4px;
+  }
+
+  &__grid {
+
+    column-count: 1;
+    column-gap: 0;
+    counter-reset: item-counter;
+
+    @media screen and (orientation: portrait) {
+      column-count: 2;
+    }
+
+    @media screen and (orientation: landscape) and (min-width: 800px) {
+      column-count: 3;
+    }
+
+    @media screen and (min-width: 1100px) {
+      column-count: 4;
+    }
+
+    @media screen and (min-width: 1400px) {
+      column-count: 5;
+    }
+  }
+
+  &__results {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media screen and (orientation: portrait) {
+      width: 504px;
+    }
+
+    @media screen and (orientation: landscape) and (min-width: 800px) {
+      width: 758px;
+    }
+
+    @media screen and (orientation: landscape) and (min-width: 1100px) {
+      width: 1012px;
+    }
+    @media screen and (orientation: landscape) and (min-width: 1400px) {
+      width: 1270px;
+    }
+
+
+    @media screen and (orientation: portrait) {
+      //width: 144px * 2;
+    }
+  }
+}

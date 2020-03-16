@@ -61,7 +61,9 @@ export default class ProfileController extends Controller {
                     console.error('You have no rights');
                     console.log(profile);
                 }
-            }).catch();
+            }).catch(onerror => {
+            console.error(onerror);
+        });
     }
 
     #showSettingsModal = (event) => {
@@ -169,7 +171,7 @@ export default class ProfileController extends Controller {
         if (event.target.tagName === 'A') {
             let filed = event.target.parentNode;
             switch (filed.id) {
-            case 'popupPasswd':{
+            case 'popupPasswd': {
                 console.log('draw password field');
                 this.editView.renderPasswordForm(filed);
                 break;
