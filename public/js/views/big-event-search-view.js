@@ -14,6 +14,7 @@ export default class BigEventSearchView extends View {
     constructor(parent) {
         super(parent);
         this.parent = parent;
+        this.resultsArea = null;
     }
 
     /**
@@ -21,11 +22,12 @@ export default class BigEventSearchView extends View {
      * @param {JSON} events
      */
     render(events) {
-        if (!events) {
-            this.#renderEmptySearch();
-        } else {
-            this.renderResults(events);
-        }
+        const search = {
+            events: events,
+        };
+        const template = Handlebars.templates['big-search'](search);
+        this.parent.insertAdjacentHTML('beforeend', template);
+        this.resultsArea = document.getElementsByClassName('big-search__grid')[0];
     }
 
     #renderEmptySearch = () => {
@@ -159,42 +161,18 @@ export default class BigEventSearchView extends View {
     };
 
     renderResults(results) {
-        const search = {};
-        const template = Handlebars.templates['big-search'](search);
-        this.parent.insertAdjacentHTML('beforeend', template);
+        if (this.resultsArea) {
+            this.resultsArea.innerHTML = '';
+        }
+        this.appendResults(results);
     }
 
+    appendResults(events) {
+        let template = '';
+        events.forEach(event => {
+            template += Handlebars.templates['big-event'](event);
+        });
+
+        this.resultsArea.insertAdjacentHTML('beforeend', template);
+    }
 }
-
-function Event(photos, title, place, description) {
-    this.photos = photos;
-    this.title = title;
-    this.place = place;
-    this.description = description;
-}
-
-const events = [
-    new Event(
-        ['/EventPhotos/3.jpg', '/EventPhotos/4.jpg'],
-        'Концерт',
-        'Москва',
-        'Ну как его похвалить? Ну классный концерт, шикарный концерт, как его ещё похвалить?'),
-    new Event(
-        ['/EventPhotos/2.jpg', '/EventPhotos/1.jpg'],
-        'Выставка',
-        'Ленинград',
-        'Выставка Ван-Гога. Обещают привезти главный экспонат')
-];
-
-function Tag(title) {
-    this.title = '#' + title;
-}
-
-const tags = [
-    new Tag('хочувБАР'),
-    new Tag('хочувКИНО'),
-    new Tag('хочунаКАТОК'),
-    new Tag('хочуГУЛЯТЬ'),
-    new Tag('хочуКУШАЦ'),
-    new Tag('хочуСПАТЬ'),
-];

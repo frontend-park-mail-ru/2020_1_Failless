@@ -14,11 +14,14 @@ export default class EventModel extends Model {
     }
 
     /**
+     */
+    /**
      * Get event data from server
+     * @param {{query: string, page: number}} eventsRequest - request with query, limits and page
      * @return {Promise} promise to get user data
      */
-    static getEvents() {
-        return NetworkModule.fetchGet({path: '/events/feed'}).then((response) => {
+    static getEvents(eventsRequest) {
+        return NetworkModule.fetchPost({path: '/search/events',  body: eventsRequest}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
