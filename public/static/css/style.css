@@ -1,3 +1,24 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic");
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .profile-edit__overlay {
   position: absolute;
   left: 0;
@@ -54,6 +75,12 @@
   position: fixed;
   right: 10px;
   top: 10px;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .big-search {
@@ -136,6 +163,12 @@
     width: 1270px;
   }
 }
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .btn {
   border-radius: 18px;
   border: none;
@@ -174,6 +207,38 @@
   border-radius: 4px;
 }
 
+.re_btn {
+  width: 104px;
+  height: 34px;
+  font-size: 12px;
+  font-weight: 300;
+  border-radius: 4px;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+.re_btn__filled {
+  color: white;
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+}
+.re_btn__outline {
+  color: #C471ED;
+  background: white;
+  border: 1px solid #C471ED;
+}
+.re_btn:hover {
+  border: 0;
+  color: white;
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .header {
   width: 100%;
   height: 50px;
@@ -192,6 +257,12 @@
   margin: 12px;
   color: white;
   font-size: 1rem;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .icon {
@@ -283,6 +354,12 @@
   border-radius: 2px 2px 0;
 }
 
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .landing {
   display: block;
   text-align: center;
@@ -333,6 +410,12 @@
   font-size: 26px;
   color: white;
 }
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .profile {
   text-align: center;
 }
@@ -389,6 +472,12 @@
   margin-bottom: 20px;
 }
 
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .tag {
   padding: 4px;
   border-radius: 4px;
@@ -399,9 +488,15 @@
   background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
 }
 
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .auth {
   max-width: 752px;
-  height: auto;
+  height: 86vh;
   position: relative;
   margin: 10px auto;
   text-align: left;
@@ -410,37 +505,27 @@
   align-items: center;
 }
 .auth__item {
-  width: 50%;
-  padding: 20px;
-  border-radius: 6px;
-  box-shadow: 6px 8px 12px 1px rgba(0, 0, 0, 0.4);
-  background-color: #12C2E9;
-}
-.auth__item_main {
-  z-index: 0;
+  width: fit-content;
+  padding: 69px 46px 46px;
+  border-radius: 4px;
+  box-shadow: 0 0 52px -9px rgba(0, 0, 0, 0.5);
   background-color: white;
 }
 .auth__title {
-  margin-left: 10%;
-  color: white;
-  font-weight: bold;
-  font-size: 40px;
-  padding-bottom: 12%;
-}
-.auth__title_main {
-  color: #F64F59;
+  text-align: center;
+  font-size: 48px;
+  font-weight: 700;
+  padding-bottom: 69px;
 }
 .auth__help {
-  font-weight: bolder;
+  font-weight: bold;
   font-size: 12px;
   color: #191919;
-  padding-bottom: 6px;
+  padding-bottom: 12px;
 }
 .auth__input {
-  margin-left: auto;
-  margin-right: auto;
-  width: 80%;
-  height: 70px;
+  width: 264px;
+  padding-bottom: 23px;
 }
 .auth__text {
   color: white;
@@ -449,10 +534,16 @@
   width: 80%;
 }
 .auth__btn {
-  padding-top: 20px;
+  padding-top: 23px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  display: flex;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .input {
@@ -469,10 +560,15 @@
   width: 300px;
 }
 .input__auth {
+  font-size: 14px;
+  font-weight: 300;
   width: 100%;
   border-top-style: hidden;
   border-right-style: hidden;
   border-left-style: hidden;
+}
+.input__auth::placeholder {
+  color: #D5D5D5;
 }
 .input__search {
   font-size: 16px;
@@ -519,6 +615,18 @@
   max-height: 100%;
   width: auto;
   margin-right: 2px;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .font {
@@ -632,6 +740,12 @@
   margin: 4px 1px 4px;
 }
 
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .edit-field__form {
   display: flex;
   flex-direction: column;
@@ -657,6 +771,18 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .font {
@@ -723,7 +849,7 @@ body {
   height: 100vh;
   background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
   text-decoration: none;
-  font-family: "Helvetica Neue", sans-serif;
+  font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
 }
 
 /*# sourceMappingURL=style.css.map */

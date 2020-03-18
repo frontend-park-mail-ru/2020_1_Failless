@@ -1,3 +1,5 @@
+@import "../../modules/variables";
+
 .input {
   box-sizing: border-box;
   border-radius: 2px;
@@ -16,10 +18,16 @@
   }
 
   &__auth {
+    font-size: 14px;
+    font-weight: 300;
     width: 100%;
     border-top-style: hidden;
     border-right-style: hidden;
     border-left-style: hidden;
+  }
+
+  &__auth::placeholder {
+    color: $re--color-middle-gray;
   }
 
   &__search {

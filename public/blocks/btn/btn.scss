@@ -46,3 +46,33 @@
     border-radius: 4px;
   }
 }
+
+.re_btn {
+  width: 104px;
+  height: 34px;
+  font-size: 12px;
+  font-weight: 300;
+  border-radius: $re--border-radius;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+
+  &__filled {
+    color: $color-white;
+    background: $re--gradient;
+  }
+  &__outline {
+    color: $color-purple;
+    background: $color-white;
+    border: 1px solid $color-purple; // TODO: replace with gradient
+  }
+
+  &:hover {
+    border: 0;
+    color: $color-white;
+    background: $re--gradient;
+  }
+
+
+}
