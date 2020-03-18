@@ -169,9 +169,11 @@ export default class BigEventSearchView extends View {
 
     appendResults(events) {
         let template = '';
-        events.forEach(event => {
-            template += Handlebars.templates['big-event'](event);
-        });
+        if (events) {
+            events.forEach(event => {
+                template += Handlebars.templates['big-event'](event);
+            });
+        }
 
         this.resultsArea.insertAdjacentHTML('beforeend', template);
     }

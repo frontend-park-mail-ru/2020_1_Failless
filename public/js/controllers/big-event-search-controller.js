@@ -32,7 +32,11 @@ export default class BigEventSearchController extends Controller {
                 document.getElementById('searchInput')
                     .addEventListener('keydown', this.#completeRequest.bind(this));
             }).catch(onerror => {
-            console.error(onerror);
+                this.view.render();
+                 document.getElementById('searchInput')
+                     .addEventListener('keydown', this.#completeRequest.bind(this));
+
+                console.error(onerror);
         });
 
         // todo: create request to backend for taking events list
@@ -40,29 +44,10 @@ export default class BigEventSearchController extends Controller {
     }
 
     /**
-     *
-     * @param {Event} event
-     */
-    #highlightTag = (event) => {
-        event.preventDefault();
-
-        let hideButton = this.querySelector('.x_btn');
-        if (this.style.opacity === '0.5') {
-            this.style.opacity = '1';
-            hideButton.style.display = 'block';
-        } else {
-            this.style.opacity = '0.5';
-            hideButton.style.display = 'none';
-        }
-    };
-
-    /**
-     *
-     * @param {KeyboardEvent} event
-     * @returns {boolean}
+     * Wait press enter for sending request to backend for query results
+     * @param {KeyboardEvent} event - key-press event
      */
     #completeRequest = (event) => {
-        console.log(event.target);
         if (event.code === 'Enter') {
             event.preventDefault();
             console.log(event.target.value);
