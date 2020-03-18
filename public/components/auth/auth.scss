@@ -2,49 +2,40 @@
 
 .auth {
   max-width: 752px;
-  height: auto;
+  height: $re--full-height;
   position: relative;
   margin: 10px auto;
   text-align: left;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 1 1 auto;
 
   &__item {
-    width: 50%;
-    padding: 20px;
-    border-radius: 6px;
-    box-shadow: 6px 8px 12px 1px rgba(0, 0, 0, 0.4);
-    background-color: $color-blue;
-    &_main {
-      z-index: 0;
-      background-color: white;
-    }
+    width: fit-content;
+    padding: $re--huge-padding $re--large-padding $re--large-padding;
+    border-radius: $re--border-radius;
+    box-shadow: 0 0 52px -9px rgba(0, 0, 0, 0.5);
+    background-color: $color-white;
   }
 
   &__title {
-    margin-left: 10%;
-    color: $color-white;
-    font-weight: bold;
-    font-size: 40px;
-    padding-bottom: 12%;
-    &_main {
-      color: $color-red;
-    }
+    text-align: center;
+    font-size: 48px;
+    font-weight: 700;
+    padding-bottom: $re--huge-padding;
   }
 
   &__help {
-    font-weight: bolder;
+    font-weight: bold;
     font-size: 12px;
     color: $color-black;
-    padding-bottom: 6px;
+    padding-bottom: $re--small-padding;
   }
 
   &__input {
-    margin-left: auto;
-    margin-right: auto;
-    width: 80%;
-    height: 70px;
+    width: 264px;
+    padding-bottom: $re--big-padding;
   }
 
   &__text {
@@ -55,9 +46,9 @@
   }
 
   &__btn {
-    padding-top: 20px;
+    padding-top: $re--big-padding;
+    display: flex;
     align-items: center;
     justify-content: center;
-    display: flex;
   }
 }

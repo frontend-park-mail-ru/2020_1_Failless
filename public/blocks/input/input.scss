@@ -1,3 +1,5 @@
+@import "../../modules/variables";
+
 .input {
   box-sizing: border-box;
   border-radius: 2px;
@@ -16,10 +18,23 @@
   }
 
   &__auth {
+    font-size: 14px;
+    font-weight: 300;
     width: 100%;
     border-top-style: hidden;
     border-right-style: hidden;
     border-left-style: hidden;
+    border-bottom: 2px solid $re--color-light-gray;
+    transition-property: border-bottom-color;
+    transition-duration: 0.3s;
+
+    &:focus {
+      border-bottom-color: $color-purple;
+    }
+  }
+
+  &__auth::placeholder {
+    color: $re--color-middle-gray;
   }
 
   &__search {

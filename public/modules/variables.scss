@@ -10,3 +10,27 @@ $color-gray: rgba(31, 63, 81, 0.6);
 $event-width: 244px;
 $padding-event: 12px;
 $border-radius: 2px;
+
+
+$re--color-light-gray: #F1F1F1;
+$re--color-middle-gray: #D5D5D5;
+$re--color-gray: #999999;
+$re--gradient: linear-gradient(
+                  135deg,
+                  $color-blue 0%,
+                  $color-purple 50%,
+                  $color-red 100%);
+$re--huge-padding: 69px;
+$re--large-padding: 46px;
+$re--big-padding: 23px;
+$re--medium-padding: 15px;
+$re--small-padding: 12px;
+
+$re--full-height: 86vh;
+$re--border-radius: 4px;
+
+.gradient-text {
+    background: $re--gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

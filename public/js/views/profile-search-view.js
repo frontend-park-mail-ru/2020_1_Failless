@@ -23,13 +23,14 @@ export default class ProfileSearchView extends View {
         const profile = {
             name: 'Egor',
             age: 20,
-            about: 'Вон парень, на пригорочке',
+            about: 'Поскольку тут контент динамический, то будет max-height, примерно как сейчас. Будет expand поверх фотки Соответственно кнопки посередине оставшегося блока снизу padding: 15px; // везде',
             photos: ['/ProfilePhotos/1.jpg'],
+            tags: tags,
         };
         this.parent.innerHTML += Handlebars.templates['public/js/templates/search/basic-template']({tags: tags});
-        let columns = this.parent.getElementsByClassName('column');
+        let columns = this.parent.getElementsByClassName('feed__column');
         columns[1].innerHTML = Handlebars.templates['public/js/templates/search/photos-column']({profile: profile});
-        columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({profile: profile, events: events});
+        columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({events: events});
     }
 }
 
