@@ -30,3 +30,9 @@ body {
   text-decoration: none;
   font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
 }
+
+#application {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}

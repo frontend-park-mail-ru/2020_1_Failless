@@ -8,6 +8,7 @@
   align-items: center;
   background-color: $color-black;
   margin-top: 0;
+  flex: 0 1 auto; // grow shrink basis
 
   &__manage {
     list-style: none;

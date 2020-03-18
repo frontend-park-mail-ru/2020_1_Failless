@@ -208,7 +208,9 @@
 }
 
 .re_btn {
-  width: 104px;
+  min-width: 104px;
+  width: fit-content;
+  padding: 0 20px;
   height: 34px;
   font-size: 12px;
   font-weight: 300;
@@ -217,6 +219,7 @@
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
+  outline: none;
 }
 .re_btn__filled {
   color: white;
@@ -231,6 +234,11 @@
   border: 0;
   color: white;
   background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.15);
+}
+.re_btn:active {
+  transition: 0.01s;
+  transform: scale(0.98);
 }
 
 .gradient-text {
@@ -247,6 +255,7 @@
   align-items: center;
   background-color: #191919;
   margin-top: 0;
+  flex: 0 1 auto;
 }
 .header__manage {
   list-style: none;
@@ -503,6 +512,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 1 1 auto;
 }
 .auth__item {
   width: fit-content;
@@ -850,6 +860,12 @@ body {
   background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
   text-decoration: none;
   font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
+}
+
+#application {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
 }
 
 /*# sourceMappingURL=style.css.map */
