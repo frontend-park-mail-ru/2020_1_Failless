@@ -24,6 +24,13 @@
     border-top-style: hidden;
     border-right-style: hidden;
     border-left-style: hidden;
+    border-bottom: 2px solid $re--color-light-gray;
+    transition-property: border-bottom-color;
+    transition-duration: 0.3s;
+
+    &:focus {
+      border-bottom-color: $color-purple;
+    }
   }
 
   &__auth::placeholder {

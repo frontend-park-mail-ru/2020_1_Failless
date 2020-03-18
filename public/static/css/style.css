@@ -586,6 +586,12 @@
   border-top-style: hidden;
   border-right-style: hidden;
   border-left-style: hidden;
+  border-bottom: 2px solid #F1F1F1;
+  transition-property: border-bottom-color;
+  transition-duration: 0.3s;
+}
+.input__auth:focus {
+  border-bottom-color: #C471ED;
 }
 .input__auth::placeholder {
   color: #D5D5D5;
