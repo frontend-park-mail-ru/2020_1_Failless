@@ -22,11 +22,7 @@
 body {
   margin: 0;
   height: 100vh;
-  background: linear-gradient(
-                  135deg,
-                  $color-blue 0%,
-                  $color-purple 50%,
-                  $color-red 100%);
+  background: $re--color-light-gray;
   text-decoration: none;
   font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
 }
