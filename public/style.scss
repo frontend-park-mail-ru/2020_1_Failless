@@ -42,3 +42,11 @@ body {
   min-width: 800px;
   width: 1000px;
 }
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: $color-black;
+  padding-bottom: $re--big-padding;
+  margin: 0;
+}

@@ -32,7 +32,7 @@ export default class ProfileSearchController extends Controller {
         document.querySelectorAll('.search_tag').forEach((tag) => {
             tag.addEventListener('click', this._highlightTag);
         });
-        document.getElementById('form').addEventListener('submit', this._setOptions)
+        document.getElementById('form').addEventListener('submit', this._setOptions);
         SetSliders(18, 60, 25);
     }
 
@@ -90,7 +90,7 @@ export default class ProfileSearchController extends Controller {
             photos: ['/ProfilePhotos/2.jpg'],
         };
 
-        let columns = this.parent.getElementsByClassName('column');
+        let columns = this.parent.getElementsByClassName('feed__column');
         columns[1].innerHTML = Handlebars.templates['public/js/templates/search/photos-column']({profile: this.currentProfile});
         columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({profile: this.currentProfile, events: this.currentProfileEvents});
     }

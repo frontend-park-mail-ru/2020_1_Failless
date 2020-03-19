@@ -1,5 +1,16 @@
 @import "../../modules/variables";
 
+@mixin swipe_btn($bg-color, $font-size) {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background-color: $bg-color;
+  text-align: center;
+  font-size: $font-size;
+  font-weight: 700;
+  color: $color-white;
+}
+
 .btn {
   border-radius: 18px;
   border: none;
@@ -48,9 +59,9 @@
 }
 
 .re_btn {
-  min-width: 104px;
+  min-width: 96px;
   width: fit-content;
-  padding: 0 20px;
+  padding: 0 10px;
   height: 34px;
   font-size: 12px;
   font-weight: 300;
@@ -82,5 +93,13 @@
   &:active {
     transition: 0.01s;
     transform: scale(0.98);
+  }
+
+  &__reject {
+    @include swipe_btn($color-blue, 23px);
+  }
+
+  &__approve {
+    @include swipe_btn($color-red, 32px);
   }
 }
