@@ -184,9 +184,6 @@
   flex: 1 2 auto;
   width: 620px;
 }
-.feed__column:first-child {
-  padding-bottom: 0;
-}
 .feed__other_options {
   padding: 0 12px;
 }

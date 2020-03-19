@@ -30,7 +30,7 @@ export default class ProfileSearchView extends View {
         this.parent.innerHTML += Handlebars.templates['public/js/templates/search/basic-template']({tags: tags});
         let columns = this.parent.getElementsByClassName('feed__column');
         columns[1].innerHTML = Handlebars.templates['public/js/templates/search/photos-column']({profile: profile});
-        columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({profile: profile, events: events});
+        columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({events: events});
     }
 }
 
