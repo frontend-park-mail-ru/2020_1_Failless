@@ -1,5 +1,6 @@
 @import "components/profile-edit/profile-edit";
 @import "components/big-search/big-search";
+@import "js/templates/search/feed-users";
 
 @import "blocks/btn/btn";
 @import "blocks/header/header";
@@ -14,10 +15,13 @@
 @import "blocks/event/event";
 @import "blocks/big-event/big-event";
 @import "blocks/edit-field/edit-field";
+@import "blocks/slider/slider";
 
 @import "modules/variables";
 @import "modules/efont";
 @import "modules/images";
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic');
 
 body {
   margin: 0;
@@ -31,4 +35,10 @@ body {
   display: flex;
   flex-flow: column;
   height: 100%;
+  align-items: center;
+}
+
+.container {
+  min-width: 800px;
+  width: 1000px;
 }

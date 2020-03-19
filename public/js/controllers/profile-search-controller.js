@@ -2,6 +2,7 @@
 
 import Controller from '../core/controller.js';
 import ProfileSearchView from '../views/profile-search-view.js';
+import SetSliders from "../../blocks/slider/animation.js";
 
 /**
  * @class ProfileSearchController
@@ -32,6 +33,7 @@ export default class ProfileSearchController extends Controller {
             tag.addEventListener('click', this._highlightTag);
         });
         document.getElementById('form').addEventListener('submit', this._setOptions)
+        SetSliders(18, 60, 25);
     }
 
     _highlightTag(event) {

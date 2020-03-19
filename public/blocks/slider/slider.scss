@@ -1,0 +1,123 @@
+@import '../../modules/variables';
+
+// I couldn't use simple placeholder which would group
+// selectors and avoid repeated code
+// but CSS3 drops the entire group if at least one selector is invalid
+// which is true in our case since we use -webkit-, -moz-, -ms- all together
+//
+// https://www.w3.org/TR/selectors-3/#grouping
+
+@mixin slider-thumb() {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  border: 1px solid $color-white;
+  background: $re--gradient;
+  cursor: pointer;
+  margin-top: -12px;
+}
+
+@mixin slider-track() {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  background: $re--color-middle-gray;
+}
+// it was bg: transparent; for -ms-track
+
+input[type=range] {
+  -webkit-appearance: none;
+  margin: $re--medium-padding 0;
+  width: 100%;
+  cursor: grab;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:active {
+    &::-webkit-slider-runnable-track {
+      background: $re--gradient;
+    }
+
+    &::-ms-fill-lower {
+      background: $re--color-middle-gray;
+    }
+
+    &::-ms-fill-upper {
+      background: $re--gradient;
+    }
+  }
+
+  &::-webkit-slider-thumb {
+    @include slider-thumb;
+    -webkit-appearance: none;
+  }
+  &::-ms-thumb {
+    @include slider-thumb;
+    appearance: none;
+  }
+  &::-moz-range-thumb {
+    @include slider-thumb;
+    -moz-appearance: none;
+  }
+
+  &::-webkit-slider-runnable-track {
+    @include slider-track;
+    -webkit-transition: all 0.5s ease;
+  }
+  &::-moz-range-track {
+    @include slider-track;
+    -moz-transition: all 0.5s ease;
+  }
+  &::-ms-track {
+    @include slider-track;
+    transition: all 0.5s ease;
+    border-color: transparent;
+    color: transparent;
+  }
+
+  &::-ms-fill-lower {
+    background: $re--gradient;
+  }
+
+  &::-ms-fill-upper {
+    background: $re--color-middle-gray;
+  }
+}
+
+.slider {
+  width: 100%;
+  height: auto;
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  font-size: 10px;
+  font-weight: 500;
+
+  &__maxmin {
+    width: 100%;
+    height: auto;
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: $re--color-middle-gray;
+  }
+
+  &__value {
+    position: absolute;
+    left: 1px;
+    top: 16px;
+    width: 24px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    color: $color-white;
+    pointer-events: none;
+
+    &::before {
+      content: attr(slider_value);
+    }
+  }
+}

@@ -1,0 +1,152 @@
+@import '../../../modules/variables';
+
+.feed {
+  width: 100%;
+  margin: 10px 0;
+  text-align: left;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 1 1 100%;
+
+  &__column {
+    width: 24%;
+    background-color: $color-white;
+    border-radius: $re--border-radius;
+    padding: $re--medium-padding;
+    max-height: 86.5vh; // TODO: bullshit
+    overflow: auto;
+
+    &__main {
+      flex: 0 0 auto;
+    }
+
+    &:first-child {
+      padding-bottom: 0;
+    }
+  }
+
+  &__other_options {
+    padding: 0 $re--small-padding;
+  }
+
+  &__options_field {
+    margin-bottom: $re--big-padding;
+  }
+
+  /* Customize the label (the container) */
+  &__checkbox_label {
+    display: block;
+    position: relative;
+    padding-left: 19px;
+    margin-bottom: 7px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 500;
+    color: $color-black;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    /* Hide the browser's default checkbox */
+    & > input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+
+      /* When the checkbox is checked, add a blue background */
+      &:checked ~ .feed__checkbox_checkmark {
+        background: $re--gradient;
+
+        /* Show the checkmark when checked */
+        &:after {
+          display: block;
+        }
+      }
+
+      /* Show the checkmark when checked */
+      &:checked ~ .feed__checkbox_label { // TODO: doesn't work
+        color: $re--color-middle-gray;
+      }
+    }
+  }
+
+  /* Create a custom checkbox */
+  &__checkbox_checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 10px;
+    width: 10px;
+    background-color: $color-white;
+    border: 1px solid $re--color-light-gray;
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      /* Style the checkmark/indicator */
+      left: 4px;
+      top: 1px;
+      width: 2px;
+      height: 5px;
+      border: solid white;
+      border-width: 0 1px 1px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+  }
+
+
+
+  &__options_footer {
+    padding: $re--big-padding 0;
+    width: 100%;
+    height: auto;
+    position: sticky;
+    bottom: 0;
+    background-color: $color-white;
+    box-shadow: 0 -10px 5px -6px rgba(0, 0, 0, 0.15);
+  }
+
+  &__buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  &__map {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.photos-column {
+  min-width: 40%;
+  max-width: 50%;
+  width: auto;
+  z-index: -2;
+}
+
+.separator {
+  height: 1px;
+  width: auto;
+  margin-bottom: $re--big-padding;
+  background-color: $re--color-light-gray;
+}
+
+.search_tag {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.x_btn {
+  display: none;
+}
