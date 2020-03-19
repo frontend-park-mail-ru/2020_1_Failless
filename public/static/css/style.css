@@ -183,6 +183,12 @@
   background-color: #191919;
   margin-top: 0;
 }
+@media screen and (orientation: portrait) {
+  .header {
+    height: 2em;
+    min-height: 2em;
+  }
+}
 .header__manage {
   list-style: none;
   display: flex;
