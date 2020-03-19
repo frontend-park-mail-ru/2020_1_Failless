@@ -1,0 +1,17 @@
+<button class="re_btn re_btn__outline">Set event</button>
+
+<div class="modal__container">
+    <div class="modal__window">
+        <form>
+            <h5>Название</h5>
+            <input type="text" placeholder="Концерт BMTH" value="{{ event.title }}">
+            <h5>Место</h5>
+            <input type="text" placeholder="Москва" value="{{ event.place }}">
+            <h5>Описание</h5>
+            <textarea class="input input__text_small" placeholder="Похвалите ещё концерт">{{ event.description }}</textarea>
+            <!-- TODO: add photos here -->
+        </form>
+        <button class="re_btn re_btn__filled">{{ mode }}</button>
+        <button class="re_btn re_btn__outline">Назад</button>
+    </div>
+</div>
