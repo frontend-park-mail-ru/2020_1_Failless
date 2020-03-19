@@ -8,7 +8,7 @@
 * Фильтры по желаниям и эвентам
 * Мы просто взяли лучшее из Tinder, KudaGo & Airbnb - и получили Eventum!
 
-#### [API in Swagger](https://github.com/go-park-mail-ru/2020_1_Failless/blob/bugfix/api/server/swagger.yml)
+#### [API in Swagger](https://app.swaggerhub.com/apis/rowbotman/Eventum/1.0.3-oas3)
 #### Сайт доступен по адресу https://eventum.rowbot.dev
 #### [Backend репозиторий проекта](https://github.com/go-park-mail-ru/2020_1_Failless)
 
