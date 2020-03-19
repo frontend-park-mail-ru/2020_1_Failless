@@ -7,11 +7,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 0 1 auto; // grow shrink basis
+  flex: 0 0 auto; // grow shrink basis
 
   &__container {
-    min-width: 800px;
-    width: 1000px;
     display: flex;
     justify-content: space-between;
     align-items: center;
