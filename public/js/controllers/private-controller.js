@@ -20,48 +20,57 @@ export default class PrivateController extends Controller {
             this._mailRedirect,
             this._profileRedirect,
         ];
-        this.circles = document.getElementsByClassName('circle');
+        this.circles = null;
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            this.circles = document.getElementsByClassName('circle');
+            for (let iii = 0; iii < this.circles.length; iii++) {
+                this.circles[iii].addEventListener('click', this.redirects[iii].bind(this), false);
+            }
+        });
     }
 
     /**
      * Create action
      */
     action() {
-        console.log('private controller action');
         super.action();
-        console.log(this.view); // TODO: wat
-
-        for (let iii = 0; iii < this.circles.length; iii++) {
-            this.circles[iii].addEventListener('click', this.redirects[iii].bind(this), false);
-        }
     }
 
     _chatRedirect = (event) => {
         event.preventDefault();
 
-        window.history.pushState({}, '', '/private/chat');
-        window.history.pushState({}, '', '/private/chat');
-        window.history.back();
+        console.log('chat redirects');
+
+        // window.history.pushState({}, '', '/private/chat');
+        // window.history.pushState({}, '', '/private/chat');
+        // window.history.back();
     };
 
     _mailRedirect = (event) => {
         event.preventDefault();
 
-        window.history.pushState({}, '', '/private/mail');
-        window.history.pushState({}, '', '/private/mail');
-        window.history.back();
+        console.log('mail redirect');
+
+        // window.history.pushState({}, '', '/private/mail');
+        // window.history.pushState({}, '', '/private/mail');
+        // window.history.back();
     };
 
     _profileRedirect = (event) => {
         event.preventDefault();
 
-        window.history.pushState({}, '', '/private/profile');
-        window.history.pushState({}, '', '/private/profile');
-        window.history.back();
+        console.log('profile redirect');
+
+        // window.history.pushState({}, '', '/private/profile');
+        // window.history.pushState({}, '', '/private/profile');
+        // window.history.back();
     };
 
     _highlightCircle(index) {
-        this.circles.getElementsByClassName('circle__active')[0].classList.remove('circle__active');
+        Array.prototype.forEach.call(this.circles, (circle) => {
+            circle.classList.remove('circle__active');
+        });
         this.circles[index].classList.add('circle__active');
     }
 }

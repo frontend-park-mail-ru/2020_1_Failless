@@ -21,9 +21,8 @@ export default class NewProfileController extends PrivateController {
      * Create action
      */
     action() {
-        console.log('new profile controller action');
         super.action();
         this.view.render();
-        this._highlightCircle(2);
+        document.addEventListener('DOMContentLoaded', () => {this._highlightCircle(2);});
     }
 }

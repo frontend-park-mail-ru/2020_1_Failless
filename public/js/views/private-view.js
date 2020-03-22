@@ -20,7 +20,6 @@ export default class PrivateView extends View {
      * Render template
      */
     render() {
-        console.log('private view renders');
         this.parent.insertAdjacentHTML('beforeend', Handlebars.templates['private']());
     }
 }

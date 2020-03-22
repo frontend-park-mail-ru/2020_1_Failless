@@ -20,7 +20,7 @@ export default class NewProfileView extends PrivateView {
      * Render template
      */
     render() {
-        console.log('new profile view renders');
+        super.render();
         document.getElementsByClassName('private__left_column__body')[0].insertAdjacentHTML(
             'beforeend', Handlebars.templates['new-profile-left']());
         document.getElementsByClassName('private__main_column')[0].insertAdjacentHTML(
