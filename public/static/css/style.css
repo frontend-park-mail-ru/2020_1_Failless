@@ -1100,6 +1100,73 @@ input[type=range]::-ms-fill-upper {
   -webkit-text-fill-color: transparent;
 }
 
+.private__base {
+  width: 100%;
+  height: 88.5vh;
+  margin: 10px 0;
+  border-radius: 4px;
+  background-color: #C471ED;
+  box-shadow: 20px 20px 60px #cdcdcd, -20px -20px 60px #ffffff;
+  display: flex;
+  flex-flow: row;
+  justify-content: stretch;
+  align-items: flex-start;
+}
+.private__left_column {
+  width: 25%;
+  height: 100%;
+  border-right: 1px solid #F1F1F1;
+  background-color: white;
+  display: flex;
+  flex-flow: column;
+  justify-content: stretch;
+}
+.private__left_column__header {
+  height: 88px;
+  flex: 0 0 auto;
+  border-bottom: 1px solid #F1F1F1;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.private__main_column {
+  width: auto;
+  height: 100%;
+  background-color: #F64F59;
+}
+
+.circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid #F1F1F1;
+  background-color: white;
+  box-shadow: 5px 5px 12px #eaeaea, -5px -5px 12px #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.circle:hover, .circle:active, .circle__active {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  border-color: white;
+}
+.circle:hover #icon, .circle:active #icon, .circle__active #icon {
+  fill: white;
+}
+
+#icon {
+  height: 22px;
+  width: auto;
+  fill: #D5D5D5;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .gradient-text {
   background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
   -webkit-background-clip: text;

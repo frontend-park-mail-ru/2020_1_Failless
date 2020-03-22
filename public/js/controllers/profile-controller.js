@@ -41,23 +41,23 @@ export default class ProfileController extends Controller {
                     const textInput = document.getElementsByClassName('btn btn_color_ok btn_size_middle')[0];
                     console.log(textInput);
                     textInput.addEventListener('click', this.#handleInfo.bind(this), false);
-
-                    // todo: wtf???
-                    // document.getElementsByClassName('btn__text btn__text_w')[1].addEventListener('click', this.#showSettingsModal.bind(this), false);
-                    // document.getElementsByClassName('btn__text btn__text_w')[3].addEventListener('click', this.#hideSettingsModal.bind(this), false);
-                    // document.getElementsByClassName('icon icon__add icon_size_x')[1].addEventListener('click', this.#showSetEventModal.bind(this), false);
-                    // document.getElementsByClassName('btn__text btn__text_w')[5].addEventListener('click', this.#hideSetEventModal.bind(this), false);
-
                     const settings = document.getElementsByClassName('btn btn_color_b btn_size_middle')[0];
                     settings.addEventListener('click', this.#profileSettings.bind(this), false);
 
                 } else {
-                    // this.view.render(profile);
-
-                    // document.getElementsByClassName('btn__text btn__text_w')[1].addEventListener('click', this._showSettingsModal.bind(this), false);
-                    // document.getElementsByClassName('btn__text btn__text_w')[3].addEventListener('click', this._hideSettingsModal.bind(this), false);
-                    // document.getElementsByClassName('icon icon__add icon_size_x')[1].addEventListener('click', this._showSetEventModal.bind(this), false);
-                    // document.getElementsByClassName('btn__text btn__text_w')[5].addEventListener('click', this._hideSetEventModal.bind(this), false);
+                    this.view.render({
+                        name: "this.user.name",
+                        phone: "this.user.phone",
+                        email: "this.user.email",
+                        password: '',
+                        avatar: '/ProfilePhotos/1.jpg',
+                        photos: ['/ProfilePhotos/1.jpg', '/ProfilePhotos/2.jpg'],
+                        gender: "this.user.gender",
+                        about: "textInput.value",
+                        rating: 228.1488,
+                        location: {lat: 228.1488, lng: 228.1488, accuracy: 228},
+                        birthday: '2020-02-28T13:55:04.306347+03:00',
+                    });
                     console.error('You have no rights');
                     console.log(profile);
                 }

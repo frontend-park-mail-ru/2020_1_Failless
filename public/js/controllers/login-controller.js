@@ -24,8 +24,6 @@ export default class LoginController extends Controller {
         this.view.render();
         const form = document.getElementById('form');
         form.addEventListener('submit', this._loginHandler);
-        const regBtn = document.getElementsByClassName('btn_color_w')[0];
-        regBtn.addEventListener('click', this._signUpRedirect);
     }
 
     /**
