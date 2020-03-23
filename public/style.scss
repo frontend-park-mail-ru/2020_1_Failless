@@ -16,6 +16,9 @@
 @import "blocks/big-event/big-event";
 @import "blocks/edit-field/edit-field";
 @import "blocks/slider/slider";
+@import "blocks/section/section";
+@import "blocks/photo-columns/photo-columns";
+@import "blocks/circle/circle";
 
 @import "components/my/my";
 @import "components/new-profile-left/new-profile-left";
@@ -80,64 +83,6 @@ h2 {
 
 h3 {
   @include h(12px, $re--small-padding);
-}
-
-.section {
-  &__header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    & h1,
-    & h2,
-    & h3 {
-      margin: 0;
-    }
-
-    & a {
-      color: $color-blue;
-      font-size: 10px;
-      font-weight: 400;
-      text-align: right;
-      text-decoration: none;
-
-      &:hover {
-        color: $color-purple;
-        text-decoration: underline;
-      }
-    }
-
-    &_1 {
-      margin-bottom: $re--big-padding;
-    }
-    &_2 {
-      margin-bottom: $re--medium-padding;
-    }
-    &_3 {
-      margin-bottom: $re--small-padding;
-    }
-
-    /*-------------------------------------------*\
-        Input as link
-    \*-------------------------------------------*/
-
-    & label {
-      color: $color-blue;
-      font-size: 10px;
-      font-weight: 400;
-      text-align: right;
-    }
-
-    &:hover label {
-      color: $color-purple;
-      text-decoration: underline;
-    }
-
-    & #photoUpload {
-      display: none;
-    }
-  }
 }
 
 .center {
