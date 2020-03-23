@@ -91,7 +91,7 @@ export default class ProfileSearchController extends Controller {
         };
 
         let columns = this.parent.getElementsByClassName('feed__column');
-        columns[1].innerHTML = Handlebars.templates['public/js/templates/search/photos-column']({profile: this.currentProfile});
-        columns[2].innerHTML = Handlebars.templates['public/js/templates/search/profile-column']({profile: this.currentProfile, events: this.currentProfileEvents});
+        columns[1].innerHTML = Handlebars.templates['feed-users-center']({profile: this.currentProfile});
+        columns[2].innerHTML = Handlebars.templates['feed-users-right']({profile: this.currentProfile, events: this.currentProfileEvents});
     }
 }
