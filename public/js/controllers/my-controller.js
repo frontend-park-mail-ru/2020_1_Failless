@@ -1,20 +1,20 @@
 'use strict';
 
 import Controller from '../core/controller.js';
-import PrivateView from '../views/private-view.js';
+import MyView from '../views/my-view.js';
 
 /**
- * @class PrivateController
+ * @class MyController
  */
-export default class PrivateController extends Controller {
+export default class MyController extends Controller {
 
     /**
-     * construct object of PrivateController class
+     * construct object of MyController class
      * @param {HTMLElement} parent
      */
     constructor(parent) {
         super(parent);
-        this.view = new PrivateView(parent);
+        this.view = new MyView(parent);
         this.redirects = [
             this._chatRedirect,
             this._mailRedirect,
@@ -42,8 +42,8 @@ export default class PrivateController extends Controller {
 
         console.log('chat redirects');
 
-        // window.history.pushState({}, '', '/private/chat');
-        // window.history.pushState({}, '', '/private/chat');
+        // window.history.pushState({}, '', '/my/chat');
+        // window.history.pushState({}, '', '/my/chat');
         // window.history.back();
     };
 
@@ -52,8 +52,8 @@ export default class PrivateController extends Controller {
 
         console.log('mail redirect');
 
-        // window.history.pushState({}, '', '/private/mail');
-        // window.history.pushState({}, '', '/private/mail');
+        // window.history.pushState({}, '', '/my/mail');
+        // window.history.pushState({}, '', '/my/mail');
         // window.history.back();
     };
 
@@ -62,8 +62,8 @@ export default class PrivateController extends Controller {
 
         console.log('profile redirect');
 
-        // window.history.pushState({}, '', '/private/profile');
-        // window.history.pushState({}, '', '/private/profile');
+        // window.history.pushState({}, '', '/my/profile');
+        // window.history.pushState({}, '', '/my/profile');
         // window.history.back();
     };
 

@@ -3,9 +3,9 @@
 import View from '../core/view.js';
 
 /**
- * @class create PrivateView class
+ * @class create MyView class
  */
-export default class PrivateView extends View {
+export default class MyView extends View {
 
     /**
      * Create view
@@ -20,6 +20,6 @@ export default class PrivateView extends View {
      * Render template
      */
     render() {
-        this.parent.insertAdjacentHTML('beforeend', Handlebars.templates['private']());
+        this.parent.insertAdjacentHTML('beforeend', Handlebars.templates['my']());
     }
 }

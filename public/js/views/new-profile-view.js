@@ -1,11 +1,11 @@
 'use strict';
 
-import PrivateView from './private-view.js';
+import MyView from './my-view.js';
 
 /**
  * @class create NewProfileView class
  */
-export default class NewProfileView extends PrivateView {
+export default class NewProfileView extends MyView {
 
     /**
      * Create view
@@ -21,9 +21,17 @@ export default class NewProfileView extends PrivateView {
      */
     render() {
         super.render();
-        document.getElementsByClassName('private__left_column__body')[0].insertAdjacentHTML(
+        document.getElementsByClassName('my__left_column__body')[0].insertAdjacentHTML(
             'beforeend', Handlebars.templates['new-profile-left']());
-        document.getElementsByClassName('private__main_column')[0].insertAdjacentHTML(
-            'beforeend', Handlebars.templates['new-profile-main']());
+        document.getElementsByClassName('my__main_column')[0].insertAdjacentHTML(
+            'beforeend', Handlebars.templates['new-profile-main']({
+                title: 'Профиль',
+                photos: ['/ProfilePhotos/1.jpg', '/ProfilePhotos/2.jpg', '/ProfilePhotos/3.jpg',
+                    '/ProfilePhotos/1.jpg', '/ProfilePhotos/2.jpg', '/ProfilePhotos/3.jpg'],
+                events: {
+                    personal: [],
+                    others: [],
+                },
+            }));
     }
 }

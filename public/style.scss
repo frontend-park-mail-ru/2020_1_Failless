@@ -17,7 +17,7 @@
 @import "blocks/edit-field/edit-field";
 @import "blocks/slider/slider";
 
-@import "components/private/private";
+@import "components/my/my";
 @import "components/new-profile-left/new-profile-left";
 @import "components/new-profile-main/new-profile-main";
 
@@ -47,10 +47,54 @@ body {
   width: 1000px;
 }
 
-h1 {
-  font-size: 32px;
+@mixin h($font-size, $padding-bottom) {
+  font-size: $font-size;
   font-weight: 700;
   color: $color-black;
-  padding-bottom: $re--big-padding;
-  margin: 0;
+  margin: 0 0 $padding-bottom;
+}
+
+h1 {
+  @include h(32px, $re--big-padding);
+}
+
+h2 {
+  @include h(22px, $re--medium-padding);
+}
+
+h3 {
+  @include h(12px, $re--small-padding);
+}
+
+.section {
+  &__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & h1,
+    & h2,
+    & h3 {
+      margin: 0;
+    }
+
+    & a {
+      color: $color-blue;
+      font-size: 10px;
+      font-weight: 400;
+      text-align: right;
+      text-decoration: underline;
+    }
+
+    &_1 {
+      margin-bottom: $re--big-padding;
+    }
+    &_2 {
+      margin-bottom: $re--medium-padding;
+    }
+    &_3 {
+      margin-bottom: $re--small-padding;
+    }
+  }
 }

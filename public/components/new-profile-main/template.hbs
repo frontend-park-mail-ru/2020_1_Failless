@@ -1,1 +1,46 @@
-<h1 class="gradient-text">Профиль</h1>
+<h1>{{ title }}</h1>
+<div class="my__main_column__body">
+    <div class="new_profile__photos">
+        <div class="section__header section__header_2">
+            <h2>Фото</h2>
+            <a href="#">Добавить</a>
+        </div>
+        <div class="photo_columns">
+            {{#each photos}}
+                <img class="photo" src="{{ this }}" alt="{{ this }}">
+            {{/each}}
+        </div>
+    </div>
+    <div class="new_profile__separator"></div>
+    <div class="new_profile__events">
+        <div class="section__header section__header_2">
+            <h2>Эвенты</h2>
+        </div>
+        <div class="new_profile__events__group">
+            <div class="section__header section__header_3">
+                <h3>Ваши эвенты</h3>
+                <a href="#">Добавить</a>
+            </div>
+            {{#if events.personal}}
+                {{#each events.personal }}
+                    <!--TODO: draw personal events-->
+                {{/each}}
+            {{else}}
+                <button class="re_btn re_btn__outline">Добавить</button>
+            {{/if}}
+        </div>
+        <div class="new_profile__events__group">
+            <div class="section__header section__header_3">
+                <h3>Ваши подписки</h3>
+                <a href="#">Добавить</a>
+            </div>
+            {{#if events.others}}
+                {{#each events.others }}
+                    <!--TODO: draw other events-->
+                {{/each}}
+            {{else}}
+                <button class="re_btn re_btn__outline">Добавить</button>
+            {{/if}}
+        </div>
+    </div>
+</div>

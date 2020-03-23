@@ -20,6 +20,6 @@ router.addRoute('/signup', new SignUpController(application));
 router.addRoute('/search', new BigEventSearchController(application));              // big events
 router.addRoute('/feed/events', new MediumEventSearchController(application)); // medium events
 router.addRoute('/feed/users', new ProfileSearchController(application));          // profiles
-router.addRoute('/private/profile', new NewProfileController(application));
+router.addRoute('/my/profile', new NewProfileController(application));
 
 router.route();
