@@ -14,9 +14,7 @@
     }
 
     & a {
-      color: $color-blue;
-      font-size: 10px;
-      font-weight: 400;
+      @extend %a-link;
       text-align: right;
       text-decoration: none;
 
@@ -34,26 +32,6 @@
     }
     &_3 {
       margin-bottom: $re--small-padding;
-    }
-
-    /*-------------------------------------------*\
-        Input as link
-    \*-------------------------------------------*/
-
-    & label {
-      color: $color-blue;
-      font-size: 10px;
-      font-weight: 400;
-      text-align: right;
-    }
-
-    &:hover label {
-      color: $color-purple;
-      text-decoration: underline;
-    }
-
-    & #photoUpload {
-      display: none;
     }
   }
 }

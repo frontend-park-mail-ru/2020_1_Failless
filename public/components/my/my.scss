@@ -13,14 +13,21 @@
   }
 
   &__left_column {
-    box-sizing: border-box;
     width: 25%;
     max-height: 100%;
+    box-sizing: border-box;
     border-right: 1px solid $re--color-light-gray;
+    border-top-left-radius: $re--border-radius;
+    border-bottom-left-radius: $re--border-radius;
     background-color: $color-white;
     display: flex;
     flex-flow: column;
     justify-content: stretch;
+
+    -webkit-border-top-left-radius: $re--border-radius;
+    -webkit-border-bottom-left-radius: $re--border-radius;
+    -moz-border-radius-topleft: $re--border-radius;
+    -moz-border-radius-bottomleft: $re--border-radius;
 
     &__header {
       height: 88px;
@@ -41,6 +48,7 @@
   &__main_column {
     width: 75%;
     max-height: 100%;
+    border-radius: $re--border-radius;
     flex: 1 1;
     background-color: $color-white;
     padding: $re--big-padding;

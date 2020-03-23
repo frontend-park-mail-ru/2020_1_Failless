@@ -41,3 +41,9 @@ $re--border-radius: 4px;
     -o-transition: all $duration $timing;
     transition: all $duration $timing;
 }
+
+%a-link {
+    color: $color-blue;
+    font-size: 10px;
+    font-weight: 400;
+}

@@ -2,6 +2,7 @@
 @import "../../modules/efont";
 
 .big-event {
+  width: $event-width;
   box-sizing: border-box;
   break-inside: avoid;
   counter-increment: item-counter;
@@ -9,7 +10,6 @@
   border-radius: 2px;
   background-color: $color-white;
   box-shadow: 0 0 12px 3px rgba(0, 0, 0, 0.4);
-  width: $event-width;
 
   &__description {
     margin: 0 12px 12px;
@@ -26,8 +26,8 @@
   }
 
   &__subscribe {
-    list-style-type: disc;
     width: 160px;
+    list-style-type: disc;
 
     &_big {
       color: $color-red;
@@ -65,8 +65,8 @@
   }
 
   &__line {
-    border: 0.5px solid #c8c8c8;
     width: 100%;
     margin: 4px 1px 4px;
+    border: 0.5px solid #c8c8c8;
   }
 }

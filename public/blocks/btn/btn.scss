@@ -63,14 +63,14 @@
 .re_btn {
   min-width: 96px;
   width: fit-content;
-  padding: 0 10px;
   height: 34px;
+  padding: 0 10px;
+  border: 0 none;
+  border-radius: $re--border-radius;
   font-size: 12px;
   font-weight: 300;
-  border-radius: $re--border-radius;
   @include transition(0.3s, ease-in-out);
   outline: none;
-  border: 0 none;
 
   &__filled {
     color: $color-white;
