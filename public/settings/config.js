@@ -1,6 +1,7 @@
 export default {
     url: 'http://localhost',
-    port: 5000,
+    port: 3000,
     api: '/api',
-    img: 'img/'
+    img: 'img/',
+    aws: 'https://eventum.s3.eu-north-1.amazonaws.com',
 };

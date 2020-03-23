@@ -1,6 +1,6 @@
 <h2>{{ profile.name }}{{#if profile.age}}, {{ profile.age }}{{/if}}</h2>
 <form action="submit" id="form">
-    <img class="center new_profile__avatar" src="{{ profile.avatar }}" alt="{{ profile.avatar }}">
+    <img class="center new_profile__avatar" src="{{ profile.avatar.path }}" alt="{{ profile.avatar.path }}">
     <div class="feed__options_field">
         <h3>О себе</h3>
         <textarea name="about" rows="10" placeholder="Расскажите о себе и своих увлечениях">{{ profile.about }}</textarea>
