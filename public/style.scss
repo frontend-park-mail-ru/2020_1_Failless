@@ -100,7 +100,12 @@ h3 {
       font-size: 10px;
       font-weight: 400;
       text-align: right;
-      text-decoration: underline;
+      text-decoration: none;
+
+      &:hover {
+        color: $color-purple;
+        text-decoration: underline;
+      }
     }
 
     &_1 {
@@ -111,6 +116,26 @@ h3 {
     }
     &_3 {
       margin-bottom: $re--small-padding;
+    }
+
+    /*-------------------------------------------*\
+        Input as link
+    \*-------------------------------------------*/
+
+    & label {
+      color: $color-blue;
+      font-size: 10px;
+      font-weight: 400;
+      text-align: right;
+    }
+
+    &:hover label {
+      color: $color-purple;
+      text-decoration: underline;
+    }
+
+    & #photoUpload {
+      display: none;
     }
   }
 }

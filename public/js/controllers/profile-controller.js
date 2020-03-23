@@ -64,23 +64,8 @@ export default class ProfileController extends Controller {
             }).catch(onerror => {
             console.error(onerror);
         });
+        this.view.render();
     }
-
-    #showSettingsModal = (event) => {
-        document.getElementById('settings-container').style.display = 'flex';
-    };
-
-    #hideSettingsModal = (event) => {
-        document.getElementById('settings-container').style.display = 'none';
-    };
-
-    #showSetEventModal = (event) => {
-        document.getElementById('set-event-container').style.display = 'flex';
-    };
-
-    #hideSetEventModal = (event) => {
-        document.getElementById('set-event-container').style.display = 'none';
-    };
 
     #handleFile = (event) => {
         if (event.target.files && event.target.files[0]) {

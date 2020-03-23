@@ -3,10 +3,13 @@
     <div class="new_profile__photos">
         <div class="section__header section__header_2">
             <h2>Фото</h2>
-            <a href="#">Добавить</a>
+            <div>
+                <label for="photoUpload">Добавить</label>
+                <input id="photoUpload" type="file" />
+            </div>
         </div>
         <div class="photo_columns">
-            {{#each photos}}
+            {{#each profile.photos}}
                 <img class="photo" src="{{ this }}" alt="{{ this }}">
             {{/each}}
         </div>
@@ -21,9 +24,9 @@
                 <h3>Ваши эвенты</h3>
                 <a href="#">Добавить</a>
             </div>
-            {{#if events.personal}}
-                {{#each events.personal }}
-                    <!--TODO: draw personal events-->
+            {{#if profile.events.personal}}
+                {{#each profile.events.personal as |event|}}
+                    {{>event}}
                 {{/each}}
             {{else}}
                 <button class="re_btn re_btn__outline">Добавить</button>
@@ -34,9 +37,9 @@
                 <h3>Ваши подписки</h3>
                 <a href="#">Добавить</a>
             </div>
-            {{#if events.others}}
-                {{#each events.others }}
-                    <!--TODO: draw other events-->
+            {{#if profile.events.others}}
+                {{#each profile.events.others as |event|}}
+                    {{>event}}
                 {{/each}}
             {{else}}
                 <button class="re_btn re_btn__outline">Добавить</button>
