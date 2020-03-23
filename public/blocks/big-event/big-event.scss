@@ -1,0 +1,72 @@
+@import "../../modules/variables";
+@import "../../modules/efont";
+
+.big-event {
+  width: $event-width;
+  box-sizing: border-box;
+  break-inside: avoid;
+  counter-increment: item-counter;
+  text-align: left;
+  border-radius: 2px;
+  background-color: $color-white;
+  box-shadow: 0 0 12px 3px rgba(0, 0, 0, 0.4);
+
+  &__description {
+    margin: 0 12px 12px;
+    word-break: break-word;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.3;
+  }
+
+  &__title {
+    padding-top: $padding-event;
+    padding-bottom: $padding-event;
+    padding-left: 12px;
+  }
+
+  &__subscribe {
+    width: 160px;
+    list-style-type: disc;
+
+    &_big {
+      color: $color-red;
+    }
+
+    &_middle {
+      color: $color-blue;
+      width: 180px;
+    }
+  }
+
+  &__link {
+    position: relative;
+    left: -10px;
+    display: inline-block;
+  }
+
+  &__date {
+    padding-top: $padding-event;
+    padding-bottom: 10px;
+  }
+
+  &__follow {
+    display: flex;
+    padding: 4px 0 12px;
+
+    &_count {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__icon {
+    padding-right: 8px;
+  }
+
+  &__line {
+    width: 100%;
+    margin: 4px 1px 4px;
+    border: 0.5px solid #c8c8c8;
+  }
+}

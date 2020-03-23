@@ -20,34 +20,21 @@ export default class LoginView extends View {
      * Render template
      */
     render() {
-        const login = Handlebars.templates['auth']({
-            blocks: [
+        this.parent.innerHTML += Handlebars.templates['auth']({
+            title: 'ВХОД',
+            input: [
                 {
-                    main: true,
-                    title: 'Вход',
-                    fields: [
-                        {
-                            name: 'Телефон или Email',
-                            help: 'me@example.com',
-                            type: 'text',
-                        },
-                        {
-                            name: 'Пароль',
-                            help: '******',
-                            type: 'password',
-                        }
-                    ],
-                    button: 'Войти',
+                    title: 'Телефон или Email',
+                    type: 'text',
+                    placeholder: 'me@example.com',
                 },
                 {
-                    main: false,
-                    title: 'Регистрация',
-                    help: 'Ещё нет аккаунта? Пора его завести!',
-                    button: 'Зарегистрироваться',
+                    title: 'Пароль',
+                    type: 'password',
+                    placeholder: '*******',
                 },
             ],
+            button: 'Вход',
         });
-
-        this.parent.insertAdjacentHTML('beforeend', login);
     }
 }

@@ -1,5 +1,5 @@
 export default {
-    url: 'https://eventum.rowbot.dev',
+    url: 'http://localhost',
     port: 5000,
     api: '/api',
     img: 'img/'

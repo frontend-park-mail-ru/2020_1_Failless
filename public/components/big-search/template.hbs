@@ -1,0 +1,18 @@
+<main class="big-search">
+    <header class="big-search__header big-search__header_sizing">
+        <div class="big-search__search">
+            <div class="big-search__icon">
+                <span class="icon icon__size_middle icon__search icon_color_gray"></span>
+            </div>
+            <input id="searchInput" class="input input__search" type="text" placeholder="Найти мероприятие"
+                   name="searchBox" autocomplete="off">
+        </div>
+    </header>
+    <div class="big-search__results">
+        <div class="big-search__grid">
+            {{#each events as |big-event|}}
+               {{> big-event }}
+            {{/each}}
+        </div>
+    </div>
+</main>

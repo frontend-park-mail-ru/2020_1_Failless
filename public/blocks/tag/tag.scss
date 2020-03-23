@@ -1,15 +1,12 @@
 @import "../../modules/variables";
 
 .tag {
+  width: fit-content;
   padding: 4px;
   border-radius: 4px;
   margin: 0 5px 5px 0;
   text-align: center;
-  color: white;
-  font-weight: bold;
-  background: linear-gradient(
-                  135deg,
-                  $color-blue 0%,
-                  $color-purple 50%,
-                  $color-red 100%);
+  color: $color-white;
+  font-weight: 700;
+  background: $re--gradient;
 }

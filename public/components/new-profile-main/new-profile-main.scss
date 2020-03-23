@@ -1,0 +1,27 @@
+@import "../../modules/variables";
+
+.new_profile {
+  &__photos {
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  &__events {
+    max-height: 100%;
+    overflow-y: auto;
+    max-width: 20%;
+    min-width: 200px;
+
+    &__group {
+      display: flex;
+      flex-flow: column;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: $re--big-padding;
+    }
+  }
+
+  &__separator {
+    min-width: $re--big-padding;
+  }
+}

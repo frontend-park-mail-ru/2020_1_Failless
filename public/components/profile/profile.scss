@@ -1,13 +1,17 @@
 @import "../../modules/variables";
 
 .profile {
-  height: 90vh;
-  max-width: 900px;
-  margin: 10px auto;
+
   text-align: center;
-  background-color: white;
-  border-radius: 13px;
-  padding: 20px;
+
+  &__container {
+    height: 90vh;
+    max-width: 900px;
+    margin: 10px auto;
+    background-color: white;
+    border-radius: 13px;
+    padding: 20px;
+  }
 
   &__title {
     text-align: left;

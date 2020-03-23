@@ -1,0 +1,42 @@
+@import "../../modules/variables";
+
+.circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid $re--color-light-gray;
+  background-color: white;
+  box-shadow:  5px 5px 12px #eaeaea,
+             -5px -5px 12px #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @include transition(0.5s, ease-in-out);
+
+  &:active {
+    transition: 0.01s;
+    transform: scale(0.98);
+  }
+
+  &:hover,
+  &:active,
+  &__active {
+    background: $re--gradient;
+    border-color: $color-white;
+
+    #icon {
+      fill: $color-white;
+    }
+  }
+}
+
+// id is intentional
+// since svg styles override CSS classes
+#icon {
+  height: 22px;
+  width: auto;
+  fill: $re--color-middle-gray;
+
+  @include transition(0.3s, ease-in-out);
+}

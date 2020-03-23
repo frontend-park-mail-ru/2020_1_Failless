@@ -1,0 +1,17 @@
+<img class="feed__photos" src="{{ profile.photos }}" alt="{{ profile.photos }}">
+<!--TODO: image scroll here-->
+<div class="feed__profile">
+    <div>
+        <h1>{{ profile.name }}{{#if profile.age}},  {{profile.age}}{{/if}}</h1>
+        <div class="feed__about">{{ profile.about }}</div>
+    </div>
+    <div class="feed__profile__tags">
+        {{#each profile.tags}}
+            <div class="tag tag_size_middle">{{ this.title }}</div>
+        {{/each}}
+    </div>
+</div>
+<div class="feed__action_buttons">
+    <button class="re_btn__reject">no</button>
+    <button class="re_btn__approve">YES!</button>
+</div>

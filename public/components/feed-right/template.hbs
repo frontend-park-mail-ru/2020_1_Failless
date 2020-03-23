@@ -1,0 +1,8 @@
+{{#if events}}
+    <div class="auth__help">Персональные эвенты</div>
+    {{#each events as |big-event|}}
+       {{> big-event }}
+    {{/each}}
+{{else}}
+    <h3 class="profile__title profile__title_blue">"Эвентов нет :("</h3>
+{{/if}}

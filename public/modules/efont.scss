@@ -1,0 +1,75 @@
+@import "variables";
+
+$title-size: 32px;
+$eventum-font: Helvetica, Arial, sans-serif;
+
+.font {
+  font-family: $eventum-font;
+
+  &__title {
+    font-weight: bold;
+    font-size: $title-size;
+
+    &_card {
+      font-size: 18px;
+    }
+  }
+
+  &__color {
+    &_w {
+      color: $color-white;
+    }
+
+    &_blue {
+      color: $color-blue;
+    }
+
+    &_black {
+      color: $color-black;
+    }
+
+    &_lg {
+      color: $color-light-gray;
+    }
+
+    &_g {
+      color: #696969;
+    }
+  }
+
+  &_bold {
+    font-weight: bold;
+  }
+
+  &__size {
+    &_small {
+      font-size: 16px;
+    }
+    &_small-x {
+      font-size: 14px;
+    }
+
+    &_small-xx {
+      font-size: 12px;
+    }
+
+    &_small-xxx {
+      font-size: 8px;
+    }
+
+  }
+
+  &__helper {
+    font-size: 12px;
+    font-weight: bold;
+    font-family: $eventum-font;
+  }
+
+  &_pointer {
+    cursor: pointer;
+  }
+
+  &_underline {
+    text-decoration: underline;
+  }
+}

@@ -75,6 +75,7 @@ export default class UserModel extends Model {
                     throw new Error('Server error');
                 }
                 this.user = null;
+                this.profile = null;
                 return response.json();
             },
             (error) => {
@@ -125,11 +126,20 @@ export default class UserModel extends Model {
         return this.getLogin().then(user => {
             if (user) {
                 console.log('Get profile page of user ', user);
+                console.log(this.profile);
+                if (this.profile) {
+                    return new Promise((resolve) => {
+                        resolve(this.profile);
+                    });
+                }
                 return NetworkModule.fetchGet({path: '/profile/' + user.uid}).then((response) => {
                     if (response.status > 499) {
                         throw new Error('Server error');
                     }
-                    return response.json();
+                    return response.json().then((profile) => {
+                        this.profile = profile;
+                        return profile;
+                    });
                 },
                 (error) => {
                     throw new Error(error);

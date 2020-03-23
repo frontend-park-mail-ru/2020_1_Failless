@@ -1,0 +1,27 @@
+@import "../../modules/variables";
+
+/*-------------------------------------------*\
+    File input as link
+
+    Example:
+    <div class="link-uploader">
+        <label for="fileUpload">Добавить</label>
+        <input id="fileUpload" type="file" />
+    </div>
+\*-------------------------------------------*/
+
+.link-uploader {
+  & label {
+    @extend %a-link;
+    text-align: right;
+  }
+
+  &:hover label {
+    color: $color-purple;
+    text-decoration: underline;
+  }
+
+  & input {
+    display: none;
+  }
+}

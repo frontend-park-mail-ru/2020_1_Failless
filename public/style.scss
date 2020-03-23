@@ -1,26 +1,92 @@
+@import "components/auth/auth";
+@import "components/big-search/big-search";
+@import "components/feed/feed";
+@import "components/landing/landing";
+@import "components/my/my";
+@import "components/new-profile-left/new-profile-left";
+@import "components/new-profile-main/new-profile-main";
+@import "components/profile/profile";
+@import "components/profile-edit/profile-edit";
+
 @import "blocks/btn/btn";
 @import "blocks/header/header";
 @import "blocks/icon/icon";
 @import "blocks/screen/screen";
-@import "blocks/landing/landing";
-@import "blocks/profile/profile";
 @import "blocks/tag/tag";
-@import "blocks/auth/auth";
 @import "blocks/input/input";
 @import "blocks/search/search";
 @import "blocks/event/event";
+@import "blocks/big-event/big-event";
+@import "blocks/edit-field/edit-field";
+@import "blocks/slider/slider";
+@import "blocks/section/section";
+@import "blocks/photo-columns/photo-columns";
+@import "blocks/circle/circle";
+@import "blocks/link-uploader/link-uploader";
+
 @import "modules/variables";
 @import "modules/efont";
 @import "modules/images";
 
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic');
+
 body {
   margin: 0;
   height: 100vh;
-  background: linear-gradient(
-                  135deg,
-                  $color-blue 0%,
-                  $color-purple 50%,
-                  $color-red 100%);
+  background: $re--color-light-gray;
   text-decoration: none;
-  font-family: "Helvetica Neue", sans-serif;
+  font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
+}
+
+textarea {
+  box-sizing: border-box;
+  padding: 4px;
+  border: 1px solid $re--color-middle-gray;
+  border-radius: $re--border-radius;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+
+  &:focus {
+    border-color: $color-black;
+  }
+}
+
+#application {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  align-items: center;
+}
+
+.container {
+  min-width: 800px;
+  width: 1000px;
+}
+
+@mixin h($font-size, $padding-bottom) {
+  font-size: $font-size;
+  font-weight: 700;
+  color: $color-black;
+  margin: 0 0 $padding-bottom;
+}
+
+h1 {
+  @include h(32px, $re--big-padding);
+}
+
+h2 {
+  @include h(22px, $re--medium-padding);
+}
+
+h3 {
+  @include h(12px, $re--small-padding);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

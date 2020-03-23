@@ -6,6 +6,9 @@ $images-path: "../images/";
 $search-icon: $icons-path + "search.svg";
 $eventum-icon: $images-path + "logo.png";
 $more-icon: $icons-path + "more.svg";
+$close-icon: $icons-path + "close.svg";
+$add-icon: $icons-path + "add.svg";
+$users-icon: $icons-path + "users.svg";
 
 $icon-size: 14px, 14px;
 
@@ -47,6 +50,21 @@ $icon-size: 14px, 14px;
     mask-image: url($search-icon);
   }
 
+  &__close {
+    -webkit-mask-image: url($close-icon);
+    mask-image: url($close-icon);
+  }
+
+  &__users {
+    -webkit-mask-image: url($users-icon);
+    mask-image: url($users-icon);
+  }
+
+  &__add {
+    -webkit-mask-image: url($add-icon);
+    mask-image: url($add-icon);
+  }
+
   &__eventum {
     //-webkit-mask-image: url($eventum-icon);
     //mask-image: url($eventum-icon);
@@ -65,9 +83,48 @@ $icon-size: 14px, 14px;
     color: red;
   }
 
-  &__size_m {
-    width: 90px;
-    height: 35px;
+  &__size {
+    &_large-x {
+      width: 20px;
+      height: 20px;
+    }
+
+    &_m {
+      width: 90px;
+      height: 35px;
+    }
+
+    &_small {
+      width: 15px;
+      height: 15px;
+    }
+
+    &_small-xx {
+      width: 12px;
+      height: 12px;
+    }
+
+    &_middle {
+      width: 32px;
+      height: 32px;
+    }
+
   }
+
+
+  &_color {
+    &_black {
+      background-color: $color-black;
+    }
+
+    &_red {
+      background-color: $color-red;
+    }
+
+    &_gray {
+      background-color: dimgrey;
+    }
+  }
+
 }
 

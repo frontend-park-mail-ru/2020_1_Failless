@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="feed">
+        <div class="feed__column">
+            <form action="submit" id="form">
+
+                <div class="feed__options_field">
+                    <div class="auth__help">Фильтр тегов</div>
+                    {{#each tags}}
+                    <div class="search_tag" style="opacity: 0.5">
+                        <div class="tag tag_size_middle">{{ this.title }}</div>
+                        <div class="x_btn">X</div>
+                    </div>
+                    {{/each}}
+                </div>
+
+                <div class="feed__options_field">
+                    <div class="auth__help">Ключевые слова</div>
+                    <input class="input input__auth" name="search_text" placeholder="Люди как люди">
+                </div>
+
+                <div class="feed__options_field">
+                    <div class="auth__help">Другие опции</div>
+                    <div class="feed__other_options">
+                        <div class="auth__help">Пол</div>
+                            <label class="feed__checkbox_label">Мужчины
+                                <input type="checkbox" checked="checked">
+                                <span class="feed__checkbox_checkmark"></span>
+                            </label>
+                            <label class="feed__checkbox_label">Женщины
+                                <input type="checkbox" checked="checked">
+                                <span class="feed__checkbox_checkmark"></span>
+                            </label>
+                        <div class="auth__help">Возраст</div>
+                            <div class="slider">
+                                <div class="slider__maxmin">
+                                    <div>18</div>
+                                    <div>59</div>
+                                </div>
+                                <input type="range" min="18" max="60" value="18" step="1">
+                                <span class="slider__value" slider_value="18"></span>
+                            </div>
+                        <div class="auth__help">Местоположение</div>
+                        <img class="feed__map" src="/EventPhotos/1.jpg" alt="map here">
+                    </div>
+                </div>
+
+                <!-- TODO: add hider for footer shadow -->
+
+                <div class="feed__options_footer">
+                    <button class="re_btn re_btn__filled">Сохранить</button>
+                    <button class="re_btn re_btn__outline">Ещё что-то</button>
+                </div>
+
+            </form>
+        </div>
+        <div class="feed__separator"></div>
+        <div class="feed__column feed__column__main"></div>
+        <div class="feed__separator"></div>
+        <div class="feed__column"></div>
+    </div>
+</div>
