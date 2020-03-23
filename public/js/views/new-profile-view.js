@@ -22,7 +22,16 @@ export default class NewProfileView extends MyView {
     render() {
         super.render();
         document.getElementsByClassName('my__left_column__body')[0].insertAdjacentHTML(
-            'beforeend', Handlebars.templates['new-profile-left']());
+            'beforeend', Handlebars.templates['new-profile-left']({
+                profile: {
+                    name: 'Егор',
+                    age: '20',
+                    avatar: '/ProfilePhotos/1.jpg',
+                    about: 'Ну, Егор, ну и что?',
+                    tags: [],
+                    networks: [],
+                },
+            }));
         document.getElementsByClassName('my__main_column')[0].insertAdjacentHTML(
             'beforeend', Handlebars.templates['new-profile-main']({
                 title: 'Профиль',

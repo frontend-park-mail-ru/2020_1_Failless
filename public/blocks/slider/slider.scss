@@ -65,15 +65,15 @@ input[type=range] {
 
   &::-webkit-slider-runnable-track {
     @include slider-track;
-    -webkit-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease-in-out;
   }
   &::-moz-range-track {
     @include slider-track;
-    -moz-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease-in-out;
   }
   &::-ms-track {
     @include slider-track;
-    transition: all 0.5s ease;
+    transition: all 0.5s ease-in-out;
     border-color: transparent;
     color: transparent;
   }
