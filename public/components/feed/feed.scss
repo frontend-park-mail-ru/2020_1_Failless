@@ -36,9 +36,9 @@
     padding-bottom: $re--big-padding;
     border-bottom: 1px solid $re--color-light-gray;
 
-    & textarea {
+    &_textarea {
       width: 100%;
-      resize: vertical;
+      resize: none;
     }
   }
 

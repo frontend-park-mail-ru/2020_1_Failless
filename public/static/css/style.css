@@ -196,9 +196,9 @@
   padding-bottom: 23px;
   border-bottom: 1px solid #F1F1F1;
 }
-.feed__options_field textarea {
+.feed__options_field_textarea {
   width: 100%;
-  resize: vertical;
+  resize: none;
 }
 .feed__checkbox {
   /* Create a custom checkbox */
@@ -1548,7 +1548,6 @@ textarea {
   font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
   font-size: 10px;
   font-weight: 400;
-  resize: none;
 }
 textarea:focus {
   border-color: #191919;
