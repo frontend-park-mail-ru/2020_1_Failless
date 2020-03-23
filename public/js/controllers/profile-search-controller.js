@@ -1,7 +1,7 @@
 'use strict';
 
 import Controller from '../core/controller.js';
-import ProfileSearchView from '../views/profile-search-view.js';
+import ProfileSearchView from '../views/feed-users-view.js';
 import SetSliders from "../../blocks/slider/set-slider.js";
 
 /**
