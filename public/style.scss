@@ -1,25 +1,28 @@
-@import "components/profile-edit/profile-edit";
+@import "components/auth/auth";
 @import "components/big-search/big-search";
-@import "js/templates/search/feed-users";
+@import "components/feed/feed";
+@import "components/landing/landing";
+@import "components/my/my";
+@import "components/new-profile-left/new-profile-left";
+@import "components/new-profile-main/new-profile-main";
+@import "components/profile/profile";
+@import "components/profile-edit/profile-edit";
 
 @import "blocks/btn/btn";
 @import "blocks/header/header";
 @import "blocks/icon/icon";
 @import "blocks/screen/screen";
-@import "components/landing/landing";
-@import "components/profile/profile";
 @import "blocks/tag/tag";
-@import "components/auth/auth";
 @import "blocks/input/input";
 @import "blocks/search/search";
 @import "blocks/event/event";
 @import "blocks/big-event/big-event";
 @import "blocks/edit-field/edit-field";
 @import "blocks/slider/slider";
-
-@import "components/my/my";
-@import "components/new-profile-left/new-profile-left";
-@import "components/new-profile-main/new-profile-main";
+@import "blocks/section/section";
+@import "blocks/photo-columns/photo-columns";
+@import "blocks/circle/circle";
+@import "blocks/link-uploader/link-uploader";
 
 @import "modules/variables";
 @import "modules/efont";
@@ -80,64 +83,6 @@ h2 {
 
 h3 {
   @include h(12px, $re--small-padding);
-}
-
-.section {
-  &__header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    & h1,
-    & h2,
-    & h3 {
-      margin: 0;
-    }
-
-    & a {
-      color: $color-blue;
-      font-size: 10px;
-      font-weight: 400;
-      text-align: right;
-      text-decoration: none;
-
-      &:hover {
-        color: $color-purple;
-        text-decoration: underline;
-      }
-    }
-
-    &_1 {
-      margin-bottom: $re--big-padding;
-    }
-    &_2 {
-      margin-bottom: $re--medium-padding;
-    }
-    &_3 {
-      margin-bottom: $re--small-padding;
-    }
-
-    /*-------------------------------------------*\
-        Input as link
-    \*-------------------------------------------*/
-
-    & label {
-      color: $color-blue;
-      font-size: 10px;
-      font-weight: 400;
-      text-align: right;
-    }
-
-    &:hover label {
-      color: $color-purple;
-      text-decoration: underline;
-    }
-
-    & #photoUpload {
-      display: none;
-    }
-  }
 }
 
 .center {

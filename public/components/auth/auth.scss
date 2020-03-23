@@ -15,7 +15,8 @@
     width: fit-content;
     padding: $re--huge-padding $re--large-padding $re--large-padding;
     border-radius: $re--border-radius;
-    box-shadow: 0 0 52px -9px rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 10px #cdcdcd,
+             -5px -5px 10px #ffffff;;
     background-color: $color-white;
   }
 
@@ -39,10 +40,10 @@
   }
 
   &__text {
-    color: $color-white;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
+    color: $color-white;
   }
 
   &__btn {

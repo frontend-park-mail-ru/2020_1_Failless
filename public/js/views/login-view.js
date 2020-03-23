@@ -20,6 +20,21 @@ export default class LoginView extends View {
      * Render template
      */
     render() {
-        this.parent.innerHTML += Handlebars.templates['public/js/templates/login-template']()
+        this.parent.innerHTML += Handlebars.templates['auth']({
+            title: 'ВХОД',
+            input: [
+                {
+                    title: 'Телефон или Email',
+                    type: 'text',
+                    placeholder: 'me@example.com',
+                },
+                {
+                    title: 'Пароль',
+                    type: 'password',
+                    placeholder: '*******',
+                },
+            ],
+            button: 'Вход',
+        });
     }
 }

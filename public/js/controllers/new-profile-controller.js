@@ -58,7 +58,6 @@ export default class NewProfileController extends MyController {
             }).catch(onerror => {
             console.error(onerror);
         });
-        this.view.render();
     }
 
     #handleFile = (event) => {

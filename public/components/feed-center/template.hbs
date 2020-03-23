@@ -1,4 +1,4 @@
-<img class="feed__photos" src="{{profile.photos}}" alt="{{profile.photos}}">
+<img class="feed__photos" src="{{ profile.photos }}" alt="{{ profile.photos }}">
 <!--TODO: image scroll here-->
 <div class="feed__profile">
     <div>
@@ -7,7 +7,7 @@
     </div>
     <div class="feed__profile__tags">
         {{#each profile.tags}}
-            <div class="tag tag_size_middle">{{this.title}}</div>
+            <div class="tag tag_size_middle">{{ this.title }}</div>
         {{/each}}
     </div>
 </div>

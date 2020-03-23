@@ -34,3 +34,16 @@ $re--border-radius: 4px;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+@mixin transition($duration, $timing) {
+    -webkit-transition: all $duration $timing;
+    -moz-transition: all $duration $timing;
+    -o-transition: all $duration $timing;
+    transition: all $duration $timing;
+}
+
+%a-link {
+    color: $color-blue;
+    font-size: 10px;
+    font-weight: 400;
+}
