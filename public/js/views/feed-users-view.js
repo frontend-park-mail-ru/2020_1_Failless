@@ -5,7 +5,7 @@ import View from '../core/view.js';
 /**
  * @class create SearchView class
  */
-export default class ProfileSearchView extends View {
+export default class FeedUsersView extends View {
 
     /**
      * Create view
@@ -27,10 +27,10 @@ export default class ProfileSearchView extends View {
             photos: ['/ProfilePhotos/1.jpg'],
             tags: tags,
         };
-        this.parent.innerHTML += Handlebars.templates['feed-users-base']({tags: tags});
+        this.parent.innerHTML += Handlebars.templates['feed']({tags: tags});
         let columns = this.parent.getElementsByClassName('feed__column');
-        columns[1].innerHTML = Handlebars.templates['feed-users-center']({profile: profile});
-        columns[2].innerHTML = Handlebars.templates['feed-users-right']({events: events});
+        columns[1].innerHTML = Handlebars.templates['feed-center']({profile: profile});
+        columns[2].innerHTML = Handlebars.templates['feed-right']({events: events});
     }
 }
 

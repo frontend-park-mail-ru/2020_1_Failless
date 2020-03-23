@@ -1,14 +1,18 @@
-@import "components/profile-edit/profile-edit";
+@import "components/auth/auth";
 @import "components/big-search/big-search";
+@import "components/feed/feed";
+@import "components/landing/landing";
+@import "components/my/my";
+@import "components/new-profile-left/new-profile-left";
+@import "components/new-profile-main/new-profile-main";
+@import "components/profile/profile";
+@import "components/profile-edit/profile-edit";
 
 @import "blocks/btn/btn";
 @import "blocks/header/header";
 @import "blocks/icon/icon";
 @import "blocks/screen/screen";
-@import "components/landing/landing";
-@import "components/profile/profile";
 @import "blocks/tag/tag";
-@import "components/auth/auth";
 @import "blocks/input/input";
 @import "blocks/search/search";
 @import "blocks/event/event";
@@ -19,11 +23,6 @@
 @import "blocks/photo-columns/photo-columns";
 @import "blocks/circle/circle";
 @import "blocks/link-uploader/link-uploader";
-
-@import "components/my/my";
-@import "components/new-profile-left/new-profile-left";
-@import "components/new-profile-main/new-profile-main";
-@import "components/feed-users-base/feed-users";
 
 @import "modules/variables";
 @import "modules/efont";

@@ -3,11 +3,7 @@
 .feed {
   width: 100%;
   margin: 10px 0;
-  text-align: left;
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: flex-start;
   flex: 1 1 100%;
 
   &__separator {
@@ -23,7 +19,6 @@
     max-height: 88.5vh; // TODO: bullshit
     overflow: auto;
     box-shadow: 0 0 20px -9px rgba(0, 0, 0, 0.5);
-    z-index: 1;
 
     &__main {
       flex: 1 2 auto;
@@ -173,13 +168,6 @@
     justify-content: space-around;
     align-items: center;
   }
-}
-
-.separator {
-  height: 1px;
-  width: auto;
-  margin-bottom: $re--big-padding;
-  background-color: $re--color-light-gray;
 }
 
 .search_tag {

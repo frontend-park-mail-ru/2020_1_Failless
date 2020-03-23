@@ -1,13 +1,13 @@
 'use strict';
 
 import Controller from '../core/controller.js';
-import ProfileSearchView from '../views/feed-users-view.js';
+import FeedUsersView from '../views/feed-users-view.js';
 import SetSliders from "../../blocks/slider/set-slider.js";
 
 /**
- * @class ProfileSearchController
+ * @class FeedUsersController
  */
-export default class ProfileSearchController extends Controller {
+export default class FeedUsersController extends Controller {
 
     /**
      * Construct obj of ProfileSearchController class
@@ -16,7 +16,7 @@ export default class ProfileSearchController extends Controller {
     constructor(parent) {
         super(parent);
         this.searching = false;
-        this.view = new ProfileSearchView(parent);
+        this.view = new FeedUsersView(parent);
     }
 
     searching;
@@ -91,7 +91,7 @@ export default class ProfileSearchController extends Controller {
         };
 
         let columns = this.parent.getElementsByClassName('feed__column');
-        columns[1].innerHTML = Handlebars.templates['feed-users-center']({profile: this.currentProfile});
-        columns[2].innerHTML = Handlebars.templates['feed-users-right']({profile: this.currentProfile, events: this.currentProfileEvents});
+        columns[1].innerHTML = Handlebars.templates['feed-center']({profile: this.currentProfile});
+        columns[2].innerHTML = Handlebars.templates['feed-right']({profile: this.currentProfile, events: this.currentProfileEvents});
     }
 }
