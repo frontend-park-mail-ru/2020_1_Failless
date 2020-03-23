@@ -43,33 +43,33 @@ export default class ProfileView extends View {
         // this.parent.innerHTML += Handlebars.templates['public/js/templates/set-event-template']({events: events, mode: "Изменить"});
         let allowEdit = true;
 
-        //todo: fix it
-        if (profile.events) {
-            profile.events.forEach(event => {
-                event.photos = [
-                    'EventPhotos/3.jpg',
-                    'EventPhotos/4.jpg',
-                ];
-                event.place = 'Москва';
-            });
-        }
+        // //todo: fix it
+        // if (profile.events) {
+        //     profile.events.forEach(event => {
+        //         event.photos = [
+        //             'EventPhotos/3.jpg',
+        //             'EventPhotos/4.jpg',
+        //         ];
+        //         event.place = 'Москва';
+        //     });
+        // }
 
         const profileTemplate = Handlebars.templates['profile']({
-            username: profile.name,
+            username: 'profile.name',
             title1: 'О себе',
             textarea: {
                 help: 'Расскажите о себе и своих увлечениях',
-                about: profile.about,
+                about: 'profile.about',
             },
             edit: allowEdit,
             buttonOk: 'Готово',
             buttonSettings: 'Настройки',
             title2: 'Фото',
-            img: settings.img + profile.avatar.path,
+            img: settings.img + 'profile.avatar.path',
             title3: 'Ваши тэги',
-            tags: profile.tags,
+            tags: 'profile.tags',
             title4: 'Ваши мероприятия',
-            events: profile.events,
+            events: 'profile.events',
         });
 
         this.parent.insertAdjacentHTML('beforeend', profileTemplate);

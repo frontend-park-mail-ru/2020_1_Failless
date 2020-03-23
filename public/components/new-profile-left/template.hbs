@@ -1,0 +1,46 @@
+<h2>{{ profile.name }}{{#if profile.age}}, {{ profile.age }}{{/if}}</h2>
+<form action="submit" id="form">
+    <img class="center new_profile__avatar" src="{{ profile.avatar }}" alt="{{ profile.avatar }}">
+    <div class="feed__options_field">
+        <h3>О себе</h3>
+        <textarea name="about" rows="10" placeholder="Расскажите о себе и своих увлечениях">{{ profile.about }}</textarea>
+    </div>
+    <div class="feed__options_field">
+        <div class="section__header section__header_3">
+            <h3>Ваши тэги</h3>
+            <a href="#">Добавить</a>
+        </div>
+        {{#if profile.tags}}
+            {{#each profile.tags}}
+                <div class="tag tag_size_middle">{{ this.title }}</div>
+                <div class="x_btn">X</div>
+            {{/each}}
+        {{else}}
+            <div class="center">
+                <button class="re_btn re_btn__outline">Добавить</button>
+            </div>
+        {{/if}}
+    </div>
+    <div class="feed__options_field">
+        <div class="section__header section__header_3">
+            <h3>Социальные сети</h3>
+            <a href="#">Добавить</a>
+        </div>
+        {{#if profile.networks}}
+            {{#each profile.networks}}
+                <!-- TODO: add networks -->
+            {{/each}}
+        {{else}}
+            <div class="center">
+                <button class="re_btn re_btn__outline">Добавить</button>
+            </div>
+        {{/if}}
+    </div>
+
+    <!-- TODO: add hider for footer shadow -->
+
+    <div class="feed__options_footer">
+        <button class="re_btn re_btn__filled">Сохранить</button>
+        <button class="re_btn re_btn__outline kek">Настройки</button>
+    </div>
+</form>

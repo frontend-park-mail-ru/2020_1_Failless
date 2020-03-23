@@ -1,0 +1,14 @@
+@import "../../modules/variables";
+
+.new_profile {
+  &__avatar {
+    width: 100px;
+    height: 100px;
+    margin: ($re--big-padding - $re--medium-padding) auto $re--big-padding;
+    border-radius: 50%;
+    box-shadow: 2px 3px 8px -5px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+  }
+
+
+}

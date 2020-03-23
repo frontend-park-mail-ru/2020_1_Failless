@@ -23,14 +23,14 @@ export default class SignUpController extends Controller {
         this.view.render();
         const form = document.getElementById('form');
         form.addEventListener('submit', this._signUpHandler.bind(this));
-        const regBtn = document.getElementsByClassName('btn_color_w')[0];
-        regBtn.addEventListener('click', function (event) {
-            event.preventDefault();
-
-            window.history.pushState({}, '', '/login');
-            window.history.pushState({}, '', '/login');
-            window.history.back();
-        });
+        // const regBtn = document.getElementsByClassName('re_btn re_btn__outline')[0];
+        // regBtn.addEventListener('click', function (event) {
+        //     event.preventDefault();
+        //
+        //     window.history.pushState({}, '', '/login');
+        //     window.history.pushState({}, '', '/login');
+        //     window.history.back();
+        // });
     }
 
     /**

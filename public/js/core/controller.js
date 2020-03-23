@@ -29,20 +29,21 @@ export default class Controller {
      * Create action
      */
     action() {
+        console.log('controller action');
         UserModel.getLogin().then((user) => {
             if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
                 createHeader(this.parent, false);
-                const sweetHomePage = document.getElementsByClassName('image icon_btn icon__size_m header__item')[0];
+                const sweetHomePage = document.getElementsByClassName('header__logo gradient-text')[0];
                 sweetHomePage.addEventListener('click', this._homeRedirect);
 
-                const userSignUp = document.getElementsByClassName('header__item')[1];
+                const userSignUp = document.getElementsByClassName('header__item')[0];
                 userSignUp.addEventListener('click', this._signUpRedirect);
 
-                const userLogin = document.getElementsByClassName('header__item')[2];
+                const userLogin = document.getElementsByClassName('header__item')[1];
                 userLogin.addEventListener('click', this._loginRedirect);
             } else {
                 createHeader(this.parent, true);
-                const sweetHomePage = document.getElementsByClassName('image icon_btn icon__size_m header__item')[0];
+                const sweetHomePage = document.getElementsByClassName('header__logo gradient-text')[0];
                 sweetHomePage.addEventListener('click', this._homeRedirect);
                 const eventSearch = document.getElementsByClassName('header__item')[1];
                 eventSearch.addEventListener('click', this._eventSearchRedirect);

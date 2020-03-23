@@ -1,27 +1,33 @@
 'use strict';
 
-import Controller from '../core/controller.js';
-import ProfileView from '../views/profile-view.js';
-import ProfileEditView from '../views/profile-edit-view.js';
+import NewProfileView from '../views/new-profile-view.js';
+import MyController from './my-controller.js';
 import UserModel from '../models/user-model.js';
 
 /**
- * @class ProfileController
+ * @class NewProfileController
  */
-export default class ProfileController extends Controller {
+export default class NewProfileController extends MyController {
 
     /**
-     * construct object of ProfileController class
+     * construct object of NewProfileController class
      * @param {HTMLElement} parent
      */
     constructor(parent) {
         super(parent);
-        this.view = new ProfileView(parent);
+        this.view = new NewProfileView(parent);
         this.editView = null;
         this.image = '';
         this.user = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            this._highlightCircle(2);
+        });
     }
 
+    /**
+     * Create action
+     */
     action() {
         super.action();
         // todo: check is user allowed to see this
@@ -38,26 +44,14 @@ export default class ProfileController extends Controller {
                     this.user = profile;
                     const photoInput = document.getElementById('photoUpload');
                     photoInput.addEventListener('change', this.#handleFile.bind(this), false);
-                    const textInput = document.getElementsByClassName('btn btn_color_ok btn_size_middle')[0];
+                    const textInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
                     console.log(textInput);
                     textInput.addEventListener('click', this.#handleInfo.bind(this), false);
-                    const settings = document.getElementsByClassName('btn btn_color_b btn_size_middle')[0];
+                    // TODO: i dunno how to get last item to remove kek in the future
+                    const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
                     settings.addEventListener('click', this.#profileSettings.bind(this), false);
 
                 } else {
-                    this.view.render({
-                        name: "this.user.name",
-                        phone: "this.user.phone",
-                        email: "this.user.email",
-                        password: '',
-                        avatar: '/ProfilePhotos/1.jpg',
-                        photos: ['/ProfilePhotos/1.jpg', '/ProfilePhotos/2.jpg'],
-                        gender: "this.user.gender",
-                        about: "textInput.value",
-                        rating: 228.1488,
-                        location: {lat: 228.1488, lng: 228.1488, accuracy: 228},
-                        birthday: '2020-02-28T13:55:04.306347+03:00',
-                    });
                     console.error('You have no rights');
                     console.log(profile);
                 }

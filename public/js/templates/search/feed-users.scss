@@ -36,7 +36,15 @@
   }
 
   &__options_field {
-    margin-bottom: $re--big-padding;
+    box-sizing: border-box;
+    margin-bottom: $re--medium-padding;
+    padding-bottom: $re--big-padding;
+    border-bottom: 1px solid $re--color-light-gray;
+
+    & textarea {
+      width: 100%;
+      resize: vertical;
+    }
   }
 
   /* Customize the label (the container) */
@@ -117,12 +125,9 @@
     bottom: 0;
     background-color: $color-white;
     box-shadow: 0 -10px 5px -6px rgba(0, 0, 0, 0.15);
-  }
-
-  &__buttons {
-    width: 100%;
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
   }
 
   &__map {
