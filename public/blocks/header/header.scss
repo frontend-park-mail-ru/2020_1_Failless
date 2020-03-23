@@ -8,6 +8,7 @@
   justify-content: center;
   align-items: center;
   flex: 0 0 auto; // grow shrink basis
+  z-index: 1;
 
   &__container {
     display: flex;

@@ -83,13 +83,14 @@
     color: $color-purple;
     background: $color-white;
     border: 1px solid $color-purple; // TODO: replace with gradient
+  }
 
-    &:hover {
-      border: 0;
-      color: $color-white;
-      background: $re--gradient;
-      box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.15);
-    }
+  &:hover {
+    border: 1px solid $color-white;
+    color: $color-white;
+    background: $re--gradient;
+    box-shadow: 5px 5px 10px #eaeaea,
+             -5px -5px 10px #f8f8f8;
   }
 
   &:active {
