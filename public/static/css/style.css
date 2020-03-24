@@ -490,6 +490,11 @@
   max-height: 100%;
   overflow-y: auto;
 }
+@media screen and (orientation: landscape) {
+  .new_profile__photos {
+    min-width: 482px;
+  }
+}
 .new_profile__events {
   max-height: 100%;
   overflow-y: auto;

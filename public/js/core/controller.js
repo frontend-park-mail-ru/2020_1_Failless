@@ -62,7 +62,7 @@ export default class Controller {
             }
 
             if (href === '/logout') {
-                #logoutRedirect();
+                this.#logoutRedirect();
                 return;
             }
 

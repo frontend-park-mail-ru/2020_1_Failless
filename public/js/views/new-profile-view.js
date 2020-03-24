@@ -43,14 +43,17 @@ export default class NewProfileView extends MyView {
         } else {
             profile.avatar.path = `${settings.aws}/users/${profile.avatar.path}`;
         }
+
         document.getElementsByClassName('my__left_column__body')[0].insertAdjacentHTML(
             'beforeend', Handlebars.templates['new-profile-left']({
                 profile: profile,
-            }));
+            })
+        );
         document.getElementsByClassName('my__main_column')[0].insertAdjacentHTML(
             'beforeend', Handlebars.templates['new-profile-main']({
                 title: 'Профиль',
                 profile: profile,
-            }));
+            })
+        );
     }
 }

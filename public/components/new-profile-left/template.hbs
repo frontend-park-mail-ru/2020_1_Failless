@@ -3,7 +3,8 @@
     <img class="center new_profile__avatar" src="{{ profile.avatar.path }}" alt="{{ profile.avatar.path }}">
     <div class="feed__options_field">
         <h3>О себе</h3>
-        <textarea class="feed__options_field_textarea" name="about" rows="10" placeholder="Расскажите о себе и своих увлечениях">{{ profile.about }}</textarea>
+        <textarea class="feed__options_field_textarea" name="about" rows="10"
+                  placeholder="Расскажите о себе и своих увлечениях">{{ profile.about }}</textarea>
     </div>
     <div class="feed__options_field">
         <div class="section__header section__header_3">
@@ -17,14 +18,15 @@
             {{/each}}
         {{else}}
             <div class="center">
-                <button class="re_btn re_btn__outline">Добавить</button>
+                <span class="font font__title font__color_lg">У вас пока нет ни одного тэга</span>
+<!--                <button class="re_btn re_btn__outline">Добавить</button>-->
             </div>
         {{/if}}
     </div>
     <div class="feed__options_field">
         <div class="section__header section__header_3">
             <h3>Социальные сети</h3>
-            <a href="#">Добавить</a>
+<!--            <a href="#">Добавить</a>-->
         </div>
         {{#if profile.networks}}
             {{#each profile.networks}}

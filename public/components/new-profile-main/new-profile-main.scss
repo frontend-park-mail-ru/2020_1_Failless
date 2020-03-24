@@ -4,6 +4,10 @@
   &__photos {
     max-height: 100%;
     overflow-y: auto;
+
+    @media screen and (orientation: landscape) {
+      min-width: 482px;
+    }
   }
 
   &__events {
