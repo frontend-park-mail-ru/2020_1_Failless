@@ -783,6 +783,7 @@
 .header__logo {
   font-size: 20px;
   font-weight: 500;
+  cursor: pointer;
 }
 .header__item {
   text-decoration: none;
