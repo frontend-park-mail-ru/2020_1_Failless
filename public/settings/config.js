@@ -3,5 +3,5 @@ export default {
     port: 3000,
     api: '/api',
     img: 'img/',
-    aws: 'https://eventum.s3.eu-north-1.amazonaws.com',
+    aws: 'https://eventum.s3.eu-north-1.amazonaws.com', //  app, users, events
 };
