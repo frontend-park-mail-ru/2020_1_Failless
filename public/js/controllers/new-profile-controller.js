@@ -73,6 +73,7 @@ export default class NewProfileController extends MyController {
      * @param {Event} event
      */
     #handleSelectImg = (event) => {
+        event.preventDefault();
         console.log(event.target);
         this.image = event.target.result;
         const photoColumn = document.getElementsByClassName('photo_columns')[0];
@@ -91,7 +92,11 @@ export default class NewProfileController extends MyController {
         newImage.insertAdjacentElement('afterend', discard);
         newImage.insertAdjacentElement('afterend', submit);
         discard.addEventListener('click', (event) => {
-            // todo: remove photo
+            event.preventDefault();
+            newImage.remove();
+            submit.remove();
+            submit.removeEventListener('click', this.#photoUploadHandler);
+            discard.remove();
         });
 
         submit.addEventListener('click', this.#photoUploadHandler.bind(this)); // this bind is really necessary
