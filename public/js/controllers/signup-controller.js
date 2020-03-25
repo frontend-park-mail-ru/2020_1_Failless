@@ -23,7 +23,8 @@ export default class SignUpController extends Controller {
         super.action();
         this.view.render();
         const form = document.getElementById('form');
-        form.addEventListener('submit', this._signUpHandler.bind(this));
+        form.addEventListener('submit', this._signUpSubmitHandler.bind(this));
+        form.addEventListener('input', this._signUpInputHandler.bind(this));
         // const regBtn = document.getElementsByClassName('re_btn re_btn__outline')[0];
         // regBtn.addEventListener('click', function (event) {
         //     event.preventDefault();
@@ -53,8 +54,10 @@ export default class SignUpController extends Controller {
             {name, email, phone, password, repeatPassword}, 
             ['name', 'email', 'phone', 'password', 'repeatPassword']
         ));
-        if (password !== repeatPassword) {
-            console.log('Passwords must to be equal');
+        if (ValidationModule.validateUserData(
+            {name, email, phone, password, repeatPassword}, 
+            ['name', 'email', 'phone', 'password', 'repeatPassword']
+        ).some(val => val.length !== 0)) {
             return null;
         }
 
@@ -65,7 +68,7 @@ export default class SignUpController extends Controller {
      * Handle click on submit event
      * @param {Event} event
      */
-    _signUpHandler(event) {
+    _signUpSubmitHandler(event) {
         event.preventDefault();
 
         const body = this._getFromSignUp(event);
@@ -87,6 +90,53 @@ export default class SignUpController extends Controller {
                 // response.json().then(data => { console.log(data.message); });
             }
         }).catch(reason => { console.log(reason); });
+    }
+
+    _addErrorMessage(element, messageValue) {
+        element.insertAdjacentHTML('afterend', 
+            Handlebars.templates['validation-error']({message: messageValue}));
+    }
+
+    /**
+     * Handle click on submit event
+     * @param {Event} event
+     */
+    _signUpInputHandler(event) {
+        const form = document.getElementById('form').getElementsByClassName('input input__auth');
+
+        const name = form[0].value;
+        const email = form[1].value;
+        const phone = form[2].value;
+        const password = form[3].value;
+        const repeatPassword = form[4].value;
+
+        let errors = document.getElementsByClassName('validation-error');
+        while(errors.length > 0){
+            errors[0].parentNode.removeChild(errors[0]);
+        }
+
+        switch(true) {
+            case (event.target === form[0]):
+                const nameCheck = ValidationModule.validateUserData({name}, ['name']);
+                this._addErrorMessage(form[0], nameCheck);
+                break;
+            case (event.target === form[1]):
+                const emailCheck = ValidationModule.validateUserData({email}, ['email']);
+                this._addErrorMessage(form[1], emailCheck);
+                break;
+            case (event.target === form[2]):
+                const phoneCheck = ValidationModule.validateUserData({phone}, ['phone']);
+                this._addErrorMessage(form[2], phoneCheck);
+                break;
+            case (event.target === form[3]):
+                const passwordCheck = ValidationModule.validateUserData({password}, ['password']);
+                this._addErrorMessage(form[3], passwordCheck);
+                break;
+            case (event.target === form[4]):
+                const repeatPasswordCheck = ValidationModule.validateUserData({password, repeatPassword}, ['password', 'repeatPassword']);
+                this._addErrorMessage(form[4], repeatPasswordCheck);
+                break;
+        }
     }
 
     /**
