@@ -23,10 +23,9 @@ export default class LoginController extends Controller {
     action() {
         super.action();
         this.view.render();
-        const form = document.getElementById('form');
-        form.addEventListener('submit', this._loginSubmitHandler);
-        form.addEventListener('input', this._loginInputHandler.bind(this));
-
+        this.form = document.getElementById('form');
+        this.form.addEventListener('submit', this._loginSubmitHandler);
+        this.form.addEventListener('input', this._loginInputHandler.bind(this));
     }
 
     /**
@@ -57,23 +56,22 @@ export default class LoginController extends Controller {
     _addErrorMessage(element, messageValue) {
         element.insertAdjacentHTML('afterend', 
             Handlebars.templates['validation-error']({message: messageValue}));
-    }
+    };
 
     /**
      * Handle click on submit event
      * @param {Event} event
      */
-    _loginInputHandler(event) {
-        const form = document.getElementById('form').getElementsByClassName('input input__auth');
-        const login = form[0].value;
+    _loginInputHandler = (event) => {
+        const inputs = this.form.getElementsByClassName('input input__auth');
+        const login = inputs[0].value;
 
         let errors = document.getElementsByClassName('validation-error');
         while(errors.length > 0){
-            console.log(errors);
             errors[0].parentNode.removeChild(errors[0]);
         }
 
-        if (event.target === form[0]) {
+        if (event.target === inputs[0]) {
             let loginCheck;
             if (login.includes('@')) {
                 const email = login;
@@ -82,9 +80,9 @@ export default class LoginController extends Controller {
                 const phone = login;
                 loginCheck = ValidationModule.validateUserData({phone}, ['phone']);
             }
-            this._addErrorMessage(form[0], loginCheck);
+            this._addErrorMessage(inputs[0], loginCheck);
         }
-    }
+    };
 
     /**
      * Handle click on login event
@@ -92,6 +90,11 @@ export default class LoginController extends Controller {
      */
     _loginSubmitHandler = (event) => {
         event.preventDefault();
+
+        if (!this._checkForErrors()) {
+            console.log('errors in form');
+            return
+        }
 
         const body = this._getFromLogin(event);
 
@@ -108,15 +111,11 @@ export default class LoginController extends Controller {
     };
 
     /**
-     * Handle click on login event
-     * @param {event} event
+     * Check if there are any errors
+     * then don't send any requests
      */
-    _signUpRedirect = (event) => {
-        event.preventDefault();
-        
-        window.history.pushState({}, '', '/signup');
-        window.history.pushState({}, '', '/signup');
-        window.history.back();
-
-    };
+    _checkForErrors() {
+        const errors = this.form.getElementsByClassName('validation-error');
+        return errors.length === 0;
+    }
 }
