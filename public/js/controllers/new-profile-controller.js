@@ -69,12 +69,12 @@ export default class NewProfileController extends MyController {
     };
 
     /**
-     *
+     * Preview selected image and draw manage buttons
      * @param {Event} event
      */
     #handleSelectImg = (event) => {
         console.log(event.target);
-
+        this.image = event.target.result;
         const photoColumn = document.getElementsByClassName('photo_columns')[0];
         const newImage = document.createElement('IMG');
         newImage.src = event.target.result;
@@ -87,24 +87,30 @@ export default class NewProfileController extends MyController {
         if (text !== undefined) {
             text.hidden = true;
         }
+
         newImage.insertAdjacentElement('afterend', discard);
         newImage.insertAdjacentElement('afterend', submit);
+        discard.addEventListener('click', (event) => {
+            // todo: remove photo
+        });
+
+        submit.addEventListener('click', this.#photoUploadHandler.bind(this)); // this bind is really necessary
     };
 
     /**
-     *
-     * @param title
-     * @param margin
-     * @param first
-     * @returns {HTMLElement}
+     * Get image buttons objects
+     * @param {string} title - buttons title
+     * @param {string} margin - margin
+     * @param {boolean} first - is this button first and need 18px margin-left
+     * @returns {HTMLElement} - generated button
      */
     #drawButtons = (title, margin, first = false) => {
         const button = document.createElement('BUTTON');
-        button.className = 're_btn re_btn__outline';
-        button.innerText = 'Подтвердить';
+        button.className = 're_btn re_btn__outline drawButtonIdentifier';
+        button.innerText = title;
         button.style.margin = first ? `0 ${margin} 0 18px` : margin;
         return button;
-    }
+    };
 
     #handleInfo = (event) => {
         event.preventDefault();
@@ -130,24 +136,14 @@ export default class NewProfileController extends MyController {
     };
 
     #photoUploadHandler = (event) => {
-        this.image = event.target.result;
         const userPhoto = this.image.split(';')[1].split(',')[1];
         const userProfile = {
-            name: this.user.name,
-            phone: this.user.phone,
-            email: this.user.email,
-            password: '',
-            avatar: {img: userPhoto},
-            photos: [{img: userPhoto}],
-            gender: this.user.gender,
-            about: this.user.about,
-            rating: 228.1488,
-            location: {lat: 228.1488, lng: 228.1488, accuracy: 228},
-            birthday: '2020-02-28T13:55:04.306347+03:00',
+            uid: this.user.uid,
+            uploaded: {img: userPhoto},
         };
-        UserModel.putProfile(userProfile)
+        UserModel.putImage(userProfile)
             .then(response =>
-                document.getElementsByClassName('profile__photo_img')[0].src = this.image)
+                document.getElementsByClassName('photo')[0].src = this.image)
             .catch(reason => console.log('ERROR'));
     };
 

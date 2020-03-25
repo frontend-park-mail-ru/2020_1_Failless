@@ -10,8 +10,8 @@
         </div>
         <div class="photo_columns">
             {{#if profile.photos}}
-                {{#each profile.photos}}
-                    <img class="photo" src="{{ this }}" alt="{{ this }}">
+                {{#each profile.photos as | photo |}}
+                    <img class="photo" src="{{../url}}/{{ photo.path }}" alt="{{ photo.path }}">
                 {{/each}}
             {{else}}
                 <span class="font font_bold font__size_middle font__color_lg">Фотографий нет</span>

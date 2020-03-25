@@ -42,6 +42,12 @@
     }
   }
 
+  &__scroll {
+    overflow: auto;
+    // TODO: remove hardcode
+    max-height: 566px;
+  }
+
   /* Customize the label (the container) */
   &__checkbox {
     &_label {

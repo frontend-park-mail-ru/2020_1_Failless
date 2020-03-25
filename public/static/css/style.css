@@ -200,6 +200,10 @@
   width: 100%;
   resize: none;
 }
+.feed__scroll {
+  overflow: auto;
+  max-height: 566px;
+}
 .feed__checkbox {
   /* Create a custom checkbox */
 }
@@ -437,9 +441,8 @@
 .my__left_column__body {
   padding: 15px 15px 0;
   max-height: calc(100% - 88px);
-  overflow: auto;
   position: relative;
-  min-height: 726px;
+  min-height: 692px;
 }
 .my__main_column {
   width: 75%;
