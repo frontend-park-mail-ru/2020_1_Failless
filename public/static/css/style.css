@@ -773,6 +773,8 @@
   z-index: 1;
 }
 .header__container {
+  min-width: 800px;
+  width: 1000px;
   display: flex;
   justify-content: space-between;
   align-items: center;

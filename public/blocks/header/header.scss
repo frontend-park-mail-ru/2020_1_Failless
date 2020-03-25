@@ -9,8 +9,10 @@
   align-items: center;
   flex: 0 0 auto; // grow shrink basis
   z-index: 1;
-
+  
   &__container {
+    min-width: 800px;
+    width: 1000px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -30,5 +32,26 @@
     color: $color-black;
     font-size: 14px;
     font-weight: 500;
+  }
+
+  &__hamburger {
+    display: none;
+    
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .header {
+    &__container {
+      width: 100%;
+    }
+  }
+}
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .header {
+    &__hamburger {
+      display: block;
+    }
   }
 }
