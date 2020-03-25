@@ -5,7 +5,8 @@ export default class ValidationModule {
 
     /**
      * Check if input is valid
-     * @param {HTMLInputElement} input user input
+     * @param {Object} input user input fields
+     * @param {Array} input user input types
      * @return {Array} array of errors
      */
     static validateUserData = ({
@@ -16,39 +17,39 @@ export default class ValidationModule {
                 repeatPassword = '',
             } = {}, attributes = ['email', 'password']) => {
 
-        if (!attributes.every(val => {
+        let error_list = [];
+        error_list = attributes.map(val => {
             switch (val) {
                 case 'password':
-                    console.log(password)
-                    return this.isNotEmpty(password) && this.isString(password);
+                    return !this.isNotEmpty(password) || !this.isString(password) ? ["Пустой или некорректный пароль"] : [""];
                 case 'repeatPassword':
-                    console.log(repeatPassword)
-                    return this.isNotEmpty(repeatPassword) && this.isString(repeatPassword);
+                    return !this.isNotEmpty(repeatPassword) || !this.isString(repeatPassword) ? ["Пустой или некорректный повторный пароль"] : [""];
                 case 'email':
-                    return this.isNotEmpty(email) && this.isString(email);
+                    return !this.isNotEmpty(email) || !this.isString(email) ? ["Пустая или некорректная почта"] : [""];
                 case 'phone':
-                    return this.isNotEmpty(phone) && this.isString(phone);
+                    return !this.isNotEmpty(phone) || !this.isString(phone) ? ["Пустой или некорректный телефон"] : [""];
                 case 'name':
-                    return this.isNotEmpty(name) && this.isString(name);
+                    return !this.isNotEmpty(name) || !this.isString(name) ? ["Пустое или некорректное имя"] : [""];
             }
-        })) {
-            return ['Проблемы с данными при вводе'];
+        });
+        if (error_list.some(val => val[0] !== "")) {
+            return error_list;
+        } else {
+            return attributes.map(val => {
+                switch (val) {
+                    case 'password':
+                        return this.validatePassword(password);
+                    case 'repeatPassword':
+                        return this.validateRepeatPassword(password, repeatPassword);
+                    case 'email':
+                        return this.validateEmail(email);
+                    case 'phone':
+                        return this.validatePhone(phone);
+                    case 'name':
+                        return this.validateName(name);
+                }
+            });    
         }
-
-        return attributes.map(val => {
-            switch (val) {
-                case 'password':
-                    return this.validatePassword(password);
-                case 'repeatPassword':
-                    return this.validateRepeatPassword(password, repeatPassword);
-                case 'email':
-                    return this.validateEmail(email);
-                case 'phone':
-                    return this.validatePhone(phone);
-                case 'name':
-                    return this.validateFullName(name);
-            }
-        });    
     }
 
     /**
@@ -79,15 +80,25 @@ export default class ValidationModule {
     
         if (input.length < 8) {
             errors.push('Пароль должен содержать не менее 8 символов');
+            return errors;
         }
         if (!/[0-9]/.test(input)) {
             errors.push('Пароль должен содержать цифры');
+            return errors;
+        }
+        if (input.match(/\d+/g)) {
+            if (input.match(/\d+/g).join('').length < 2) {
+                errors.push('Пароль должен содержать 2 цифры');
+                return errors;
+            }
         }
         if (!/[A-z]/.test(input)) {
             errors.push('Пароль должен содержать латинские буквы');
+            return errors;
         }
         if (!/^[\w\dA-z]+$/.test(input)) {
             errors.push('Пароль должен состоять из цифр и латинских букв');
+            return errors;
         }
     
         return errors;
@@ -102,11 +113,9 @@ export default class ValidationModule {
     static validateRepeatPassword = (input, password) => {
         let errors = [];
 
-        console.log(input !== password)
         if (input !== password) {
             errors.push('Введенное значение не совпадает с паролем');
         }
-        console.log(errors)
 
         return errors;
     }
@@ -136,33 +145,7 @@ export default class ValidationModule {
      * @param {HTMLInputElement} input input
      * @return {Array} array of error messages
      */
-    static validateFullName = input => {
-        let errors = [];
-
-        if (!input.includes(' ')) {
-            errors.push('Отсуствует фамилия');
-            return errors;
-        }
-        const firstName = input.split(' ')[0];
-        const lastName = input.split(' ')[1];
-
-        errors = this.validateFirstName(firstName);
-        console.log(errors);
-
-        let e = this.validateLastName(lastName);
-        errors = errors.concat(e);
-
-        console.log(e);
-
-        return errors;
-    }
-
-    /**
-     * Validate name
-     * @param {HTMLInputElement} input input
-     * @return {Array} array of error messages
-     */
-    static validateFirstName = input => {
+    static validateName = input => {
         const errors = [];
     
         if (!/^[A-ZА-ЯЁ]/.test(input)) {
@@ -171,26 +154,7 @@ export default class ValidationModule {
         if (input.length > 32) {
             errors.push('Длина не должна превышать 32 символа');
         }
-        console.log(errors);
 
-        return errors;
-    }
-  
-    /**
-     * Validate last name
-     * @param {HTMLInputElement} input input
-     * @return {Array} array of error messages
-     */
-    static validateLastName = input => {
-        const errors = [];
-
-        if (!/^[A-ZА-ЯЁ]/.test(input)) {
-            errors.push('Фамилия должна начинаться с заглавной буквы');
-        }
-        if (input.length > 32) {
-            errors.push('Длина не должна превышать 32 символа');
-        }
-    
         return errors;
     }
 
