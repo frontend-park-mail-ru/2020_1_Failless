@@ -63,10 +63,48 @@ export default class NewProfileController extends MyController {
     #handleFile = (event) => {
         if (event.target.files && event.target.files[0]) {
             let FR = new FileReader();
-            FR.addEventListener('load', this.#photoUploadHandler.bind(this));
+            FR.addEventListener('load', this.#handleSelectImg.bind(this));
             FR.readAsDataURL(event.target.files[0]);
         }
     };
+
+    /**
+     *
+     * @param {Event} event
+     */
+    #handleSelectImg = (event) => {
+        console.log(event.target);
+
+        const photoColumn = document.getElementsByClassName('photo_columns')[0];
+        const newImage = document.createElement('IMG');
+        newImage.src = event.target.result;
+        newImage.className = 'photo';
+        photoColumn.insertAdjacentElement('afterbegin', newImage);
+        const submit = this.#drawButtons('Подтвердить', '2px', true);
+        const discard = this.#drawButtons('Отменить', '2px');
+
+        const text = document.getElementsByClassName('font font_bold font__size_middle font__color_lg')[0];
+        if (text !== undefined) {
+            text.hidden = true;
+        }
+        newImage.insertAdjacentElement('afterend', discard);
+        newImage.insertAdjacentElement('afterend', submit);
+    };
+
+    /**
+     *
+     * @param title
+     * @param margin
+     * @param first
+     * @returns {HTMLElement}
+     */
+    #drawButtons = (title, margin, first = false) => {
+        const button = document.createElement('BUTTON');
+        button.className = 're_btn re_btn__outline';
+        button.innerText = 'Подтвердить';
+        button.style.margin = first ? `0 ${margin} 0 18px` : margin;
+        return button;
+    }
 
     #handleInfo = (event) => {
         event.preventDefault();

@@ -16,7 +16,6 @@
             {{else}}
                 <span class="font font_bold font__size_middle font__color_lg">Фотографий нет</span>
             {{/if}}
-
         </div>
     </div>
     <div class="new_profile__separator"></div>
@@ -40,14 +39,13 @@
         <div class="new_profile__events__group">
             <div class="section__header section__header_3">
                 <h3>Ваши подписки</h3>
-                <a href="#">Добавить</a>
             </div>
             {{#if profile.events.others}}
                 {{#each profile.events.others as |event|}}
                     {{>event}}
                 {{/each}}
             {{else}}
-                <button class="re_btn re_btn__outline">Добавить</button>
+                <span class="font font_bold font__size_small font__color_lg">Подписок нет</span>
             {{/if}}
         </div>
     </div>
