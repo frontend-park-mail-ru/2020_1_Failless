@@ -9,9 +9,14 @@
             </div>
         </div>
         <div class="photo_columns">
-            {{#each profile.photos}}
-                <img class="photo" src="{{ this }}" alt="{{ this }}">
-            {{/each}}
+            {{#if profile.photos}}
+                {{#each profile.photos}}
+                    <img class="photo" src="{{ this }}" alt="{{ this }}">
+                {{/each}}
+            {{else}}
+                <span class="font font_bold font__size_middle font__color_lg">Фотографий нет</span>
+            {{/if}}
+
         </div>
     </div>
     <div class="new_profile__separator"></div>

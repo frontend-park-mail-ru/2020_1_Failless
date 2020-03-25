@@ -1059,7 +1059,7 @@
 }
 
 .font {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
 }
 .font__title {
   font-weight: bold;
@@ -1098,16 +1098,22 @@
 .font__size_small-xxx {
   font-size: 8px;
 }
+.font__size_middle {
+  font-size: 24px;
+}
 .font__helper {
   font-size: 12px;
   font-weight: bold;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
 }
 .font_pointer {
   cursor: pointer;
 }
 .font_underline {
   text-decoration: underline;
+}
+.font_bold {
+  font-weight: bold;
 }
 
 .big-event {
@@ -1508,7 +1514,7 @@ input[type=range]::-ms-fill-upper {
 }
 
 .font {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
 }
 .font__title {
   font-weight: bold;
@@ -1547,16 +1553,22 @@ input[type=range]::-ms-fill-upper {
 .font__size_small-xxx {
   font-size: 8px;
 }
+.font__size_middle {
+  font-size: 24px;
+}
 .font__helper {
   font-size: 12px;
   font-weight: bold;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
 }
 .font_pointer {
   cursor: pointer;
 }
 .font_underline {
   text-decoration: underline;
+}
+.font_bold {
+  font-weight: bold;
 }
 
 .img__event {
