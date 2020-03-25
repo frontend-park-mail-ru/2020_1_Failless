@@ -42,6 +42,8 @@
       padding: $re--medium-padding $re--medium-padding 0;
       max-height: calc(100% - 88px);
       overflow: auto;
+      position: relative;
+      min-height: 726px;
     }
   }
 

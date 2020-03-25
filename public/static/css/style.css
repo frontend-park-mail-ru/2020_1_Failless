@@ -264,10 +264,11 @@
 }
 .feed__options_footer {
   padding: 23px 0;
-  width: 100%;
+  width: 93%;
   height: auto;
-  position: sticky;
+  position: absolute;
   bottom: 0;
+  left: 8px;
   background-color: white;
   box-shadow: 0 -10px 5px -6px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -437,6 +438,8 @@
   padding: 15px 15px 0;
   max-height: calc(100% - 88px);
   overflow: auto;
+  position: relative;
+  min-height: 726px;
 }
 .my__main_column {
   width: 75%;
@@ -852,6 +855,30 @@
   -webkit-mask-image: url("../icons/add.svg");
   mask-image: url("../icons/add.svg");
 }
+.icon__twitter {
+  -webkit-mask-image: url("../icons/twitter.svg");
+  mask-image: url("../icons/twitter.svg");
+}
+.icon__vk {
+  -webkit-mask-image: url("../icons/vk.svg");
+  mask-image: url("../icons/vk.svg");
+}
+.icon__inst {
+  -webkit-mask-image: url("../icons/inst.svg");
+  mask-image: url("../icons/inst.svg");
+}
+.icon__ok {
+  -webkit-mask-image: url("../icons/ok.svg");
+  mask-image: url("../icons/ok.svg");
+}
+.icon__fb {
+  -webkit-mask-image: url("../icons/fb.svg");
+  mask-image: url("../icons/fb.svg");
+}
+.icon__moimir {
+  -webkit-mask-image: url("../icons/moimir.svg");
+  mask-image: url("../icons/moimir.svg");
+}
 .icon__more {
   -webkit-mask-image: url("../icons/more.svg");
   mask-image: url("../icons/more.svg");
@@ -890,6 +917,9 @@
 }
 .icon_color_gray {
   background-color: dimgrey;
+}
+.icon_color_lg {
+  background-color: #b6bebf;
 }
 
 .gradient-text {
