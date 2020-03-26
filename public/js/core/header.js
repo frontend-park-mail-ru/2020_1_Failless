@@ -14,6 +14,10 @@ export default function createHeader(base, logged) {
             logo: '/static/images/logo.png',
             buttons: !logged ? [
                 {
+                    link: '/search',
+                    name: 'Поиск',
+                },
+                {
                     link: '/signup',
                     name: 'Регистрация',
                 },
@@ -27,8 +31,8 @@ export default function createHeader(base, logged) {
                     name: 'Поиск',
                 },
                 {
-                    link: '/logout',
-                    name: 'Выход',
+                    link: '/feed/users',
+                    name: 'Лента',
                 },
                 {
                     link: '/my/profile',

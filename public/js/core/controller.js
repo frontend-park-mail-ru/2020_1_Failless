@@ -14,6 +14,9 @@ export default class Controller {
      */
     constructor(parent) {
         this.parent = parent;
+        document.addEventListener('DOMContentLoaded', () => {
+            // TODO: add eventlisteners
+        });
     }
 
     /**
@@ -32,19 +35,21 @@ export default class Controller {
         UserModel.getLogin().then((user) => {
             if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
                 createHeader(this.parent, false);
+                document.getElementsByClassName('header__item')[1].addEventListener(
+                    'click', this._signUpRedirect);
+                document.getElementsByClassName('header__item')[2].addEventListener(
+                    'click', this._loginRedirect);
             } else {
                 createHeader(this.parent, true);
+                document.getElementsByClassName('header__item')[1].addEventListener(
+                    'click', this._feedRedirect);
+                document.getElementsByClassName('header__item')[2].addEventListener(
+                    'click', this._profileRedirect);
             }
-        }).catch(onerror => {
-            createHeader(this.parent, false);
-            console.log('No internet connection');
-
-        }).then(() => {
-            const managePanel = document.getElementsByClassName('header__manage')[0];
-            managePanel.addEventListener('click', this.#controlBtnPressed.bind(this));
-            const logo = document.getElementsByClassName('header__logo gradient-text')[0];
-            logo.addEventListener('click', this.#homeRedirect.bind(this));
-            console.log(logo);
+            document.getElementsByClassName('header__logo gradient-text')[0].addEventListener(
+                'click', this._homeRedirect);
+            document.getElementsByClassName('header__item')[0].addEventListener(
+                'click', this._eventSearchRedirect);
         });
     }
 
@@ -107,9 +112,21 @@ export default class Controller {
     _profileRedirect(event) {
         event.preventDefault();
 
-        window.history.pushState({}, '', '/profile');
-        window.history.pushState({}, '', '/profile');
+        window.history.pushState({}, '', '/my/profile');
+        window.history.pushState({}, '', '/my/profile');
         window.history.back();
     }
 
+    _setActiveLink(index) {
+        // TODO: remove all active links
+        //  Add active link on chosen index (look in my-controller.js)
+    }
+
+    _feedRedirect(event) {
+        event.preventDefault();
+
+        window.history.pushState({}, '', '/feed/users');
+        window.history.pushState({}, '', '/feed/users');
+        window.history.back();
+    }
 }

@@ -29,6 +29,10 @@ $re--small-padding: 12px;
 $re--full-height: 86vh;
 $re--border-radius: 4px;
 
+$breakpoint-phone: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+
 .gradient-text {
     background: $re--gradient;
     -webkit-background-clip: text;
