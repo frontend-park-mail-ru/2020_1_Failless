@@ -147,10 +147,12 @@ export default class NewProfileController extends MyController {
             uid: this.user.uid,
             uploaded: {img: userPhoto},
         };
+        document.getElementsByClassName('drawButtonIdentifier')[1].remove();
+        document.getElementsByClassName('drawButtonIdentifier')[0].remove();
         UserModel.putImage(userProfile)
-            .then(response =>
-                document.getElementsByClassName('photo')[0].src = this.image)
-            .catch(reason => console.log('ERROR'));
+            .then(response => {
+                document.getElementsByClassName('photo')[0].src = this.image;
+            }).catch(reason => console.log('ERROR'));
     };
 
 
