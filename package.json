@@ -1,14 +1,24 @@
 {
   "name": "eventum",
-  "version": "1.0.0",
+  "version": "2.1.2",
   "description": "хочувБАР",
   "main": "index.js",
+  "private": true,
   "dependencies": {
+    "handlebars": "latest",
     "sass": "^1.25.0",
-    "handlebars": "latest"
+    "serviceworker-webpack-plugin": "^1.0.1"
   },
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-private-methods": "^7.8.3",
+    "@babel/preset-env": "^7.9.0",
+    "eslint": "^6.8.0",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
