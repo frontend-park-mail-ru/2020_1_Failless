@@ -792,6 +792,7 @@
 }
 .header__manage {
   display: flex;
+  z-index: 2;
 }
 .header__logo {
   font-size: 20px;
@@ -800,7 +801,7 @@
 .header__item {
   text-decoration: none;
   margin: 0 0 0 23px;
-  color: #D5D5D5;
+  color: #191919;
   font-size: 14px;
   font-weight: 400;
 }
@@ -808,23 +809,80 @@
   color: #191919;
   font-weight: 500;
 }
+.header__left {
+  display: none;
+}
+.header__right input {
+  display: none;
+}
 .header__icon {
   display: none;
   width: 20px;
+  z-index: 1;
 }
 
 @media only screen and (max-width: 1000px) {
   .header__container {
     width: 100%;
-    padding: 0 22px;
+    padding: 0 23px;
   }
 }
 @media only screen and (max-width: 480px) {
+  .header__left {
+    display: block;
+  }
+  .header__right input {
+    display: block;
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    right: 11px;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .header__right input:checked ~ .header__manage {
+    transform: none;
+  }
   .header__icon {
     display: block;
   }
+  .header__icon svg {
+    display: block;
+  }
   .header__manage {
-    display: none;
+    position: absolute;
+    right: -23px;
+    margin-top: -23px;
+    margin-right: 23px;
+    padding: 23px 23px 0;
+    flex-flow: column;
+    align-items: stretch;
+    background-color: white;
+    border-bottom-left-radius: 4px;
+    -webkit-font-smoothing: antialiased;
+    /* to stop flickering of text in safari */
+    transform-origin: 0% 0%;
+    transform: translate(100%, 0);
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+  }
+  .header__manage .header__icon {
+    width: 18px;
+    margin-bottom: 15px;
+    align-self: flex-end;
+  }
+  .header__item {
+    margin: 0 0 12px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #F1F1F1;
+    text-align: right;
+  }
+  .header__item:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
   }
 }
 .gradient-text {
@@ -1571,6 +1629,7 @@ body {
   background: #F1F1F1;
   text-decoration: none;
   font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
+  overflow-x: hidden;
 }
 
 textarea {

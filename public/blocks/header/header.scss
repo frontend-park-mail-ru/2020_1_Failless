@@ -1,10 +1,12 @@
 @import "../../modules/variables";
 
 $header-width: 1000px;
+$header-heigth: 45px;
+$header-icon-width: 20px;
 
 .header {
   width: 100%;
-  height: 45px;
+  height: $header-heigth;
   background-color: $color-white;
   display: flex;
   justify-content: center;
@@ -20,6 +22,7 @@ $header-width: 1000px;
   }
   &__manage {
     display: flex;
+    z-index: 2;
   }
 
   &__logo {
@@ -30,7 +33,7 @@ $header-width: 1000px;
   &__item {
     text-decoration: none;
     margin: 0 0 0 $re--big-padding;
-    color: $re--color-middle-gray;
+    color: $color-black;
     font-size: 14px;
     font-weight: 400;
 
@@ -40,9 +43,20 @@ $header-width: 1000px;
     }
   }
 
+  &__left {
+    display: none;
+  }
+
+  &__right {
+    & input {
+      display: none;
+    }
+  }
+
   &__icon {
     display: none;
-    width: 20px;
+    width: $header-icon-width;
+    z-index: 1;
   }
 }
 
@@ -51,18 +65,82 @@ $header-width: 1000px;
 
     &__container {
       width: 100%;
-      padding: 0 22px;
+      padding: 0 $re--big-padding;
     }
   }
 }
 
 @media only screen and (max-width: $breakpoint-phone) {
   .header {
-    &__icon {
+    &__left {
       display: block;
     }
+
+    &__right {
+      & input {
+        display: block;
+        width: $header-heigth;
+        height: $header-heigth;
+        position: absolute;
+        z-index: 3;
+        top: 0;
+        right: 11px;
+        padding: 0;
+        margin: 0;
+
+        opacity: 0;
+        cursor: pointer;
+
+        &:checked ~ .header__manage {
+          transform: none;
+        }
+      }
+    }
+
+    &__icon {
+      display: block;
+
+      & svg {
+        display: block;
+      }
+    }
+
     &__manage {
-      display: none;
+      position: absolute;
+      right: -$re--big-padding;
+      margin-top: -$re--big-padding;
+      margin-right: $re--big-padding;
+      padding: $re--big-padding $re--big-padding 0;
+      flex-flow: column;
+      align-items: stretch;
+      background-color: $color-white;
+      border-bottom-left-radius: $re--border-radius;
+
+      -webkit-font-smoothing: antialiased;
+      /* to stop flickering of text in safari */
+
+      transform-origin: 0% 0%;
+      transform: translate(100%, 0);
+
+      transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+
+      & .header__icon {
+        width: $header-icon-width - 2px;
+        margin-bottom: $re--medium-padding;
+        align-self: flex-end;
+      }
+    }
+
+    &__item {
+      margin: 0 0 $re--small-padding 0;
+      padding-bottom: $re--small-padding;
+      border-bottom: 1px solid $re--color-light-gray;
+      text-align: right;
+
+      &:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
     }
   }
 }
