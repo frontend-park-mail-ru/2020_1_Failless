@@ -14,6 +14,9 @@ export default class Controller {
      */
     constructor(parent) {
         this.parent = parent;
+        document.addEventListener('DOMContentLoaded', () => {
+            // TODO: add eventlisteners
+        });
     }
 
     /**
@@ -136,4 +139,8 @@ export default class Controller {
         window.history.back();
     }
 
+    _setActiveLink(index) {
+        // TODO: remove all active links
+        //  Add active link on chosen index (look in my-controller.js)
+    }
 }
