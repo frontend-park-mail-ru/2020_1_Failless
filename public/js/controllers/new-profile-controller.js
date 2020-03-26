@@ -63,26 +63,72 @@ export default class NewProfileController extends MyController {
     #handleFile = (event) => {
         if (event.target.files && event.target.files[0]) {
             let FR = new FileReader();
-            FR.addEventListener('load', this.#photoUploadHandler.bind(this));
+            FR.addEventListener('load', this.#handleSelectImg.bind(this));
             FR.readAsDataURL(event.target.files[0]);
         }
     };
 
+    /**
+     * Preview selected image and draw manage buttons
+     * @param {Event} event
+     */
+    #handleSelectImg = (event) => {
+        event.preventDefault();
+        console.log(event.target);
+        this.image = event.target.result;
+        const photoColumn = document.getElementsByClassName('photo_columns')[0];
+        const newImage = document.createElement('IMG');
+        newImage.src = event.target.result;
+        newImage.className = 'photo';
+        photoColumn.insertAdjacentElement('afterbegin', newImage);
+        const submit = this.#drawButtons('Подтвердить', '2px', true);
+        const discard = this.#drawButtons('Отменить', '2px');
+
+        const text = document.getElementsByClassName('font font_bold font__size_middle font__color_lg')[0];
+        if (text !== undefined) {
+            text.hidden = true;
+        }
+
+        newImage.insertAdjacentElement('afterend', discard);
+        newImage.insertAdjacentElement('afterend', submit);
+        discard.addEventListener('click', (event) => {
+            event.preventDefault();
+            newImage.remove();
+            submit.remove();
+            submit.removeEventListener('click', this.#photoUploadHandler);
+            discard.remove();
+        });
+
+        submit.addEventListener('click', this.#photoUploadHandler.bind(this)); // this bind is really necessary
+    };
+
+    /**
+     * Get image buttons objects
+     * @param {string} title - buttons title
+     * @param {string} margin - margin
+     * @param {boolean} first - is this button first and need 18px margin-left
+     * @returns {HTMLElement} - generated button
+     */
+    #drawButtons = (title, margin, first = false) => {
+        const button = document.createElement('BUTTON');
+        button.className = 're_btn re_btn__outline drawButtonIdentifier';
+        button.innerText = title;
+        button.style.margin = first ? `0 ${margin} 0 18px` : margin;
+        return button;
+    };
+
     #handleInfo = (event) => {
         event.preventDefault();
-        const textInput = document.getElementsByClassName('input input__text_small')[0];
+        const textInput = document.getElementsByClassName('feed__options_field_textarea')[0];
+        const tags = document.getElementsByClassName('tag');
+        let selectedTags = [];
+        Array.from(tags).forEach((element) => {
+            selectedTags.push(element.id);
+        });
         const userProfile = {
-            name: this.user.name,
-            phone: this.user.phone,
-            email: this.user.email,
-            password: '',
-            avatar: {path: this.user.avatar.path},
-            photos: [{path: this.user.avatar.path}],
-            gender: this.user.gender,
+            tags: selectedTags,
             about: textInput.value,
-            rating: 228.1488,
-            location: {lat: 228.1488, lng: 228.1488, accuracy: 228},
-            birthday: '2020-02-28T13:55:04.306347+03:00',
+            social: this.user.links,
         };
         UserModel.putProfile(userProfile)
             .then(response => {
@@ -91,32 +137,28 @@ export default class NewProfileController extends MyController {
             .catch(reason => console.log('ERROR', reason));
     };
 
+    /**
+     * Upload event photo to server
+     * @param {Event} event
+     */
     #photoUploadHandler = (event) => {
-        this.image = event.target.result;
         const userPhoto = this.image.split(';')[1].split(',')[1];
         const userProfile = {
-            name: this.user.name,
-            phone: this.user.phone,
-            email: this.user.email,
-            password: '',
-            avatar: {img: userPhoto},
-            photos: [{img: userPhoto}],
-            gender: this.user.gender,
-            about: this.user.about,
-            rating: 228.1488,
-            location: {lat: 228.1488, lng: 228.1488, accuracy: 228},
-            birthday: '2020-02-28T13:55:04.306347+03:00',
+            uid: this.user.uid,
+            uploaded: {img: userPhoto},
         };
-        UserModel.putProfile(userProfile)
-            .then(response =>
-                document.getElementsByClassName('profile__photo_img')[0].src = this.image)
-            .catch(reason => console.log('ERROR'));
+        document.getElementsByClassName('drawButtonIdentifier')[1].remove();
+        document.getElementsByClassName('drawButtonIdentifier')[0].remove();
+        UserModel.putImage(userProfile)
+            .then(response => {
+                document.getElementsByClassName('photo')[0].src = this.image;
+            }).catch(reason => console.log('ERROR'));
     };
 
 
     /**
      * Create profile settings popup
-     * @param event
+     * @param {Event} event
      */
     #profileSettings = (event) => {
         this.editView = new ProfileEditView(this.parent);
@@ -130,7 +172,7 @@ export default class NewProfileController extends MyController {
 
     /**
      * Remove profile settings popup
-     * @param event
+     * @param {Event} event
      */
     #removeProfileSettings = (event) => {
         const popup = document.getElementsByClassName('profile-edit')[0];

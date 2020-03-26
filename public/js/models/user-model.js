@@ -107,7 +107,23 @@ export default class UserModel extends Model {
      * @return {Promise} promise to set new user data
      */
     static putProfile(profileUserData) {
-        return NetworkModule.fetchPut({path: '/profile/' + this.user.uid, body: profileUserData}).then((response) => {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/meta`, body: profileUserData}).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
+            throw new Error(error);
+        });
+    }
+
+    /**
+     * Send user image data to server
+     * @return {Promise} promise to set new user data
+     */
+    static putImage(imageData) {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/upload`, body: imageData}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }

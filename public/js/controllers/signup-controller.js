@@ -86,7 +86,7 @@ export default class SignUpController extends Controller {
 
     /**
      * Handle click on login event
-     * @param {event} event
+     * @param {Event} event
      */
     _loginRedirect(event) {
         event.preventDefault();
