@@ -13,8 +13,8 @@
                 <a href="#">Добавить</a>
             </div>
             {{#if profile.tags}}
-                {{#each profile.tags}}
-                    <div class="tag tag_size_middle">{{ this.title }}</div>
+                {{#each profile.tags as |tag|}}
+                    <div id="{{ id }}" class="tag tag_size_middle">{{ title }}</div>
                     <div class="x_btn">X</div>
                 {{/each}}
             {{else}}

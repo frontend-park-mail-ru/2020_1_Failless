@@ -107,7 +107,7 @@ export default class UserModel extends Model {
      * @return {Promise} promise to set new user data
      */
     static putProfile(profileUserData) {
-        return NetworkModule.fetchPut({path: '/profile/' + this.user.uid, body: profileUserData}).then((response) => {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/meta`, body: profileUserData}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }

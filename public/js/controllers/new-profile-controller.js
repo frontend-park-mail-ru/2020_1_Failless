@@ -119,19 +119,16 @@ export default class NewProfileController extends MyController {
 
     #handleInfo = (event) => {
         event.preventDefault();
-        const textInput = document.getElementsByClassName('input input__text_small')[0];
+        const textInput = document.getElementsByClassName('feed__options_field_textarea')[0];
+        const tags = document.getElementsByClassName('tag');
+        let selectedTags = [];
+        Array.from(tags).forEach((element) => {
+            selectedTags.push(element.id);
+        });
         const userProfile = {
-            name: this.user.name,
-            phone: this.user.phone,
-            email: this.user.email,
-            password: '',
-            avatar: {path: this.user.avatar.path},
-            photos: [{path: this.user.avatar.path}],
-            gender: this.user.gender,
+            tags: selectedTags,
             about: textInput.value,
-            rating: 228.1488,
-            location: {lat: 228.1488, lng: 228.1488, accuracy: 228},
-            birthday: '2020-02-28T13:55:04.306347+03:00',
+            social: this.user.links,
         };
         UserModel.putProfile(userProfile)
             .then(response => {
@@ -140,6 +137,10 @@ export default class NewProfileController extends MyController {
             .catch(reason => console.log('ERROR', reason));
     };
 
+    /**
+     * Upload event photo to server
+     * @param {Event} event
+     */
     #photoUploadHandler = (event) => {
         const userPhoto = this.image.split(';')[1].split(',')[1];
         const userProfile = {
@@ -155,7 +156,7 @@ export default class NewProfileController extends MyController {
 
     /**
      * Create profile settings popup
-     * @param event
+     * @param {Event} event
      */
     #profileSettings = (event) => {
         this.editView = new ProfileEditView(this.parent);
@@ -169,7 +170,7 @@ export default class NewProfileController extends MyController {
 
     /**
      * Remove profile settings popup
-     * @param event
+     * @param {Event} event
      */
     #removeProfileSettings = (event) => {
         const popup = document.getElementsByClassName('profile-edit')[0];
