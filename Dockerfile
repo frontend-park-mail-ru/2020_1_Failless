@@ -11,6 +11,7 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
 RUN apt-get install nodejs -y
 
 ADD ./nginx/nginx.conf /etc/nginx/conf.d/
+RUN [ ! -e file ] || rm /etc/nginx/conf.d/default.conf
 
 RUN mkdir -p /static
 WORKDIR /static
