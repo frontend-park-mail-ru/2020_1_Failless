@@ -36,10 +36,16 @@
     padding-bottom: $re--big-padding;
     border-bottom: 1px solid $re--color-light-gray;
 
-    & textarea {
+    &_textarea {
       width: 100%;
-      resize: vertical;
+      resize: none;
     }
+  }
+
+  &__scroll {
+    overflow: auto;
+    // TODO: remove hardcode
+    max-height: 566px;
   }
 
   /* Customize the label (the container) */
@@ -114,11 +120,12 @@
 
   &__options_footer {
     padding: $re--big-padding 0;
-    width: 100%;
+    width: 93%;
     height: auto;
-    position: sticky;
+    position: absolute;
     bottom: 0;
-    background-color: $color-white;
+    left: 8px;
+    background-color: white;
     box-shadow: 0 -10px 5px -6px rgba(0, 0, 0, 0.15);
     display: flex;
     justify-content: space-evenly;

@@ -31,7 +31,7 @@ export default function createHeader(base, logged) {
                     name: 'Выход',
                 },
                 {
-                    link: '/profile',
+                    link: '/my/profile',
                     name: 'Профиль',
                 },
             ]

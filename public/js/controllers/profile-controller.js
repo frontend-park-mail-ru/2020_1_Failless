@@ -46,14 +46,14 @@ export default class ProfileController extends Controller {
 
                 } else {
                     this.view.render({
-                        name: "this.user.name",
-                        phone: "this.user.phone",
-                        email: "this.user.email",
+                        name: 'this.user.name',
+                        phone: 'this.user.phone',
+                        email: 'this.user.email',
                         password: '',
                         avatar: '/ProfilePhotos/1.jpg',
                         photos: ['/ProfilePhotos/1.jpg', '/ProfilePhotos/2.jpg'],
-                        gender: "this.user.gender",
-                        about: "textInput.value",
+                        gender: 'this.user.gender',
+                        about: 'textInput.value',
                         rating: 228.1488,
                         location: {lat: 228.1488, lng: 228.1488, accuracy: 228},
                         birthday: '2020-02-28T13:55:04.306347+03:00',
