@@ -98,8 +98,34 @@ export default class ProfileController extends Controller {
             .catch(reason => console.log('ERROR', reason));
     };
 
+<<<<<<< HEAD
     #photoUploadHandler = (event) => {
+=======
+    _handleInfo(event) {
+        event.preventDefault();
+        const textInput = document.getElementsByClassName('input input__text_small')[0];
+        const userProfile = {
+            name: this.user.name,
+            phone: this.user.phone,
+            email: this.user.email,
+            password: '',
+            avatar: {path: this.user.avatar.path},
+            photos: [{path: this.user.avatar.path}],
+            gender: this.user.gender,
+            about: textInput.value,
+            rating: 228.1488,
+            location: {lat: 228.1488, lng: 228.1488, accuracy: 228},
+            birthday: '2020-02-28T13:55:04.306347+03:00',
+        };
+        UserModel.postProfile(userProfile)
+            .then(response => { console.log('ok'); }
+            ).catch(reason => console.log('ERROR'));
+    }
+
+    _photoUploadHandler(event) {
+>>>>>>> c1f61ed... hui
         this.image = event.target.result;
+        console.log(this.image);
         const userPhoto = this.image.split(';')[1].split(',')[1];
         const userProfile = {
             name: this.user.name,
