@@ -36,27 +36,21 @@ export default class Controller {
         UserModel.getLogin().then((user) => {
             if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
                 createHeader(this.parent, false);
-                const sweetHomePage = document.getElementsByClassName('header__logo gradient-text')[0];
-                sweetHomePage.addEventListener('click', this._homeRedirect);
-
-                const userSignUp = document.getElementsByClassName('header__item')[0];
-                userSignUp.addEventListener('click', this._signUpRedirect);
-
-                const userLogin = document.getElementsByClassName('header__item')[1];
-                userLogin.addEventListener('click', this._loginRedirect);
+                document.getElementsByClassName('header__item')[1].addEventListener(
+                    'click', this._signUpRedirect);
+                document.getElementsByClassName('header__item')[2].addEventListener(
+                    'click', this._loginRedirect);
             } else {
                 createHeader(this.parent, true);
-                const sweetHomePage = document.getElementsByClassName('header__logo gradient-text')[0];
-                sweetHomePage.addEventListener('click', this._homeRedirect);
-                const eventSearch = document.getElementsByClassName('header__item')[1];
-                eventSearch.addEventListener('click', this._eventSearchRedirect);
-
-                const userLogout = document.getElementsByClassName('header__item')[2];
-                userLogout.addEventListener('click', this._logoutRedirect);
-
-                const userProfile = document.getElementsByClassName('header__item')[3];
-                userProfile.addEventListener('click', this._profileRedirect);
+                document.getElementsByClassName('header__item')[1].addEventListener(
+                    'click', this._feedRedirect);
+                document.getElementsByClassName('header__item')[2].addEventListener(
+                    'click', this._profileRedirect);
             }
+            document.getElementsByClassName('header__logo gradient-text')[0].addEventListener(
+                'click', this._homeRedirect);
+            document.getElementsByClassName('header__item')[0].addEventListener(
+                'click', this._eventSearchRedirect);
         });
         console.log('She\'s kind of cute');
     }
@@ -134,13 +128,21 @@ export default class Controller {
     _profileRedirect(event) {
         event.preventDefault();
 
-        window.history.pushState({}, '', '/profile');
-        window.history.pushState({}, '', '/profile');
+        window.history.pushState({}, '', '/my/profile');
+        window.history.pushState({}, '', '/my/profile');
         window.history.back();
     }
 
     _setActiveLink(index) {
         // TODO: remove all active links
         //  Add active link on chosen index (look in my-controller.js)
+    }
+
+    _feedRedirect(event) {
+        event.preventDefault();
+
+        window.history.pushState({}, '', '/feed/users');
+        window.history.pushState({}, '', '/feed/users');
+        window.history.back();
     }
 }
