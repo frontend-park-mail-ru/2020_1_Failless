@@ -9,6 +9,12 @@ $more-icon: $icons-path + "more.svg";
 $close-icon: $icons-path + "close.svg";
 $add-icon: $icons-path + "add.svg";
 $users-icon: $icons-path + "users.svg";
+$twitter-icon: $icons-path + "twitter.svg";
+$fb-icon: $icons-path + "fb.svg";
+$ok-icon: $icons-path + "ok.svg";
+$vk-icon: $icons-path + "vk.svg";
+$inst-icon: $icons-path + "inst.svg";
+$moimir-icon: $icons-path + "moimir.svg";
 
 $icon-size: 14px, 14px;
 
@@ -70,6 +76,37 @@ $icon-size: 14px, 14px;
     //mask-image: url($eventum-icon);
   }
 
+  &__twitter {
+    -webkit-mask-image: url($twitter-icon);
+    mask-image: url($twitter-icon);
+  }
+
+  &__vk {
+    -webkit-mask-image: url($vk-icon);
+    mask-image: url($vk-icon);
+  }
+
+  &__inst {
+    -webkit-mask-image: url($inst-icon);
+    mask-image: url($inst-icon);
+  }
+
+  &__ok {
+    -webkit-mask-image: url($ok-icon);
+    mask-image: url($ok-icon);
+  }
+
+  &__fb {
+    -webkit-mask-image: url($fb-icon);
+    mask-image: url($fb-icon);
+  }
+
+  &__moimir {
+    -webkit-mask-image: url($moimir-icon);
+    mask-image: url($moimir-icon);
+  }
+
+
   &__more {
     -webkit-mask-image: url($more-icon);
     mask-image: url($more-icon);
@@ -123,6 +160,10 @@ $icon-size: 14px, 14px;
 
     &_gray {
       background-color: dimgrey;
+    }
+
+    &_lg {
+      background-color: $color-light-gray;
     }
   }
 

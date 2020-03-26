@@ -29,10 +29,9 @@ export default class Controller {
     }
 
     /**
-     * Create action
+     * Create action and render header
      */
     action() {
-        console.log('controller action');
         UserModel.getLogin().then((user) => {
             if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
                 createHeader(this.parent, false);
@@ -52,64 +51,49 @@ export default class Controller {
             document.getElementsByClassName('header__item')[0].addEventListener(
                 'click', this._eventSearchRedirect);
         });
-        console.log('She\'s kind of cute');
     }
+
+    /**
+     * Handle button pressed event on the header block by button url
+     * @param {Event} event
+     * @private
+     */
+    #controlBtnPressed = (event) => {
+        event.preventDefault();
+        if (event.target.tagName === 'A') {
+            let href = event.target.getAttribute('href');
+            if (href === '') {
+                href = '/';
+            }
+
+            if (href === '/logout') {
+                this.#logoutRedirect();
+                return;
+            }
+
+            window.history.pushState({}, '', href);
+            window.history.pushState({}, '', href);
+            window.history.back();
+        }
+    };
+
 
     /**
      * Handle click on home event
      * @param {Event} event
      */
-    _homeRedirect(event) {
+    #homeRedirect = (event) => {
+        console.log('pressed');
         event.preventDefault();
-
         window.history.pushState({}, '', '/');
         window.history.pushState({}, '', '/');
         window.history.back();
-    }
-
-    /**
-     * Handle click on event search event
-     * @param {event} event
-     */
-    _eventSearchRedirect(event) {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/search');
-        window.history.pushState({}, '', '/search');
-        window.history.back();
-    }
-
-    /**
-     * Handle click on sign up event
-     * @param {Event} event
-     */
-    _signUpRedirect(event) {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/signup');
-        window.history.pushState({}, '', '/signup');
-        window.history.back();
-    }
+    };
 
     /**
      * Handle click on login event
-     * @param {Event} event
      */
-    _loginRedirect(event) {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/login');
-        window.history.pushState({}, '', '/login');
-        window.history.back();
-    }
-
-    /**
-     * Handle click on login event
-     * @param {Event} event
-     */
-    _logoutRedirect(event) {
-        event.preventDefault();
-
+    #logoutRedirect = () => {
         UserModel.getLogout().then((ok) => {
             if (ok) {
                 window.history.pushState({}, '', '/');
@@ -119,7 +103,7 @@ export default class Controller {
                 console.log('Client error, stay here');
             }
         });
-    }
+    };
 
     /**
      * Handle click on home event
