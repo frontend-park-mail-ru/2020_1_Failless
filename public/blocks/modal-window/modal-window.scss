@@ -1,0 +1,52 @@
+@import "../../modules/variables";
+
+.modal {
+  &__bg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+
+  &__window {
+    width: auto;
+    height: auto;
+    max-width: 75vw;
+    box-sizing: border-box;
+    padding: 0 $re__small-padding;
+    background-color: $color-white;
+    border-radius: $re--border-radius;
+  }
+
+  &__header {
+    padding: $re--medium-padding 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    &__icon {
+      margin-left: $re--big-padding;
+      width: 15px;
+      height: auto;
+    }
+  }
+
+  &__body {
+    max-height: calc(75vh - 62px - 15px - 32px - 2px);
+    margin-bottom: $re--medium-padding;
+    overflow: auto;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-bottom: $re--medium-padding;
+  }
+}

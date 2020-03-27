@@ -3,6 +3,9 @@
 import NewProfileView from '../views/new-profile-view.js';
 import MyController from './my-controller.js';
 import UserModel from '../models/user-model.js';
+import ProfileEditView from '../views/profile-edit-view.js';
+import ModalView from '../views/modal-view.js';
+import {tags} from "../utils/static-data.js";
 
 /**
  * @class NewProfileController
@@ -47,6 +50,8 @@ export default class NewProfileController extends MyController {
                     const textInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
                     console.log(textInput);
                     textInput.addEventListener('click', this.#handleInfo.bind(this), false);
+                    document.getElementsByClassName('tags_redirect')[0].addEventListener(
+                        'click', this.#profileTags.bind(this), false);
                     // TODO: i dunno how to get last item to remove kek in the future
                     const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
                     settings.addEventListener('click', this.#profileSettings.bind(this), false);
@@ -155,6 +160,21 @@ export default class NewProfileController extends MyController {
             }).catch(reason => console.log('ERROR'));
     };
 
+
+    #profileTags = (event) => {
+        this.editView = new ModalView(document.body);
+        this.editView.render({
+            title: 'Ваши теги',
+            tags: tags,
+            last_buttons: [
+                {title: 'Сохранить',}]
+            });
+        document.body.getElementsByClassName('modal__header__icon')[0].addEventListener(
+            'click', (event) => {
+                event.preventDefault();
+                this.editView.clear();
+            });
+    };
 
     /**
      * Create profile settings popup
