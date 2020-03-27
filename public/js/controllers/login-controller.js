@@ -17,100 +17,89 @@ export default class LoginController extends Controller {
     constructor(parent) {
         super(parent);
         this.view = new LoginView(parent);
-        this.events = [];
+
         this.form = null;
         this.inputs = null;
-        document.addEventListener('DOMContentLoaded', () => {
-            let auth = document.body.getElementsByClassName('auth')[0];
-            if (auth) {
-                console.log('adding event listeners');
-                // Events for form
-                this.form = document.getElementById('form');
-                this.form.addEventListener('submit', this._loginSubmitHandler);
-
-                // Events for inputs in particular
-                this.inputs = this.form.getElementsByClassName('input input__auth');
-                for (let iii = 0; iii < this.inputs.length; iii++) {
-                    this.inputs[iii].addEventListener('focus', this._removeErrorMessage.bind(this));
-                    this.inputs[iii].addEventListener('blur', this._checkInputHandler.bind(this));
-                }
-            }
-        })
     }
 
     action() {
         super.action();
         this.view.render();
+        this._initView();
     }
 
-    /**
-     * Get data from input form on login page
-     * @param {event} event
-     * @return {Object} input form
-     */
-    _getFromLogin(event) {
-        const form = document.getElementById('form').getElementsByClassName('input input__auth');
-        let data = {
-            password: form[1].value,
-        };
-        let isMail = false;
-        for (let item in form[0].value) {
-            if (item === '@') {
-                data.email = form[0].value;
-                data.phone = '';
-                isMail = true;
+    _initView() {
+        let auth = document.body.getElementsByClassName('auth')[0];
+        if (auth) {
+            this.form = document.getElementById('form');
+            this.form.addEventListener('submit', this._loginSubmitHandler.bind(this));
+
+            this.inputs = this.form.getElementsByClassName('input input__auth');
+            for (let input of this.inputs) {
+                input.addEventListener('focus', this._removeErrorMessage.bind(this));
+                input.addEventListener('blur', this._checkInputHandler.bind(this));
             }
         }
-        if (!isMail) {
-            data.phone = form[0].value;
-            data.email = '';
-        }
-        return data
     }
 
     /**
-     * Checks validity of separate input
-     * @param event
-     * @private
+     * Get data from input form on sign up page
+     * @param {Event} event
+     * @return {{password: *, phone: *, name: *, email: *}} input form
      */
-    _checkInputHandler = (event) => {
+    _getFromLogin() {
+        const login = this.form[0].value;
+        let phone = '';
+        let email = '';
+        const password = this.form[1].value;
+
+        let errors_list = [];
+        if (login.includes('@')) {
+            email = login;
+            errors_list.push(ValidationModule.validateUserData(email, 'email'));
+        } else {
+            phone = login;
+            console.log(phone)
+
+            errors_list.push(ValidationModule.validateUserData(phone, 'phone'));
+        }
+        
+        console.log(errors_list)
+        if (errors_list.some(val => val.length !== 0)) {
+            return void 0;
+        }
+
+        return {phone, email, password};
+    }
+
+    _checkInputHandler(event) {
         event.preventDefault();
-        this._checkInput(event.target);
-    };
 
-    _checkInput(input) {
-        let arg2 = this._getInputType(input);
+        const login = this.form[0].value;
 
-        // TODO: make it work like this
-        // this._addErrorMessage(input.value, ValidationModule.validateUserData({arg1}, [arg2]))
-    }
-
-    _getInputType(input) {
-        if (input.type === 'text') {
-            const attrs = input.parentNode.getElementsByClassName('auth__help')[0].attributes;
-            if (attrs[attrs.length - 1].value === 'login') {    // check last attribute
-                return 'name';
-            } else {
-                if (input.value.includes('@')) {
-                    return 'email';
-                } else {
-                    return 'phone';
-                }
-            }
+        switch(true) {
+            case (event.target === form[0] && login.includes('@')):
+                const nameCheck = ValidationModule.validateUserData(login, 'email');
+                this._addErrorMessage(form[0], nameCheck);
+                break;
+            case (event.target === form[0]):
+                const emailCheck = ValidationModule.validateUserData(login, 'phone');
+                this._addErrorMessage(form[0], emailCheck);
+                break;
         }
-        return input.type;
     }
 
     _addErrorMessage(element, messageValue) {
-        if (!messageValue) {
-            return
+        if (messageValue.length === 0) {
+            return;
         }
+
         element.classList.add('input__auth__incorrect');
         element.insertAdjacentHTML('beforebegin',
             Handlebars.templates['validation-error']({message: messageValue}));
     };
 
-    _removeErrorMessage = (event) => {
+    _removeErrorMessage(event) {
         event.preventDefault();
 
         event.target.classList.remove('input__auth__incorrect');
@@ -121,70 +110,28 @@ export default class LoginController extends Controller {
     };
 
     /**
-     * Check all inputs of the form
-     */
-    _inputsChecker() {
-        // TODO: iterate over all inputs and add errors where it's needed
-        //  - use this._checkInput(input) (modify it as you wish)
-        //  - addMessages in this func or embed in _checkInput func or somewhere else
-        //  !important :  try to make this func usable for both login- and signup- controllers
-        //    if it's too complicated - screw it
-
-        // const login = this.inputs[0].value;
-        //
-        // let errors = document.getElementsByClassName('validation-error');
-        // while(errors.length > 0){
-        //     errors[0].parentNode.removeChild(errors[0]);
-        // }
-        //
-        // if (event.target === this.inputs[0]) {
-        //     let loginCheck;
-        //     if (login.includes('@')) {
-        //         const email = login;
-        //         loginCheck = ValidationModule.validateUserData({email}, ['email']);
-        //     } else {
-        //         const phone = login;
-        //         loginCheck = ValidationModule.validateUserData({phone}, ['phone']);
-        //     }
-        //     this._addErrorMessage(this.inputs[0], loginCheck);
-        // }
-    };
-
-    /**
      * Handle click on login event
      * @param {event} event
      */
-    _loginSubmitHandler = (event) => {
+    _loginSubmitHandler(event) {
         event.preventDefault();
 
-        // this one should check all inputs and add errors if needed
-        this._inputsChecker(event);
+        const body = this._getFromLogin();
+        console.log(body)
 
-        // request won't be sent if there are errors
-        if (!this._checkForErrors()) {
-            return
+        if (!body) {
+            console.log('do nothing');
+            return;
         }
 
-        const body = this._getFromLogin(event);
-
-        UserModel.postLogin(body).then((user) => {
-            if (Object.prototype.hasOwnProperty.call(user, 'name')) {
-                window.history.pushState({}, '', '/my/profile');
-                window.history.pushState({}, '', '/my/profile');
-                window.history.back();
+        UserModel.postLogin(body).then((response) => {
+            if (Object.prototype.hasOwnProperty.call(response, 'name')) {
+                this._profileRedirect(event);
             } else {
-                console.log(user);
-                console.error('User is not authenticated');
+                console.log(response);
+                document.getElementById('form').insertAdjacentHTML('beforebegin',
+                    Handlebars.templates['validation-error']({message: response.message}));
             }
         });
     };
-
-    /**
-     * Check if there are any errors
-     * then don't send any requests
-     */
-    _checkForErrors() {
-        const errors = this.form.getElementsByClassName('validation-error');
-        return errors.length === 0;
-    }
 }
