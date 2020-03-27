@@ -5,7 +5,11 @@
             {{#each input}}
                 <div class="auth__input">
                     <div class="auth__help">{{ this.title }}</div>
-                    <input class="input input__auth" type="{{ this.type }}" placeholder="{{ this.placeholder }}">
+                    <input
+                            class="input input__auth"
+                            type="{{ this.type }}"
+                            placeholder="{{ this.placeholder }}"
+                            {{#each this.others}} {{ this }}{{/each}}>
                 </div>
             {{/each}}
             <div class="auth__btn">

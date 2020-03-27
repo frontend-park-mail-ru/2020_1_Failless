@@ -31,6 +31,10 @@
     &:focus {
       border-bottom-color: $color-purple;
     }
+
+    &__incorrect {
+      border-bottom-color: red;
+    }
   }
 
   &__auth::placeholder {

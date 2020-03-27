@@ -25,14 +25,6 @@ export default class SignUpController extends Controller {
         const form = document.getElementById('form');
         form.addEventListener('submit', this._signUpSubmitHandler.bind(this));
         form.addEventListener('input', this._signUpInputHandler.bind(this));
-        // const regBtn = document.getElementsByClassName('re_btn re_btn__outline')[0];
-        // regBtn.addEventListener('click', function (event) {
-        //     event.preventDefault();
-        //
-        //     window.history.pushState({}, '', '/login');
-        //     window.history.pushState({}, '', '/login');
-        //     window.history.back();
-        // });
     }
 
     /**
@@ -137,17 +129,5 @@ export default class SignUpController extends Controller {
                 this._addErrorMessage(form[4], repeatPasswordCheck);
                 break;
         }
-    }
-
-    /**
-     * Handle click on login event
-     * @param {Event} event
-     */
-    _loginRedirect(event) {
-        event.preventDefault();
-        
-        window.history.pushState({}, '', '/login');
-        window.history.pushState({}, '', '/login');
-        window.history.back();
     }
 }

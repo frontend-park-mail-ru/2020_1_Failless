@@ -18,14 +18,29 @@ export default class LoginController extends Controller {
         super(parent);
         this.view = new LoginView(parent);
         this.events = [];
+        this.form = null;
+        this.inputs = null;
+        document.addEventListener('DOMContentLoaded', () => {
+            let auth = document.body.getElementsByClassName('auth')[0];
+            if (auth) {
+                console.log('adding event listeners');
+                // Events for form
+                this.form = document.getElementById('form');
+                this.form.addEventListener('submit', this._loginSubmitHandler);
+
+                // Events for inputs in particular
+                this.inputs = this.form.getElementsByClassName('input input__auth');
+                for (let iii = 0; iii < this.inputs.length; iii++) {
+                    this.inputs[iii].addEventListener('focus', this._removeErrorMessage.bind(this));
+                    this.inputs[iii].addEventListener('blur', this._checkInputHandler.bind(this));
+                }
+            }
+        })
     }
 
     action() {
         super.action();
         this.view.render();
-        this.form = document.getElementById('form');
-        this.form.addEventListener('submit', this._loginSubmitHandler);
-        this.form.addEventListener('input', this._loginInputHandler.bind(this));
     }
 
     /**
@@ -53,35 +68,86 @@ export default class LoginController extends Controller {
         return data
     }
 
+    /**
+     * Checks validity of separate input
+     * @param event
+     * @private
+     */
+    _checkInputHandler = (event) => {
+        event.preventDefault();
+        this._checkInput(event.target);
+    };
+
+    _checkInput(input) {
+        let arg2 = this._getInputType(input);
+
+        // TODO: make it work like this
+        // this._addErrorMessage(input.value, ValidationModule.validateUserData({arg1}, [arg2]))
+    }
+
+    _getInputType(input) {
+        if (input.type === 'text') {
+            const attrs = input.parentNode.getElementsByClassName('auth__help')[0].attributes;
+            if (attrs[attrs.length - 1].value === 'login') {    // check last attribute
+                return 'name';
+            } else {
+                if (input.value.includes('@')) {
+                    return 'email';
+                } else {
+                    return 'phone';
+                }
+            }
+        }
+        return input.type;
+    }
+
     _addErrorMessage(element, messageValue) {
-        element.insertAdjacentHTML('afterend', 
+        if (!messageValue) {
+            return
+        }
+        element.classList.add('input__auth__incorrect');
+        element.insertAdjacentHTML('beforebegin',
             Handlebars.templates['validation-error']({message: messageValue}));
     };
 
+    _removeErrorMessage = (event) => {
+        event.preventDefault();
+
+        event.target.classList.remove('input__auth__incorrect');
+        let errorElement = event.target.parentNode.getElementsByClassName('validation-error')[0];
+        if (errorElement) {
+            errorElement.remove();
+        }
+    };
+
     /**
-     * Handle click on submit event
-     * @param {Event} event
+     * Check all inputs of the form
      */
-    _loginInputHandler = (event) => {
-        const inputs = this.form.getElementsByClassName('input input__auth');
-        const login = inputs[0].value;
+    _inputsChecker() {
+        // TODO: iterate over all inputs and add errors where it's needed
+        //  - use this._checkInput(input) (modify it as you wish)
+        //  - addMessages in this func or embed in _checkInput func or somewhere else
+        //  !important :  try to make this func usable for both login- and signup- controllers
+        //    if it's too complicated - screw it
 
-        let errors = document.getElementsByClassName('validation-error');
-        while(errors.length > 0){
-            errors[0].parentNode.removeChild(errors[0]);
-        }
-
-        if (event.target === inputs[0]) {
-            let loginCheck;
-            if (login.includes('@')) {
-                const email = login;
-                loginCheck = ValidationModule.validateUserData({email}, ['email']);
-            } else {
-                const phone = login;
-                loginCheck = ValidationModule.validateUserData({phone}, ['phone']);
-            }
-            this._addErrorMessage(inputs[0], loginCheck);
-        }
+        // const login = this.inputs[0].value;
+        //
+        // let errors = document.getElementsByClassName('validation-error');
+        // while(errors.length > 0){
+        //     errors[0].parentNode.removeChild(errors[0]);
+        // }
+        //
+        // if (event.target === this.inputs[0]) {
+        //     let loginCheck;
+        //     if (login.includes('@')) {
+        //         const email = login;
+        //         loginCheck = ValidationModule.validateUserData({email}, ['email']);
+        //     } else {
+        //         const phone = login;
+        //         loginCheck = ValidationModule.validateUserData({phone}, ['phone']);
+        //     }
+        //     this._addErrorMessage(this.inputs[0], loginCheck);
+        // }
     };
 
     /**
@@ -91,8 +157,11 @@ export default class LoginController extends Controller {
     _loginSubmitHandler = (event) => {
         event.preventDefault();
 
+        // this one should check all inputs and add errors if needed
+        this._inputsChecker(event);
+
+        // request won't be sent if there are errors
         if (!this._checkForErrors()) {
-            console.log('errors in form');
             return
         }
 

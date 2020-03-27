@@ -21,15 +21,15 @@ export default class ValidationModule {
         error_list = attributes.map(val => {
             switch (val) {
                 case 'password':
-                    return !this.isNotEmpty(password) || !this.isString(password) ? ["Пустой или некорректный пароль"] : [""];
+                    return this.isEmpty(password) || !this.isString(password) ? ["Пустой или некорректный пароль"] : [""];
                 case 'repeatPassword':
-                    return !this.isNotEmpty(repeatPassword) || !this.isString(repeatPassword) ? ["Пустой или некорректный повторный пароль"] : [""];
+                    return this.isEmpty(repeatPassword) || !this.isString(repeatPassword) ? ["Пустой или некорректный повторный пароль"] : [""];
                 case 'email':
-                    return !this.isNotEmpty(email) || !this.isString(email) ? ["Пустая или некорректная почта"] : [""];
+                    return this.isEmpty(email) || !this.isString(email) ? ["Пустая или некорректная почта"] : [""];
                 case 'phone':
-                    return !this.isNotEmpty(phone) || !this.isString(phone) ? ["Пустой или некорректный телефон"] : [""];
+                    return this.isEmpty(phone) || !this.isString(phone) ? ["Пустой или некорректный телефон"] : [""];
                 case 'name':
-                    return !this.isNotEmpty(name) || !this.isString(name) ? ["Пустое или некорректное имя"] : [""];
+                    return this.isEmpty(name) || !this.isString(name) ? ["Пустое или некорректное имя"] : [""];
             }
         });
         if (error_list.some(val => val[0] !== "")) {
@@ -50,7 +50,7 @@ export default class ValidationModule {
                 }
             });    
         }
-    }
+    };
 
     /**
      * Validate string type
@@ -66,8 +66,8 @@ export default class ValidationModule {
      * @param {HTMLInputElement} input input
      * @return {Boolean}
      */
-    static isNotEmpty = (input) => {
-        return input !== '';
+    static isEmpty = (input) => {
+        return !input;
     };
 
     /**
