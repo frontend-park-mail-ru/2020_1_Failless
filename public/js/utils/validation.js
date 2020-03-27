@@ -9,47 +9,19 @@ export default class ValidationModule {
      * @param {Array} input user input types
      * @return {Array} array of errors
      */
-    static validateUserData = ({
-                name = '',
-                phone = '',
-                email = '',
-                password = '',
-                repeatPassword = '',
-            } = {}, attributes = ['email', 'password']) => {
-
-        let error_list = [];
-        error_list = attributes.map(val => {
-            switch (val) {
-                case 'password':
-                    return this.isEmpty(password) || !this.isString(password) ? ["Пустой или некорректный пароль"] : [""];
-                case 'repeatPassword':
-                    return this.isEmpty(repeatPassword) || !this.isString(repeatPassword) ? ["Пустой или некорректный повторный пароль"] : [""];
-                case 'email':
-                    return this.isEmpty(email) || !this.isString(email) ? ["Пустая или некорректная почта"] : [""];
-                case 'phone':
-                    return this.isEmpty(phone) || !this.isString(phone) ? ["Пустой или некорректный телефон"] : [""];
-                case 'name':
-                    return this.isEmpty(name) || !this.isString(name) ? ["Пустое или некорректное имя"] : [""];
-            }
-        });
-        if (error_list.some(val => val[0] !== "")) {
-            return error_list;
-        } else {
-            return attributes.map(val => {
-                switch (val) {
-                    case 'password':
-                        return this.validatePassword(password);
-                    case 'repeatPassword':
-                        return this.validateRepeatPassword(password, repeatPassword);
-                    case 'email':
-                        return this.validateEmail(email);
-                    case 'phone':
-                        return this.validatePhone(phone);
-                    case 'name':
-                        return this.validateName(name);
-                }
-            });    
-        }
+    static validateUserData = (input, attribute) => {
+        switch (attribute) {
+            case 'password':
+                return this.validatePassword(input);
+            case 'repeatPassword':
+                return this.validateRepeatPassword(input);
+            case 'email':
+                return this.validateEmail(input);
+            case 'phone':
+                return this.validatePhone(input);
+            case 'name':
+                return this.validateName(input);
+        };
     };
 
     /**
@@ -78,27 +50,26 @@ export default class ValidationModule {
     static validatePassword = input => {
         const errors = [];
     
+        if (this.isEmpty(input) || !this.isString(input)) {
+            errors.push('Пустой или некорректный пароль');
+        }
+
         if (input.length < 8) {
             errors.push('Пароль должен содержать не менее 8 символов');
-            return errors;
         }
         if (!/[0-9]/.test(input)) {
             errors.push('Пароль должен содержать цифры');
-            return errors;
         }
         if (input.match(/\d+/g)) {
             if (input.match(/\d+/g).join('').length < 2) {
                 errors.push('Пароль должен содержать 2 цифры');
-                return errors;
             }
         }
         if (!/[A-z]/.test(input)) {
             errors.push('Пароль должен содержать латинские буквы');
-            return errors;
         }
         if (!/^[\w\dA-z]+$/.test(input)) {
             errors.push('Пароль должен состоять из цифр и латинских букв');
-            return errors;
         }
     
         return errors;
@@ -110,11 +81,11 @@ export default class ValidationModule {
      * @param {HTMLInputElement} password
      * @return {Array} array of error messages
      */
-    static validateRepeatPassword = (input, password) => {
+    static validateRepeatPassword = input => {
         let errors = [];
 
-        if (input !== password) {
-            errors.push('Введенное значение не совпадает с паролем');
+        if (this.isEmpty(input) || !this.isString(input)) { 
+            errors.push("Пустой или некорректный повторный пароль");
         }
 
         return errors;
@@ -130,8 +101,12 @@ export default class ValidationModule {
         const emailReg = RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\' +
             '[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}' +
             '\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$');
+
+        if (this.isEmpty(input) || !this.isString(input)) {
+            errors.push('Пустая или некорректная почта');
+        }
         if (!emailReg.test(input)) {
-            errors.push('Введите корректный email-адрес');
+            errors.push('Введите корректный email-адрес (например, aaaa@aaa.aa)');
         }
         if (input.length > 256) {
             errors.push('Длина не должна превышать 256 символов');
@@ -147,6 +122,10 @@ export default class ValidationModule {
      */
     static validateName = input => {
         const errors = [];
+
+        if (this.isEmpty(input) || !this.isString(input)) { 
+            errors.push('Пустое или некорректное имя');
+        }
     
         if (!/^[A-ZА-ЯЁ]/.test(input)) {
             errors.push('Имя должно начинаться с заглавной буквы');
@@ -166,6 +145,10 @@ export default class ValidationModule {
     static validatePhone = input => {
         const errors = [];
 
+        if (this.isEmpty(input) || !this.isString(input)) {
+            errors.push('Пустой или некорректный телефон');
+        }
+        
         if (input.replace(/[^0-9\.]+/g, '').length < 6) {
             errors.push('Длина не должна быть меньше 6 символов');
         }
