@@ -12,12 +12,11 @@
   flex: 1 1 auto;
 
   &__item {
-    min-width: 264px;
-    width: fit-content;
+    width: 264px;
     padding: $re--huge-padding $re--large-padding $re--large-padding;
     border-radius: $re--border-radius;
     box-shadow: 5px 5px 10px #cdcdcd,
-             -5px -5px 10px #ffffff;;
+             -5px -5px 10px #ffffff;
     background-color: $color-white;
   }
 

@@ -25,19 +25,19 @@ export default class LoginController extends Controller {
     action() {
         super.action();
         this.view.render();
-        this._initView();
+        this.#initView();
     }
 
-    _initView() {
+    #initView() {
         let auth = document.body.getElementsByClassName('auth')[0];
         if (auth) {
             this.form = document.getElementById('form');
-            this.form.addEventListener('submit', this._loginSubmitHandler.bind(this));
+            this.form.addEventListener('submit', this.#loginSubmitHandler.bind(this));
 
             this.inputs = this.form.getElementsByClassName('input input__auth');
             for (let input of this.inputs) {
-                input.addEventListener('focus', this._removeErrorMessage.bind(this));
-                input.addEventListener('blur', this._checkInputHandler.bind(this));
+                input.addEventListener('focus', this.#removeErrorMessage.bind(this));
+                input.addEventListener('blur', this.#checkInputHandler.bind(this));
             }
         }
     }
@@ -69,7 +69,7 @@ export default class LoginController extends Controller {
         return {phone, email, password};
     }
 
-    _checkInputHandler(event) {
+    #checkInputHandler = (event) => {
         event.preventDefault();
 
         const login = this.form[0].value;
@@ -77,26 +77,26 @@ export default class LoginController extends Controller {
         switch(true) {
             case (event.target === form[0] && login.includes('@')):
                 const nameCheck = ValidationModule.validateUserData(login, 'email');
-                this._addErrorMessage(form[0], nameCheck);
+                this.#addErrorMessage(form[0], nameCheck);
                 break;
             case (event.target === form[0]):
                 const emailCheck = ValidationModule.validateUserData(login, 'phone');
-                this._addErrorMessage(form[0], emailCheck);
+                this.#addErrorMessage(form[0], emailCheck);
                 break;
         }
-    }
+    };
 
-    _addErrorMessage(element, messageValue) {
+    #addErrorMessage(element, messageValue) {
         if (messageValue.length === 0) {
             return;
         }
 
         element.classList.add('input__auth__incorrect');
         element.insertAdjacentHTML('beforebegin',
-            Handlebars.templates['validation-error']({message: messageValue}));
+            Handlebars.templates['validation-error']({message: messageValue[0]}));
     };
 
-    _removeErrorMessage(event) {
+    #removeErrorMessage = (event) => {
         event.preventDefault();
 
         event.target.classList.remove('input__auth__incorrect');
@@ -110,7 +110,7 @@ export default class LoginController extends Controller {
      * Handle click on login event
      * @param {event} event
      */
-    _loginSubmitHandler(event) {
+    #loginSubmitHandler = (event) => {
         event.preventDefault();
 
         const body = this._getFromLogin();
@@ -120,7 +120,7 @@ export default class LoginController extends Controller {
             return;
         }
 
-        this._removeErrorMessage(event);
+        this.#removeErrorMessage(event);
 
         UserModel.postLogin(body).then((response) => {
             if (Object.prototype.hasOwnProperty.call(response, 'name')) {
@@ -129,7 +129,7 @@ export default class LoginController extends Controller {
                 window.history.back();
             } else {
                 console.log(response);
-                this._addErrorMessage(document.getElementById('form'), response.message);
+                this.#addErrorMessage(this.form[0], [response.message]);
             }
         });
     };
