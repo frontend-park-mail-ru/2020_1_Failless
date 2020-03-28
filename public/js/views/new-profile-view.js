@@ -41,7 +41,6 @@ export default class NewProfileView extends MyView {
         if (profile.avatar.path === null) {
             profile.avatar.path = `${settings.aws}/app/default.png`;
         } else {
-            console.log(profile.avatar.path);
             profile.avatar.path = `${settings.aws}/users/${profile.avatar.path}`;
         }
 

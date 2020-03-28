@@ -11,7 +11,6 @@ export default function createHeader(base, logged) {
 
     const header = Handlebars.templates['header'](
         {
-            logo: '/static/images/logo.png',
             buttons: !logged ? [
                 {
                     link: '/search',
