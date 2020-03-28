@@ -44,6 +44,9 @@ export default class NewProfileController extends MyController {
                     return;
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
+                    profile.tags = [
+                        {title: '#хочувБАР'}, {title: '#хочунаКАТОК'}
+                    ];
                     this.view.render(profile);
                     this.user = profile;
                     const photoInput = document.getElementById('photoUpload');
@@ -52,7 +55,7 @@ export default class NewProfileController extends MyController {
                     console.log(textInput);
                     textInput.addEventListener('click', this.#handleInfo.bind(this), false);
                     document.getElementsByClassName('tags_redirect')[0].addEventListener(
-                        'click', this.#profileTags.bind(this), false);
+                        'click', this.#showModalTags.bind(this), false);
                     // TODO: i dunno how to get last item to remove kek in the future
                     const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
                     settings.addEventListener('click', this.#profileSettings.bind(this), false);
@@ -165,8 +168,22 @@ export default class NewProfileController extends MyController {
     };
 
 
-    #profileTags = (event) => {
+    #showModalTags = (event) => {
         this.editView = new ModalView(document.body);
+
+        // Rendering active tags in modal view
+        // get it from profile.tags or find on page? hmm
+        let activeTags = document.body.getElementsByClassName('tag__container tag__container__active');
+        console.log(activeTags);
+        let activeTagsTitles = [];
+        for (let iii = 0; iii < activeTags.length; iii++) {
+            activeTagsTitles.push(activeTags[iii].firstElementChild.innerText);
+        }
+        tags.forEach((tag) => {
+            if (activeTagsTitles.includes(tag.title)) {
+                tag.active_class = 'tag__container__active';
+            }
+        });
         this.editView.render({
             title: 'Ваши теги',
             tags: tags,
@@ -180,7 +197,8 @@ export default class NewProfileController extends MyController {
         this.activeModalWindow.getElementsByClassName('modal__header__icon')[0].addEventListener(
             'click', (event) => {
                 event.preventDefault();
-                this.editView.clear();});
+                this.editView.clear();
+                this.editView = null;});
         this.activeModalWindow.getElementsByClassName(
             'modal__footer')[0].getElementsByClassName(
                 're_btn re_btn__outline')[0].addEventListener(
@@ -188,15 +206,15 @@ export default class NewProfileController extends MyController {
     };
 
     #highlightTag = (event) => {
-        let elem = event.target.closest('div');
+        let elem = event.target.closest('.tag__container');
+        console.log(elem);
         if (elem && !(elem.classList.contains('tag__container'))) {
             return
         }
-        if (elem.classList.contains('tag__container__active')) {
-            elem.classList.remove('tag__container__active')
-        } else {
-            elem.classList.add('tag__container__active');
-        }
+
+        elem.classList.contains('tag__container__active')
+            ? elem.classList.remove('tag__container__active')
+            : elem.classList.add('tag__container__active');
     };
 
     #submitTagsHandler = (event) => {
@@ -214,17 +232,24 @@ export default class NewProfileController extends MyController {
             }
         }
 
+        // Render tags on profile page
         tagsField.append(...activeTags);
 
         // TODO: submit tags to back-end
+        UserModel.addTags(activeTags)
+            .then(() => {
+                console.log('submitted tags');
+            });
+
         this.editView.clear();
-        console.log('submitting tags');
+        this.editView = null;
     };
 
     #removeTag = (event) => {
-        let elem = event.target.closest('div');
-        if (elem && elem.classList.contains('tag__container')) {
-            if (elem.parentElement.childElementCount === 1) {
+        let elem = event.target;
+        let elemContainer = elem.closest('.tag__container');
+        if (elemContainer && elemContainer.classList.contains('tag__container')) {
+            if (elemContainer.parentElement.childElementCount === 1) {
                 // TODO: replace with HBS block
                 let emptyMessage = document.createElement('div');
                 emptyMessage.classList.add('center');
@@ -232,9 +257,17 @@ export default class NewProfileController extends MyController {
                 message.classList.add("font", "font_bold", "font__size_small", "font__color_lg");
                 message.innerText = 'Вы удалили все теги';
                 emptyMessage.appendChild(message);
-                elem.parentElement.appendChild(emptyMessage);
+                elemContainer.parentElement.appendChild(emptyMessage);
             }
-            elem.remove();
+
+            let tag = elem.classList.contains('tag') ? elem.innerText : elemContainer.firstElementChild.innerText;
+
+            UserModel.removeTag(tag)
+                .then(() => {
+                    // elemContainer.remove();
+                });
+
+            elemContainer.remove();
         }
     };
 

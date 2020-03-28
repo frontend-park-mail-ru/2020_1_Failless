@@ -1105,7 +1105,8 @@
 .tag__container__active .tag__button {
   display: block;
 }
-.tag .__button {
+.tag__button {
+  width: 10px;
   display: none;
 }
 
