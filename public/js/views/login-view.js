@@ -27,11 +27,13 @@ export default class LoginView extends View {
                     title: 'Телефон или Email',
                     type: 'text',
                     placeholder: 'me@example.com',
+                    others: ['required', 'autofocus', 'login'],
                 },
                 {
                     title: 'Пароль',
                     type: 'password',
                     placeholder: '*******',
+                    others: ['required'],
                 },
             ],
             button: 'Вход',
