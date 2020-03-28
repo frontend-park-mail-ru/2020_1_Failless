@@ -120,13 +120,16 @@ export default class LoginController extends Controller {
             return;
         }
 
+        this._removeErrorMessage(event);
+
         UserModel.postLogin(body).then((response) => {
             if (Object.prototype.hasOwnProperty.call(response, 'name')) {
-                this._profileRedirect(event);
+                window.history.pushState({}, '', '/profile');
+                window.history.pushState({}, '', '/profile');
+                window.history.back();
             } else {
                 console.log(response);
-                document.getElementById('form').insertAdjacentHTML('beforebegin',
-                    Handlebars.templates['validation-error']({message: response.message}));
+                this._addErrorMessage(document.getElementById('form'), response.message);
             }
         });
     };

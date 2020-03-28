@@ -83,13 +83,16 @@ export default class SignUpController extends Controller {
             return;
         }
 
+        this._removeErrorMessage(event);
+
         UserModel.postSignUp(body).then((response) => {
             if (Object.prototype.hasOwnProperty.call(response, 'name')) {
-                this._loginRedirect(event);
+                window.history.pushState({}, '', '/login');
+                window.history.pushState({}, '', '/login');
+                window.history.back();
             } else {
                 console.log(response);
-                document.getElementById('form').insertAdjacentHTML('beforebegin',
-                    Handlebars.templates['validation-error']({message: response.message}));
+                this._addErrorMessage(document.getElementById('form'), response.message);
             }
         }).catch(reason => console.log(reason));
     }
