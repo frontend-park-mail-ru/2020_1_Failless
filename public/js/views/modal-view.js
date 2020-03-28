@@ -14,7 +14,6 @@ export default class ModalView extends View {
     constructor(parent) {
         super(parent);
         this.parent = parent;
-        console.log('modal view constructs');
     }
 
     /**
@@ -22,12 +21,10 @@ export default class ModalView extends View {
      * @param {JSON} context
      */
     render(context) {
-        console.log('modal view renders');
         document.body.insertAdjacentHTML('beforeend', Handlebars.templates['modal-window'](context));
     }
 
     clear() {
-        console.log('modal view clears');
         document.body.getElementsByClassName('modal__bg')[0].remove();
     }
 }

@@ -6,6 +6,7 @@ import UserModel from '../models/user-model.js';
 import ProfileEditView from '../views/profile-edit-view.js';
 import ModalView from '../views/modal-view.js';
 import {tags} from "../utils/static-data.js";
+import {highlightTag} from '../utils/tag-logic.js';
 
 /**
  * @class NewProfileController
@@ -167,14 +168,17 @@ export default class NewProfileController extends MyController {
             }).catch(reason => console.log('ERROR'));
     };
 
-
+    /**
+     * Show modal window with tags settings
+     * @param event
+     */
     #showModalTags = (event) => {
         this.editView = new ModalView(document.body);
 
         // Rendering active tags in modal view
         // get it from profile.tags or find on page? hmm
         let activeTags = document.body.getElementsByClassName('tag__container tag__container__active');
-        console.log(activeTags);
+        console.log(activeTags);    // TODO: i dunno
         let activeTagsTitles = [];
         for (let iii = 0; iii < activeTags.length; iii++) {
             activeTagsTitles.push(activeTags[iii].firstElementChild.innerText);
@@ -193,7 +197,7 @@ export default class NewProfileController extends MyController {
 
         this.activeModalWindow = document.body.getElementsByClassName('modal__window')[0];
         this.activeModalWindow.getElementsByClassName('modal__body')[0].addEventListener(
-            'click', this.#highlightTag);
+            'click', highlightTag, false);
         this.activeModalWindow.getElementsByClassName('modal__header__icon')[0].addEventListener(
             'click', (event) => {
                 event.preventDefault();
@@ -205,18 +209,6 @@ export default class NewProfileController extends MyController {
                     'click', this.#submitTagsHandler.bind(this), false)
     };
 
-    #highlightTag = (event) => {
-        let elem = event.target.closest('.tag__container');
-        console.log(elem);
-        if (elem && !(elem.classList.contains('tag__container'))) {
-            return
-        }
-
-        elem.classList.contains('tag__container__active')
-            ? elem.classList.remove('tag__container__active')
-            : elem.classList.add('tag__container__active');
-    };
-
     #submitTagsHandler = (event) => {
         event.preventDefault();
 
@@ -226,20 +218,26 @@ export default class NewProfileController extends MyController {
         let activeTags = this.activeModalWindow.getElementsByClassName('tag__container tag__container__active');
 
         // Remove all tagsField children
-        if (activeTags.length > 0) {
-            while (tagsField.lastElementChild) {
-                tagsField.removeChild(tagsField.lastElementChild);
-            }
+        while (tagsField.lastElementChild) {
+            tagsField.removeChild(tagsField.lastElementChild);
         }
 
         // Render tags on profile page
         tagsField.append(...activeTags);
 
+        if (activeTags.length === 0) {
+            // TODO: replace with HBS block
+            let emptyMessage = document.createElement('div');
+            emptyMessage.classList.add('center');
+            let message = document.createElement('span');
+            message.classList.add("font", "font_bold", "font__size_small", "font__color_lg");
+            message.innerText = 'У вас пока нет ни одного тэга';
+            emptyMessage.appendChild(message);
+            tagsField.appendChild(emptyMessage);
+        }
+
         // TODO: submit tags to back-end
-        UserModel.addTags(activeTags)
-            .then(() => {
-                console.log('submitted tags');
-            });
+        // UserModel.addTags(activeTags).then(() => {console.log('submitted tags');});
 
         this.editView.clear();
         this.editView = null;
@@ -262,10 +260,7 @@ export default class NewProfileController extends MyController {
 
             let tag = elem.classList.contains('tag') ? elem.innerText : elemContainer.firstElementChild.innerText;
 
-            UserModel.removeTag(tag)
-                .then(() => {
-                    // elemContainer.remove();
-                });
+            // UserModel.removeTag(tag).then(() => {// elemContainer.remove();});
 
             elemContainer.remove();
         }
