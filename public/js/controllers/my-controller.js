@@ -71,6 +71,8 @@ export default class MyController extends Controller {
         Array.prototype.forEach.call(this.circles, (circle) => {
             circle.classList.remove('circle__active');
         });
-        this.circles[index].classList.add('circle__active');
+        if (this.circles[index] !== undefined) {
+            this.circles[index].classList.add('circle__active');
+        }
     }
 }

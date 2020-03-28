@@ -2,6 +2,7 @@
 
 import createHeader from './header.js';
 import UserModel from '../models/user-model.js';
+import logoutRedirect from '../utils/logout.js';
 
 /**
  * @class Basic controller class
@@ -23,7 +24,6 @@ export default class Controller {
      * virtual destructor
      */
     destructor() {
-        console.log('I call the police');
         this.parent.innerHTML = '';
         // todo: remove listeners
     }
@@ -35,47 +35,19 @@ export default class Controller {
         UserModel.getLogin().then((user) => {
             if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
                 createHeader(this.parent, false);
-                document.getElementsByClassName('header__item')[1].addEventListener(
-                    'click', this.#signUpRedirect);
-                document.getElementsByClassName('header__item')[2].addEventListener(
-                    'click', this.#loginRedirect);
             } else {
                 createHeader(this.parent, true);
-                document.getElementsByClassName('header__item')[1].addEventListener(
-                    'click', this._feedRedirect);
-                document.getElementsByClassName('header__item')[2].addEventListener(
-                    'click', this._profileRedirect);
             }
-            document.getElementsByClassName('header__logo gradient-text')[0].addEventListener(
-                'click', this.#homeRedirect);
-            document.getElementsByClassName('header__item')[0].addEventListener(
-                'click', this.#eventSearchRedirect);
+        }).catch((onerror) => {
+            createHeader(this.parent, false);
+            console.log('No internet connection');
+        }).then(() => {
+            const managePanel = document.getElementsByClassName('header__manage')[0];
+            managePanel.addEventListener('click', this.#controlBtnPressed.bind(this));
+            const logo = document.getElementsByClassName('header__logo gradient-text')[0];
+            logo.addEventListener('click', this.#homeRedirect.bind(this));
         });
     }
-
-    #eventSearchRedirect = (event) => {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/search');
-        window.history.pushState({}, '', '/search');
-        window.history.back();
-    };
-
-    #signUpRedirect = (event) => {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/signup');
-        window.history.pushState({}, '', '/signup');
-        window.history.back();
-    };
-
-    #loginRedirect = (event) => {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/login');
-        window.history.pushState({}, '', '/login');
-        window.history.back();
-    };
 
     /**
      * Handle button pressed event on the header block by button url
@@ -91,7 +63,7 @@ export default class Controller {
             }
 
             if (href === '/logout') {
-                this.#logoutRedirect();
+                logoutRedirect(event);
                 return;
             }
 
@@ -107,50 +79,14 @@ export default class Controller {
      * @param {Event} event
      */
     #homeRedirect = (event) => {
-        console.log('pressed');
         event.preventDefault();
         window.history.pushState({}, '', '/');
         window.history.pushState({}, '', '/');
         window.history.back();
     };
 
-    /**
-     * Handle click on login event
-     */
-    #logoutRedirect = () => {
-        UserModel.getLogout().then((ok) => {
-            if (ok) {
-                window.history.pushState({}, '', '/');
-                window.history.pushState({}, '', '/');
-                window.history.back();
-            } else {
-                console.log('Client error, stay here');
-            }
-        });
-    };
-
-    /**
-     * Handle click on home event
-     * @param {Event} event
-     */
-    _profileRedirect(event) {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/my/profile');
-        window.history.pushState({}, '', '/my/profile');
-        window.history.back();
-    }
-
-    _setActiveLink(index) {
+    #setActiveLink = (index) => {
         // TODO: remove all active links
         //  Add active link on chosen index (look in my-controller.js)
-    }
-
-    _feedRedirect(event) {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/feed/users');
-        window.history.pushState({}, '', '/feed/users');
-        window.history.back();
-    }
+    };
 }
