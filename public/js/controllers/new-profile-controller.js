@@ -22,6 +22,7 @@ export default class NewProfileController extends MyController {
         this.editView = null;
         this.image = '';
         this.user = null;
+        this.activeModalWindow = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             this._highlightCircle(2);
@@ -55,6 +56,9 @@ export default class NewProfileController extends MyController {
                     // TODO: i dunno how to get last item to remove kek in the future
                     const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
                     settings.addEventListener('click', this.#profileSettings.bind(this), false);
+
+                    document.getElementsByClassName('feed__options_field__body')[0].addEventListener(
+                        'click', this.#removeTag, false)
 
                 } else {
                     console.error('You have no rights');
@@ -169,11 +173,82 @@ export default class NewProfileController extends MyController {
             last_buttons: [
                 {title: 'Сохранить',}]
             });
-        document.body.getElementsByClassName('modal__header__icon')[0].addEventListener(
+        this.activeModalWindow = document.body.getElementsByClassName('modal__window')[0];
+        this.activeModalWindow.getElementsByClassName('modal__body')[0].addEventListener(
+            'click', this.#highlightTag);
+        this.activeModalWindow.getElementsByClassName('modal__header__icon')[0].addEventListener(
             'click', (event) => {
                 event.preventDefault();
-                this.editView.clear();
-            });
+                this.editView.clear();});
+        this.activeModalWindow.getElementsByClassName(
+            'modal__footer')[0].getElementsByClassName(
+                're_btn re_btn__outline')[0].addEventListener(
+                    'click', this.#submitTagsHandler.bind(this), false)
+    };
+
+    #highlightTag = (event) => {
+        let elem = event.target;
+        let tag = null;
+        let hideButton = null;
+        if (elem && !(elem.classList.contains('tag') || elem.classList.contains('x_btn'))) {
+            return
+        }
+        if (elem.classList.contains('tag')) {
+            tag = elem;
+            hideButton = elem.nextElementSibling;
+        } else {
+            hideButton = elem;
+            tag = elem.previousSibling.previousSibling;
+        }
+        if (tag.style.opacity === '0.5') {
+            tag.style.opacity = '1';
+            hideButton.style.display = 'block';
+        } else {
+            tag.style.opacity = '0.5';
+            hideButton.style.display = 'none';
+        }
+    };
+
+    #submitTagsHandler = (event) => {
+        event.preventDefault();
+
+        let tagsField = document.body.getElementsByClassName('feed__options_field__body')[0];
+
+        // Get all selected tags
+        let activeTags = [];
+        let possibleActiveTags = this.activeModalWindow.getElementsByClassName('search_tag');
+        for (let iii = 0; iii < possibleActiveTags.length; iii++) {
+            if (possibleActiveTags[iii].firstElementChild.style.opacity === '1') {
+                activeTags.push(possibleActiveTags[iii]);
+            }
+        }
+
+        // Remove all tagsField children
+        if (activeTags.length > 0) {
+            while (tagsField.lastElementChild) {
+                tagsField.removeChild(tagsField.lastElementChild);
+            }
+        }
+
+        tagsField.append(...activeTags);
+
+        // TODO: submit tags to back-end
+        this.editView.clear();
+        console.log('submitting tags');
+    };
+
+    #removeTag = (event) => {
+        let elem = event.target;
+        if (elem && (event.target.classList.contains('tag') || event.target.classList.contains('x_btn'))) {
+            if (elem.classList.contains('tag')) {
+                elem.nextSibling.remove();
+            } else if (elem.classList.contains('x_btn')) {
+                elem.previousSibling.previousSibling.remove();
+            }
+            elem.remove();
+        }
+
+        // check for emptiness
     };
 
     /**

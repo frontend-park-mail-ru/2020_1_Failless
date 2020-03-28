@@ -9,4 +9,37 @@
   color: $color-white;
   font-weight: 700;
   background: $re--gradient;
+
+  &__container {
+    opacity: 0.5;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+
+    &__active {
+      opacity: 1;
+
+      & ~ .tag {
+        opacity: 1;
+      }
+
+      & .tag__button {
+        display: block;
+      }
+    }
+  }
+
+  .__button {
+    display: none;
+  }
+}
+
+.search_tag {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.x_btn {
+  display: none;
 }
