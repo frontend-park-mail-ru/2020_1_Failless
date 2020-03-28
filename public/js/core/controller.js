@@ -36,9 +36,9 @@ export default class Controller {
             if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
                 createHeader(this.parent, false);
                 document.getElementsByClassName('header__item')[1].addEventListener(
-                    'click', this._signUpRedirect);
+                    'click', this.#signUpRedirect);
                 document.getElementsByClassName('header__item')[2].addEventListener(
-                    'click', this._loginRedirect);
+                    'click', this.#loginRedirect);
             } else {
                 createHeader(this.parent, true);
                 document.getElementsByClassName('header__item')[1].addEventListener(
@@ -47,11 +47,35 @@ export default class Controller {
                     'click', this._profileRedirect);
             }
             document.getElementsByClassName('header__logo gradient-text')[0].addEventListener(
-                'click', this._homeRedirect);
+                'click', this.#homeRedirect);
             document.getElementsByClassName('header__item')[0].addEventListener(
-                'click', this._eventSearchRedirect);
+                'click', this.#eventSearchRedirect);
         });
     }
+
+    #eventSearchRedirect = (event) => {
+        event.preventDefault();
+
+        window.history.pushState({}, '', '/search');
+        window.history.pushState({}, '', '/search');
+        window.history.back();
+    };
+
+    #signUpRedirect = (event) => {
+        event.preventDefault();
+
+        window.history.pushState({}, '', '/signup');
+        window.history.pushState({}, '', '/signup');
+        window.history.back();
+    };
+
+    #loginRedirect = (event) => {
+        event.preventDefault();
+
+        window.history.pushState({}, '', '/login');
+        window.history.pushState({}, '', '/login');
+        window.history.back();
+    };
 
     /**
      * Handle button pressed event on the header block by button url

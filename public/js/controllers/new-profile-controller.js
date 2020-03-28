@@ -50,7 +50,8 @@ export default class NewProfileController extends MyController {
                     // TODO: i dunno how to get last item to remove kek in the future
                     const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
                     settings.addEventListener('click', this.#profileSettings.bind(this), false);
-
+                    document.getElementsByClassName('re_btn re_btn__outline logout')[0].addEventListener(
+                        'click', this.#logoutRedirect.bind(this), false);
                 } else {
                     console.error('You have no rights');
                     console.log(profile);
@@ -219,4 +220,18 @@ export default class NewProfileController extends MyController {
             }
         }
     };
+
+    #logoutRedirect = (event) => {
+        event.preventDefault();
+
+        UserModel.getLogout().then((ok) => {
+            if (ok) {
+                window.history.pushState({}, '', '/logout');
+                window.history.pushState({}, '', '/logout');
+                window.history.back();
+            } else {
+                console.log('Client error, stay here');
+            }
+        });
+    }
 }
