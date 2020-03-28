@@ -30,13 +30,13 @@ export default class FeedUsersController extends Controller {
         super.action();
         this.view.render();
         document.querySelectorAll('.search_tag').forEach((tag) => {
-            tag.addEventListener('click', this._highlightTag);
+            tag.addEventListener('click', this.#highlightTag);
         });
         document.getElementById('form').addEventListener('submit', this._setOptions);
         SetSliders(18, 60, 25);
     }
 
-    _highlightTag(event) {
+    #highlightTag = (event) => {
         event.preventDefault();
 
         let hideButton = this.querySelector('.x_btn');
@@ -47,7 +47,7 @@ export default class FeedUsersController extends Controller {
             this.style.opacity = '0.5';
             hideButton.style.display = 'none';
         }
-    }
+    };
 
     _setOptions = (event) => {
         event.preventDefault();

@@ -3,8 +3,6 @@
 import View from '../core/view.js';
 import settings from '../../settings/config.js';
 
-const tagNames = ['#хочувБАР', '#хочувКИНО', '#хочунаКАТОК', '#хочуГУЛЯТЬ', '#хочуКУШАЦ', '#хочуСПАТЬ'];
-
 /**
  *
  */
@@ -75,23 +73,3 @@ export default class ProfileView extends View {
         this.parent.insertAdjacentHTML('beforeend', profileTemplate);
     }
 }
-
-// function Event(photos, title, place, description) {
-//     this.photos = photos;
-//     this.title = title;
-//     this.place = place;
-//     this.description = description;
-// }
-
-// const events = [
-//     new Event(
-//         ['/EventPhotos/3.jpg', '/EventPhotos/4.jpg'],
-//         'Концерт',
-//         'Москва',
-//         'Ну как его похвалить? Ну классный концерт, шикарный концерт, как его ещё похвалить?'),
-//     new Event(
-//         ['/EventPhotos/2.jpg', '/EventPhotos/1.jpg'],
-//         'Выставка',
-//         'Ленинград',
-//         'Выставка Ван-Гога. Обещают привезти главный экспонат')
-// ];

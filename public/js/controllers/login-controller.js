@@ -122,10 +122,10 @@ export default class LoginController extends Controller {
 
         this.#removeErrorMessage(event);
 
-        UserModel.postLogin(body).then((response) => {
-            if (Object.prototype.hasOwnProperty.call(response, 'name')) {
-                window.history.pushState({}, '', '/profile');
-                window.history.pushState({}, '', '/profile');
+        UserModel.postLogin(body).then((user) => {
+            if (Object.prototype.hasOwnProperty.call(user, 'name')) {
+                window.history.pushState({}, '', '/my/profile');
+                window.history.pushState({}, '', '/my/profile');
                 window.history.back();
             } else {
                 console.log(response);

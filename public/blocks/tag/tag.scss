@@ -9,4 +9,38 @@
   color: $color-white;
   font-weight: 700;
   background: $re--gradient;
+  transform: translateZ(-1px);
+
+  &__container {
+    width: fit-content;
+    opacity: 0.5;
+    display: flex;
+    justify-content: left;
+    align-items: baseline;
+    transform-style: preserve-3d;
+    cursor: pointer;
+
+    &__active {
+      opacity: 1;
+
+      & .tag {
+        opacity: 1;
+      }
+
+      & .tag__button {
+        display: block;
+      }
+    }
+  }
+
+  &__button {
+    width: 10px;
+    display: none;
+  }
+}
+
+.search_tag {
+  display: flex;
+  justify-content: right;
+  align-items: center;
 }
