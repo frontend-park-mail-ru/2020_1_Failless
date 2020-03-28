@@ -7,6 +7,7 @@ import SignUpController from './controllers/signup-controller.js';
 import FeedUsersController from './controllers/feed-users-controller.js';
 import BigEventSearchController from './controllers/big-event-search-controller.js';
 import NewProfileController from './controllers/new-profile-controller.js';
+import NewsController from './controllers/news-controller.js';
 import Router from './core/router.js';
 
 let application = document.getElementById('application');
@@ -19,5 +20,6 @@ router.addRoute('/signup', new SignUpController(application));
 router.addRoute('/search', new BigEventSearchController(application));         // big events
 router.addRoute('/feed/users', new FeedUsersController(application));          // profiles
 router.addRoute('/my/profile', new NewProfileController(application));
+router.addRoute('/my/news', new NewsController(application));
 
 router.route();
