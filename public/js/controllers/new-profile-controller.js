@@ -195,7 +195,12 @@ export default class NewProfileController extends MyController {
                 {title: 'Сохранить',}]
             });
 
-        this.activeModalWindow = document.body.getElementsByClassName('modal__window')[0];
+        let modalBG = document.body.getElementsByClassName('modal__bg')[0];
+        modalBG.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        this.activeModalWindow = modalBG.firstElementChild;
         this.activeModalWindow.getElementsByClassName('modal__body')[0].addEventListener(
             'click', highlightTag, false);
         this.activeModalWindow.getElementsByClassName('modal__header__icon')[0].addEventListener(
@@ -213,9 +218,11 @@ export default class NewProfileController extends MyController {
         event.preventDefault();
 
         let tagsField = document.body.getElementsByClassName('feed__options_field__body')[0];
+        let prevLength = tagsField.length;
 
         // Get all selected tags
         let activeTags = this.activeModalWindow.getElementsByClassName('tag__container tag__container__active');
+        let length = activeTags.length;
 
         // Remove all tagsField children
         while (tagsField.lastElementChild) {
@@ -225,13 +232,17 @@ export default class NewProfileController extends MyController {
         // Render tags on profile page
         tagsField.append(...activeTags);
 
-        if (activeTags.length === 0) {
+        let emptyMessageText = (prevLength !== 0 && length === 0)
+            ? 'Вы удалили все теги'
+            : 'У вас пока нет ни одного тэга';
+
+        if (length === 0) {
             // TODO: replace with HBS block
             let emptyMessage = document.createElement('div');
             emptyMessage.classList.add('center');
             let message = document.createElement('span');
             message.classList.add("font", "font_bold", "font__size_small", "font__color_lg");
-            message.innerText = 'У вас пока нет ни одного тэга';
+            message.innerText = emptyMessageText;
             emptyMessage.appendChild(message);
             tagsField.appendChild(emptyMessage);
         }
