@@ -6,3 +6,4 @@ bundle.*.js
 *.css
 .DS_Store
 *.precompiled.js
+public/static/dist

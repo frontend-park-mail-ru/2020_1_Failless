@@ -8,6 +8,7 @@ import FeedUsersController from './controllers/feed-users-controller.js';
 import BigEventSearchController from './controllers/big-event-search-controller.js';
 import NewProfileController from './controllers/new-profile-controller.js';
 import Router from './core/router.js';
+import '../static/css/style.css';
 
 let application = document.getElementById('application');
 
