@@ -100,6 +100,7 @@ export default class ProfileController extends Controller {
 
     #photoUploadHandler = (event) => {
         this.image = event.target.result;
+        console.log(this.image);
         const userPhoto = this.image.split(';')[1].split(',')[1];
         const userProfile = {
             name: this.user.name,

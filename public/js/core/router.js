@@ -56,7 +56,6 @@ export default class Router {
             this.currentController.destructor();
         }
         this.currentController = controller;
-        console.log(controller);
         this.currentController.action();
     }
 }

@@ -7,6 +7,7 @@ import ProfileEditView from '../views/profile-edit-view.js';
 import ModalView from '../views/modal-view.js';
 import {tags} from "../utils/static-data.js";
 import {highlightTag} from '../utils/tag-logic.js';
+import logoutRedirect from '../utils/logout.js';
 
 /**
  * @class NewProfileController
@@ -38,7 +39,6 @@ export default class NewProfileController extends MyController {
         // todo: check is user allowed to see this
         UserModel.getProfile()
             .then((profile) => {
-                console.log(profile);
                 if (!profile) {
                     console.error('Server error');
                     console.log(profile);
@@ -47,20 +47,20 @@ export default class NewProfileController extends MyController {
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
                     this.user = profile;
+
                     const photoInput = document.getElementById('photoUpload');
                     photoInput.addEventListener('change', this.#handleFile.bind(this), false);
                     const textInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
-                    console.log(textInput);
                     textInput.addEventListener('click', this.#handleInfo.bind(this), false);
                     document.querySelector('.tags_redirect').addEventListener(
                         'click', this.#showModalTags.bind(this), false);
                     // TODO: i dunno how to get last item to remove kek in the future
                     const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
                     settings.addEventListener('click', this.#profileSettings.bind(this), false);
-
                     document.querySelector('.feed__options_field__body').addEventListener(
                         'click', this.#removeTag, false)
-
+                    document.getElementsByClassName('re_btn re_btn__outline logout')[0].addEventListener(
+                        'click', logoutRedirect, false);
                 } else {
                     console.error('You have no rights');
                     console.log(profile);

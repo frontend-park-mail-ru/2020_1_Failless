@@ -28,6 +28,7 @@ export default class SignUpView extends View {
                     title: 'Имя',
                     type: 'text',
                     placeholder: 'Илья',
+                    others: ['required', 'autofocus', 'signup'],
                 },
                 {
                     title: 'Email',
@@ -38,16 +39,19 @@ export default class SignUpView extends View {
                     title: 'Телефон',
                     type: 'tel',
                     placeholder: '+7 (800) 555-35-35',
+                    others: ['required'],
                 },
                 {
                     title: 'Пароль',
                     type: 'password',
                     placeholder: '*******',
+                    others: ['required'],
                 },
                 {
                     title: 'Повторите пароль',
                     type: 'password',
                     placeholder: '*******',
+                    others: ['required', 'second_password'],
                 },
             ],
             button: 'Зарегистрироваться',
