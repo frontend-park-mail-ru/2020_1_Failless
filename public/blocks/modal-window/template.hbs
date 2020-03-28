@@ -10,9 +10,10 @@
         </div>
         <div class="modal__body">
             {{#each tags}}
-            <div class="search_tag">
-                <div class="tag tag_size_middle" style="opacity: 0.5;">{{ this.title }}</div>
-                <div class="x_btn">X</div>
+            <div class="tag__container">
+                <!-- spans are important! -->
+                <span class="tag">{{ this.title }}</span>
+                <span class="tag__button">X</span>
             </div>
             {{/each}}
         </div>

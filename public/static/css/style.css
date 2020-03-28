@@ -1085,17 +1085,21 @@
   color: white;
   font-weight: 700;
   background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  transform: translateZ(-1px);
 }
 .tag__container {
+  width: fit-content;
   opacity: 0.5;
   display: flex;
-  justify-content: right;
-  align-items: center;
+  justify-content: left;
+  align-items: baseline;
+  transform-style: preserve-3d;
+  cursor: pointer;
 }
 .tag__container__active {
   opacity: 1;
 }
-.tag__container__active ~ .tag {
+.tag__container__active .tag {
   opacity: 1;
 }
 .tag__container__active .tag__button {
@@ -1109,10 +1113,6 @@
   display: flex;
   justify-content: right;
   align-items: center;
-}
-
-.x_btn {
-  display: none;
 }
 
 .gradient-text {

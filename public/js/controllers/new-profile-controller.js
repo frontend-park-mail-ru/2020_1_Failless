@@ -173,6 +173,7 @@ export default class NewProfileController extends MyController {
             last_buttons: [
                 {title: 'Сохранить',}]
             });
+
         this.activeModalWindow = document.body.getElementsByClassName('modal__window')[0];
         this.activeModalWindow.getElementsByClassName('modal__body')[0].addEventListener(
             'click', this.#highlightTag);
@@ -187,25 +188,14 @@ export default class NewProfileController extends MyController {
     };
 
     #highlightTag = (event) => {
-        let elem = event.target;
-        let tag = null;
-        let hideButton = null;
-        if (elem && !(elem.classList.contains('tag') || elem.classList.contains('x_btn'))) {
+        let elem = event.target.closest('div');
+        if (elem && !(elem.classList.contains('tag__container'))) {
             return
         }
-        if (elem.classList.contains('tag')) {
-            tag = elem;
-            hideButton = elem.nextElementSibling;
+        if (elem.classList.contains('tag__container__active')) {
+            elem.classList.remove('tag__container__active')
         } else {
-            hideButton = elem;
-            tag = elem.previousSibling.previousSibling;
-        }
-        if (tag.style.opacity === '0.5') {
-            tag.style.opacity = '1';
-            hideButton.style.display = 'block';
-        } else {
-            tag.style.opacity = '0.5';
-            hideButton.style.display = 'none';
+            elem.classList.add('tag__container__active');
         }
     };
 
@@ -215,13 +205,7 @@ export default class NewProfileController extends MyController {
         let tagsField = document.body.getElementsByClassName('feed__options_field__body')[0];
 
         // Get all selected tags
-        let activeTags = [];
-        let possibleActiveTags = this.activeModalWindow.getElementsByClassName('search_tag');
-        for (let iii = 0; iii < possibleActiveTags.length; iii++) {
-            if (possibleActiveTags[iii].firstElementChild.style.opacity === '1') {
-                activeTags.push(possibleActiveTags[iii]);
-            }
-        }
+        let activeTags = this.activeModalWindow.getElementsByClassName('tag__container tag__container__active');
 
         // Remove all tagsField children
         if (activeTags.length > 0) {
@@ -238,17 +222,20 @@ export default class NewProfileController extends MyController {
     };
 
     #removeTag = (event) => {
-        let elem = event.target;
-        if (elem && (event.target.classList.contains('tag') || event.target.classList.contains('x_btn'))) {
-            if (elem.classList.contains('tag')) {
-                elem.nextSibling.remove();
-            } else if (elem.classList.contains('x_btn')) {
-                elem.previousSibling.previousSibling.remove();
+        let elem = event.target.closest('div');
+        if (elem && elem.classList.contains('tag__container')) {
+            if (elem.parentElement.childElementCount === 1) {
+                // TODO: replace with HBS block
+                let emptyMessage = document.createElement('div');
+                emptyMessage.classList.add('center');
+                let message = document.createElement('span');
+                message.classList.add("font", "font_bold", "font__size_small", "font__color_lg");
+                message.innerText = 'Вы удалили все теги';
+                emptyMessage.appendChild(message);
+                elem.parentElement.appendChild(emptyMessage);
             }
             elem.remove();
         }
-
-        // check for emptiness
     };
 
     /**
