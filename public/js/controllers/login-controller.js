@@ -59,12 +59,9 @@ export default class LoginController extends Controller {
             errors_list.push(ValidationModule.validateUserData(email, 'email'));
         } else {
             phone = login;
-            console.log(phone)
-
             errors_list.push(ValidationModule.validateUserData(phone, 'phone'));
         }
         
-        console.log(errors_list)
         if (errors_list.some(val => val.length !== 0)) {
             return void 0;
         }
@@ -117,7 +114,6 @@ export default class LoginController extends Controller {
         event.preventDefault();
 
         const body = this._getFromLogin();
-        console.log(body)
 
         if (!body) {
             console.log('do nothing');
