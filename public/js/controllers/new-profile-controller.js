@@ -45,9 +45,6 @@ export default class NewProfileController extends MyController {
                     return;
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
-                    profile.tags = [
-                        {title: '#хочувБАР'}, {title: '#хочунаКАТОК'}
-                    ];
                     this.view.render(profile);
                     this.user = profile;
                     const photoInput = document.getElementById('photoUpload');
@@ -55,13 +52,13 @@ export default class NewProfileController extends MyController {
                     const textInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
                     console.log(textInput);
                     textInput.addEventListener('click', this.#handleInfo.bind(this), false);
-                    document.getElementsByClassName('tags_redirect')[0].addEventListener(
+                    document.querySelector('.tags_redirect').addEventListener(
                         'click', this.#showModalTags.bind(this), false);
                     // TODO: i dunno how to get last item to remove kek in the future
                     const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
                     settings.addEventListener('click', this.#profileSettings.bind(this), false);
 
-                    document.getElementsByClassName('feed__options_field__body')[0].addEventListener(
+                    document.querySelector('.feed__options_field__body').addEventListener(
                         'click', this.#removeTag, false)
 
                 } else {
@@ -177,7 +174,7 @@ export default class NewProfileController extends MyController {
 
         // Rendering active tags in modal view
         // get it from profile.tags or find on page? hmm
-        let activeTags = document.body.getElementsByClassName('tag__container tag__container__active');
+        let activeTags = document.body.querySelectorAll('.tag__container.tag__container__active');
         console.log(activeTags);    // TODO: i dunno
         let activeTagsTitles = [];
         for (let iii = 0; iii < activeTags.length; iii++) {
@@ -195,33 +192,33 @@ export default class NewProfileController extends MyController {
                 {title: 'Сохранить',}]
             });
 
-        let modalBG = document.body.getElementsByClassName('modal__bg')[0];
+        let modalBG = document.body.querySelector('.modal__bg');
         modalBG.addEventListener('click', (event) => {
             event.preventDefault();
             event.stopPropagation();
         });
         this.activeModalWindow = modalBG.firstElementChild;
-        this.activeModalWindow.getElementsByClassName('modal__body')[0].addEventListener(
+        this.activeModalWindow.querySelector('.modal__body').addEventListener(
             'click', highlightTag, false);
-        this.activeModalWindow.getElementsByClassName('modal__header__icon')[0].addEventListener(
+        this.activeModalWindow.querySelector('.modal__header__icon').addEventListener(
             'click', (event) => {
                 event.preventDefault();
                 this.editView.clear();
                 this.editView = null;});
-        this.activeModalWindow.getElementsByClassName(
-            'modal__footer')[0].getElementsByClassName(
-                're_btn re_btn__outline')[0].addEventListener(
+        this.activeModalWindow.querySelector(
+            '.modal__footer').querySelector(
+                '.re_btn.re_btn__outline').addEventListener(
                     'click', this.#submitTagsHandler.bind(this), false)
     };
 
     #submitTagsHandler = (event) => {
         event.preventDefault();
 
-        let tagsField = document.body.getElementsByClassName('feed__options_field__body')[0];
+        let tagsField = document.body.querySelector('.feed__options_field__body');
         let prevLength = tagsField.length;
 
         // Get all selected tags
-        let activeTags = this.activeModalWindow.getElementsByClassName('tag__container tag__container__active');
+        let activeTags = this.activeModalWindow.querySelectorAll('.tag__container.tag__container__active');
         let length = activeTags.length;
 
         // Remove all tagsField children

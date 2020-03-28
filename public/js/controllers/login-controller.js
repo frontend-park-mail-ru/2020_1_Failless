@@ -62,8 +62,8 @@ export default class LoginController extends Controller {
 
         UserModel.postLogin(body).then((user) => {
             if (Object.prototype.hasOwnProperty.call(user, 'name')) {
-                window.history.pushState({}, '', '/profile');
-                window.history.pushState({}, '', '/profile');
+                window.history.pushState({}, '', '/my/profile');
+                window.history.pushState({}, '', '/my/profile');
                 window.history.back();
             } else {
                 console.log(user);

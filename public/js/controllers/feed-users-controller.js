@@ -30,7 +30,6 @@ export default class FeedUsersController extends Controller {
         super.action();
         this.view.render();
         document.querySelectorAll('.search_tag').forEach((tag) => {
-            console.log(tag);
             tag.addEventListener('click', this.#highlightTag);
         });
         document.getElementById('form').addEventListener('submit', this._setOptions);
@@ -39,8 +38,6 @@ export default class FeedUsersController extends Controller {
 
     #highlightTag = (event) => {
         event.preventDefault();
-
-        console.log(this);
 
         let hideButton = this.querySelector('.x_btn');
         if (this.style.opacity === '0.5') {
