@@ -1758,7 +1758,6 @@ input[type=range]::-ms-fill-upper {
 }
 
 body {
-  padding-left: 313px;
   margin: 0;
   height: 100vh;
   background: #F1F1F1;
