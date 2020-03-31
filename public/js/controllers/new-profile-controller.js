@@ -131,17 +131,21 @@ export default class NewProfileController extends MyController {
 
     #handleInfo = (event) => {
         event.preventDefault();
+
+        // Set options
         const textInput = document.getElementsByClassName('feed__options_field_textarea')[0];
-        const tags = document.getElementsByClassName('tag');
+        const tags = document.querySelectorAll('.tag');
         let selectedTags = [];
-        Array.from(tags).forEach((element) => {
-            selectedTags.push(element.id);
+        tags.forEach((tag) => {
+            selectedTags.push(tag.id);
         });
         const userProfile = {
             tags: selectedTags,
-            about: textInput.value,
+            about: textInput.value, // TODO: check if it's safe
             social: this.user.links,
         };
+
+        // Send request
         UserModel.putProfile(userProfile)
             .then(response => {
                 console.log('ok', response);
@@ -250,9 +254,6 @@ export default class NewProfileController extends MyController {
             tagsField.appendChild(emptyMessage);
         }
 
-        // TODO: submit tags to back-end
-        // UserModel.addTags(activeTags).then(() => {console.log('submitted tags');});
-
         this.editView.clear();
         this.editView = null;
     };
@@ -276,13 +277,6 @@ export default class NewProfileController extends MyController {
                 emptyMessage.appendChild(message);
                 elemContainer.parentElement.appendChild(emptyMessage);
             }
-
-            // Send request to back-end
-            let tag = elemContainer.firstElementChild.innerText;
-            UserModel.removeTag(tag)
-                .then((response) => {
-                    console.log(response);
-                });
 
             elemContainer.remove();
         }
