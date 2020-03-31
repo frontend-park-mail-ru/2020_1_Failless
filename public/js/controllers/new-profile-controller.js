@@ -185,6 +185,7 @@ export default class NewProfileController extends MyController {
             activeTagsTitles.push(activeTags[iii].firstElementChild.innerText);
         }
         this.localTags.forEach((tag) => {
+            tag.editable = true;
             if (activeTagsTitles.includes(tag.title)) {
                 tag.active_class = 'tag__container__active';
             }
@@ -231,6 +232,7 @@ export default class NewProfileController extends MyController {
         allTags.forEach((tag) => {
             let tempTag = {
                 title: tag.firstElementChild.innerText,
+                editable: true,
             };
             if (tag.classList.contains('tag__container__active')) {
                 tempTag.active_class = 'tag__container__active';
