@@ -1103,10 +1103,18 @@
 }
 .tag__container__active .tag__button {
   display: block;
+  opacity: 0;
+}
+.tag__container:hover .tag__button {
+  opacity: 100;
 }
 .tag__button {
   width: 10px;
   display: none;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .search_tag {

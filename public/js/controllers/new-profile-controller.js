@@ -25,7 +25,9 @@ export default class NewProfileController extends MyController {
         this.image = '';
         this.user = null;
         this.activeModalWindow = null;
-
+        this.localTags = [...tags];
+      
+        // TODO: kill meeee
         document.addEventListener('DOMContentLoaded', () => {
             this._highlightCircle(2);
         });
@@ -58,7 +60,7 @@ export default class NewProfileController extends MyController {
                     const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
                     settings.addEventListener('click', this.#profileSettings.bind(this), false);
                     document.querySelector('.feed__options_field__body').addEventListener(
-                        'click', this.#removeTag, false)
+                        'click', this.#removeTag, false);
                     document.getElementsByClassName('re_btn re_btn__outline logout')[0].addEventListener(
                         'click', logoutRedirect, false);
                 } else {
@@ -129,17 +131,21 @@ export default class NewProfileController extends MyController {
 
     #handleInfo = (event) => {
         event.preventDefault();
+
+        // Set options
         const textInput = document.getElementsByClassName('feed__options_field_textarea')[0];
-        const tags = document.getElementsByClassName('tag');
+        const tags = document.querySelectorAll('.tag');
         let selectedTags = [];
-        Array.from(tags).forEach((element) => {
-            selectedTags.push(element.id);
+        tags.forEach((tag) => {
+            selectedTags.push(tag.id);
         });
         const userProfile = {
             tags: selectedTags,
-            about: textInput.value,
+            about: textInput.value, // TODO: check if it's safe
             social: this.user.links,
         };
+
+        // Send request
         UserModel.putProfile(userProfile)
             .then(response => {
                 console.log('ok', response);
@@ -173,25 +179,23 @@ export default class NewProfileController extends MyController {
         this.editView = new ModalView(document.body);
 
         // Rendering active tags in modal view
-        // get it from profile.tags or find on page? hmm
         let activeTags = document.body.querySelectorAll('.tag__container.tag__container__active');
-        console.log(activeTags);    // TODO: i dunno
         let activeTagsTitles = [];
         for (let iii = 0; iii < activeTags.length; iii++) {
             activeTagsTitles.push(activeTags[iii].firstElementChild.innerText);
         }
-        tags.forEach((tag) => {
+        this.localTags.forEach((tag) => {
+            tag.editable = true;
             if (activeTagsTitles.includes(tag.title)) {
                 tag.active_class = 'tag__container__active';
             }
         });
         this.editView.render({
             title: 'Ваши теги',
-            tags: tags,
+            tags: this.localTags,
             last_buttons: [
                 {title: 'Сохранить',}]
             });
-
         let modalBG = document.body.querySelector('.modal__bg');
         modalBG.addEventListener('click', (event) => {
             event.preventDefault();
@@ -217,23 +221,31 @@ export default class NewProfileController extends MyController {
         let tagsField = document.body.querySelector('.feed__options_field__body');
         let prevLength = tagsField.length;
 
-        // Get all selected tags
-        let activeTags = this.activeModalWindow.querySelectorAll('.tag__container.tag__container__active');
-        let length = activeTags.length;
-
         // Remove all tagsField children
         while (tagsField.lastElementChild) {
             tagsField.removeChild(tagsField.lastElementChild);
         }
 
-        // Render tags on profile page
-        tagsField.append(...activeTags);
-
-        let emptyMessageText = (prevLength !== 0 && length === 0)
-            ? 'Вы удалили все теги'
-            : 'У вас пока нет ни одного тэга';
+        let allTags = this.activeModalWindow.querySelectorAll('.tag__container');
+        this.localTags = [];
+        let length = 0;
+        allTags.forEach((tag) => {
+            let tempTag = {
+                title: tag.firstElementChild.innerText,
+                editable: true,
+            };
+            if (tag.classList.contains('tag__container__active')) {
+                tempTag.active_class = 'tag__container__active';
+                tagsField.appendChild(tag);
+                length++;
+            }
+            this.localTags.push(tempTag);}
+        );
 
         if (length === 0) {
+            let emptyMessageText = (prevLength !== 0)
+                ? 'Вы удалили все теги'
+                : 'У вас пока нет ни одного тэга';
             // TODO: replace with HBS block
             let emptyMessage = document.createElement('div');
             emptyMessage.classList.add('center');
@@ -244,9 +256,6 @@ export default class NewProfileController extends MyController {
             tagsField.appendChild(emptyMessage);
         }
 
-        // TODO: submit tags to back-end
-        // UserModel.addTags(activeTags).then(() => {console.log('submitted tags');});
-
         this.editView.clear();
         this.editView = null;
     };
@@ -255,6 +264,11 @@ export default class NewProfileController extends MyController {
         let elem = event.target;
         let elemContainer = elem.closest('.tag__container');
         if (elemContainer && elemContainer.classList.contains('tag__container')) {
+            delete this.localTags.find((tag) => {
+                return (tag.title === elemContainer.firstElementChild.innerText);
+            }).active_class;
+
+            // Check if it was the last tag
             if (elemContainer.parentElement.childElementCount === 1) {
                 // TODO: replace with HBS block
                 let emptyMessage = document.createElement('div');
@@ -265,11 +279,7 @@ export default class NewProfileController extends MyController {
                 emptyMessage.appendChild(message);
                 elemContainer.parentElement.appendChild(emptyMessage);
             }
-
-            let tag = elem.classList.contains('tag') ? elem.innerText : elemContainer.firstElementChild.innerText;
-
-            // UserModel.removeTag(tag).then(() => {// elemContainer.remove();});
-
+          
             elemContainer.remove();
         }
     };
