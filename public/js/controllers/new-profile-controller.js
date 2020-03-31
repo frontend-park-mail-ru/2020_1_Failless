@@ -261,8 +261,8 @@ export default class NewProfileController extends MyController {
         let elem = event.target;
         let elemContainer = elem.closest('.tag__container');
         if (elemContainer && elemContainer.classList.contains('tag__container')) {
-            delete this.localTags.find((elem) => {
-                return (elem.title === elemContainer.firstElementChild.innerText);
+            delete this.localTags.find((tag) => {
+                return (tag.title === elemContainer.firstElementChild.innerText);
             }).active_class;
 
             // Check if it was the last tag
@@ -277,9 +277,12 @@ export default class NewProfileController extends MyController {
                 elemContainer.parentElement.appendChild(emptyMessage);
             }
 
-            // TODO: Send request to back-end
-            let tag = elem.classList.contains('tag') ? elem.innerText : elemContainer.firstElementChild.innerText;
-            // UserModel.removeTag(tag).then(() => {// elemContainer.remove();});
+            // Send request to back-end
+            let tag = elemContainer.firstElementChild.innerText;
+            UserModel.removeTag(tag)
+                .then((response) => {
+                    console.log(response);
+                });
 
             elemContainer.remove();
         }

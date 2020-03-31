@@ -187,8 +187,8 @@ export default class UserModel extends Model {
      * Send query to remove tag from profile's tags
      * @param tag
      */
-    static removeTag(tag) { // TODO: i dunno the path
-        return NetworkModule.fetchPut({path: '', body: tag})
+    static removeTag(tag) {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/tag`, body: tag})
             .then((response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
