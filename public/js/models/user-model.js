@@ -165,4 +165,38 @@ export default class UserModel extends Model {
             }
         });
     }
+
+    /**
+     * Send query to add tag to profile's tags
+     * @param tags - tags to add
+     */
+    static addTags(tags) { // TODO: i dunno the path
+        return NetworkModule.fetchPut({path: '', body: tags})
+            .then((response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
+    /**
+     * Send query to remove tag from profile's tags
+     * @param tag
+     */
+    static removeTag(tag) { // TODO: i dunno the path
+        return NetworkModule.fetchPut({path: '', body: tag})
+            .then((response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
 }

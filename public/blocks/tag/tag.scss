@@ -43,7 +43,6 @@
   &__button {
     width: 10px;
     display: none;
-
     @include transition(0.3s, ease-in-out);
   }
 }

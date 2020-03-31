@@ -26,7 +26,7 @@ export default class NewProfileController extends MyController {
         this.user = null;
         this.activeModalWindow = null;
         this.localTags = [...tags];
-
+      
         // TODO: kill meeee
         document.addEventListener('DOMContentLoaded', () => {
             this._highlightCircle(2);
@@ -279,7 +279,7 @@ export default class NewProfileController extends MyController {
                 emptyMessage.appendChild(message);
                 elemContainer.parentElement.appendChild(emptyMessage);
             }
-
+          
             elemContainer.remove();
         }
     };

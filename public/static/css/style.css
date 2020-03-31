@@ -867,7 +867,7 @@
     -webkit-font-smoothing: antialiased;
     /* to stop flickering of text in safari */
     transform-origin: 0% 0%;
-    transform: translate(100%, 0);
+    transform: translate(0, -100%);
     transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
   }
   .header__manage .header__icon {
@@ -1771,7 +1771,6 @@ body {
   background: #F1F1F1;
   text-decoration: none;
   font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
-  overflow-x: hidden;
 }
 
 textarea {
