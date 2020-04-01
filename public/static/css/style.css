@@ -347,6 +347,7 @@
   margin: 46px 0;
 }
 .landing__scenario__text {
+  box-sizing: border-box;
   text-align: left;
 }
 .landing__scenario__text__title {
@@ -486,6 +487,41 @@
 }
 
 /*-------------------------------------------*\
+   Scenarios MEDIA
+\*-------------------------------------------*/
+@media only screen and (max-width: 480px) {
+  .landing__screen_scenario {
+    box-sizing: border-box;
+    padding: 0 6vw 23px;
+  }
+
+  .landing__scenario__row {
+    flex-flow: column;
+  }
+  .landing__scenario__row svg {
+    margin: 0 0 23px 0;
+    max-height: 40vw;
+  }
+  .landing__scenario .separator {
+    margin: 23px 0;
+  }
+  .landing__scenario__text {
+    text-align: center;
+    padding: 0 10px;
+  }
+  .landing__scenario__text__title {
+    color: #191919;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  .landing__scenario__text__body {
+    color: #888888;
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+/*-------------------------------------------*\
    Creators MEDIA
 \*-------------------------------------------*/
 @media only screen and (max-width: 480px) {
@@ -555,6 +591,15 @@
   }
   .landing__footer__link {
     font-size: 10px;
+  }
+}
+/*-------------------------------------------*\
+   Text MEDIA
+\*-------------------------------------------*/
+@media only screen and (max-width: 480px) {
+  .landing__title_second {
+    padding: 46px 0;
+    font-size: 23px;
   }
 }
 .link-uploader label, .section__header a {
@@ -1917,6 +1962,7 @@ textarea:focus {
 
 .container {
   width: 1000px;
+  box-sizing: border-box;
 }
 
 @media only screen and (max-width: 1000px) {

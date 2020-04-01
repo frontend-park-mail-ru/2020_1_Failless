@@ -76,6 +76,7 @@ $people-img: $screen-img-path + "landing.jpg";
     }
 
     &__text {
+      box-sizing: border-box;
       text-align: left;
 
       &__title {
@@ -255,6 +256,52 @@ $people-img: $screen-img-path + "landing.jpg";
 }
 
 /*-------------------------------------------*\
+   Scenarios MEDIA
+\*-------------------------------------------*/
+
+@media only screen and (max-width: 1000px) {}
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .landing__screen_scenario {
+    box-sizing: border-box;
+    padding: 0 6vw $re--big-padding;
+  }
+
+  .landing__scenario {
+    &__row {
+      flex-flow: column;
+
+      & svg {
+        margin: 0 0 $re--big-padding 0;
+        max-height: 40vw;
+      }
+    }
+
+    & .separator {
+      margin: $re--big-padding 0;
+    }
+
+    &__text {
+      text-align: center;
+      padding: 0 10px;
+
+      &__title {
+        color: $color-black;
+        font-size: 19px;
+        font-weight: 700;
+        margin-bottom: $re--medium-padding;
+      }
+
+      &__body {
+        color: #888888;
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+/*-------------------------------------------*\
    Creators MEDIA
 \*-------------------------------------------*/
 
@@ -350,6 +397,19 @@ $people-img: $screen-img-path + "landing.jpg";
       &__link {
         font-size: 10px;
       }
+    }
+  }
+}
+
+/*-------------------------------------------*\
+   Text MEDIA
+\*-------------------------------------------*/
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .landing__title {
+    &_second {
+      padding: $re--large-padding 0;
+      font-size: 23px;
     }
   }
 }
