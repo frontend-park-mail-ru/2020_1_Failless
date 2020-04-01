@@ -13,6 +13,7 @@ $people-img: $screen-img-path + "landing.jpg";
 
   &__screen {
     display: flex;
+    flex-flow: column;
     align-items: center;
     justify-content: center;
 
@@ -38,31 +39,57 @@ $people-img: $screen-img-path + "landing.jpg";
 
     }
 
-    &_info {
-      &__row {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-
-        & svg {
-          height: 188px;
-          width: auto;
-        }
-      }
+    &_scenario {
+      background: $color-white;
     }
 
     &_creators {
       background: rgba(18, 194, 233);
-      display: flex;
-      flex-flow: column;
-      align-content: center;
     }
 
     &_footer {
       background: $color-black;
-      display: flex;
-      flex-flow: column;
       text-align: left;
+    }
+  }
+
+  /*-------------------------------------------*\
+     Scenarios
+  \*-------------------------------------------*/
+
+  &__scenario {
+    padding-bottom: $re--large-padding;
+
+    &__row {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+
+      & svg {
+        min-width: 188px;
+        margin-right: 130px;
+      }
+    }
+
+    & .separator {
+      margin: $re--large-padding 0;
+    }
+
+    &__text {
+      text-align: left;
+
+      &__title {
+        color: $color-black;
+        font-size: 25px;
+        font-weight: 700;
+        margin-bottom: 27px;
+      }
+
+      &__body {
+        color: #888888;
+        font-size: 18px;
+        font-weight: 400;
+      }
     }
   }
 
@@ -190,6 +217,7 @@ $people-img: $screen-img-path + "landing.jpg";
     }
 
     &__link {
+      margin-bottom: 3px;
       color: #686868;
       font-size: 13px;
       font-weight: 300;
@@ -212,11 +240,10 @@ $people-img: $screen-img-path + "landing.jpg";
     color: $color-white;
 
     &_second {
-      padding-top: 4%;
-      padding-bottom: 4%;
+      padding: $re--large-padding 0;
       font-size: 32px;
       color: $color-white;
-      font-weight: bold;
+      font-weight: 400;
     }
   }
 

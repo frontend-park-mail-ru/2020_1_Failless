@@ -129,6 +129,11 @@ h3 {
         background: $color-white;
         background: radial-gradient(circle, $color-white 66%, rgba(0,0,0,0) 95%);
     }
+
+    &_gray {
+        background: $re--color-light-gray;
+        background: radial-gradient(circle, $re--color-light-gray 66%, rgba(0,0,0,0) 95%);
+    }
 }
 
 .gradient-text {

@@ -287,6 +287,9 @@
   justify-content: center;
   background-color: #12C2E9;
   /*-------------------------------------------*\
+     Scenarios
+  \*-------------------------------------------*/
+  /*-------------------------------------------*\
      Creators
   \*-------------------------------------------*/
   /*-------------------------------------------*\
@@ -298,6 +301,7 @@
 }
 .landing__screen {
   display: flex;
+  flex-flow: column;
   align-items: center;
   justify-content: center;
 }
@@ -317,26 +321,44 @@
     min-height: 512px !important;
   }
 }
-.landing__screen_info__row {
+.landing__screen_scenario {
+  background: white;
+}
+.landing__screen_creators {
+  background: #12c2e9;
+}
+.landing__screen_footer {
+  background: #191919;
+  text-align: left;
+}
+.landing__scenario {
+  padding-bottom: 46px;
+}
+.landing__scenario__row {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
-.landing__screen_info__row svg {
-  height: 188px;
-  width: auto;
+.landing__scenario__row svg {
+  min-width: 188px;
+  margin-right: 130px;
 }
-.landing__screen_creators {
-  background: #12c2e9;
-  display: flex;
-  flex-flow: column;
-  align-content: center;
+.landing__scenario .separator {
+  margin: 46px 0;
 }
-.landing__screen_footer {
-  background: #191919;
-  display: flex;
-  flex-flow: column;
+.landing__scenario__text {
   text-align: left;
+}
+.landing__scenario__text__title {
+  color: #191919;
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 27px;
+}
+.landing__scenario__text__body {
+  color: #888888;
+  font-size: 18px;
+  font-weight: 400;
 }
 .landing__creators__row {
   display: flex;
@@ -433,6 +455,7 @@
   margin-bottom: 15px;
 }
 .landing__footer__link {
+  margin-bottom: 3px;
   color: #686868;
   font-size: 13px;
   font-weight: 300;
@@ -451,17 +474,17 @@
   color: white;
 }
 .landing__title_second {
-  padding-top: 4%;
-  padding-bottom: 4%;
+  padding: 46px 0;
   font-size: 32px;
   color: white;
-  font-weight: bold;
+  font-weight: 400;
 }
 .landing__text {
   font-weight: bold;
   font-size: 26px;
   color: white;
 }
+
 /*-------------------------------------------*\
    Creators MEDIA
 \*-------------------------------------------*/
@@ -1952,6 +1975,10 @@ h3 {
 .separator_white {
   background: white;
   background: radial-gradient(circle, white 66%, rgba(0, 0, 0, 0) 95%);
+}
+.separator_gray {
+  background: #F1F1F1;
+  background: radial-gradient(circle, #F1F1F1 66%, rgba(0, 0, 0, 0) 95%);
 }
 
 .gradient-text {
