@@ -3,6 +3,7 @@ $color-purple: #C471ED;
 $color-blue: #12C2E9;
 $color-black: #191919;
 $color-white: white;
+$color-light-blue: #12C2E9;
 $color-dark-blue: #325e89;
 $color-light-gray: #b6bebf;
 $color-gray: rgba(31, 63, 81, 0.6);
@@ -37,6 +38,8 @@ $breakpoint-desktop: 1024px;
     background: $re--gradient;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    width: fit-content;
+    width: -moz-fit-content;
 }
 
 @mixin transition($duration, $timing) {
@@ -50,4 +53,15 @@ $breakpoint-desktop: 1024px;
     color: $color-blue;
     font-size: 10px;
     font-weight: 400;
+}
+
+.separator {
+    width: 100%;
+    &_thin {
+        height: 1px;
+    }
+    &_black {
+        background: #686868;
+        background: radial-gradient(circle, #686868 66%, rgba(0,0,0,0) 95%);
+    }
 }

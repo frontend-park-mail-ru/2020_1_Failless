@@ -4,6 +4,7 @@
 $people-img: $screen-img-path + "landing.jpg";
 
 .landing {
+  width: 100%;
   display: block;
   text-align: center;
   align-items: center;
@@ -27,21 +28,113 @@ $people-img: $screen-img-path + "landing.jpg";
         min-height: 512px !important;
       }
 
-      background-image: linear-gradient(
-                      rgba(0, 0, 1, .4),
-                      rgba(0, 0, 1, 0.4),
-                      rgba(0, 0, 1, 0.4),
-                      rgba(0, 0, 1, 0.4)), url($people-img);
+      background-image:
+              linear-gradient(
+                              135deg,
+                              rgba(8, 88, 106, .5) 0%,
+                              rgba(79, 52, 104, 0.5) 50%,
+                              rgba(93, 30, 37, 0.5) 100%),
+              url($people-img);
 
     }
 
     &_info {
+      &__row {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+        & svg {
+          height: 188px;
+          width: auto;
+        }
+      }
+    }
+
+    &_footer {
+      background: $color-black;
       display: flex;
-      column-count: 3;
-      -webkit-column-count: 3;
-      -moz-column-count: 3;
+      flex-flow: column;
+      text-align: left;
     }
   }
+
+  /*-------------------------------------------*\
+     Footer
+  \*-------------------------------------------*/
+
+  &__footer {
+    &__body {
+      display: flex;
+      align-items: flex-start;
+      margin: $re--huge-padding 0 $re--big-padding;
+    }
+
+    &__creds {
+      color: #686868;
+      font-size: 12px;
+      margin: $re--large-padding 0;
+      text-align: center;
+    }
+
+    &__logo {
+      font-size: 30px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    &__about {
+      color: #7C7C7C;
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    &__column {
+      min-width: 25%;
+
+      &:first-child {
+        display: flex;
+        flex-flow: column;
+        align-items: flex-start;
+        min-width: 50%;
+
+        & button {
+          margin-top: 39px;
+        }
+      }
+    }
+
+    &__section {
+      display: flex;
+      flex-flow: column;
+      margin-bottom: $re--large-padding;
+    }
+
+    &__title {
+      color: $color-white;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: $re--medium-padding;
+    }
+
+    &__link {
+      color: #686868;
+      font-size: 13px;
+      font-weight: 300;
+      text-decoration: underline;
+      cursor: pointer;
+      @include transition(0.3s, ease-in-out);
+
+      &:hover {
+        color: $re--color-light-gray;
+      }
+    }
+  }
+
+  /*-------------------------------------------*\
+     Text
+  \*-------------------------------------------*/
 
   &__title {
     font-size: 32px;
@@ -54,6 +147,10 @@ $people-img: $screen-img-path + "landing.jpg";
       color: $color-white;
       font-weight: bold;
     }
+
+    &_third {
+
+    }
   }
 
   &__text {
@@ -64,5 +161,62 @@ $people-img: $screen-img-path + "landing.jpg";
     &_main {
     }
   }
+}
 
+@media only screen and (max-width: 1000px) {
+
+}
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .landing {
+    &__footer {
+      &__body {
+        flex-flow: column;
+        margin: $re--large-padding 2vw 0;
+      }
+
+      &__creds {
+        margin: $re--medium-padding;
+        font-size: 8px;
+      }
+
+      &__logo {
+        font-size: 20px;
+        margin-bottom: $re--small-padding;
+      }
+
+      &__about {
+        font-size: 12px;
+      }
+
+      &__column {
+        width: 100%;
+        &:first-child {
+          align-items: center;
+
+          & button {
+            transform: scale(0.75);
+            margin-bottom: $re--big-padding;
+            align-items: center;
+            margin-top: $re--big-padding;
+          }
+        }
+      }
+
+      &__section {
+        align-items: center;
+        text-align: center;
+        margin-bottom: $re--big-padding;
+      }
+
+      &__title {
+        font-size: 12px;
+        margin-bottom: $re--medium-padding;
+      }
+
+      &__link {
+        font-size: 10px;
+      }
+    }
+  }
 }
