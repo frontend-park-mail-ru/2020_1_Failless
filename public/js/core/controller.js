@@ -51,9 +51,11 @@ export default class Controller {
             console.log('No internet connection');
         }).then(() => {
             const managePanel = document.getElementsByClassName('header__manage')[0];
-            managePanel.addEventListener('click', this.#controlBtnPressed.bind(this));
+            this.addEventHandler(managePanel, 'click', this.#controlBtnPressed);
+            // managePanel.addEventListener('click', this.#controlBtnPressed.bind(this));
             const logo = document.getElementsByClassName('header__logo gradient-text')[0];
-            logo.addEventListener('click', this.#homeRedirect.bind(this));
+            this.addEventHandler(logo, 'click', this.#homeRedirect);
+            // logo.addEventListener('click', this.#homeRedirect.bind(this));
         });
     }
 
@@ -113,36 +115,38 @@ export default class Controller {
     addEventHandler = (node, event, handler) => {
         let foundNode = false;
         let foundEvent = false;
-        if (this.eventHandlers.length !== 0) {
-            for (const nodeVal of this.eventHandlers) {
-                if (nodeVal.htmlNode == node) {
-                    foundNode = true;
-                    for (const eventVal of nodeVal.events) {
-                        if (eventVal.event == event) {
-                            foundEvent = true;
-                            break;
+        if (node) {
+            if (this.eventHandlers.length !== 0) {
+                for (const nodeVal of this.eventHandlers) {
+                    if (nodeVal.htmlNode == node) {
+                        foundNode = true;
+                        for (const eventVal of nodeVal.events) {
+                            if (eventVal.event == event) {
+                                foundEvent = true;
+                                break;
+                            }
                         }
+                        if (!foundEvent) {
+                            node.addEventListener(event, handler);
+                            nodeVal.events.push({
+                                event: event,
+                                handler: handler,
+                            });
+                        }
+                        break;
                     }
-                    if (!foundEvent) {
-                        node.addEventListener(event, handler);
-                        nodeVal.events.push({
-                            event: event,
-                            handler: handler,
-                        });
-                    }
-                    break;
                 }
             }
-        }
-        if (!foundNode) {
-            node.addEventListener(event, handler);
-            this.eventHandlers.push({
-                htmlNode: node,
-                events: [{
-                    event: event,
-                    handler: handler,
-                }]
-            });
+            if (!foundNode) {
+                node.addEventListener(event, handler);
+                this.eventHandlers.push({
+                    htmlNode: node,
+                    events: [{
+                        event: event,
+                        handler: handler,
+                    }]
+                });
+            }
         }
     }
 
