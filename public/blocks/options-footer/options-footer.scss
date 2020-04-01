@@ -1,0 +1,15 @@
+@import "../../modules/variables";
+
+.options-footer {
+  padding: $re--big-padding 0;
+  width: 93%;
+  height: auto;
+  position: absolute;
+  bottom: 0;
+  left: 8px;
+  background-color: white;
+  box-shadow: 0 -10px 5px -6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}

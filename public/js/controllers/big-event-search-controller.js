@@ -25,7 +25,7 @@ export default class BigEventSearchController extends Controller {
      */
     action() {
         super.action();
-        EventModel.getEvents({page: 1, query: ''})
+        EventModel.getFeedEvents({page: 1, limit: 10, query: ''})
             .then(events => {
                 console.log(events);
                 this.view.render(events);
@@ -51,7 +51,7 @@ export default class BigEventSearchController extends Controller {
         if (event.code === 'Enter') {
             event.preventDefault();
             console.log(event.target.value);
-            EventModel.getEvents({page: 1, query: event.target.value})
+            EventModel.getEvents({page: 1, limit: 10, query: event.target.value})
                 .then(events => {
                     ++this.pageDownloaded;
                     console.log(events);

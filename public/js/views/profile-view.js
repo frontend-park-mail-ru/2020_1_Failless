@@ -1,12 +1,12 @@
 'use strict';
 
-import View from '../core/view.js';
+import MyView from './my-view.js';
 import settings from '../../settings/config.js';
 
 /**
- *
+ * @class create ProfileView class
  */
-export default class ProfileView extends View {
+export default class ProfileView extends MyView {
 
     /**
      * Create view
@@ -31,45 +31,44 @@ export default class ProfileView extends View {
      *      location: string,
      *      avatar: string,
      *      photos: string,
-     *      email: string
+     *      email: string,
+     *      tags: {
+     *          title: string,
+     *          id: string,
+     *      }
      *  } } profile -  user profile from server
      */
     render(profile) {
-        // TODO: add events to profile
-        // this.parent.innerHTML += Handlebars.templates['public/js/templates/profile-template']({profile: profile, events: events});
-        // this.parent.innerHTML += Handlebars.templates['public/js/templates/settings-template']({profile: profile});
-        // this.parent.innerHTML += Handlebars.templates['public/js/templates/set-event-template']({events: events, mode: "Изменить"});
+        super.render();
+
         let allowEdit = true;
+        if (profile.avatar.path === null) {
+            profile.avatar.path = 'default.png';
+        }
 
-        // //todo: fix it
-        // if (profile.events) {
-        //     profile.events.forEach(event => {
-        //         event.photos = [
-        //             'EventPhotos/3.jpg',
-        //             'EventPhotos/4.jpg',
-        //         ];
-        //         event.place = 'Москва';
-        //     });
-        // }
+        if ('tags' in profile) {
+            if (!profile.tags) {
+                profile.tags = [];
+            } else {
+                profile.tags.forEach((tag) => {
+                    tag.active_class = 'tag__container__active';
+                    tag.editable = true;
+                });
+            }
+        }
 
-        const profileTemplate = Handlebars.templates['profile']({
-            username: 'profile.name',
-            title1: 'О себе',
-            textarea: {
-                help: 'Расскажите о себе и своих увлечениях',
-                about: 'profile.about',
-            },
-            edit: allowEdit,
-            buttonOk: 'Готово',
-            buttonSettings: 'Настройки',
-            title2: 'Фото',
-            img: settings.img + 'profile.avatar.path',
-            title3: 'Ваши тэги',
-            tags: 'profile.tags',
-            title4: 'Ваши мероприятия',
-            events: 'profile.events',
-        });
-
-        this.parent.insertAdjacentHTML('beforeend', profileTemplate);
+        document.getElementsByClassName('my__left-column-body')[0].insertAdjacentHTML(
+            'beforeend', Handlebars.templates['profile-left']({
+                profile: profile,
+                url: `${settings.aws}/users`,
+            })
+        );
+        document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
+            'beforeend', Handlebars.templates['profile-main']({
+                title: 'Профиль',
+                url: `${settings.aws}/users`,
+                profile: profile,
+            })
+        );
     }
 }

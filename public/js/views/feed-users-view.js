@@ -24,8 +24,10 @@ export default class FeedUsersView extends View {
         const profile = {
             name: 'Egor',
             age: 20,
-            about: 'Поскольку тут контент динамический, то будет max-height, примерно как сейчас. Будет expand поверх фотки Соответственно кнопки посередине оставшегося блока снизу padding: 15px; // везде',
-            photos: ['/ProfilePhotos/1.jpg'],
+            about: 'Поскольку тут контент динамический, то будет max-height, примерно как сейчас. ' +
+                'Будет expand поверх фотки Соответственно кнопки посередине оставшегося ' +
+                'блока снизу padding: 15px; // везде',
+            photos: ['1.jpg'],
             tags: tags,
         };
         this.parent.innerHTML += Handlebars.templates['feed']({tags: tags});

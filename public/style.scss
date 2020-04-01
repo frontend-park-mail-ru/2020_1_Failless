@@ -3,11 +3,13 @@
 @import "components/feed/feed";
 @import "components/landing/landing";
 @import "components/my/my";
-@import "components/new-profile-left/new-profile-left";
-@import "components/new-profile-main/new-profile-main";
-@import "components/profile/profile";
+@import "components/profile-main/profile-main";
 @import "components/profile-edit/profile-edit";
 
+@import "blocks/feed-center/feed-center";
+@import "blocks/feed-right/feed-right";
+@import "blocks/options-footer/options-footer";
+@import "blocks/profile-left/profile-left";
 @import "blocks/btn/btn";
 @import "blocks/header/header";
 @import "blocks/icon/icon";
