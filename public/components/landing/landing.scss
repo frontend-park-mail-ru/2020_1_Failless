@@ -218,19 +218,12 @@ $people-img: $screen-img-path + "landing.jpg";
       color: $color-white;
       font-weight: bold;
     }
-
-    &_third {
-
-    }
   }
 
   &__text {
     font-weight: bold;
     font-size: 26px;
     color: $color-white;
-
-    &_main {
-    }
   }
 }
 
@@ -238,9 +231,7 @@ $people-img: $screen-img-path + "landing.jpg";
    Creators MEDIA
 \*-------------------------------------------*/
 
-@media only screen and (max-width: 1000px) {
-
-}
+@media only screen and (max-width: 1000px) {}
 
 @media only screen and (max-width: $breakpoint-phone) {
   .landing__creators {
@@ -272,12 +263,6 @@ $people-img: $screen-img-path + "landing.jpg";
       & .separator_horizontal {
         width: 40%;
       }
-
-      &__links {
-        & svg {
-
-        }
-      }
     }
   }
 }
@@ -286,9 +271,7 @@ $people-img: $screen-img-path + "landing.jpg";
    Footer MEDIA
 \*-------------------------------------------*/
 
-@media only screen and (max-width: 1000px) {
-
-}
+@media only screen and (max-width: 1000px) {}
 
 @media only screen and (max-width: $breakpoint-phone) {
   .landing {
