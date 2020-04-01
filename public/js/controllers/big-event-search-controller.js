@@ -26,7 +26,7 @@ export default class BigEventSearchController extends Controller {
     action() {
         super.action();
         EventModel.getFeedEvents({page: 1, limit: 10, query: ''})
-            .then(events => {
+            .then((events) => {
                 console.log(events);
                 this.view.render(events);
                 document.getElementById('searchInput')

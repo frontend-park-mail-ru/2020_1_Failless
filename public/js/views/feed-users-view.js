@@ -2,6 +2,7 @@
 
 import View from '../core/view.js';
 import {tags, events} from '../utils/static-data.js';
+import getPageUrl from '../utils/get-img-url.js';
 
 /**
  * @class create SearchView class
@@ -19,8 +20,11 @@ export default class FeedUsersView extends View {
 
     /**
      * Render template
+     * @param {Object} data
+     * @param {Array} selectedTags
+     * @param {boolean} isEvent
      */
-    render() {
+    render(data, selectedTags, isEvent) {
         const profile = {
             name: 'Egor',
             age: 20,
@@ -30,13 +34,24 @@ export default class FeedUsersView extends View {
             photos: ['1.jpg'],
             tags: tags,
         };
+        if (data.photos !== null) {
+            if (isEvent) {
+                data.photos.forEach((item) => getPageUrl(item, 'events'));
+            } else {
+                data.photos.forEach((item) => getPageUrl(item, 'users'));
+            }
+        } else {
+            data.photos = [getPageUrl('default.png', 'events')];
+        }
 
         const template = {
             tags: tags,
-            profile: profile,
-            events: events,
-            isEvents: false,
+            data: data,
+            isEvent: isEvent,
+            users: null,  // TODO: take it by AJAX
+            events: null, // TODO: take it by AJAX
         };
+        console.log(data);
 
         this.parent.innerHTML += Handlebars.templates['feed'](template);
         // let columns = this.parent.getElementsByClassName('feed__column');

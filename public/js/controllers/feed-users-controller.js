@@ -2,7 +2,9 @@
 
 import Controller from '../core/controller.js';
 import FeedUsersView from '../views/feed-users-view.js';
-import SetSliders from "../../blocks/slider/set-slider.js";
+import SetSliders from '../../blocks/slider/set-slider.js';
+import EventModel from '../models/event-model.js';
+import settings from '../../settings/config.js'
 
 /**
  * @class FeedUsersController
@@ -16,6 +18,7 @@ export default class FeedUsersController extends Controller {
     constructor(parent) {
         super(parent);
         this.searching = false;
+        this.usersSelected = false;
         this.view = new FeedUsersView(parent);
     }
 
@@ -28,13 +31,40 @@ export default class FeedUsersController extends Controller {
      */
     action() {
         super.action();
-        this.view.render();
+        if (this.usersSelected) {
+            EventModel.getFeedUsers({page: 1, limit: settings.pageLimit, query: ''})
+                .then((users) => {
+                    this.#actionCallback(users, false);
+                }).catch((onerror) => {
+                console.error(onerror);
+            });
+        } else {
+            EventModel.getFeedEvents({page: 1, limit: settings.pageLimit, query: ''})
+                .then((events) => {
+                    this.#actionCallback(events, true);
+                }).catch((onerror) => {
+                console.error(onerror);
+            });
+        }
+    }
+
+    /**
+     *
+     * @param {Array} list
+     * @param {boolean} isEvent
+     */
+    #actionCallback = (list, isEvent) => {
+        if (list !== null) {
+            this.view.render(list[0], [], isEvent);
+        } else {
+            this.view.render(null, [], isEvent);
+        }
         document.querySelectorAll('.search-tag').forEach((tag) => {
             tag.addEventListener('click', this.#highlightTag);
         });
         document.getElementById('form').addEventListener('submit', this.#setOptions);
         SetSliders(18, 60, 25);
-    }
+    };
 
     #highlightTag = (event) => {
         event.preventDefault();
@@ -76,7 +106,7 @@ export default class FeedUsersController extends Controller {
         // cause changing settings shouldn't change current person on the screen
     };
 
-    #getNextPerson(event) {
+    #getNextPerson = (event) => {
         if (event) {
             event.preventDefault();
         }
@@ -101,5 +131,5 @@ export default class FeedUsersController extends Controller {
             profile: this.currentProfile,
             events: this.currentProfileEvents
         });
-    }
+    };
 }

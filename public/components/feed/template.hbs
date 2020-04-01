@@ -52,11 +52,14 @@
         </div>
         <div class="feed__separator"></div>
         <div class="feed__column feed__column_main">
-            {{#if isEvents}}
-                {{>feed-events-center}}
-            {{else}}
-                {{>feed-center}}
-            {{/if}}
+            <h>{{log this}}</h>
+            {{#with data}}
+                {{#if ../isEvent}}
+                    {{>feed-events-center}}
+                {{else}}
+                    {{>feed-center}}
+                {{/if}}
+            {{/with}}
         </div>
         <div class="feed__separator"></div>
         <div class="feed__column">
