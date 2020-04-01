@@ -20,17 +20,17 @@
     overflow: auto;
     box-shadow: 0 0 20px -9px rgba(0, 0, 0, 0.5);
 
-    &__main {
+    &_main {
       flex: 1 2 auto;
       width: 620px;
     }
   }
 
-  &__other_options {
+  &__other-options {
     padding: 0 $re--small-padding;
   }
 
-  &__options_field {
+  &__options-field {
     box-sizing: border-box;
     margin-bottom: $re--medium-padding;
     padding-bottom: $re--big-padding;
@@ -42,15 +42,9 @@
     }
   }
 
-  &__scroll {
-    overflow: auto;
-    // TODO: remove hardcode
-    max-height: 566px;
-  }
-
   /* Customize the label (the container) */
   &__checkbox {
-    &_label {
+    &-label {
       display: block;
       position: relative;
       padding-left: 19px;
@@ -73,7 +67,7 @@
         width: 0;
 
         /* When the checkbox is checked, add a blue background */
-        &:checked ~ .feed__checkbox_checkmark {
+        &:checked ~ .feed__checkbox-checkmark {
           background: $re--gradient;
 
           /* Show the checkmark when checked */
@@ -83,14 +77,14 @@
         }
 
         /* Show the checkmark when checked */
-        &:checked ~ .feed__checkbox_label { // TODO: doesn't work
+        &:checked ~ .feed__checkbox-label { // TODO: doesn't work
           color: $re--color-middle-gray;
         }
       }
     }
 
     /* Create a custom checkbox */
-    &_checkmark {
+    &-checkmark {
       position: absolute;
       top: 0;
       left: 0;
@@ -118,61 +112,15 @@
     }
   }
 
-  &__options_footer {
-    padding: $re--big-padding 0;
-    width: 93%;
-    height: auto;
-    position: absolute;
-    bottom: 0;
-    left: 8px;
-    background-color: white;
-    box-shadow: 0 -10px 5px -6px rgba(0, 0, 0, 0.15);
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-  }
-
   &__map {
     width: 100%;
     height: auto;
   }
 
-  ///////////////////////////////////////////////
-  ///////////////   Main column   ///////////////
-  ///////////////////////////////////////////////
-
-  &__photos {
-    width: 100%;
-    height: auto;
-    margin-bottom: $re--big-padding;
-  }
-
-  &__profile {
-    display: flex;
-    flex-flow: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-
-    &__tags {
-      display: flex;
-      align-items: flex-end;
-      flex-flow: column;
-    }
-  }
-
-  &__about {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 18px;
+  &__help {
+    font-weight: bold;
+    font-size: 12px;
     color: $color-black;
-  }
-
-  &__action_buttons {
-    width: 100%;
-    height: auto;
-    margin: $re--huge-padding 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    padding-bottom: $re--small-padding;
   }
 }

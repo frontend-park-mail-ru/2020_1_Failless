@@ -1,6 +1,5 @@
-<h1>{{ title }}</h1>
-<div class="my__main_column__body">
-    <div class="new_profile__photos">
+<div class="profile-main">
+    <div class="profile-main__photos">
         <div class="section__header section__header_2">
             <h2>Фото</h2>
             <div class="link-uploader">
@@ -8,25 +7,29 @@
                 <input id="photoUpload" type="file"/>
             </div>
         </div>
-        <div class="photo_columns">
+        <div class="photo-columns">
             {{#if profile.photos}}
                 {{#each profile.photos as | photo |}}
-                    <img class="photo" src="{{../url}}/{{ photo.path }}" alt="{{ photo.path }}">
+                    <img class="photo-columns__photo" src="{{../url}}/{{ photo.path }}" alt="{{ photo.path }}">
                 {{/each}}
             {{else}}
                 <span class="font font_bold font__size_middle font__color_lg">Фотографий нет</span>
             {{/if}}
         </div>
     </div>
-    <div class="new_profile__separator"></div>
-    <div class="new_profile__events">
-        <div class="section__header section__header_2">
-            <h2>Эвенты</h2>
+    <div class="profile-main__separator"></div>
+    <div class="profile-main__events">
+        <div class="section">
+            <div class="section__header section__header_2">
+                <h2>Эвенты</h2>
+            </div>
         </div>
-        <div class="new_profile__events__group">
-            <div class="section__header section__header_3">
-                <h3>Ваши эвенты</h3>
-                <a href="#">Добавить</a>
+        <div class="profile-main__group">
+            <div class="section">
+                <div class="section__header section__header_3">
+                    <h3>Ваши эвенты</h3>
+                    <a href="#">Добавить</a>
+                </div>
             </div>
             {{#if profile.events.personal}}
                 {{#each profile.events.personal as |event|}}
@@ -36,9 +39,11 @@
                 <button class="re_btn re_btn__outline">Добавить</button>
             {{/if}}
         </div>
-        <div class="new_profile__events__group">
-            <div class="section__header section__header_3">
-                <h3>Ваши подписки</h3>
+        <div class="profile-main__group">
+            <div class="section">
+                <div class="section__header section__header_3">
+                    <h3>Ваши подписки</h3>
+                </div>
             </div>
             {{#if profile.events.others}}
                 {{#each profile.events.others as |event|}}
@@ -50,3 +55,4 @@
         </div>
     </div>
 </div>
+

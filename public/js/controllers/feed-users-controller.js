@@ -29,7 +29,7 @@ export default class FeedUsersController extends Controller {
     action() {
         super.action();
         this.view.render();
-        document.querySelectorAll('.search_tag').forEach((tag) => {
+        document.querySelectorAll('.search-tag').forEach((tag) => {
             tag.addEventListener('click', this.#highlightTag);
         });
         document.getElementById('form').addEventListener('submit', this._setOptions);
@@ -59,7 +59,7 @@ export default class FeedUsersController extends Controller {
             tags: [],
         };
 
-        form.querySelectorAll('.search_tag').forEach((tag) => {
+        form.querySelectorAll('.search-tag').forEach((tag) => {
             if (tag.style.opacity === '1') {
                 searchOptions.tags.push(tag.getElementsByClassName('tag tag_size_middle')[0].innerText);
             }
