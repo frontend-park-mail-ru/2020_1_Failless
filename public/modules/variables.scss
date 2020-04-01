@@ -34,14 +34,6 @@ $breakpoint-phone: 480px;
 $breakpoint-tablet: 768px;
 $breakpoint-desktop: 1024px;
 
-.gradient-text {
-    background: $re--gradient;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    width: fit-content;
-    width: -moz-fit-content;
-}
-
 @mixin transition($duration, $timing) {
     -webkit-transition: all $duration $timing;
     -moz-transition: all $duration $timing;
@@ -53,15 +45,4 @@ $breakpoint-desktop: 1024px;
     color: $color-blue;
     font-size: 10px;
     font-weight: 400;
-}
-
-.separator {
-    width: 100%;
-    &_thin {
-        height: 1px;
-    }
-    &_black {
-        background: #686868;
-        background: radial-gradient(circle, #686868 66%, rgba(0,0,0,0) 95%);
-    }
 }
