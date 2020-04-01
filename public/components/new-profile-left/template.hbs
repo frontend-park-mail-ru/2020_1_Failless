@@ -1,7 +1,7 @@
 <h2>{{ profile.name }}{{#if profile.age}}, {{ profile.age }}{{/if}}</h2>
 <form action="submit" id="form">
     <div class="feed__scroll">
-        <img class="center new_profile__avatar" src="{{ profile.avatar.path }}" alt="avatar">
+        <img class="center new_profile__avatar" src="{{ url }}/{{ profile.avatar.path }}" alt="avatar">
         <div class="feed__options_field">
             <h3>О себе</h3>
             <textarea class="feed__options_field_textarea" name="about" rows="10"

@@ -43,9 +43,7 @@ export default class NewProfileView extends MyView {
 
         let allowEdit = true;
         if (profile.avatar.path === null) {
-            profile.avatar.path = `${settings.aws}/app/default.png`;
-        } else {
-            profile.avatar.path = `${settings.aws}/users/${profile.avatar.path}`;
+            profile.avatar.path = 'default.png';
         }
 
         if ('tags' in profile) {
@@ -62,6 +60,7 @@ export default class NewProfileView extends MyView {
         document.getElementsByClassName('my__left_column__body')[0].insertAdjacentHTML(
             'beforeend', Handlebars.templates['new-profile-left']({
                 profile: profile,
+                url: `${settings.aws}/users`,
             })
         );
         document.getElementsByClassName('my__main_column')[0].insertAdjacentHTML(
