@@ -32,7 +32,7 @@ export default class FeedUsersController extends Controller {
         document.querySelectorAll('.search-tag').forEach((tag) => {
             tag.addEventListener('click', this.#highlightTag);
         });
-        document.getElementById('form').addEventListener('submit', this._setOptions);
+        document.getElementById('form').addEventListener('submit', this.#setOptions);
         SetSliders(18, 60, 25);
     }
 
@@ -49,7 +49,7 @@ export default class FeedUsersController extends Controller {
         }
     };
 
-    _setOptions = (event) => {
+    #setOptions = (event) => {
         event.preventDefault();
 
         const form = document.getElementById('form');
@@ -71,12 +71,12 @@ export default class FeedUsersController extends Controller {
 
         if (!this.searching) {
             this.searching = true;
-            this._getNextPerson();
+            this.#getNextPerson();
         } // else don't
         // cause changing settings shouldn't change current person on the screen
     };
 
-    _getNextPerson(event) {
+    #getNextPerson(event) {
         if (event) {
             event.preventDefault();
         }
@@ -91,7 +91,15 @@ export default class FeedUsersController extends Controller {
         };
 
         let columns = this.parent.getElementsByClassName('feed__column');
+        const template = {
+            profile: this.currentProfile,
+            events: this.currentProfileEvents,
+            isEvents: false,
+        };
         columns[1].innerHTML = Handlebars.templates['feed-center']({profile: this.currentProfile});
-        columns[2].innerHTML = Handlebars.templates['feed-right']({profile: this.currentProfile, events: this.currentProfileEvents});
+        columns[2].innerHTML = Handlebars.templates['feed-right']({
+            profile: this.currentProfile,
+            events: this.currentProfileEvents
+        });
     }
 }

@@ -4,19 +4,17 @@
             <form action="submit" id="form">
                 <div class="feed__options-field">
                     <div class="feed__help">Фильтр тегов</div>
-                    {{#each tags}}
+                    {{#each tags as |tag| }}
                         <div class="search-tag" style="opacity: 0.5">
-                            <div class="tag tag_size_middle">{{ this.title }}</div>
+                            <div class="tag tag_size_middle">{{ tag.title }}</div>
                             <div class="x_btn">X</div>
                         </div>
                     {{/each}}
                 </div>
-
                 <div class="feed__options-field">
                     <div class="feed__help">Ключевые слова</div>
                     <input class="input input__auth" name="search_text" placeholder="Люди как люди">
                 </div>
-
                 <div class="feed__options-field">
                     <div class="feed__help">Другие опции</div>
                     <div class="feed__other-options">
@@ -55,7 +53,7 @@
         <div class="feed__separator"></div>
         <div class="feed__column feed__column_main">
             {{#if isEvents}}
-                <!--render event page-->
+                {{>feed-events-center}}
             {{else}}
                 {{>feed-center}}
             {{/if}}

@@ -30,9 +30,17 @@ export default class FeedUsersView extends View {
             photos: ['1.jpg'],
             tags: tags,
         };
-        this.parent.innerHTML += Handlebars.templates['feed']({tags: tags});
-        let columns = this.parent.getElementsByClassName('feed__column');
-        columns[1].innerHTML = Handlebars.templates['feed-center']({profile: profile});
-        columns[2].innerHTML = Handlebars.templates['feed-right']({events: events});
+
+        const template = {
+            tags: tags,
+            profile: profile,
+            events: events,
+            isEvents: false,
+        };
+
+        this.parent.innerHTML += Handlebars.templates['feed'](template);
+        // let columns = this.parent.getElementsByClassName('feed__column');
+        // columns[1].innerHTML = Handlebars.templates['feed-center']({profile: profile});
+        // columns[2].innerHTML = Handlebars.templates['feed-right']({events: events});
     }
 }

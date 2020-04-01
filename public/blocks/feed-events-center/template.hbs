@@ -1,0 +1,14 @@
+{{#with event}}
+    <img class="feed-center__photos" src="{{ photos }}" alt="{{ photos }}">
+    <!--TODO: image options-footer here-->
+    <div class="feed-center__profile">
+        <div>
+            <h1>{{ title }}</h1>
+            <h3>{{ date }}</h3>
+            <div class="feed-center__about">{{ about }}</div>
+        </div>
+        <div class="feed-center__tags">
+            <div class="tag tag_size_middle">{{ tag.title }}</div>
+        </div>
+    </div>
+{{/with}}
