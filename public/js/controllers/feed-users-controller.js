@@ -24,6 +24,7 @@ export default class FeedUsersController extends Controller {
         this.currentPage = 1;
         this.currentItem = 0;
         this.view = new FeedUsersView(parent);
+        this.uid = null;
     }
 
     searching;
@@ -35,32 +36,35 @@ export default class FeedUsersController extends Controller {
      */
     action() {
         super.action();
-        if (this.usersSelected) {
-            EventModel.getFeedUsers({page: 1, limit: settings.pageLimit, query: ''})
-                .then((users) => {
-                    this.list = users;
-                    let user = null;
-                    if (this.list) {
-                        user = this.list[0];
-                    }
-                    this.#actionCallback(user, [], false);
-                }).catch((onerror) => {
-                console.error(onerror);
-            });
-        } else {
-            EventModel.getFeedEvents({page: 1, limit: settings.pageLimit, query: ''})
-                .then((events) => {
-                    this.list = events;
-                    this.list = events;
-                    let event = null;
-                    if (this.list) {
-                        event = this.list[0];
-                    }
-                    this.#actionCallback(event, [], true);
-                }).catch((onerror) => {
-                console.error(onerror);
-            });
-        }
+        UserModel.getProfile().then((user) => {
+            this.uid = user.uid;
+            if (this.usersSelected) {
+                EventModel.getFeedUsers({page: 1, uid: this.uid, limit: settings.pageLimit, query: ''})
+                    .then((users) => {
+                        this.list = users;
+                        let user = null;
+                        if (this.list) {
+                            user = this.list[0];
+                        }
+                        this.#actionCallback(user, [], false);
+                    }).catch((onerror) => {
+                    console.error(onerror);
+                });
+            } else {
+                EventModel.getFeedEvents({page: 1, uid: this.uid, limit: settings.pageLimit, query: ''})
+                    .then((events) => {
+                        this.list = events;
+                        this.list = events;
+                        let event = null;
+                        if (this.list) {
+                            event = this.list[0];
+                        }
+                        this.#actionCallback(event, [], true);
+                    }).catch((onerror) => {
+                    console.error(onerror);
+                });
+            }
+        });
     }
 
     /**
@@ -74,23 +78,25 @@ export default class FeedUsersController extends Controller {
         document.querySelectorAll('.search-tag').forEach((tag) => {
             tag.addEventListener('click', this.#highlightTag);
         });
-
+        this.#setUpVoteButtons();
         document.getElementById('form').addEventListener('submit', this.#setOptions);
+        SetSliders(18, 60, 25);
+    };
 
+    #setUpVoteButtons() {
+        console.log('BBBBB');
         const approveBtn = document.getElementsByClassName('re_btn__approve')[0];
         approveBtn.addEventListener('click', (event) => {
             event.preventDefault();
-            this.#voteHandler(isEvent, true);
+            this.#voteHandler(!this.usersSelected, true);
         });
 
         const rejectBtn = document.getElementsByClassName('re_btn__reject')[0];
         rejectBtn.addEventListener('click', (event) => {
             event.preventDefault();
-            this.#voteHandler(isEvent, false);
+            this.#voteHandler(!this.usersSelected, false);
         });
-
-        SetSliders(18, 60, 25);
-    };
+    }
 
     /**
      *
@@ -192,7 +198,8 @@ export default class FeedUsersController extends Controller {
 
         if (this.currentItem < settings.pageLimit) {
             ++this.currentItem;
-            this.view.update();
+            this.view.updateData(this.list[this.currentItem], !this.usersSelected);
+            this.#setUpVoteButtons();
             // this.#actionCallback(this.list[this.currentItem], [], isEvent);
         } else {
             this.currentItem = 0;

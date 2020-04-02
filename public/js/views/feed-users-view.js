@@ -16,6 +16,8 @@ export default class FeedUsersView extends View {
     constructor(parent) {
         super(parent);
         this.parent = parent;
+        this.isEvent = false;
+        this.data = null;
     }
 
     /**
@@ -25,33 +27,19 @@ export default class FeedUsersView extends View {
      * @param {boolean} isEvent
      */
     render(data, selectedTags, isEvent) {
-        const profile = {
-            name: 'Egor',
-            age: 20,
-            about: 'Поскольку тут контент динамический, то будет max-height, примерно как сейчас. ' +
-                'Будет expand поверх фотки Соответственно кнопки посередине оставшегося ' +
-                'блока снизу padding: 15px; // везде',
-            photos: ['1.jpg'],
-            tags: tags,
-        };
-        if (data.photos !== null) {
-            if (isEvent) {
-                data.photos.forEach((item) => getPageUrl(item, 'events'));
-            } else {
-                data.photos.forEach((item) => getPageUrl(item, 'users'));
-            }
-        } else {
-            data.photos = [getPageUrl('default.png', 'events')];
-        }
+        this.data = data;
+        this.isEvent = isEvent;
+        this.#setUpPhotos();
+
 
         const template = {
             tags: tags,
-            data: data,
+            data: this.data,
             isEvent: isEvent,
             users: null,  // TODO: take it by AJAX
             events: null, // TODO: take it by AJAX
         };
-        console.log(data);
+        console.log(this.data);
 
         this.parent.innerHTML += Handlebars.templates['feed'](template);
         // let columns = this.parent.getElementsByClassName('feed__column');
@@ -59,16 +47,36 @@ export default class FeedUsersView extends View {
         // columns[2].innerHTML = Handlebars.templates['feed-right']({events: events});
     }
 
-    update() {
-        const template = {
-            tags: tags,
-            data: data,
-            isEvent: isEvent,
+    updateData(data, isEvent) {
+        const rightTemplate = {
             users: null,  // TODO: take it by AJAX
             events: null, // TODO: take it by AJAX
+            isEvent: isEvent,
         };
+        this.data = data;
+        this.isEvent = isEvent;
         let columns = this.parent.getElementsByClassName('feed__column');
-        columns[1].innerHTML = Handlebars.templates['feed-center']({profile: profile});
-        columns[2].innerHTML = Handlebars.templates['feed-right']({events: events});
+        columns[1].innerHTML = '';
+        columns[2].innerHTML = '';
+        this.#setUpPhotos();
+
+        if (isEvent) {
+            columns[1].innerHTML = Handlebars.templates['feed-events-center'](this.data);
+        } else {
+            columns[1].innerHTML = Handlebars.templates['feed-center'](this.data);
+        }
+        columns[2].innerHTML = Handlebars.templates['feed-right'](rightTemplate);
+    }
+
+    #setUpPhotos = () => {
+        if (this.data.photos !== null) {
+            if (this.isEvent) {
+                this.data.photos.forEach((item) => getPageUrl(item, 'events'));
+            } else {
+                this.data.photos.forEach((item) => getPageUrl(item, 'users'));
+            }
+        } else {
+            this.data.photos = [getPageUrl('default.png', 'events')];
+        }
     }
 }
