@@ -38,32 +38,10 @@ export default class FeedUsersController extends Controller {
         super.action();
         UserModel.getProfile().then((user) => {
             this.uid = user.uid;
-            if (this.usersSelected) {
-                EventModel.getFeedUsers({page: 1, uid: this.uid, limit: settings.pageLimit, query: ''})
-                    .then((users) => {
-                        this.list = users;
-                        let user = null;
-                        if (this.list) {
-                            user = this.list[0];
-                        }
-                        this.#actionCallback(user, [], false);
-                    }).catch((onerror) => {
-                    console.error(onerror);
+            this.#initDataList(1)
+                .then((data) => {
+                    this.#actionCallback(data, [], !this.usersSelected);
                 });
-            } else {
-                EventModel.getFeedEvents({page: 1, uid: this.uid, limit: settings.pageLimit, query: ''})
-                    .then((events) => {
-                        this.list = events;
-                        this.list = events;
-                        let event = null;
-                        if (this.list) {
-                            event = this.list[0];
-                        }
-                        this.#actionCallback(event, [], true);
-                    }).catch((onerror) => {
-                    console.error(onerror);
-                });
-            }
         });
     }
 
@@ -78,13 +56,14 @@ export default class FeedUsersController extends Controller {
         document.querySelectorAll('.search-tag').forEach((tag) => {
             tag.addEventListener('click', this.#highlightTag);
         });
-        this.#setUpVoteButtons();
+        if (data) {
+            this.#setUpVoteButtons();
+        }
         document.getElementById('form').addEventListener('submit', this.#setOptions);
         SetSliders(18, 60, 25);
     };
 
     #setUpVoteButtons() {
-        console.log('BBBBB');
         const approveBtn = document.getElementsByClassName('re_btn__approve')[0];
         approveBtn.addEventListener('click', (event) => {
             event.preventDefault();
@@ -167,44 +146,73 @@ export default class FeedUsersController extends Controller {
         });
     };
 
-    #voteHandler = (isEvent, isLike) => {
-        const currentID = this.list[this.currentItem].uid;
-        UserModel.getProfile().then((user) => {
-            const vote = {
-                uid: user.uid,
-                id: currentID,
-                value: isLike ? 1 : -1,
-            };
-            console.log('AAAAAAAAAAAAAAA');
-            console.log(this.currentItem);
-            console.log(this.list);
-            console.log(this.list[this.currentItem]);
-            if (isEvent) {
-                EventModel.eventVote(vote, isLike)
-                    .then((response) => {
-                        console.log(response);
-                    }).catch((onerror) => {
-                    console.error(onerror);
-                });
-            } else {
-                EventModel.userVote(vote, isLike)
-                    .then((response) => {
-                        console.log(response);
-                    }).catch((onerror) => {
-                    console.error(onerror);
-                });
-            }
-        });
+    #voteHandler = (isLike) => {
+        const vote = {
+            uid: this.uid,
+            id: this.list[this.currentItem].uid,
+            value: isLike ? 1 : -1,
+        };
+        if (this.usersSelected) {
+            EventModel.userVote(vote, isLike)
+                .then((response) => {
+                    console.log(response);
+                }).catch((onerror) => {
+                console.error(onerror);
+            });
+        } else {
+            EventModel.eventVote(vote, isLike)
+                .then((response) => {
+                    console.log(response);
+                }).catch((onerror) => {
+                console.error(onerror);
+            });
+        }
 
+        ++this.currentItem;
         if (this.currentItem < settings.pageLimit) {
-            ++this.currentItem;
-            this.view.updateData(this.list[this.currentItem], !this.usersSelected);
-            this.#setUpVoteButtons();
-            // this.#actionCallback(this.list[this.currentItem], [], isEvent);
+            if (this.list.length <= this.currentItem) {
+                this.view.updateData(null, !this.usersSelected);
+            } else {
+                this.view.updateData(this.list[this.currentItem], !this.usersSelected);
+                this.#setUpVoteButtons();
+            }
         } else {
             this.currentItem = 0;
             ++this.currentPage;
+            this.#initDataList(this.currentPage)
+                .then((data) => {
+                    this.view.updateData(data, !this.usersSelected);
+                    this.#setUpVoteButtons();
+                });
             // TODO: create request for the next page of events or users
         }
     };
+
+    #initDataList = (page) => {
+        if (this.usersSelected) {
+            return EventModel.getFeedUsers({page: page, uid: this.uid, limit: settings.pageLimit, query: ''})
+                .then((users) => {
+                    this.list = users;
+                    if (this.list) {
+                        return this.list[0];
+                    }
+                    return null;
+                }).catch((onerror) => {
+                    console.error(onerror);
+                    return onerror;
+                });
+        } else {
+            return EventModel.getFeedEvents({page: 1, uid: this.uid, limit: settings.pageLimit, query: ''})
+                .then((events) => {
+                    this.list = events;
+                    if (this.list) {
+                        return this.list[0];
+                    }
+                    return null;
+                }).catch((onerror) => {
+                    console.error(onerror);
+                    return onerror;
+                });
+        }
+    }
 }

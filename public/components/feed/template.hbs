@@ -52,13 +52,15 @@
         </div>
         <div class="feed__separator"></div>
         <div class="feed__column feed__column_main">
-            {{#with data}}
+            {{#if data }}{{#with data}}
                 {{#if ../isEvent}}
                     {{>feed-events-center}}
                 {{else}}
                     {{>feed-center}}
                 {{/if}}
-            {{/with}}
+            {{/with}}{{else}}
+                <h1>Больше ничего не нашлось ):</h1>
+            {{/if}}
         </div>
         <div class="feed__separator"></div>
         <div class="feed__column">

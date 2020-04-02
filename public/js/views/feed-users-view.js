@@ -69,6 +69,9 @@ export default class FeedUsersView extends View {
     }
 
     #setUpPhotos = () => {
+        if (!this.data) {
+            return;
+        }
         if (this.data.photos !== null) {
             if (this.isEvent) {
                 this.data.photos.forEach((item) => getPageUrl(item, 'events'));

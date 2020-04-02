@@ -1,18 +1,22 @@
-<div class="feed-center">
-    <img class="feed-center__photos" src="{{ photos }}" alt="{{ photos }}">
-    <!--TODO: image options-footer here-->
-    <div class="feed-center__profile">
-        <div>
-            <h1>{{ title }}</h1>
-            <h3>{{ date }}</h3>
-            <div class="feed-center__about">{{ description }}</div>
+{{#if title}}
+    <div class="feed-center">
+        <img class="feed-center__photos" src="{{ photos }}" alt="{{ photos }}">
+        <!--TODO: image options-footer here-->
+        <div class="feed-center__profile">
+            <div>
+                <h1>{{ title }}</h1>
+                <h3>{{ date }}</h3>
+                <div class="feed-center__about">{{ description }}</div>
+            </div>
+            <div class="feed-center__tags">
+                <div class="tag tag_size_middle">{{ tag.name }}</div>
+            </div>
         </div>
-        <div class="feed-center__tags">
-            <div class="tag tag_size_middle">{{ tag.name }}</div>
+        <div class="feed-center__action-buttons">
+            <button class="re_btn__reject">НЕТ</button>
+            <button class="re_btn__approve">ДА</button>
         </div>
     </div>
-    <div class="feed-center__action-buttons">
-        <button class="re_btn__reject">НЕТ</button>
-        <button class="re_btn__approve">ДА</button>
-    </div>
-</div>
+{{else}}
+    <h1>Больше ничего не нашлось ):</h1>
+{{/if}}
