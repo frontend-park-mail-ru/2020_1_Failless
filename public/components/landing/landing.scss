@@ -160,6 +160,8 @@ $people-img: $screen-img-path + "landing.jpg";
     }
 
     &__logo {
+      width: fit-content;
+      width: -moz-fit-content;
       font-size: 30px;
       font-weight: 500;
       margin-bottom: 8px;

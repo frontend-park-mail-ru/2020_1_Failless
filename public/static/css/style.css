@@ -404,6 +404,8 @@
   text-align: center;
 }
 .landing__footer__logo {
+  width: fit-content;
+  width: -moz-fit-content;
   font-size: 30px;
   font-weight: 500;
   margin-bottom: 8px;
@@ -2092,8 +2094,6 @@ h3 {
   background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  width: fit-content;
-  width: -moz-fit-content;
 }
 
 /*# sourceMappingURL=style.css.map */
