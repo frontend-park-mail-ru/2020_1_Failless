@@ -75,7 +75,20 @@ $eventum-font:  Montserrat, Helvetica Neue, Arial, sans-serif;
   &_underline {
     text-decoration: underline;
   }
+
   &_bold {
     font-weight: bold;
+  }
+
+  &_medium {
+    font-weight: 500;
+  }
+
+  &_regular {
+    font-weight: 400;
+  }
+
+  &_light {
+    font-weight: 300;
   }
 }

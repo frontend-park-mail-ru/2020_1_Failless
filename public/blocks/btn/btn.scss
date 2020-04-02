@@ -102,4 +102,30 @@
   &__approve {
     @include swipe_btn($color-red, 32px);
   }
+
+  &__white {
+    min-width: 96px;
+    width: fit-content;
+    height: 34px;
+    box-sizing: content-box;
+    text-align: center;
+    padding: 5px 40px;
+    border: 1px solid $color-white;
+    border-radius: $re--border-radius;
+    @include transition(0.3s, ease-in-out);
+    outline: none;
+    background: none;
+
+    @media (hover: hover) {
+      &:hover {
+        background: $re--gradient;
+      }
+    }
+
+    &:active {
+      background: $re--gradient;
+      transition: 0.01s;
+      transform: scale(0.98);
+    }
+  }
 }

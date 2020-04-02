@@ -3,6 +3,7 @@ $color-purple: #C471ED;
 $color-blue: #12C2E9;
 $color-black: #191919;
 $color-white: white;
+$color-light-blue: #12C2E9;
 $color-dark-blue: #325e89;
 $color-light-gray: #b6bebf;
 $color-gray: rgba(31, 63, 81, 0.6);
@@ -32,12 +33,6 @@ $re--border-radius: 4px;
 $breakpoint-phone: 480px;
 $breakpoint-tablet: 768px;
 $breakpoint-desktop: 1024px;
-
-.gradient-text {
-    background: $re--gradient;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
 
 @mixin transition($duration, $timing) {
     -webkit-transition: all $duration $timing;
