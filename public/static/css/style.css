@@ -1004,6 +1004,7 @@
   text-align: center;
   font-size: 23px;
   font-weight: 700;
+  border: none;
   color: white;
 }
 .re_btn__approve {
@@ -1014,6 +1015,7 @@
   text-align: center;
   font-size: 32px;
   font-weight: 700;
+  border: none;
   color: white;
 }
 .re_btn__white {
