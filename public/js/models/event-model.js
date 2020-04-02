@@ -63,4 +63,51 @@ export default class EventModel extends Model {
             throw new Error(error);
         });
     }
+
+    /**
+     * Get event data from server
+     * @param {{uid: number, id: number, value: number}} vote - request with query, limits and page
+     * @param {boolean} isLike - is this request for like
+     * @return {Promise} promise to get user data
+     */
+    static userVote(vote, isLike) {
+        let url = `/users/${vote.id}/`;
+        url += isLike ? 'like' : 'dislike';
+        return NetworkModule.fetchPost({
+            path: url,
+            body: vote
+        }).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
+            throw new Error(error);
+        });
+    }
+
+    /**
+     * Get event data from server
+     * @param {{uid: number, id: number, value: number}} vote - request with query, limits and page
+     * @param {boolean} isLike - is this request for like
+     * @return {Promise} promise to get user data
+     */
+    static eventVote(vote, isLike) {
+        let url = `/event/${vote.id}/`;
+        url += isLike ? 'like' : 'dislike';
+        return NetworkModule.fetchPost({
+            path: url,
+            body: vote
+        }).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
+            throw new Error(error);
+        });
+    }
+
 }

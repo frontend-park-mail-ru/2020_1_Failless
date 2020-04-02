@@ -4,6 +4,7 @@ import Controller from '../core/controller.js';
 import FeedUsersView from '../views/feed-users-view.js';
 import SetSliders from '../../blocks/slider/set-slider.js';
 import EventModel from '../models/event-model.js';
+import UserModel from '../models/user-model.js';
 import settings from '../../settings/config.js'
 
 /**
@@ -19,6 +20,9 @@ export default class FeedUsersController extends Controller {
         super(parent);
         this.searching = false;
         this.usersSelected = false;
+        this.list = null;
+        this.currentPage = 1;
+        this.currentItem = 0;
         this.view = new FeedUsersView(parent);
     }
 
@@ -34,14 +38,25 @@ export default class FeedUsersController extends Controller {
         if (this.usersSelected) {
             EventModel.getFeedUsers({page: 1, limit: settings.pageLimit, query: ''})
                 .then((users) => {
-                    this.#actionCallback(users, false);
+                    this.list = users;
+                    let user = null;
+                    if (this.list) {
+                        user = this.list[0];
+                    }
+                    this.#actionCallback(user, [], false);
                 }).catch((onerror) => {
                 console.error(onerror);
             });
         } else {
             EventModel.getFeedEvents({page: 1, limit: settings.pageLimit, query: ''})
                 .then((events) => {
-                    this.#actionCallback(events, true);
+                    this.list = events;
+                    this.list = events;
+                    let event = null;
+                    if (this.list) {
+                        event = this.list[0];
+                    }
+                    this.#actionCallback(event, [], true);
                 }).catch((onerror) => {
                 console.error(onerror);
             });
@@ -50,22 +65,37 @@ export default class FeedUsersController extends Controller {
 
     /**
      *
-     * @param {Array} list
+     * @param {Object} data
+     * @param {Array} selectedTags
      * @param {boolean} isEvent
      */
-    #actionCallback = (list, isEvent) => {
-        if (list !== null) {
-            this.view.render(list[0], [], isEvent);
-        } else {
-            this.view.render(null, [], isEvent);
-        }
+    #actionCallback = (data, selectedTags, isEvent) => {
+        this.view.render(data, selectedTags, isEvent);
         document.querySelectorAll('.search-tag').forEach((tag) => {
             tag.addEventListener('click', this.#highlightTag);
         });
+
         document.getElementById('form').addEventListener('submit', this.#setOptions);
+
+        const approveBtn = document.getElementsByClassName('re_btn__approve')[0];
+        approveBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            this.#voteHandler(isEvent, true);
+        });
+
+        const rejectBtn = document.getElementsByClassName('re_btn__reject')[0];
+        rejectBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            this.#voteHandler(isEvent, false);
+        });
+
         SetSliders(18, 60, 25);
     };
 
+    /**
+     *
+     * @param {Event} event
+     */
     #highlightTag = (event) => {
         event.preventDefault();
 
@@ -81,9 +111,7 @@ export default class FeedUsersController extends Controller {
 
     #setOptions = (event) => {
         event.preventDefault();
-
         const form = document.getElementById('form');
-
         let searchOptions = {
             text: form.search_text.value,
             tags: [],
@@ -131,5 +159,45 @@ export default class FeedUsersController extends Controller {
             profile: this.currentProfile,
             events: this.currentProfileEvents
         });
+    };
+
+    #voteHandler = (isEvent, isLike) => {
+        const currentID = this.list[this.currentItem].uid;
+        UserModel.getProfile().then((user) => {
+            const vote = {
+                uid: user.uid,
+                id: currentID,
+                value: isLike ? 1 : -1,
+            };
+            console.log('AAAAAAAAAAAAAAA');
+            console.log(this.currentItem);
+            console.log(this.list);
+            console.log(this.list[this.currentItem]);
+            if (isEvent) {
+                EventModel.eventVote(vote, isLike)
+                    .then((response) => {
+                        console.log(response);
+                    }).catch((onerror) => {
+                    console.error(onerror);
+                });
+            } else {
+                EventModel.userVote(vote, isLike)
+                    .then((response) => {
+                        console.log(response);
+                    }).catch((onerror) => {
+                    console.error(onerror);
+                });
+            }
+        });
+
+        if (this.currentItem < settings.pageLimit) {
+            ++this.currentItem;
+            this.view.update();
+            // this.#actionCallback(this.list[this.currentItem], [], isEvent);
+        } else {
+            this.currentItem = 0;
+            ++this.currentPage;
+            // TODO: create request for the next page of events or users
+        }
     };
 }

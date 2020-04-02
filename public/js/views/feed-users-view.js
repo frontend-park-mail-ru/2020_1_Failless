@@ -58,4 +58,17 @@ export default class FeedUsersView extends View {
         // columns[1].innerHTML = Handlebars.templates['feed-center']({profile: profile});
         // columns[2].innerHTML = Handlebars.templates['feed-right']({events: events});
     }
+
+    update() {
+        const template = {
+            tags: tags,
+            data: data,
+            isEvent: isEvent,
+            users: null,  // TODO: take it by AJAX
+            events: null, // TODO: take it by AJAX
+        };
+        let columns = this.parent.getElementsByClassName('feed__column');
+        columns[1].innerHTML = Handlebars.templates['feed-center']({profile: profile});
+        columns[2].innerHTML = Handlebars.templates['feed-right']({events: events});
+    }
 }
