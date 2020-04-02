@@ -116,8 +116,16 @@
     outline: none;
     background: none;
 
-    &:hover {
+    @media (hover: hover) {
+      &:hover {
+        background: $re--gradient;
+      }
+    }
+
+    &:active {
       background: $re--gradient;
+      transition: 0.01s;
+      transform: scale(0.98);
     }
   }
 }

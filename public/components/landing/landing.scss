@@ -19,6 +19,7 @@ $people-img: $screen-img-path + "landing.jpg";
 
     &_photo {
       width: 100%;
+      box-sizing: border-box;
       background-size: cover;
       background-position: center;
       @media screen and (orientation: landscape) {
@@ -282,7 +283,7 @@ $people-img: $screen-img-path + "landing.jpg";
 
 @media only screen and (max-width: $breakpoint-phone) {
   .landing__screen_photo {
-    padding: 0 4vw;
+    padding: 0 10vw;
   }
 
   .landing__photo {
@@ -442,7 +443,7 @@ $people-img: $screen-img-path + "landing.jpg";
 
       &__title {
         font-size: 12px;
-        margin-bottom: $re--medium-padding;
+        margin-bottom: 9px;
       }
 
       &__link {

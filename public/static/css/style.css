@@ -310,6 +310,7 @@
 }
 .landing__screen_photo {
   width: 100%;
+  box-sizing: border-box;
   background-size: cover;
   background-position: center;
   background-image: linear-gradient(135deg, rgba(8, 41, 55, 0.5) 0%, rgba(44, 21, 55, 0.5) 50%, rgba(55, 15, 19, 0.5) 100%), url("../images/landing.jpg");
@@ -504,7 +505,7 @@
 \*-------------------------------------------*/
 @media only screen and (max-width: 480px) {
   .landing__screen_photo {
-    padding: 0 4vw;
+    padding: 0 10vw;
   }
 
   .landing__photo__logo {
@@ -623,7 +624,7 @@
   }
   .landing__footer__title {
     font-size: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 9px;
   }
   .landing__footer__link {
     font-size: 10px;
@@ -1031,8 +1032,15 @@
   outline: none;
   background: none;
 }
-.re_btn__white:hover {
+@media (hover: hover) {
+  .re_btn__white:hover {
+    background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  }
+}
+.re_btn__white:active {
   background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
+  transition: 0.01s;
+  transform: scale(0.98);
 }
 
 .link-uploader label, .section__header a {
