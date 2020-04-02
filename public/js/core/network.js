@@ -13,7 +13,7 @@ export default class NetworkModule {
     static fetchGet = ({
                 path = '/',
             } = {}) => {
-        const token = getCookie('csrftoken');
+        const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'GET',
             mode: 'cors',
@@ -33,7 +33,7 @@ export default class NetworkModule {
                     path = '/',
                     body = null,
                 } = {}) => {
-        const token = getCookie('csrftoken');
+        const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'POST',
             mode: 'cors',
@@ -55,7 +55,7 @@ export default class NetworkModule {
         path = '/',
         body = null,
     } = {}) => {
-        const token = getCookie('csrftoken');
+        const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'PUT',
             mode: 'cors',
