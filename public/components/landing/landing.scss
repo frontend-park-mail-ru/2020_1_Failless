@@ -20,6 +20,7 @@ $people-img: $screen-img-path + "landing.jpg";
     &_photo {
       width: 100%;
       background-size: cover;
+      background-position: center;
       @media screen and (orientation: landscape) {
         min-height: 712px !important;
       }
@@ -272,6 +273,36 @@ $people-img: $screen-img-path + "landing.jpg";
     font-weight: bold;
     font-size: 26px;
     color: $color-white;
+  }
+}
+
+/*-------------------------------------------*\
+   Photo MEDIA
+\*-------------------------------------------*/
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .landing__screen_photo {
+    padding: 0 4vw;
+  }
+
+  .landing__photo {
+    &__logo {
+      margin-bottom: 40px;
+    }
+
+    &__title {
+      font-size: 27px;
+      font-weight: bold;
+    }
+
+    &__text {
+      font-size: 13px;
+      font-weight: 300;
+    }
+
+    &__btn {
+      margin-top: 40px;
+    }
   }
 }
 

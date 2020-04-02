@@ -311,6 +311,7 @@
 .landing__screen_photo {
   width: 100%;
   background-size: cover;
+  background-position: center;
   background-image: linear-gradient(135deg, rgba(8, 41, 55, 0.5) 0%, rgba(44, 21, 55, 0.5) 50%, rgba(55, 15, 19, 0.5) 100%), url("../images/landing.jpg");
 }
 @media screen and (orientation: landscape) {
@@ -486,9 +487,6 @@
 .landing__footer__link:hover {
   color: #F1F1F1;
 }
-.landing__title {
-  color: white;
-}
 .landing__title_second {
   padding: 46px 0;
   font-size: 32px;
@@ -501,6 +499,29 @@
   color: white;
 }
 
+/*-------------------------------------------*\
+   Photo MEDIA
+\*-------------------------------------------*/
+@media only screen and (max-width: 480px) {
+  .landing__screen_photo {
+    padding: 0 4vw;
+  }
+
+  .landing__photo__logo {
+    margin-bottom: 40px;
+  }
+  .landing__photo__title {
+    font-size: 27px;
+    font-weight: bold;
+  }
+  .landing__photo__text {
+    font-size: 13px;
+    font-weight: 300;
+  }
+  .landing__photo__btn {
+    margin-top: 40px;
+  }
+}
 /*-------------------------------------------*\
    Scenarios MEDIA
 \*-------------------------------------------*/
