@@ -32,10 +32,10 @@ $people-img: $screen-img-path + "landing.jpg";
 
       background-image:
               linear-gradient(
-                              135deg,
-                              rgba(8, 41, 55, 0.5) 0%,
-                              rgba(44, 21, 55, 0.5) 50%,
-                              rgba(55, 15, 19, 0.5) 100%),
+                  135deg,
+                  rgba(8, 41, 55, 0.75) 0%,
+                  rgba(44, 21, 55, 0.75) 50%,
+                  rgba(55, 15, 19, 0.75) 100%),
               url($people-img);
 
     }
@@ -61,16 +61,19 @@ $people-img: $screen-img-path + "landing.jpg";
   &__photo {
     &__logo {
       margin-bottom: 50px;
+      cursor: default;
     }
 
     &__title {
       font-size: 42px;
       margin-bottom: $re--medium-padding;
+      cursor: default;
     }
 
     &__text {
       font-size: 18px;
       font-weight: 400;
+      cursor: default;
     }
 
     &__btn {
@@ -130,54 +133,9 @@ $people-img: $screen-img-path + "landing.jpg";
 
       & .separator_vertical {
         margin: 20px 5vw (40px + $re--large-padding);
-      }
-    }
 
-    &__card {
-      display: flex;
-      flex-flow: column;
-      align-items: center;
-      margin-bottom: $re--large-padding;
-
-      &__avatar {
-        width: 180px;
-        height: 180px;
-        border: 2px solid $color-white;
-        border-radius: 50%;
-        box-shadow: 5px 5px 10px #11b4d9,
-                  -5px -5px 10px #13d0f9;
-      }
-
-      &__name {
-        margin: $re--big-padding 0;
-        font-size: 28px;
-        font-weight: 500;
-      }
-
-      &__about {
-        font-size: 16px;
-        font-weight: 400;
-      }
-
-      & .separator_horizontal {
-        margin: 19px 0;
-      }
-
-      &__links {
-        display: flex;
-        justify-content: space-between;
-
-        & svg {
-          width: 28px;
-          height: 28px;
-          margin: 0 5px;
-          opacity: 0.5;
-          @include transition(0.3s, ease-in-out);
-
-          &:hover,
-          &:active {
-            opacity: 1;
-          }
+        &:last-child {
+          display: none;
         }
       }
     }
@@ -205,13 +163,14 @@ $people-img: $screen-img-path + "landing.jpg";
       font-size: 30px;
       font-weight: 500;
       margin-bottom: 8px;
-      cursor: pointer;
+      cursor: default;
     }
 
     &__about {
       color: #7C7C7C;
       font-size: 16px;
       font-weight: 300;
+      cursor: default;
     }
 
     &__column {
@@ -240,6 +199,7 @@ $people-img: $screen-img-path + "landing.jpg";
       font-size: 16px;
       font-weight: 500;
       margin-bottom: $re--medium-padding;
+      cursor: default;
     }
 
     &__link {
