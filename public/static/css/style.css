@@ -287,6 +287,9 @@
   justify-content: center;
   background-color: #12C2E9;
   /*-------------------------------------------*\
+     Photo
+  \*-------------------------------------------*/
+  /*-------------------------------------------*\
      Scenarios
   \*-------------------------------------------*/
   /*-------------------------------------------*\
@@ -307,9 +310,8 @@
 }
 .landing__screen_photo {
   width: 100%;
-  height: 100%;
   background-size: cover;
-  background-image: linear-gradient(135deg, rgba(8, 88, 106, 0.5) 0%, rgba(79, 52, 104, 0.5) 50%, rgba(93, 30, 37, 0.5) 100%), url("../images/landing.jpg");
+  background-image: linear-gradient(135deg, rgba(8, 41, 55, 0.5) 0%, rgba(44, 21, 55, 0.5) 50%, rgba(55, 15, 19, 0.5) 100%), url("../images/landing.jpg");
 }
 @media screen and (orientation: landscape) {
   .landing__screen_photo {
@@ -330,6 +332,20 @@
 .landing__screen_footer {
   background: #191919;
   text-align: left;
+}
+.landing__photo__logo {
+  margin-bottom: 50px;
+}
+.landing__photo__title {
+  font-size: 42px;
+  margin-bottom: 15px;
+}
+.landing__photo__text {
+  font-size: 18px;
+  font-weight: 400;
+}
+.landing__photo__btn {
+  margin-top: 50px;
 }
 .landing__scenario {
   padding-bottom: 46px;
@@ -471,7 +487,6 @@
   color: #F1F1F1;
 }
 .landing__title {
-  font-size: 32px;
   color: white;
 }
 .landing__title_second {

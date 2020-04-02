@@ -19,7 +19,6 @@ $people-img: $screen-img-path + "landing.jpg";
 
     &_photo {
       width: 100%;
-      height: 100%;
       background-size: cover;
       @media screen and (orientation: landscape) {
         min-height: 712px !important;
@@ -32,9 +31,9 @@ $people-img: $screen-img-path + "landing.jpg";
       background-image:
               linear-gradient(
                               135deg,
-                              rgba(8, 88, 106, .5) 0%,
-                              rgba(79, 52, 104, 0.5) 50%,
-                              rgba(93, 30, 37, 0.5) 100%),
+                              rgba(8, 41, 55, 0.5) 0%,
+                              rgba(44, 21, 55, 0.5) 50%,
+                              rgba(55, 15, 19, 0.5) 100%),
               url($people-img);
 
     }
@@ -50,6 +49,30 @@ $people-img: $screen-img-path + "landing.jpg";
     &_footer {
       background: $color-black;
       text-align: left;
+    }
+  }
+
+  /*-------------------------------------------*\
+     Photo
+  \*-------------------------------------------*/
+
+  &__photo {
+    &__logo {
+      margin-bottom: 50px;
+    }
+
+    &__title {
+      font-size: 42px;
+      margin-bottom: $re--medium-padding;
+    }
+
+    &__text {
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    &__btn {
+      margin-top: 50px;
     }
   }
 
@@ -237,9 +260,6 @@ $people-img: $screen-img-path + "landing.jpg";
   \*-------------------------------------------*/
 
   &__title {
-    font-size: 32px;
-    color: $color-white;
-
     &_second {
       padding: $re--large-padding 0;
       font-size: 32px;
