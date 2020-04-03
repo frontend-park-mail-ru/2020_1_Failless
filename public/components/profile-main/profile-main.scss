@@ -1,6 +1,11 @@
 @import "../../modules/variables";
 
 .profile-main {
+  width: 100%;
+  height: calc(100% - 39px);
+  display: flex;
+  align-items: flex-start;
+
   &__photos {
     max-height: 100%;
     overflow-y: auto;

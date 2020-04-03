@@ -2,7 +2,8 @@
     <h2>{{ profile.name }}{{#if profile.age}}, {{ profile.age }}{{/if}}</h2>
     <form action="submit" id="form">
         <div class="profile-left__scroll">
-            <img class="profile-left__avatar profile-left__avatar_center" src="{{ url }}/{{ profile.avatar.path }}" alt="avatar">
+            <img class="profile-left__avatar profile-left__avatar_center" src="{{ url }}/{{ profile.avatar.path }}"
+                 alt="avatar">
             <div class="profile-left__options-field">
                 <h3>О себе</h3>
                 <textarea class="profile-left__options-field_textarea" name="about" rows="10"
@@ -10,8 +11,12 @@
             </div>
             <div class="profile-left__options-field">
                 <div class="profile-left__header">
-                    <h3>Ваши тэги</h3>
-                    <a class="tags_redirect">Добавить</a>
+                    <div class="section">
+                        <div class="section__header section__header_3">
+                            <h3>Ваши тэги</h3>
+                            <a href="" class="tags_redirect">Добавить</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="profile-left__tags">
                     {{#if profile.tags}}
@@ -27,8 +32,12 @@
             </div>
             <div class="profile-left__options-field">
                 <div class="profile-left__header">
-                    <h3>Социальные сети</h3>
-                    <a href="#">Добавить</a>
+                    <div class="section">
+                        <div class="section__header section__header_3">
+                            <h3>Социальные сети</h3>
+                            <a href="">Добавить</a>
+                        </div>
+                    </div>
                 </div>
                 {{#if profile.networks}}
                     {{#each profile.networks}}
