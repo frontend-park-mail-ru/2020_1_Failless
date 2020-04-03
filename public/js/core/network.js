@@ -1,4 +1,5 @@
 import settings from '../../settings/config.js';
+import getCookie from '../utils/csrf.js';
 
 /**
  * The class implements methods for calling communicating with the server API
@@ -12,10 +13,14 @@ export default class NetworkModule {
     static fetchGet = ({
                 path = '/',
             } = {}) => {
+        const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
+            headers: {
+                'X-CSRF-Token': token
+            },
         });
     };
 
@@ -28,12 +33,14 @@ export default class NetworkModule {
                     path = '/',
                     body = null,
                 } = {}) => {
+        const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'POST',
             mode: 'cors',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
+                'X-CSRF-Token': token
             },
             body: JSON.stringify(body)
         });
@@ -48,12 +55,14 @@ export default class NetworkModule {
         path = '/',
         body = null,
     } = {}) => {
+        const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'PUT',
             mode: 'cors',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
+                'X-CSRF-Token': token
             },
             body: JSON.stringify(body)
         });
