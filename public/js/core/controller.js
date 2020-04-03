@@ -105,10 +105,7 @@ export default class Controller {
       htmlNode: домэлемент,
       events: [{
             event: 'click',
-            handlers: [
-                   callback,
-                   capture
-            ]
+            handler: callback
       }]
     }]
     */
