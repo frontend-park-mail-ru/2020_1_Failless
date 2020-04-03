@@ -21,6 +21,7 @@ export default class FeedUsersController extends Controller {
         this.searching = false;
         this.usersSelected = false;
         this.list = null;
+        this.tagList = [];
         this.currentPage = 1;
         this.currentItem = 0;
         this.view = new FeedUsersView(parent);
@@ -40,13 +41,13 @@ export default class FeedUsersController extends Controller {
             this.uid = user.uid;
             this.#initDataList(1)
                 .then((data) => {
-                    this.#actionCallback(data, [], !this.usersSelected);
+                    this.#actionCallback(data, this.tagList, !this.usersSelected);
                 });
         });
     }
 
     /**
-     *
+     * Call render method from view and initialize event handlers
      * @param {Object} data
      * @param {Array} selectedTags
      * @param {boolean} isEvent
@@ -83,13 +84,21 @@ export default class FeedUsersController extends Controller {
      */
     #highlightTag = (event) => {
         event.preventDefault();
+        const dataId = event.currentTarget.getAttribute('data-id');
+        // TODO: parse data-id of element
+        this.tagList.push(dataId);
+        #selectTag(this.tagList).then((resolve) => {
+            // TODO: if redraw creates in the selectTags then do something or nothing if not then create redraw
+        });
 
-        let hideButton = this.querySelector('.x_btn');
-        if (this.style.opacity === '0.5') {
-            this.style.opacity = '1';
+        let hideButton = event.currentTarget.querySelector('.x_btn');
+        console.log(event);
+        console.log(hideButton);
+        if (event.currentTarget.style.opacity === '0.5') {
+            event.currentTarget.style.opacity = '1';
             hideButton.style.display = 'block';
         } else {
-            this.style.opacity = '0.5';
+            event.currentTarget.style.opacity = '0.5';
             hideButton.style.display = 'none';
         }
     };
@@ -214,5 +223,11 @@ export default class FeedUsersController extends Controller {
                     return onerror;
                 });
         }
-    }
+    };
+
+    #selectTag = (dataField) => {
+        // TODO: create ajax request to server for new page of events
+        // TODO: redraw main block
+        return new Promise(resolve => resolve);
+    };
 }

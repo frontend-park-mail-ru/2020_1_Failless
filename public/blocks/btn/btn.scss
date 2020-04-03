@@ -1,9 +1,9 @@
 @import "../../modules/variables";
 
 @mixin swipe_btn($bg-color, $font-size) {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
+  width: 218px;
+  height: 42px;
+  border-radius: 4px;
   background-color: $bg-color;
   text-align: center;
   font-size: $font-size;
@@ -97,11 +97,11 @@
   }
 
   &__reject {
-    @include swipe_btn($color-blue, 23px);
+    @include swipe_btn($color-blue, 24px);
   }
 
   &__approve {
-    @include swipe_btn($color-red, 32px);
+    @include swipe_btn($color-red, 24px);
   }
 
   &__white {
