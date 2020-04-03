@@ -289,6 +289,7 @@ export default class ProfileController extends MyController {
      * @param {Event} event
      */
     #profileSettings = (event) => {
+        event.preventDefault();
         this.editView = new ProfileEditView(this.parent);
         this.editView.render(this.user);
         const closeBtn = document.getElementsByClassName('profile-edit__icon')[0];

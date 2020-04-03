@@ -15,6 +15,10 @@ export default class UserModel extends Model {
         this.profile = null;
     }
 
+    static getUser() {
+        return this.user;
+    }
+
     /**
      * Send user login data to server
      * @param {Object} userData - json with login data

@@ -1,19 +1,19 @@
 <div class="feed-center">
-    <img class="feed-center__photos" src="{{ profile.photos }}" alt="{{ profile.photos }}">
+    <img class="feed-center__photos" src="{{ photos }}" alt="{{ photos }}">
     <!--TODO: image options-footer here-->
     <div class="feed-center__profile">
         <div>
-            <h1>{{ profile.name }}{{#if profile.age}},  {{profile.age}}{{/if}}</h1>
-            <div class="feed-center__about">{{ profile.about }}</div>
+            <h1>{{ name }}{{#if age}},  {{ age }}{{/if}}</h1>
+            <div class="feed-center__about">{{ about }}</div>
         </div>
         <div class="feed-center__tags">
-            {{#each profile.tags}}
-                <div class="tag tag_size_middle">{{ this.title }}</div>
+            {{#each tags as |tag|}}
+                <div class="tag tag_size_middle">{{ title }}</div>
             {{/each}}
         </div>
     </div>
     <div class="feed-center__action-buttons">
-        <button class="re_btn__reject">ДА</button>
-        <button class="re_btn__approve">НЕТ</button>
+        <button class="re_btn__reject">НЕТ</button>
+        <button class="re_btn__approve">ДА</button>
     </div>
 </div>

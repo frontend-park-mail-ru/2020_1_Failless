@@ -1,10 +1,12 @@
 <div class="profile-main">
     <div class="profile-main__photos">
-        <div class="section__header section__header_2">
-            <h2>Фото</h2>
-            <div class="link-uploader">
-                <label for="photoUpload">Добавить</label>
-                <input id="photoUpload" type="file"/>
+        <div class="section">
+            <div class="section__header section__header_2">
+                <h2>Фото</h2>
+                <div class="link-uploader">
+                    <label for="photoUpload">Добавить</label>
+                    <input id="photoUpload" type="file"/>
+                </div>
             </div>
         </div>
         <div class="photo-columns">
@@ -24,13 +26,13 @@
                 <h2>Эвенты</h2>
             </div>
         </div>
-        <div class="profile-main__group">
-            <div class="section">
-                <div class="section__header section__header_3">
-                    <h3>Ваши эвенты</h3>
-                    <a href="#">Добавить</a>
-                </div>
+        <div class="section">
+            <div class="section__header section__header_3">
+                <h3>Ваши эвенты</h3>
+                <a href="#">Добавить</a>
             </div>
+        </div>
+        <div class="profile-main__group">
             {{#if profile.events.personal}}
                 {{#each profile.events.personal as |event|}}
                     {{>event}}
@@ -39,12 +41,12 @@
                 <button class="re_btn re_btn__outline">Добавить</button>
             {{/if}}
         </div>
-        <div class="profile-main__group">
-            <div class="section">
-                <div class="section__header section__header_3">
-                    <h3>Ваши подписки</h3>
-                </div>
+        <div class="section">
+            <div class="section__header section__header_3">
+                <h3>Ваши подписки</h3>
             </div>
+        </div>
+        <div class="profile-main__group">
             {{#if profile.events.others}}
                 {{#each profile.events.others as |event|}}
                     {{>event}}

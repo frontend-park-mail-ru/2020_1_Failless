@@ -705,6 +705,12 @@
   font-weight: 400;
 }
 
+.profile-main {
+  width: 100%;
+  height: calc(100% - 39px);
+  display: flex;
+  align-items: flex-start;
+}
 .profile-main__photos {
   max-height: 100%;
   overflow-y: auto;
@@ -862,9 +868,7 @@
   padding: 23px 0;
   width: 93%;
   height: auto;
-  position: absolute;
-  bottom: 0;
-  left: 8px;
+  position: sticky;
   background-color: white;
   box-shadow: 0 -10px 5px -6px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -898,7 +902,7 @@
 }
 .profile-left__scroll {
   overflow: auto;
-  max-height: 566px;
+  height: 56.5vh;
 }
 .profile-left__options-field {
   box-sizing: border-box;
@@ -997,23 +1001,25 @@
   transform: scale(0.98);
 }
 .re_btn__reject {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
+  width: 218px;
+  height: 42px;
+  border-radius: 4px;
   background-color: #12C2E9;
   text-align: center;
-  font-size: 23px;
+  font-size: 24px;
   font-weight: 700;
+  border: none;
   color: white;
 }
 .re_btn__approve {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
+  width: 218px;
+  height: 42px;
+  border-radius: 4px;
   background-color: #F64F59;
   text-align: center;
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 700;
+  border: none;
   color: white;
 }
 .re_btn__white {
@@ -1763,6 +1769,9 @@ input[type=range]::-ms-fill-upper {
   font-weight: 400;
 }
 
+.section {
+  width: 100%;
+}
 .section__header {
   width: 100%;
   display: flex;
