@@ -330,28 +330,6 @@ $people-img: $screen-img-path + "landing.jpg";
         display: none;
       }
     }
-
-    &__card {
-      margin: 0 0 $re--large-padding;
-
-      &__avatar {
-        width: 150px;
-        height: 150px;
-      }
-
-      &__name {
-        margin: $re--medium-padding 0;
-        font-size: 24px;
-      }
-
-      &__about {
-        font-size: 14px;
-      }
-
-      & .separator_horizontal {
-        width: 40%;
-      }
-    }
   }
 }
 
