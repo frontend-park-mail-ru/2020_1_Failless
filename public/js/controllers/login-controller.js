@@ -44,10 +44,9 @@ export default class LoginController extends Controller {
 
     /**
      * Get data from input form on sign up page
-     * @param {Event} event
      * @return {{password: *, phone: *, name: *, email: *}} input form
      */
-    _getFromLogin() {
+    #getFromLogin() {
         const login = this.form[0].value;
         let phone = '';
         let email = '';
@@ -91,7 +90,7 @@ export default class LoginController extends Controller {
             return;
         }
 
-        element.classList.add('input__auth__incorrect');
+        element.classList.add('input__auth_incorrect');
         element.insertAdjacentHTML('beforebegin',
             Handlebars.templates['validation-error']({message: messageValue[0]}));
     };
@@ -99,7 +98,7 @@ export default class LoginController extends Controller {
     #removeErrorMessage = (event) => {
         event.preventDefault();
 
-        event.target.classList.remove('input__auth__incorrect');
+        event.target.classList.remove('input__auth_incorrect');
         let errorElement = event.target.parentNode.getElementsByClassName('validation-error')[0];
         if (errorElement) {
             errorElement.remove();
@@ -113,7 +112,7 @@ export default class LoginController extends Controller {
     #loginSubmitHandler = (event) => {
         event.preventDefault();
 
-        const body = this._getFromLogin();
+        const body = this.#getFromLogin();
 
         if (!body) {
             console.log('do nothing');

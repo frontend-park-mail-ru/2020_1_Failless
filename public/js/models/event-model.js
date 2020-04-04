@@ -11,6 +11,7 @@ export default class EventModel extends Model {
      */
     constructor() {
         super();
+        this.tags = null;
     }
 
     /**
@@ -107,6 +108,34 @@ export default class EventModel extends Model {
         },
         (error) => {
             throw new Error(error);
+        });
+    }
+
+
+    /**
+     * Get all tags from server
+     * @return {Promise} promise to get user login data
+     */
+    static getTagList() {
+        if (this.tags) {
+            return new Promise((resolve) => {
+                resolve(this.tags);
+            });
+        }
+        return NetworkModule.fetchGet({path: '/tags/feed'}).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json().then((tags) => {
+                console.log(tags);
+                this.tags = tags;
+                return tags;
+            });
+        },
+        (error) => {
+            return new Promise((resolve) => {
+                resolve({err: error});
+            });
         });
     }
 }

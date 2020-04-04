@@ -24,7 +24,9 @@ export default class FeedUsersController extends Controller {
         this.tagList = [];
         this.currentPage = 1;
         this.currentItem = 0;
-        this.view = new FeedUsersView(parent);
+        EventModel.getTagList().then((tags) => {
+            this.view = new FeedUsersView(parent, tags);
+        });
         this.uid = null;
     }
 

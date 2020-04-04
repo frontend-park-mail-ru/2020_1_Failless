@@ -94,25 +94,25 @@ export default class SignUpController extends Controller {
                 window.history.back();
             } else {
                 console.log(response);
-                this.#addErrorMessage(this.form[1], [response.message]);
+                this.view.addErrorMessage(this.form[1], [response.message]);
             }
         }).catch(reason => console.log(reason));
     };
 
-    /**
-     * Add error message
-     * @param {HTMLElement} element - html element
-     * @param {string[]} messageValue - array of validation errors
-     */
-    #addErrorMessage(element, messageValue) {
-        if (messageValue.length === 0) {
-            return;
-        }
-
-        element.classList.add('input__auth__incorrect');
-        element.insertAdjacentHTML('beforebegin',
-            Handlebars.templates['validation-error']({message: messageValue[0]}));
-    };
+    // /**
+    //  * Add error message
+    //  * @param {HTMLElement} element - html element
+    //  * @param {string[]} messageValue - array of validation errors
+    //  */
+    // #addErrorMessage(element, messageValue) {
+    //     if (messageValue.length === 0) {
+    //         return;
+    //     }
+    //
+    //     element.classList.add('input__auth_incorrect');
+    //     element.insertAdjacentHTML('beforebegin',
+    //         Handlebars.templates['validation-error']({message: messageValue[0]}));
+    // }
 
     /**
      * Remove error message from page
@@ -121,7 +121,7 @@ export default class SignUpController extends Controller {
     #removeErrorMessage = (event) => {
         event.preventDefault();
 
-        event.target.classList.remove('input__auth__incorrect');
+        event.target.classList.remove('input__auth_incorrect');
         let errorElement = event.target.parentNode.getElementsByClassName('validation-error')[0];
         if (errorElement) {
             errorElement.remove();
@@ -142,22 +142,22 @@ export default class SignUpController extends Controller {
         switch(true) {
         case (event.target === this.form[0]):
             const nameCheck = ValidationModule.validateUserData(name, 'name');
-            this.#addErrorMessage(this.form[0], nameCheck);
+            this.view.addErrorMessage(this.form[0], nameCheck);
             break;
         case (event.target === this.form[1]):
             const emailCheck = ValidationModule.validateUserData(email, 'email');
-            this.#addErrorMessage(this.form[1], emailCheck);
+            this.view.addErrorMessage(this.form[1], emailCheck);
             break;
         case (event.target === this.form[2]):
             const phoneCheck = ValidationModule.validateUserData(phone, 'phone');
-            this.#addErrorMessage(this.form[2], phoneCheck);
+            this.view.addErrorMessage(this.form[2], phoneCheck);
             break;
         case (event.target === this.form[3]):
             const passwordCheck = ValidationModule.validateUserData(password, 'password');
-            this.#addErrorMessage(this.form[3], passwordCheck);
+            this.view.addErrorMessage(this.form[3], passwordCheck);
 
             if (repeatPassword !== password) {
-                this.#addErrorMessage(this.form[4], ['Пароли не совпадают']);
+                this.view.addErrorMessage(this.form[4], ['Пароли не совпадают']);
             }
             break;
         case (event.target === this.form[4]):
@@ -165,7 +165,7 @@ export default class SignUpController extends Controller {
             if (repeatPassword !== password) {
                 repeatPasswordCheck.push('Пароли не совпадают');
             }
-            this.#addErrorMessage(this.form[4], repeatPasswordCheck);
+            this.view.addErrorMessage(this.form[4], repeatPasswordCheck);
             break;
         }
     };

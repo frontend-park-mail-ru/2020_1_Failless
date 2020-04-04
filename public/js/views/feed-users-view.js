@@ -16,10 +16,12 @@ export default class FeedUsersView extends View {
     /**
      * Create view
      * @param {HTMLElement} parent
+     * @param {Array} tags
      */
-    constructor(parent) {
+    constructor(parent, tags) {
         super(parent);
         this.parent = parent;
+        this.tags = tags;
         this.isEvent = false;
         this.data = null;
     }
@@ -37,7 +39,7 @@ export default class FeedUsersView extends View {
 
 
         const template = {
-            tags: tags,
+            tags: this.tags,
             data: this.data,
             isEvent: isEvent,
             users: null,  // TODO: take it by AJAX
