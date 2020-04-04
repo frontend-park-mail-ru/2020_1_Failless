@@ -22,7 +22,7 @@ export default class SignUpView extends View {
     render() {
         this.parent.innerHTML += Handlebars.templates['auth']({
             title: 'РЕГИСТРАЦИЯ',
-            style: 'font-size: 33px;',
+            title_style: 'auth__title__reg',
             input: [
                 {
                     title: 'Имя',
