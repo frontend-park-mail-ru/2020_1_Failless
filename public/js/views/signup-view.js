@@ -1,6 +1,7 @@
 'use strict';
 
 import View from 'Eventum/core/view.js';
+import authTemplate from 'Components/auth/template.hbs';
 
 /**
  *
@@ -20,7 +21,7 @@ export default class SignUpView extends View {
      * Render template
      */
     render() {
-        this.parent.innerHTML += Handlebars.templates['auth']({
+        this.parent.innerHTML += authTemplate({
             title: 'РЕГИСТРАЦИЯ',
             style: 'font-size: 33px;',
             input: [

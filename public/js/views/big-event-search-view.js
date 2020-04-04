@@ -1,6 +1,8 @@
 'use strict';
 
 import View from 'Eventum/core/view.js';
+import bigSearchTemplate from 'Components/big-search/template.hbs';
+import bigEventTemplate from 'Blocks/big-event/template.hbs';
 
 /**
  * @class create SearchView class
@@ -25,14 +27,14 @@ export default class BigEventSearchView extends View {
         const search = {
             events: events,
         };
-        const template = Handlebars.templates['big-search'](search);
+        const template = bigSearchTemplate(search);
         this.parent.insertAdjacentHTML('beforeend', template);
         this.resultsArea = document.getElementsByClassName('big-search__grid')[0];
     }
 
     #renderEmptySearch = () => {
         console.log(' I am alive');
-        const template = Handlebars.templates['big-search']();
+        const template = bigSearchTemplate();
         this.parent.insertAdjacentHTML('beforeend', template);
     };
 
@@ -47,7 +49,7 @@ export default class BigEventSearchView extends View {
         let template = '';
         if (events) {
             events.forEach(event => {
-                template += Handlebars.templates['big-event'](event);
+                template += bigEventTemplate(event);
             });
         }
 

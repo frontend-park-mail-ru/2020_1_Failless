@@ -2,6 +2,8 @@
 
 import MyView from 'Eventum/views/my-view.js';
 import settings from 'Settings/config.js';
+import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
+import profileMainTemplate from 'Components/profile-main/template.hbs';
 
 /**
  * @class create ProfileView class
@@ -58,13 +60,13 @@ export default class ProfileView extends MyView {
         }
 
         document.getElementsByClassName('my__left-column-body')[0].insertAdjacentHTML(
-            'beforeend', Handlebars.templates['profile-left']({
+            'beforeend', profileLeftTemplate({
                 profile: profile,
                 url: `${settings.aws}/users`,
             })
         );
         document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
-            'beforeend', Handlebars.templates['profile-main']({
+            'beforeend', profileMainTemplate({
                 title: 'Профиль',
                 url: `${settings.aws}/users`,
                 profile: profile,

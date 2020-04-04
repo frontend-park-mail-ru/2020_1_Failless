@@ -1,5 +1,6 @@
+const DEBUG = true;
 export default {
-    url: 'https://eventum.rowbot.dev',
+    url: DEBUG ? 'http://localhost' : 'https://eventum.rowbot.dev',
     port: 3000,
     api: '/api',
     img: 'img/',

@@ -54,9 +54,9 @@
         <div class="feed__column feed__column_main">
             {{#if data }}{{#with data}}
                 {{#if ../isEvent}}
-                    {{>feed-events-center}}
+                    {{> $Blocks/feed-events-center/template }}
                 {{else}}
-                    {{>feed-center}}
+                    {{> $Blocks/feed-center/template }}
                 {{/if}}
             {{/with}}{{else}}
                 <h1>Больше ничего не нашлось ):</h1>
@@ -64,7 +64,7 @@
         </div>
         <div class="feed__separator"></div>
         <div class="feed__column">
-            {{>feed-right}}
+            {{> $Blocks/feed-right/template }}
         </div>
     </div>
 </div>

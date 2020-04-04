@@ -1,4 +1,5 @@
 'use strict';
+import headerTemplate from 'Blocks/header/template.hbs';
 
 /**
  * Draw header
@@ -10,7 +11,7 @@ export default function createHeader(base, logged) {
         document.getElementsByClassName('header')[0].remove();
     }
 
-    const header = Handlebars.templates['header'](
+    const header = headerTemplate(
         {
             buttons: !logged ? [
                 {

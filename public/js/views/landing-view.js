@@ -1,6 +1,7 @@
 'use strict';
 
 import View from 'Eventum/core/view.js';
+import landingTemplate from 'Components/landing/template.hbs';
 
 /**
  * @class create LandingView class
@@ -20,7 +21,7 @@ export default class LandingView extends View {
      * Render template
      */
     render() {
-        const landing = Handlebars.templates['landing']();
+        const landing = landingTemplate();
         this.parent.insertAdjacentHTML('beforeend', landing);
     }
 }

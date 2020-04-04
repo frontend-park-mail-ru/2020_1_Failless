@@ -10,7 +10,7 @@
         </div>
         <div class="modal__body">
             {{#each tags as |tag|}}
-                {{>tag}}
+                {{> $Blocks/tag/template }}
             {{/each}}
         </div>
         {{#if last_buttons}}

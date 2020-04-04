@@ -1,6 +1,7 @@
 'use strict';
 
 import View from 'Eventum/core/view.js';
+import authTemplate from 'Components/auth/template.hbs';
 
 /**
  * @class create LoginView class
@@ -20,7 +21,7 @@ export default class LoginView extends View {
      * Render template
      */
     render() {
-        this.parent.innerHTML += Handlebars.templates['auth']({
+        this.parent.innerHTML += authTemplate({
             title: 'ВХОД',
             input: [
                 {
