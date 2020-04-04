@@ -87,7 +87,7 @@ export default class FeedUsersController extends Controller {
         const dataId = event.currentTarget.getAttribute('data-id');
         // TODO: parse data-id of element
         this.tagList.push(dataId);
-        #selectTag(this.tagList).then((resolve) => {
+        this.#selectTag(this.tagList).then((resolve) => {
             // TODO: if redraw creates in the selectTags then do something or nothing if not then create redraw
         });
 
