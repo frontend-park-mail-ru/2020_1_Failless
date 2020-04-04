@@ -1,9 +1,9 @@
 'use strict';
 
-import Controller from '../core/controller.js';
-import LoginView from '../views/login-view.js';
-import UserModel from '../models/user-model.js';
-import ValidationModule from '../utils/validation.js'
+import Controller from 'Eventum/core/controller.js';
+import LoginView from 'Eventum/views/login-view.js';
+import UserModel from 'Eventum/models/user-model.js';
+import ValidationModule from 'Eventum/utils/validation.js'
 
 /**
  * @class LoginController

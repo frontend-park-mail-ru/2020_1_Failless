@@ -1,13 +1,13 @@
 'use strict';
 
-import ProfileView from '../views/profile-view.js';
-import MyController from './my-controller.js';
-import UserModel from '../models/user-model.js';
-import ProfileEditView from '../views/profile-edit-view.js';
-import ModalView from '../views/modal-view.js';
-import {tags} from "../utils/static-data.js";
-import {highlightTag} from '../utils/tag-logic.js';
-import logoutRedirect from '../utils/logout.js';
+import ProfileView from 'Eventum/views/profile-view.js';
+import MyController from 'Eventum/controllers/my-controller.js';
+import UserModel from 'Eventum/models/user-model.js';
+import ProfileEditView from 'Eventum/views/profile-edit-view.js';
+import ModalView from 'Eventum/views/modal-view.js';
+import {tags} from "Eventum/utils/static-data.js";
+import {highlightTag} from 'Eventum/utils/tag-logic.js';
+import logoutRedirect from 'Eventum/utils/logout.js';
 
 /**
  * @class ProfileController

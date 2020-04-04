@@ -1,4 +1,6 @@
-import UserModel from '../models/user-model.js';
+'use strict';
+
+import UserModel from 'Eventum/models/user-model.js';
 
 /**
  * Handle click on login event

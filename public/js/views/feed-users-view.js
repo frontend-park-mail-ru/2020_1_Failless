@@ -1,8 +1,8 @@
 'use strict';
 
-import View from '../core/view.js';
-import {tags, events} from '../utils/static-data.js';
-import getPageUrl from '../utils/get-img-url.js';
+import View from 'Eventum/core/view.js';
+import {tags, events} from 'Eventum/utils/static-data.js';
+import getPageUrl from 'Eventum/utils/get-img-url.js';
 
 /**
  * @class create SearchView class

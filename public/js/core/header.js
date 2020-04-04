@@ -3,6 +3,7 @@
 /**
  * Draw header
  * @param {HTMLElement} base
+ * @param {boolean} logged - is user auth
  */
 export default function createHeader(base, logged) {
     if (document.getElementsByClassName('header').length !== 0) {

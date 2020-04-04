@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * The class implements methods for user input data validation before sending to server
  */
@@ -21,7 +23,7 @@ export default class ValidationModule {
                 return this.validatePhone(input);
             case 'name':
                 return this.validateName(input);
-        };
+        }
     };
 
     /**
@@ -47,7 +49,7 @@ export default class ValidationModule {
      * @param {HTMLInputElement} input input
      * @return {Array} array of error messages
      */
-    static validatePassword = input => {
+    static validatePassword = (input) => {
         const errors = [];
     
         if (this.isEmpty(input) || !this.isString(input)) {
@@ -73,15 +75,14 @@ export default class ValidationModule {
         }
     
         return errors;
-    }
+    };
   
     /**
      * Validate passport repeat field
      * @param {HTMLInputElement} input
-     * @param {HTMLInputElement} password
      * @return {Array} array of error messages
      */
-    static validateRepeatPassword = input => {
+    static validateRepeatPassword = (input) => {
         let errors = [];
 
         if (this.isEmpty(input) || !this.isString(input)) { 
@@ -89,14 +90,14 @@ export default class ValidationModule {
         }
 
         return errors;
-    }
+    };
   
     /**
      * Validate email
      * @param {HTMLInputElement} input input
      * @return {Array} array of error messages
      */
-    static validateEmail = input => {
+    static validateEmail = (input) => {
         const errors = [];
         const emailReg = RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\' +
             '[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}' +
@@ -113,20 +114,43 @@ export default class ValidationModule {
         }
     
         return errors;
-    }
+    };
   
+    /**
+     * Validate phone number
+     * @param {HTMLInputElement} input input
+     * @return {Array} array of error messages
+     */
+    static validatePhone = (input) => {
+        const errors = [];
+
+        if (this.isEmpty(input) || !this.isString(input)) {
+            errors.push('Пустой или некорректный телефон');
+        }
+
+        if (input.replace(/[^0-9\.]+/g, '').length < 6) {
+            errors.push('Длина не должна быть меньше 6 символов');
+        }
+
+        if (input.replace(/[^0-9\.]+/g, '').length > 14) {
+            errors.push('Длина не должна превышать 14 символов');
+        }
+
+        return errors;
+    };
+
     /**
      * Validate full name
      * @param {HTMLInputElement} input input
      * @return {Array} array of error messages
      */
-    static validateName = input => {
+    static validateName = (input) => {
         const errors = [];
 
-        if (this.isEmpty(input) || !this.isString(input)) { 
+        if (this.isEmpty(input) || !this.isString(input)) {
             errors.push('Пустое или некорректное имя');
         }
-    
+
         if (!/^[A-ZА-ЯЁ]/.test(input)) {
             errors.push('Имя должно начинаться с заглавной буквы');
         }
@@ -135,29 +159,5 @@ export default class ValidationModule {
         }
 
         return errors;
-    }
-
-    /**
-     * Validate phone number
-     * @param {HTMLInputElement} input input
-     * @return {Array} array of error messages
-     */
-    static validatePhone = input => {
-        const errors = [];
-
-        if (this.isEmpty(input) || !this.isString(input)) {
-            errors.push('Пустой или некорректный телефон');
-        }
-        
-        if (input.replace(/[^0-9\.]+/g, '').length < 6) {
-            errors.push('Длина не должна быть меньше 6 символов');
-        }
-    
-        if (input.replace(/[^0-9\.]+/g, '').length > 14) {
-            errors.push('Длина не должна превышать 14 символов');
-        }
-
-        return errors;
-    }
-
+    };
 }

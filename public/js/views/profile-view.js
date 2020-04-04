@@ -1,7 +1,7 @@
 'use strict';
 
-import MyView from './my-view.js';
-import settings from '../../settings/config.js';
+import MyView from 'Eventum/views/my-view.js';
+import settings from 'Settings/config.js';
 
 /**
  * @class create ProfileView class

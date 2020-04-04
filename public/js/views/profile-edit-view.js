@@ -1,7 +1,7 @@
 'use strict';
 
-import View from '../core/view.js';
-import GetGender from '../utils/get-gender.js';
+import View from 'Eventum/core/view.js';
+import GetGender from 'Eventum/utils/get-gender.js';
 
 
 /**

@@ -1,7 +1,7 @@
 'use strict';
 
-import Controller from '../core/controller.js';
-import LandingView from '../views/landing-view.js';
+import Controller from 'Eventum/core/controller.js';
+import LandingView from 'Eventum/views/landing-view.js';
 
 /**
  * @class LandingController

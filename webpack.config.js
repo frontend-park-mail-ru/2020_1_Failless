@@ -7,6 +7,15 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'public/static/dist'),
     },
+    resolve: {
+        alias: {
+            Eventum: path.resolve(__dirname, 'public/js/'),
+            Settings: path.resolve(__dirname, 'public/settings/'),
+            Blocks: path.resolve(__dirname, 'public/blocks/'),
+            Static: path.resolve(__dirname, 'public/static/'),
+        },
+        enforceExtension: false,
+    },
     module: {
         rules: [
             {

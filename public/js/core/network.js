@@ -1,5 +1,5 @@
-import settings from '../../settings/config.js';
-import getCookie from '../utils/csrf.js';
+import settings from 'Settings/config.js';
+import getCookie from 'Eventum/utils/csrf.js';
 
 /**
  * The class implements methods for calling communicating with the server API

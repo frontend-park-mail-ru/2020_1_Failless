@@ -1,6 +1,6 @@
 'use strict';
 
-import View from '../core/view.js';
+import View from 'Eventum/core/view.js';
 
 /**
  * @class create SearchView class

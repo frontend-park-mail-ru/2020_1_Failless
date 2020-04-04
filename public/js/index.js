@@ -1,13 +1,13 @@
 'use strict';
 
-import LandingController from './controllers/landing-controller.js';
-import LoginController from './controllers/login-controller.js';
-import SignUpController from './controllers/signup-controller.js';
-import FeedUsersController from './controllers/feed-users-controller.js';
-import BigEventSearchController from './controllers/big-event-search-controller.js';
-import ProfileController from './controllers/profile-controller.js';
-import Router from './core/router.js';
-import '../static/css/style.css';
+import LandingController from 'Eventum/controllers/landing-controller.js';
+import LoginController from 'Eventum/controllers/login-controller.js';
+import SignUpController from 'Eventum/controllers/signup-controller.js';
+import FeedUsersController from 'Eventum/controllers/feed-users-controller.js';
+import BigEventSearchController from 'Eventum/controllers/big-event-search-controller.js';
+import ProfileController from 'Eventum/controllers/profile-controller.js';
+import Router from 'Eventum/core/router.js';
+import 'Static/css/style.css';
 
 let application = document.getElementById('application');
 

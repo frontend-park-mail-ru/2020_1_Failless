@@ -1,5 +1,5 @@
 'use strict';
-import settings from '../../settings/config.js';
+import settings from 'Settings/config.js';
 
 /**
  * Getting page url

@@ -1,11 +1,11 @@
 'use strict';
 
-import Controller from '../core/controller.js';
-import FeedUsersView from '../views/feed-users-view.js';
-import SetSliders from '../../blocks/slider/set-slider.js';
-import EventModel from '../models/event-model.js';
-import UserModel from '../models/user-model.js';
-import settings from '../../settings/config.js'
+import EventModel from 'Eventum/models/event-model.js';
+import UserModel from 'Eventum/models/user-model.js';
+import Controller from 'Eventum/core/controller.js';
+import FeedUsersView from 'Eventum/views/feed-users-view.js';
+import SetSliders from 'Blocks/slider/set-slider.js';
+import settings from 'Settings/config.js'
 
 /**
  * @class FeedUsersController
