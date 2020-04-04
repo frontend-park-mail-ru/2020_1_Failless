@@ -25,7 +25,8 @@ export default class MyController extends Controller {
         document.addEventListener('DOMContentLoaded', (event) => {
             this.circles = document.getElementsByClassName('circle');
             for (let iii = 0; iii < this.circles.length; iii++) {
-                this.circles[iii].addEventListener('click', this.redirects[iii].bind(this), false);
+                this.addEventHandler(this.circles[iii], 'click', this.redirects[iii]);
+                // this.circles[iii].addEventListener('click', this.redirects[iii].bind(this), false);
             }
         });
     }

@@ -51,18 +51,24 @@ export default class ProfileController extends MyController {
                     this.user = profile;
 
                     const photoInput = document.getElementById('photoUpload');
-                    photoInput.addEventListener('change', this.#handleFile.bind(this), false);
+                    this.addEventHandler(photoInput, 'change', this.#handleFile);
+                    // photoInput.addEventListener('change', this.#handleFile.bind(this), false);
                     const textInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
-                    textInput.addEventListener('click', this.#handleInfo.bind(this), false);
-                    document.querySelector('.tags_redirect').addEventListener(
-                        'click', this.#showModalTags.bind(this), false);
+                    this.addEventHandler(textInput, 'click', this.#handleInfo);
+                    this.addEventHandler(document.querySelector('.tags_redirect'), 'click', this.#showModalTags);
+                    // textInput.addEventListener('click', this.#handleInfo.bind(this), false);
+                    // document.querySelector('.tags_redirect').addEventListener(
+                    //     'click', this.#showModalTags.bind(this), false);
                     // TODO: i dunno how to get last item to remove kek in the future
                     const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
-                    settings.addEventListener('click', this.#profileSettings.bind(this), false);
-                    document.querySelector('.profile-left__tags').addEventListener(
-                        'click', this.#removeTag, false);
-                    document.getElementsByClassName('re_btn re_btn__outline logout')[0].addEventListener(
-                        'click', logoutRedirect, false);
+                    this.addEventHandler(settings, 'click', this.#profileSettings);
+                    this.addEventHandler(document.querySelector('.profile-left__tags'), 'click', this.#removeTag);
+                    this.addEventHandler(document.getElementsByClassName('re_btn re_btn__outline logout')[0], 'click', logoutRedirect);
+                    // settings.addEventListener('click', this.#profileSettings.bind(this), false);
+                    // document.querySelector('.profile-left__tags').addEventListener(
+                    //     'click', this.#removeTag, false);
+                    // document.getElementsByClassName('re_btn re_btn__outline logout')[0].addEventListener(
+                    //     'click', logoutRedirect, false);
                 } else {
                     console.error('You have no rights');
                     console.log(profile);
@@ -75,7 +81,8 @@ export default class ProfileController extends MyController {
     #handleFile = (event) => {
         if (event.target.files && event.target.files[0]) {
             let FR = new FileReader();
-            FR.addEventListener('load', this.#handleSelectImg.bind(this));
+            this.addEventHandler(FR, 'load', this.#handleSelectImg);
+            // FR.addEventListener('load', this.#handleSelectImg.bind(this));
             FR.readAsDataURL(event.target.files[0]);
         }
     };
@@ -293,9 +300,11 @@ export default class ProfileController extends MyController {
         this.editView = new ProfileEditView(this.parent);
         this.editView.render(this.user);
         const closeBtn = document.getElementsByClassName('profile-edit__icon')[0];
-        closeBtn.addEventListener('click', this.#removeProfileSettings.bind(this));
+        this.addEventHandler(closeBtn, 'click', this.#removeProfileSettings);
+        // closeBtn.addEventListener('click', this.#removeProfileSettings.bind(this));
         const table = document.getElementsByClassName('profile-edit__table')[0];
-        table.addEventListener('click', this.#drawUnfoldedLine.bind(this));
+        this.addEventHandler(table, 'click', this.#drawUnfoldedLine);
+        // table.addEventListener('click', this.#drawUnfoldedLine.bind(this));
     };
 
 

@@ -29,12 +29,14 @@ export default class BigEventSearchController extends Controller {
             .then((events) => {
                 console.log(events);
                 this.view.render(events);
-                document.getElementById('searchInput')
-                    .addEventListener('keydown', this.#completeRequest.bind(this));
+                this.addEventHandler(document.getElementById('searchInput'), 'keydown', this.#completeRequest);
+                // document.getElementById('searchInput')
+                //     .addEventListener('keydown', this.#completeRequest.bind(this));
             }).catch(onerror => {
                 this.view.render();
-                 document.getElementById('searchInput')
-                     .addEventListener('keydown', this.#completeRequest.bind(this));
+                this.addEventHandler(document.getElementById('searchInput'), 'keydown', this.#completeRequest);
+                // document.getElementById('searchInput')
+                //     .addEventListener('keydown', this.#completeRequest.bind(this));
 
                 console.error(onerror);
         });
