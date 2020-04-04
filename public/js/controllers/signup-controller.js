@@ -1,9 +1,9 @@
 'use strict';
 
-import Controller from '../core/controller.js';
-import SignUpView from '../views/signup-view.js';
-import UserModel from '../models/user-model.js';
-import ValidationModule from '../utils/validation.js'
+import Controller from 'Eventum/core/controller.js';
+import SignUpView from 'Eventum/views/signup-view.js';
+import UserModel from 'Eventum/models/user-model.js';
+import ValidationModule from 'Eventum/utils/validation.js'
 
 export default class SignUpController extends Controller {
 
@@ -13,7 +13,6 @@ export default class SignUpController extends Controller {
     constructor(parent) {
         super(parent);
         this.view = new SignUpView(parent);
-
         this.form = null;
         this.inputs = null;
     }
@@ -27,6 +26,9 @@ export default class SignUpController extends Controller {
         this.#initView();
     }
 
+    /**
+     * Initialize view
+     */
     #initView() {
         let auth = document.body.getElementsByClassName('auth')[0];
         if (auth) {
@@ -95,25 +97,34 @@ export default class SignUpController extends Controller {
                 window.history.back();
             } else {
                 console.log(response);
-                this.#addErrorMessage(this.form[1], [response.message]);
+                this.view.addErrorMessage(this.form[1], [response.message]);
             }
         }).catch(reason => console.log(reason));
     };
 
-    #addErrorMessage(element, messageValue) {
-        if (messageValue.length === 0) {
-            return;
-        }
+    // /**
+    //  * Add error message
+    //  * @param {HTMLElement} element - html element
+    //  * @param {string[]} messageValue - array of validation errors
+    //  */
+    // #addErrorMessage(element, messageValue) {
+    //     if (messageValue.length === 0) {
+    //         return;
+    //     }
+    //
+    //     element.classList.add('input__auth_incorrect');
+    //     element.insertAdjacentHTML('beforebegin',
+    //         Handlebars.templates['validation-error']({message: messageValue[0]}));
+    // }
 
-        element.classList.add('input__auth__incorrect');
-        element.insertAdjacentHTML('beforebegin',
-            Handlebars.templates['validation-error']({message: messageValue[0]}));
-    };
-
+    /**
+     * Remove error message from page
+     * @param {Event} event
+     */
     #removeErrorMessage = (event) => {
         event.preventDefault();
 
-        event.target.classList.remove('input__auth__incorrect');
+        event.target.classList.remove('input__auth_incorrect');
         let errorElement = event.target.parentNode.getElementsByClassName('validation-error')[0];
         if (errorElement) {
             errorElement.remove();
@@ -132,32 +143,32 @@ export default class SignUpController extends Controller {
         const repeatPassword = this.form[4].value;
 
         switch(true) {
-        case (event.target === form[0]):
+        case (event.target === this.form[0]):
             const nameCheck = ValidationModule.validateUserData(name, 'name');
-            this.#addErrorMessage(form[0], nameCheck);
+            this.view.addErrorMessage(this.form[0], nameCheck);
             break;
-        case (event.target === form[1]):
+        case (event.target === this.form[1]):
             const emailCheck = ValidationModule.validateUserData(email, 'email');
-            this.#addErrorMessage(form[1], emailCheck);
+            this.view.addErrorMessage(this.form[1], emailCheck);
             break;
-        case (event.target === form[2]):
+        case (event.target === this.form[2]):
             const phoneCheck = ValidationModule.validateUserData(phone, 'phone');
-            this.#addErrorMessage(form[2], phoneCheck);
+            this.view.addErrorMessage(this.form[2], phoneCheck);
             break;
-        case (event.target === form[3]):
+        case (event.target === this.form[3]):
             const passwordCheck = ValidationModule.validateUserData(password, 'password');
-            this.#addErrorMessage(form[3], passwordCheck);
+            this.view.addErrorMessage(this.form[3], passwordCheck);
 
             if (repeatPassword !== password) {
-                this.#addErrorMessage(form[4], ['Пароли не совпадают']);
+                this.view.addErrorMessage(this.form[4], ['Пароли не совпадают']);
             }
             break;
-        case (event.target === form[4]):
+        case (event.target === this.form[4]):
             const repeatPasswordCheck = ValidationModule.validateUserData(repeatPassword, 'repeatPassword');
             if (repeatPassword !== password) {
                 repeatPasswordCheck.push('Пароли не совпадают');
             }
-            this.#addErrorMessage(form[4], repeatPasswordCheck);
+            this.view.addErrorMessage(this.form[4], repeatPasswordCheck);
             break;
         }
     };

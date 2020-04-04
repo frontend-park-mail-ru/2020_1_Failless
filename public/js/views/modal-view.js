@@ -1,6 +1,7 @@
 'use strict';
 
-import View from '../core/view.js';
+import View from 'Eventum/core/view.js';
+import modalTemplate from 'Blocks/modal-window/template.hbs';
 
 /**
  *
@@ -21,7 +22,7 @@ export default class ModalView extends View {
      * @param {JSON} context
      */
     render(context) {
-        document.body.insertAdjacentHTML('beforeend', Handlebars.templates['modal-window'](context));
+        document.body.insertAdjacentHTML('beforeend', modalTemplate(context));
     }
 
     clear() {

@@ -1,7 +1,7 @@
 'use strict';
 
-import Controller from '../core/controller.js';
-import MediumEventSearchView from '../views/medium-event-search-view.js';
+import Controller from 'Eventum/core/controller.js';
+import MediumEventSearchView from 'Eventum/views/medium-event-search-view.js';
 
 /**
  * @class SearchController

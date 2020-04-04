@@ -1,8 +1,9 @@
 'use strict';
 
-import View from '../core/view.js';
-import GetGender from '../utils/get-gender.js';
-
+import View from 'Eventum/core/view.js';
+import GetGender from 'Eventum/utils/get-gender.js';
+import profileEditTemplate from 'Components/profile-edit/template.hbs';
+import editFieldTemplate from 'Blocks/edit-field/template.hbs';
 
 /**
  *
@@ -23,7 +24,7 @@ export default class ProfileEditView extends View {
      * @param {JSON} profile -  user profile from server
      */
     render(profile) {
-        const settingsTemplate = Handlebars.templates['profile-edit']({
+        const settingsTemplate = profileEditTemplate({
             fields: [
                 {
                     id: 'popupPasswd',
@@ -73,7 +74,7 @@ export default class ProfileEditView extends View {
      * @param parent
      */
     renderPasswordForm(parent) {
-        const template = Handlebars.templates['edit-field'](
+        const template = editFieldTemplate(
             {
                 id: 'passwordId',
                 fields: [

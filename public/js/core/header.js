@@ -1,15 +1,17 @@
 'use strict';
+import headerTemplate from 'Blocks/header/template.hbs';
 
 /**
  * Draw header
  * @param {HTMLElement} base
+ * @param {boolean} logged - is user auth
  */
 export default function createHeader(base, logged) {
     if (document.getElementsByClassName('header').length !== 0) {
         document.getElementsByClassName('header')[0].remove();
     }
 
-    const header = Handlebars.templates['header'](
+    const header = headerTemplate(
         {
             buttons: !logged ? [
                 {

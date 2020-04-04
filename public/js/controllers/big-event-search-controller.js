@@ -1,8 +1,8 @@
 'use strict';
 
-import Controller from '../core/controller.js';
-import BigEventSearchView from '../views/big-event-search-view.js';
-import EventModel from '../models/event-model.js';
+import Controller from 'Eventum/core/controller.js';
+import BigEventSearchView from 'Eventum/views/big-event-search-view.js';
+import EventModel from 'Eventum/models/event-model.js';
 
 /**
  * @class SearchController

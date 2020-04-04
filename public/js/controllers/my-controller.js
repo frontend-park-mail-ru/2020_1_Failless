@@ -1,7 +1,7 @@
 'use strict';
 
-import Controller from '../core/controller.js';
-import MyView from '../views/my-view.js';
+import Controller from 'Eventum/core/controller.js';
+import MyView from 'Eventum/views/my-view.js';
 
 /**
  * @class MyController
@@ -16,9 +16,9 @@ export default class MyController extends Controller {
         super(parent);
         this.view = new MyView(parent);
         this.redirects = [
-            this._chatRedirect,
-            this._mailRedirect,
-            this._profileRedirect,
+            this.#chatRedirect,
+            this.#mailRedirect,
+            this.#profileRedirect,
         ];
         this.circles = null;
 
@@ -38,7 +38,11 @@ export default class MyController extends Controller {
         super.action();
     }
 
-    _chatRedirect = (event) => {
+    /**
+     * Chat redirect
+     * @param {Event} event
+     */
+    #chatRedirect = (event) => {
         event.preventDefault();
 
         console.log('chat redirects');
@@ -48,7 +52,11 @@ export default class MyController extends Controller {
         // window.history.back();
     };
 
-    _mailRedirect = (event) => {
+    /**
+     * Redirect to mail page
+     * @param {Event} event
+     */
+    #mailRedirect = (event) => {
         event.preventDefault();
 
         console.log('mail redirect');
@@ -58,7 +66,11 @@ export default class MyController extends Controller {
         // window.history.back();
     };
 
-    _profileRedirect = (event) => {
+    /**
+     * Redirect to profile page
+     * @param {Event} event
+     */
+    #profileRedirect = (event) => {
         event.preventDefault();
 
         console.log('profile redirect');

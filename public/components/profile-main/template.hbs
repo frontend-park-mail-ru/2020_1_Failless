@@ -35,7 +35,7 @@
         <div class="profile-main__group">
             {{#if profile.events.personal}}
                 {{#each profile.events.personal as |event|}}
-                    {{>event}}
+                    {{> $Blocks/event/template }}
                 {{/each}}
             {{else}}
                 <button class="re_btn re_btn__outline">Добавить</button>
@@ -49,7 +49,7 @@
         <div class="profile-main__group">
             {{#if profile.events.others}}
                 {{#each profile.events.others as |event|}}
-                    {{>event}}
+                    {{> $Blocks/event/template }}
                 {{/each}}
             {{else}}
                 <span class="font font_bold font__size_small font__color_lg">Подписок нет</span>

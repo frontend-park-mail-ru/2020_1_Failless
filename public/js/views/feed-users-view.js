@@ -1,8 +1,12 @@
 'use strict';
 
-import View from '../core/view.js';
-import {tags, events} from '../utils/static-data.js';
-import getPageUrl from '../utils/get-img-url.js';
+import View from 'Eventum/core/view.js';
+import {tags, events} from 'Eventum/utils/static-data.js';
+import getPageUrl from 'Eventum/utils/get-img-url.js';
+import feedTemplate from 'Components/feed/template.hbs';
+import feedCenterTemplate from 'Blocks/feed-center/template.hbs';
+import feedEventsCenterTemplate from 'Blocks/feed-events-center/template.hbs';
+import feedRightTemplate from 'Blocks/feed-right/template.hbs';
 
 /**
  * @class create SearchView class
@@ -12,10 +16,12 @@ export default class FeedUsersView extends View {
     /**
      * Create view
      * @param {HTMLElement} parent
+     * @param {Array} tags
      */
-    constructor(parent) {
+    constructor(parent, tags) {
         super(parent);
         this.parent = parent;
+        this.tags = tags;
         this.isEvent = false;
         this.data = null;
     }
@@ -33,7 +39,7 @@ export default class FeedUsersView extends View {
 
 
         const template = {
-            tags: tags,
+            tags: this.tags,
             data: this.data,
             isEvent: isEvent,
             users: null,  // TODO: take it by AJAX
@@ -41,7 +47,7 @@ export default class FeedUsersView extends View {
         };
         console.log(this.data);
 
-        this.parent.innerHTML += Handlebars.templates['feed'](template);
+        this.parent.innerHTML += feedTemplate(template);
         // let columns = this.parent.getElementsByClassName('feed__column');
         // columns[1].innerHTML = Handlebars.templates['feed-center']({profile: profile});
         // columns[2].innerHTML = Handlebars.templates['feed-right']({events: events});
@@ -61,11 +67,11 @@ export default class FeedUsersView extends View {
         this.#setUpPhotos();
 
         if (isEvent) {
-            columns[1].innerHTML = Handlebars.templates['feed-events-center'](this.data);
+            columns[1].innerHTML = feedEventsCenterTemplate(this.data);
         } else {
-            columns[1].innerHTML = Handlebars.templates['feed-center'](this.data);
+            columns[1].innerHTML = feedCenterTemplate(this.data);
         }
-        columns[2].innerHTML = Handlebars.templates['feed-right'](rightTemplate);
+        columns[2].innerHTML = feedRightTemplate(rightTemplate);
     }
 
     #setUpPhotos = () => {

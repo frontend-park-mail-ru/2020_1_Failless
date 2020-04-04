@@ -6,8 +6,8 @@
                     <div class="feed__help">Фильтр тегов</div>
                     {{#each tags as |tag| }}
                         <div class="search-tag" style="opacity: 0.5">
-                            <div class="tag tag_size_middle">{{ tag.title }}</div>
-                            <div class="x_btn">X</div>
+                            <div class="tag tag_size_middle" data-id="{{ tag.tag_id }}">{{ tag.name }}</div>
+                            <div class="x_btn" style="display: none">X</div>
                         </div>
                     {{/each}}
                 </div>
@@ -54,9 +54,9 @@
         <div class="feed__column feed__column_main">
             {{#if data }}{{#with data}}
                 {{#if ../isEvent}}
-                    {{>feed-events-center}}
+                    {{> $Blocks/feed-events-center/template }}
                 {{else}}
-                    {{>feed-center}}
+                    {{> $Blocks/feed-center/template }}
                 {{/if}}
             {{/with}}{{else}}
                 <h1>Больше ничего не нашлось ):</h1>
@@ -64,7 +64,7 @@
         </div>
         <div class="feed__separator"></div>
         <div class="feed__column">
-            {{>feed-right}}
+            {{> $Blocks/feed-right/template }}
         </div>
     </div>
 </div>

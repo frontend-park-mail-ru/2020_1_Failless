@@ -21,7 +21,7 @@
                 <div class="profile-left__tags">
                     {{#if profile.tags}}
                         {{#each profile.tags as |tag|}}
-                            {{>tag}}
+                            {{> $Blocks/tag/template }}
                         {{/each}}
                     {{else}}
                         <div class="profile-left__center">
