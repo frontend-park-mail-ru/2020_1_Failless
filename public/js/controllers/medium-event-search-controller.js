@@ -28,10 +28,12 @@ export default class MediumEventSearchController extends Controller {
     action() {
         super.action();
         this.view.render();
-        document.querySelectorAll('.search-tag').forEach((tag) => {
-            tag.addEventListener('click', this._highlightTag);
+        document.querySelectorAll('.search_tag').forEach((tag) => {
+            this.addEventHandler(tag, 'click', this._highlightTag);
+            // tag.addEventListener('click', this._highlightTag);
         });
-        document.getElementById('form').addEventListener('submit', this._setOptions)
+        this.addEventHandler(document.getElementById('form'), 'submit', this._setOptions);
+        // document.getElementById('form').addEventListener('submit', this._setOptions)
     }
 
     _highlightTag(event) {

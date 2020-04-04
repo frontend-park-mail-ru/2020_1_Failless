@@ -33,12 +33,15 @@ export default class SignUpController extends Controller {
         let auth = document.body.getElementsByClassName('auth')[0];
         if (auth) {
             this.form = document.getElementById('form');
-            this.form.addEventListener('submit', this.#signUpSubmitHandler.bind(this));
+            this.addEventHandler(this.form, 'submit', this.#signUpSubmitHandler);
+            // this.form.addEventListener('submit', this.#signUpSubmitHandler.bind(this));
 
             this.inputs = this.form.getElementsByClassName('input input__auth');
             for (let input of this.inputs) {
-                input.addEventListener('focus', this.#removeErrorMessage.bind(this));
-                input.addEventListener('blur', this.#checkInputHandler.bind(this));
+                this.addEventHandler(input, 'focus', this.#removeErrorMessage);
+                this.addEventHandler(input, 'blur', this.#checkInputHandler);
+                // input.addEventListener('focus', this.#removeErrorMessage.bind(this));
+                // input.addEventListener('blur', this.#checkInputHandler.bind(this));
             }
         }
     }

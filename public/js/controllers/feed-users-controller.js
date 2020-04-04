@@ -57,12 +57,14 @@ export default class FeedUsersController extends Controller {
     #actionCallback = (data, selectedTags, isEvent) => {
         this.view.render(data, selectedTags, isEvent);
         document.querySelectorAll('.search-tag').forEach((tag) => {
-            tag.addEventListener('click', this.#highlightTag);
+            this.addEventHandler(tag, 'click', this.#highlightTag);
+            // tag.addEventListener('click', this.#highlightTag);
         });
         if (data) {
             this.#setUpVoteButtons();
         }
-        document.getElementById('form').addEventListener('submit', this.#setOptions);
+        this.addEventHandler(document.getElementById('form'), 'submit', this.#setOptions);
+        // document.getElementById('form').addEventListener('submit', this.#setOptions);
         SetSliders(18, 60, 25);
     };
 
