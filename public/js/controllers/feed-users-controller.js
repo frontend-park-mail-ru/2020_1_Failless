@@ -138,8 +138,18 @@ export default class FeedUsersController extends Controller {
             maxAge: filters.maxAge,
             men: filters.men,
             women: filters.women,
-        }).then((response) => {
-                console.log(response);
+        })
+            .then((events) => {
+                console.log(events);
+                this.list = events;
+                if (this.list) {
+                    return this.list[0];
+                }
+                return null;
+            })
+            .catch((onerror) => {
+                console.error(onerror);
+                return onerror;
             });
 
         return filters;
