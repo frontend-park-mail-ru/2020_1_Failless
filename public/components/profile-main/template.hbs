@@ -29,7 +29,7 @@
         <div class="section">
             <div class="section__header section__header_3">
                 <h3>Ваши эвенты</h3>
-                <a href="#">Добавить</a>
+                <a href="/add-event" id="add-event-link">Добавить</a>
             </div>
         </div>
         <div class="profile-main__group">
@@ -38,7 +38,7 @@
                     {{> $Blocks/event/template }}
                 {{/each}}
             {{else}}
-                <button class="re_btn re_btn__outline">Добавить</button>
+                <button class="re_btn re_btn__outline" id="add-event-btn">Добавить</button>
             {{/if}}
         </div>
         <div class="section">

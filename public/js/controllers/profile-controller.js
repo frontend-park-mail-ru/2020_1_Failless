@@ -9,6 +9,7 @@ import {staticTags} from "Eventum/utils/static-data.js";
 import {highlightTag} from 'Eventum/utils/tag-logic.js';
 import logoutRedirect from 'Eventum/utils/logout.js';
 import EventModel from 'Eventum/models/event-model.js';
+import editTemplate from 'Blocks/edit-field/template.hbs'
 
 /**
  * @class ProfileController
@@ -59,8 +60,8 @@ export default class ProfileController extends MyController {
                     const photoInput = document.getElementById('photoUpload');
                     this.addEventHandler(photoInput, 'change', this.#handleFile);
                     // photoInput.addEventListener('change', this.#handleFile.bind(this), false);
-                    const textInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
-                    this.addEventHandler(textInput, 'click', this.#handleInfo);
+                    const metaInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
+                    this.addEventHandler(metaInput, 'click', this.#handleInfo);
                     this.addEventHandler(document.querySelector('.tags-redirect'), 'click', this.#showModalTags);
                     // textInput.addEventListener('click', this.#handleInfo.bind(this), false);
                     // document.querySelector('.tags_redirect').addEventListener(
@@ -344,7 +345,7 @@ export default class ProfileController extends MyController {
     #drawUnfoldedLine = (event) => {
         event.preventDefault();
         console.log(event.target);
-        let template = Handlebars.templates['edit'];
+        let template = editTemplate();
         if (event.target.tagName === 'A') {
             let filed = event.target.parentNode;
             switch (filed.id) {
@@ -376,4 +377,31 @@ export default class ProfileController extends MyController {
             }
         }
     };
+
+    #createEventPopup() {
+        this.addEventView = new AddEventView(document.body);
+        this.addEventView.action();
+        document.querySelector('#submit-event').addEventListener('click', (event) => {
+            event.preventDefault();
+            const form = document.querySelector('.event-popup__form');
+            const fields = form.querySelectorAll('input');
+            const body = {
+                uid: this.user.uid,
+                title: fields[0].value,
+                description: fields[1].value,
+                tag_id: fields[2].value,
+                limit: fields[3].value,
+                // photos: form[4].photos,
+            };
+
+            EventModel.createEvent(body).then((message) => {
+                console.log(message);
+                // draw help window 'OK'
+                // add event card to profile page
+            }).catch((onerror) => {
+                console.log(onerror);
+            });
+        });
+
+    }
 }

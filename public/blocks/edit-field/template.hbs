@@ -12,6 +12,10 @@
                                 <option>{{ this }}</option>
                             {{/each}}
                         </select>
+                    {{else if textarea}}
+                        <textarea class="edit-field__input edit-field__input_textarea" placeholder="Опишите ваше событие"></textarea>
+                    {{else if file}}
+                        <a href="download-file">Загрузить изображение</a>
                     {{else}}
                         <input class="edit-field__input" type="{{ type }}"/>
                     {{/if}}
