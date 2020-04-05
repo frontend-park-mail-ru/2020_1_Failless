@@ -138,7 +138,6 @@ export default class EventModel extends Model {
                 throw new Error('Server error');
             }
             return response.json().then((tags) => {
-                console.log(tags);
                 this.tags = tags;
                 return tags;
             });

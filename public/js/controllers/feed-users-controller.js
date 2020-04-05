@@ -125,8 +125,6 @@ export default class FeedUsersController extends Controller {
         // Get limit
         filters.limit = Number(ageSliderSpans[2].getAttribute('slider_value'));
 
-        console.log(filters);
-
         EventModel.getFeedEvents({
             uid: this.uid,
             page: this.currentPage,
@@ -140,12 +138,12 @@ export default class FeedUsersController extends Controller {
             women: filters.women,
         })
             .then((events) => {
-                console.log(events);
                 this.list = events;
                 if (this.list) {
-                    return this.list[0];
+                    this.view.updateData(this.list[0], !this.usersSelected);
+                    return;
                 }
-                return null;
+                this.view.updateData(null, !this.usersSelected);
             })
             .catch((onerror) => {
                 console.error(onerror);
