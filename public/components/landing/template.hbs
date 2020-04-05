@@ -38,13 +38,13 @@
         <div class="container">
             <div class="landing__creators__row">
                 {{#each creators}}
-                    {{>creator-card}}
+                    {{> $Blocks/creator-card/template }}
                     <div class="separator separator_vertical separator_white_blue"></div>
                 {{/each}}
             </div>
             <div class="landing__creators__row">
                 {{#each mentors}}
-                    {{>creator-card}}
+                    {{> $Blocks/creator-card/template }}
                     <div class="separator separator_vertical separator_white_blue"></div>
                 {{/each}}
             </div>

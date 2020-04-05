@@ -5,6 +5,7 @@ $people-img: $screen-img-path + "landing.jpg";
 
 .landing {
   width: 100%;
+  margin-top: $header-height;
   display: block;
   text-align: center;
   align-items: center;
@@ -236,6 +237,12 @@ $people-img: $screen-img-path + "landing.jpg";
     font-weight: bold;
     font-size: 26px;
     color: $color-white;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .landing__screen {
+    padding: 0 5vw;
   }
 }
 

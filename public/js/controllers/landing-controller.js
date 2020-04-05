@@ -33,5 +33,7 @@ export default class LandingController extends Controller {
                 window.history.back();
             });
         });
+
+        this.addEventHandler(window, 'scroll', this.stickyHeader);
     }
 }

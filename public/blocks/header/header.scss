@@ -1,19 +1,21 @@
 @import "../../modules/variables";
 
 $header-width: 1000px;
-$header-heigth: 45px;
 $header-icon-width: 20px;
 
 .header {
   width: 100%;
-  height: $header-heigth;
+  height: $header-height;
   background-color: $color-white;
   display: flex;
   justify-content: center;
-  align-items: center;
   flex: 0 0 auto; // grow shrink basis
   z-index: 1;
-  
+  position: fixed;
+  top: 0;
+  box-shadow: 0 0 10px rgba(0,0,0, 0.12);
+  @include transition(0.3s, ease-in-out);
+
   &__container {
     width: $header-width;
     display: flex;
@@ -59,6 +61,16 @@ $header-icon-width: 20px;
     width: $header-icon-width;
     z-index: 1;
   }
+
+  &__scroll {
+    &_up {
+      transform: none;
+    }
+
+    &_down {
+      transform: translateY(-100%);
+    }
+  }
 }
 
 @media only screen and (max-width: 1000px) {
@@ -80,8 +92,8 @@ $header-icon-width: 20px;
     &__right {
       & input {
         display: block;
-        width: $header-heigth;
-        height: $header-heigth;
+        width: $header-height;
+        height: $header-height;
         position: absolute;
         z-index: 3;
         top: 0;

@@ -1,19 +1,13 @@
 @import "../../modules/variables";
 
 .auth {
-  max-width: 752px;
-  height: $re--full-height;
-  position: relative;
-  margin: 10px auto;
-  text-align: left;
+  margin: (10px + $header-height) auto 10px;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex: 1 1 auto;
 
   &__item {
     box-sizing: border-box;
-    width: 264px;
     padding: $re--huge-padding $re--large-padding $re--large-padding;
     border-radius: $re--border-radius;
     box-shadow: 5px 5px 10px #cdcdcd,
@@ -41,6 +35,7 @@
 
   &__input {
     width: 100%;
+    min-width: 264px;
     padding-bottom: $re--big-padding;
   }
 
@@ -69,6 +64,10 @@
       box-shadow: 0 0;
       border-radius: 0;
       padding: $re--huge-padding 10vw $re--large-padding;
+    }
+
+    &__input {
+      min-width: 100%;
     }
 
     &__title {

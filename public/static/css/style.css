@@ -7,19 +7,13 @@
 }
 
 .auth {
-  max-width: 752px;
-  height: 86vh;
-  position: relative;
-  margin: 10px auto;
-  text-align: left;
+  margin: 55px auto 10px;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex: 1 1 auto;
 }
 .auth__item {
   box-sizing: border-box;
-  width: 264px;
   padding: 69px 46px 46px;
   border-radius: 4px;
   box-shadow: 5px 5px 10px #cdcdcd, -5px -5px 10px #ffffff;
@@ -42,6 +36,7 @@
 }
 .auth__input {
   width: 100%;
+  min-width: 264px;
   padding-bottom: 23px;
 }
 .auth__text {
@@ -68,6 +63,9 @@
     border-radius: 0;
     padding: 69px 10vw 46px;
   }
+  .auth__input {
+    min-width: 100%;
+  }
   .auth__title__reg {
     font-size: 8.5vw;
   }
@@ -79,6 +77,7 @@
 }
 
 .big-search {
+  margin-top: 45px;
   display: block;
   align-items: center;
   text-align: center;
@@ -166,7 +165,7 @@
 
 .feed {
   width: 100%;
-  margin: 10px 0;
+  margin: 55px 0 10px;
   display: flex;
   flex: 1 1 100%;
   /* Customize the label (the container) */
@@ -289,6 +288,7 @@
 
 .landing {
   width: 100%;
+  margin-top: 45px;
   display: block;
   text-align: center;
   align-items: center;
@@ -476,6 +476,11 @@
   color: white;
 }
 
+@media only screen and (max-width: 1000px) {
+  .landing__screen {
+    padding: 0 5vw;
+  }
+}
 /*-------------------------------------------*\
    Photo MEDIA
 \*-------------------------------------------*/
@@ -607,7 +612,7 @@
 .my {
   width: 100%;
   height: 88.5vh;
-  margin: 10px 0;
+  margin: 55px 0 10px;
   border-radius: 4px;
   background-color: white;
   box-shadow: 20px 20px 60px #cdcdcd, -20px -20px 60px #ffffff;
@@ -1090,9 +1095,15 @@
   background-color: white;
   display: flex;
   justify-content: center;
-  align-items: center;
   flex: 0 0 auto;
   z-index: 1;
+  position: fixed;
+  top: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 .header__container {
   width: 1000px;
@@ -1130,6 +1141,12 @@
   display: none;
   width: 20px;
   z-index: 1;
+}
+.header__scroll_up {
+  transform: none;
+}
+.header__scroll_down {
+  transform: translateY(-100%);
 }
 
 @media only screen and (max-width: 1000px) {
@@ -1448,7 +1465,7 @@
 .input__auth:focus {
   border-bottom-color: #C471ED;
 }
-.input__auth__incorrect {
+.input__auth_incorrect {
   border-bottom-color: red;
 }
 .input__auth::placeholder {

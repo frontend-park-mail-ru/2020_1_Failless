@@ -17,9 +17,9 @@ export default class Controller {
         this.parent = parent;
         this.eventHandlers = [];
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // TODO: add eventlisteners
-        });
+        this.scrollUp = 'header__scroll_up';
+        this.scrollDown = 'header__scroll_down';
+        this.lastScroll = 0;
     }
 
     /**
@@ -29,11 +29,19 @@ export default class Controller {
         if (this.eventHandlers.length !== 0) {
             for (const nodeVal of this.eventHandlers) {
                 for (const eventVal of nodeVal.events) {
-                        this.removeEventHandler(nodeVal.htmlNode, eventVal.event);
+                    this.removeEventHandler(nodeVal.htmlNode, eventVal.event);
                 }
             }
         }
         this.parent.innerHTML = '';
+    }
+
+    animateHeader() {
+        window.addEventListener('scroll', this.stickyHeader.bind(this));
+        console.log(document.querySelector('.header'));
+        console.log(document.getElementsByClassName('header')[0]);
+        console.log(document.getElementsByTagName('header')[0]);
+        this.header = document.querySelector('.header');
     }
 
     /**
@@ -145,7 +153,7 @@ export default class Controller {
                 });
             }
         }
-    }
+    };
 
     removeEventHandler = (node, event) => {
         if (this.eventHandlers.length !== 0) {
@@ -165,5 +173,32 @@ export default class Controller {
                 }
             })];
         }
-    }
+    };
+
+    stickyHeader = (event) => {
+        this.header = document.querySelector('.header');
+        if (!this.header) {
+            this.header = document.querySelector('header');
+        }
+        console.log(this.header);
+
+        const currentScroll = window.pageYOffset;
+
+        // Reached top
+        if (currentScroll === 0) {
+            this.header.classList.remove(this.scrollUp);
+            return;
+        }
+
+        if (currentScroll > this.lastScroll && !this.header.classList.contains(this.scrollDown)) {
+            // Scroll down
+            this.header.classList.remove(this.scrollUp);
+            this.header.classList.add(this.scrollDown);
+        } else if (currentScroll < this.lastScroll && this.header.classList.contains(this.scrollDown)) {
+            // Scroll up
+            this.header.classList.remove(this.scrollDown);
+            this.header.classList.add(this.scrollUp);
+        }
+        this.lastScroll = currentScroll;
+    };
 }

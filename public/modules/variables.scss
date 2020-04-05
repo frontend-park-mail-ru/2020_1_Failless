@@ -34,6 +34,8 @@ $breakpoint-phone: 480px;
 $breakpoint-tablet: 768px;
 $breakpoint-desktop: 1024px;
 
+$header-height: 45px;
+
 @mixin transition($duration, $timing) {
     -webkit-transition: all $duration $timing;
     -moz-transition: all $duration $timing;

@@ -1,7 +1,8 @@
 const DEBUG = false;
+const EGOR = false;
 export default {
     url: DEBUG ? 'http://localhost' : 'https://eventum.rowbot.dev',
-    port: 3000,
+    port: EGOR ? 3000 : 3001,
     api: '/api',
     img: 'img/',
     aws: 'https://eventum.s3.eu-north-1.amazonaws.com', //  app, users, events
