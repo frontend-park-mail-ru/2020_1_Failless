@@ -175,6 +175,16 @@ export default class Controller {
         }
     };
 
+    removeErrorMessage = (event) => {
+        event.preventDefault();
+
+        event.target.classList.remove('input__auth_incorrect');
+        let errorElement = event.target.parentNode.getElementsByClassName('validation-error')[0];
+        if (errorElement) {
+            errorElement.remove();
+        }
+    };
+
     /**
      * Create slow header hiding and showing during scroll
      * @param event

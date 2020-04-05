@@ -36,7 +36,7 @@ export default class LoginController extends Controller {
 
             this.inputs = this.form.getElementsByClassName('input input__auth');
             for (let input of this.inputs) {
-                this.addEventHandler(input, 'focus', this.#removeErrorMessage);
+                this.addEventHandler(input, 'focus', this.removeErrorMessage);
                 this.addEventHandler(input, 'blur', this.#checkInputHandler);
             }
         }
@@ -84,32 +84,12 @@ export default class LoginController extends Controller {
         switch(true) {
             case (event.target === form[0] && login.includes('@')):
                 const nameCheck = ValidationModule.validateUserData(login, 'email');
-                this.#addErrorMessage(form[0], nameCheck);
+                this.view.addErrorMessage(this.form[0], nameCheck);
                 break;
             case (event.target === form[0]):
                 const emailCheck = ValidationModule.validateUserData(login, 'phone');
-                this.#addErrorMessage(form[0], emailCheck);
+                this.view.addErrorMessage(this.form[0], emailCheck);
                 break;
-        }
-    };
-
-    #addErrorMessage(element, messageValue) {
-        if (messageValue.length === 0) {
-            return;
-        }
-
-        element.classList.add('input__auth_incorrect');
-        element.insertAdjacentHTML('beforebegin',
-            Handlebars.templates['validation-error']({message: messageValue[0]}));
-    };
-
-    #removeErrorMessage = (event) => {
-        event.preventDefault();
-
-        event.target.classList.remove('input__auth_incorrect');
-        let errorElement = event.target.parentNode.getElementsByClassName('validation-error')[0];
-        if (errorElement) {
-            errorElement.remove();
         }
     };
 
@@ -127,7 +107,7 @@ export default class LoginController extends Controller {
             return;
         }
 
-        this.#removeErrorMessage(event);
+        this.removeErrorMessage(event);
 
         UserModel.postLogin(body).then((user) => {
             if (Object.prototype.hasOwnProperty.call(user, 'name')) {
@@ -135,8 +115,8 @@ export default class LoginController extends Controller {
                 window.history.pushState({}, '', '/my/profile');
                 window.history.back();
             } else {
-                console.log(response);
-                this.#addErrorMessage(this.form[0], [response.message]);
+                console.log(user);
+                this.view.addErrorMessage(this.form, [user.message]);
             }
         });
     };

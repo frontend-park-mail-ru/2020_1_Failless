@@ -38,9 +38,9 @@ export default class SignUpController extends Controller {
 
             this.inputs = this.form.getElementsByClassName('input input__auth');
             for (let input of this.inputs) {
-                this.addEventHandler(input, 'focus', this.#removeErrorMessage);
+                this.addEventHandler(input, 'focus', this.removeErrorMessage);
                 this.addEventHandler(input, 'blur', this.#checkInputHandler);
-                // input.addEventListener('focus', this.#removeErrorMessage.bind(this));
+                // input.addEventListener('focus', this.removeErrorMessage.bind(this));
                 // input.addEventListener('blur', this.#checkInputHandler.bind(this));
             }
         }
@@ -88,7 +88,7 @@ export default class SignUpController extends Controller {
             return;
         }
 
-        this.#removeErrorMessage(event);
+        this.removeErrorMessage(event);
 
         UserModel.postSignUp(body).then((response) => {
             if (Object.prototype.hasOwnProperty.call(response, 'name')) {
@@ -97,38 +97,9 @@ export default class SignUpController extends Controller {
                 window.history.back();
             } else {
                 console.log(response);
-                this.view.addErrorMessage(this.form[1], [response.message]);
+                this.view.addErrorMessage(this.form, [response.message]);
             }
         }).catch(reason => console.log(reason));
-    };
-
-    // /**
-    //  * Add error message
-    //  * @param {HTMLElement} element - html element
-    //  * @param {string[]} messageValue - array of validation errors
-    //  */
-    // #addErrorMessage(element, messageValue) {
-    //     if (messageValue.length === 0) {
-    //         return;
-    //     }
-    //
-    //     element.classList.add('input__auth_incorrect');
-    //     element.insertAdjacentHTML('beforebegin',
-    //         Handlebars.templates['validation-error']({message: messageValue[0]}));
-    // }
-
-    /**
-     * Remove error message from page
-     * @param {Event} event
-     */
-    #removeErrorMessage = (event) => {
-        event.preventDefault();
-
-        event.target.classList.remove('input__auth_incorrect');
-        let errorElement = event.target.parentNode.getElementsByClassName('validation-error')[0];
-        if (errorElement) {
-            errorElement.remove();
-        }
     };
 
     /**
