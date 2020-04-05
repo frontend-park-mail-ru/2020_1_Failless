@@ -1,4 +1,4 @@
-const DEBUG = true;
+const DEBUG = false;
 const EGOR = false;
 export default {
     url: DEBUG ? 'http://localhost' : 'https://eventum.rowbot.dev',

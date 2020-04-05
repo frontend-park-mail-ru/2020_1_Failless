@@ -33,8 +33,8 @@
             </div>
         </div>
         <div class="profile-main__group">
-            {{#if profile.events.personal}}
-                {{#each profile.events.personal as |event|}}
+            {{#if profile.events}}
+                {{#each profile.events as |event|}}
                     {{> $Blocks/event/template }}
                 {{/each}}
             {{else}}

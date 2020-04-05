@@ -4,7 +4,7 @@ import MyView from 'Eventum/views/my-view.js';
 import settings from 'Settings/config.js';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
-
+import eventCardTemplate from 'Blocks/event/template.hbs';
 /**
  * @class create ProfileView class
  */
@@ -74,7 +74,8 @@ export default class ProfileView extends MyView {
         );
     }
 
-    drawEventCard() {
-
+    drawEventCard(eventInfo) {
+        document.querySelector('.profile-main__group').insertAdjacentHTML(
+            'afterbegin', eventCardTemplate(eventInfo));
     }
 }

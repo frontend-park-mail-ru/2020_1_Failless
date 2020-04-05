@@ -37,6 +37,11 @@ export default class AddEventView extends View {
                     options: this.tags,
                 },
                 {
+                    name: 'Дата',
+                    type: 'date',
+                    options: this.tags,
+                },
+                {
                     name: 'Количество человек',
                     select: true,
                     options: Array.from(Array(15).keys(), n => ++n),

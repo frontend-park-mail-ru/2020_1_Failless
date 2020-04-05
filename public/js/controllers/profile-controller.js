@@ -75,6 +75,7 @@ export default class ProfileController extends MyController {
                     this.addEventHandler(document.getElementsByClassName('re_btn re_btn__outline logout')[0], 'click', logoutRedirect);
 
                     this.addEventHandler(document.querySelector('#add-event-btn'), 'click', this.#createEventPopup.bind(this));
+                    this.addEventHandler(document.querySelector('#add-event-link'), 'click', this.#createEventPopup.bind(this));
                     // settings.addEventListener('click', this.#profileSettings.bind(this), false);
                     // document.querySelector('.profile-left__tags').addEventListener(
                     //     'click', this.#removeTag, false);
@@ -390,23 +391,23 @@ export default class ProfileController extends MyController {
         this.addEventHandler(closeBtn, 'click', this.#removeProfileSettings);
         document.querySelector('.btn.btn_square.btn_size_middle.btn_color_dark-blue').addEventListener('click', (event) => {
             event.preventDefault();
-            const form = document.querySelector('.edit-field__form');
-            const fields = form.querySelectorAll('edit-field__input');
+            const form = document.querySelector('.profile-edit__form');
+            const fields = form.querySelectorAll('.edit-field__input');
             const body = {
                 uid: this.user.uid,
                 title: fields[0].value,
                 description: fields[1].value,
-                tag_id: fields[2].value,
-                limit: fields[3].value,
+                tag_id: +fields[2].value,
+                date: fields[3].value,
+                limit: +fields[4].value,
                 // photos: form[4].photos,
             };
 
             EventModel.createEvent(body).then((event) => {
                 console.log(event);
                 this.#removeProfileSettings(null);
-                this.view.drawEventCard();
-                // draw help window 'OK'
-                // add event card to profile page
+                this.view.drawEventCard(event);
+                // TODO: draw help window 'OK'
             }).catch((onerror) => {
                 console.log(onerror);
             });
