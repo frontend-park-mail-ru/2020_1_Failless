@@ -7,8 +7,9 @@ module.exports = {
     devtool: 'source-map',
     entry: './public/js/index.js',
     output: {
-        filename: 'bundle.js',
+        filename: 'bundle.[hash:8].js',
         path: path.resolve(__dirname, 'public/static/dist'),
+        publicPath: '/',
     },
     resolve: {
         alias: {
