@@ -11,6 +11,17 @@ import 'Static/css/style.css';
 
 const application = document.getElementById('application');
 
+if (navigator.serviceWorker) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then((registration) => {
+            console.log('Service worker is supported! Enjoy! Scope:', registration.scope);
+        })
+        .catch((err) => {
+            console.log('Na ja! Das ist nicht arbeiten! No SW!', err);
+        });
+    });   
+}
+
 const router = new Router();
 router.addRoute('/', new LandingController(application));
 router.addRoute('/login', new LoginController(application));
