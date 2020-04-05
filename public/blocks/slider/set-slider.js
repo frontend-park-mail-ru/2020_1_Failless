@@ -1,4 +1,4 @@
-import {MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT} from '../../js/utils/static-data.js';
+import {MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT} from 'Eventum/utils/static-data.js';
 
 const CONST_OFFSET = 1;
 

@@ -1,4 +1,4 @@
-import settings from '../../settings/config.js';
+import settings from 'Settings/config.js';
 
 function Event(photos, title, place, description) {
     this.photos = photos;
@@ -47,4 +47,4 @@ const MAX_AGE = 100;
 const MIN_LIMIT = 2;
 const MAX_LIMIT = 15;
 
-export {Event, events, Tag, tags, MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT};
+export {Event, events, Tag, staticTags, MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT};
