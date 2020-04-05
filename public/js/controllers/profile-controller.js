@@ -154,7 +154,7 @@ export default class ProfileController extends MyController {
         const tags = document.querySelectorAll('.tag');
         let selectedTags = [];
         tags.forEach((tag) => {
-            selectedTags.push(tag.getAttribute('data-id'));
+            selectedTags.push(+tag.getAttribute('data-id'));
         });
 
         const userProfile = {

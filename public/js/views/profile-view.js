@@ -53,7 +53,7 @@ export default class ProfileView extends MyView {
                 profile.tags = [];
             } else {
                 profile.tags.forEach((tag) => {
-                    tag.active_class = 'tag__container_active';
+                    tag.activeClass = 'tag__container_active';
                     tag.editable = true;
                 });
             }
