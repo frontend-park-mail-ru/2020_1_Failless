@@ -27,22 +27,13 @@ export default class BigEventSearchController extends Controller {
         super.action();
         EventModel.getFeedEvents({page: 1, limit: 10, query: ''})
             .then((events) => {
-                console.log(events);
                 this.view.render(events);
                 this.addEventHandler(document.getElementById('searchInput'), 'keydown', this.#completeRequest);
-                // document.getElementById('searchInput')
-                //     .addEventListener('keydown', this.#completeRequest.bind(this));
             }).catch(onerror => {
                 this.view.render();
                 this.addEventHandler(document.getElementById('searchInput'), 'keydown', this.#completeRequest);
-                // document.getElementById('searchInput')
-                //     .addEventListener('keydown', this.#completeRequest.bind(this));
-
                 console.error(onerror);
         });
-
-        // todo: create request to backend for taking events list
-
     }
 
     /**
@@ -52,7 +43,6 @@ export default class BigEventSearchController extends Controller {
     #completeRequest = (event) => {
         if (event.code === 'Enter') {
             event.preventDefault();
-            console.log(event.target.value);
             EventModel.getEvents({page: 1, limit: 10, query: event.target.value})
                 .then(events => {
                     ++this.pageDownloaded;
