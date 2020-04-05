@@ -900,11 +900,10 @@
 
 .options-footer {
   padding: 23px 0;
-  width: 93%;
-  height: auto;
   position: sticky;
+  bottom: 0;
   background-color: white;
-  box-shadow: 0 -10px 5px -6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 -6px 5px -6px rgba(0, 0, 0, 0.12);
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -1700,6 +1699,7 @@ input[type=range] {
   margin: 15px 0;
   width: 100%;
   cursor: grab;
+  pointer-events: none;
 }
 input[type=range]:focus {
   outline: none;
@@ -1722,6 +1722,7 @@ input[type=range]::-webkit-slider-thumb {
   cursor: pointer;
   margin-top: -12px;
   box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
   -webkit-appearance: none;
 }
 input[type=range]::-ms-thumb {
@@ -1733,6 +1734,7 @@ input[type=range]::-ms-thumb {
   cursor: pointer;
   margin-top: -12px;
   box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
   appearance: none;
 }
 input[type=range]::-moz-range-thumb {
@@ -1744,6 +1746,7 @@ input[type=range]::-moz-range-thumb {
   cursor: pointer;
   margin-top: -12px;
   box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
   -moz-appearance: none;
 }
 input[type=range]::-webkit-slider-runnable-track {
@@ -1807,6 +1810,17 @@ input[type=range]::-ms-fill-upper {
 }
 .slider__value::before {
   content: attr(slider_value);
+}
+.slider__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.slider__title {
+  font-size: 10px;
+  font-weight: 500;
+  color: #191919;
+  margin-right: 5px;
 }
 
 .link-uploader label, .section__header a {

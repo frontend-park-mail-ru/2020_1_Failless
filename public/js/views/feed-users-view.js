@@ -1,7 +1,7 @@
 'use strict';
 
 import View from 'Eventum/core/view.js';
-import {tags, events} from 'Eventum/utils/static-data.js';
+import {events} from 'Eventum/utils/static-data.js';
 import getPageUrl from 'Eventum/utils/get-img-url.js';
 import feedTemplate from 'Components/feed/template.hbs';
 import feedCenterTemplate from 'Blocks/feed-center/template.hbs';
@@ -36,7 +36,12 @@ export default class FeedUsersView extends View {
         this.data = data;
         this.isEvent = isEvent;
         this.#setUpPhotos();
-
+        this.tags.forEach((tag) => {
+             tag.editable = true;
+            if (selectedTags.includes(tag.name)) {
+                tag.active_class = 'tag__container__active';
+            }
+        });
 
         const template = {
             tags: this.tags,
@@ -48,9 +53,6 @@ export default class FeedUsersView extends View {
         console.log(this.data);
 
         this.parent.innerHTML += feedTemplate(template);
-        // let columns = this.parent.getElementsByClassName('feed__column');
-        // columns[1].innerHTML = Handlebars.templates['feed-center']({profile: profile});
-        // columns[2].innerHTML = Handlebars.templates['feed-right']({events: events});
     }
 
     updateData(data, isEvent) {

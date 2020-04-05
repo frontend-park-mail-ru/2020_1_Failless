@@ -6,9 +6,7 @@ function highlightTag(event) {
         return;
     }
 
-    elem.classList.contains('tag__container_active')
-        ? elem.classList.remove('tag__container_active')
-        : elem.classList.add('tag__container_active');
+    elem.classList.toggle('tag__container__active');
 }
 
 export {highlightTag};

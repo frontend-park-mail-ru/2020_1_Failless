@@ -20,15 +20,6 @@ export default class MyController extends Controller {
             this.#mailRedirect,
             this.#profileRedirect,
         ];
-        this.circles = null;
-
-        document.addEventListener('DOMContentLoaded', (event) => {
-            this.circles = document.getElementsByClassName('circle');
-            for (let iii = 0; iii < this.circles.length; iii++) {
-                this.addEventHandler(this.circles[iii], 'click', this.redirects[iii]);
-                // this.circles[iii].addEventListener('click', this.redirects[iii].bind(this), false);
-            }
-        });
     }
 
     /**
@@ -88,4 +79,12 @@ export default class MyController extends Controller {
             this.circles[index].classList.add('circle__active');
         }
     }
+    // _highlightCircle(index) {
+    //     Array.prototype.forEach.call(this.circles, (circle) => {
+    //         circle.classList.remove('circle__active');
+    //     });
+    //     if (this.circles[index] !== undefined) {
+    //         this.circles[index].classList.add('circle__active');
+    //     }
+    // }
 }
