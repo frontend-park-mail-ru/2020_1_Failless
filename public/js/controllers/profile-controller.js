@@ -4,6 +4,7 @@ import ProfileView from 'Eventum/views/profile-view.js';
 import MyController from 'Eventum/controllers/my-controller.js';
 import UserModel from 'Eventum/models/user-model.js';
 import ProfileEditView from 'Eventum/views/profile-edit-view.js';
+import AddEventView from 'Eventum/views/add-event-view.js';
 import ModalView from 'Eventum/views/modal-view.js';
 import {staticTags} from "Eventum/utils/static-data.js";
 import {highlightTag} from 'Eventum/utils/tag-logic.js';
@@ -27,6 +28,7 @@ export default class ProfileController extends MyController {
         this.image = '';
         this.user = null;
         this.activeModalWindow = null;
+        this.addEventView = null;
         EventModel.getTagList().then((tags) => {
             this.localTags = [...tags];
         }).catch((onerror) => {
@@ -71,6 +73,8 @@ export default class ProfileController extends MyController {
                     this.addEventHandler(settings, 'click', this.#profileSettings);
                     this.addEventHandler(document.querySelector('.profile-left__tags'), 'click', this.#removeTag);
                     this.addEventHandler(document.getElementsByClassName('re_btn re_btn__outline logout')[0], 'click', logoutRedirect);
+
+                    this.addEventHandler(document.querySelector('#add-event-btn'), 'click', this.#createEventPopup.bind(this));
                     // settings.addEventListener('click', this.#profileSettings.bind(this), false);
                     // document.querySelector('.profile-left__tags').addEventListener(
                     //     'click', this.#removeTag, false);
@@ -378,13 +382,18 @@ export default class ProfileController extends MyController {
         }
     };
 
-    #createEventPopup() {
-        this.addEventView = new AddEventView(document.body);
-        this.addEventView.action();
+    #createEventPopup(event) {
+        event.preventDefault();
+        this.addEventView = new AddEventView(this.parent, this.localTags);
+        this.addEventView.render();
+        const closeBtn = document.getElementsByClassName('profile-edit__icon')[0];
+        this.addEventHandler(closeBtn, 'click', this.#removeProfileSettings);
+        // closeBtn.addEventListener('click', this.#removeProfileSettings.bind(this));
+        // table.addEventListener('click', this.#drawUnfoldedLine.bind(this));
         document.querySelector('#submit-event').addEventListener('click', (event) => {
             event.preventDefault();
-            const form = document.querySelector('.event-popup__form');
-            const fields = form.querySelectorAll('input');
+            const form = document.querySelector('.edit-field__form');
+            const fields = form.querySelectorAll('edit-field__input');
             const body = {
                 uid: this.user.uid,
                 title: fields[0].value,
