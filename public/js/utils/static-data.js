@@ -22,7 +22,7 @@ function Tag(title) {
     this.title = '#' + title;
 }
 
-const tags = [
+const staticTags = [
     new Tag('хочувБАР'),
     new Tag('хочувКИНО'),
     new Tag('хочунаКАТОК'),
@@ -35,4 +35,4 @@ const tags = [
     new Tag('хочуСПАТЬ'),
 ];
 
-export {Event, events, Tag, tags};
+export {Event, events, Tag, staticTags};

@@ -175,12 +175,15 @@ export default class Controller {
         }
     };
 
+    /**
+     * Create slow header hiding and showing during scroll
+     * @param event
+     */
     stickyHeader = (event) => {
         this.header = document.querySelector('.header');
         if (!this.header) {
             this.header = document.querySelector('header');
         }
-        console.log(this.header);
 
         const currentScroll = window.pageYOffset;
 

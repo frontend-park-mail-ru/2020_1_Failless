@@ -80,7 +80,7 @@ export default class MyController extends Controller {
         // window.history.back();
     };
 
-    _highlightCircle(index) {
+    highlightCircle(index) {
         Array.prototype.forEach.call(this.circles, (circle) => {
             circle.classList.remove('circle__active');
         });
