@@ -80,39 +80,3 @@ this.addEventListener('fetch', function(event) {
 		);
 	}
 });
-
-// this.addEventListener('fetch', function(event) {
-// 	event.respondWith(
-// 		console.log('TEST0')
-// 	);
-
-	// event.respondWith(caches.match(event.request).then(function(response) {
-	// 	console.log('TEST1')
-
-	// 	// ресурс есть в кеше
-	// 	if (response && !navigator.onLine) {
-	// 		return response;
-	// 	}
-
-	// 	/* Важно: клонируем запрос. Запрос - это поток, может быть обработан только раз. Если мы хотим использовать объект request несколько раз, его нужно клонировать */
-	// 	let fetchRequest = event.request.clone();
-
-	// 	return fetch(fetchRequest).then(function(response) {
-
-	// 		// проверяем, что получен корректный ответ
-	// 		if (!response || response.status !== 200 || response.type !== 'basic') {
-	// 			return response;
-	// 		}
-
-	// 		/* ВАЖНО: Клонируем ответ. Объект response также является потоком. */
-	// 		let responseToCache = response.clone();
-	// 		console.log('responseToCache1', responseToCache);
-
-	// 		caches.open(CACHE_NAME).then(function(cache) {
-	// 			cache.put(event.request, responseToCache);
-	// 		});
-
-	// 		return response;
-	// 	});
-	// }));
-// });
