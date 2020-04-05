@@ -27,7 +27,7 @@
 
   &__photos {
     width: auto;
-    height: 150px;
+    height: 100px;
     overflow: auto;
     display: flex;
     flex-direction: row;
@@ -38,5 +38,10 @@
       max-height: 100%;
       margin-right: 2px;
     }
+  }
+  &__line {
+    width: 84%;
+    margin: 4px auto 4px;
+    border: 0.5px solid #c8c8c8;
   }
 }
