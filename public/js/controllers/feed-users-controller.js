@@ -20,9 +20,9 @@ export default class FeedUsersController extends Controller {
      */
     constructor(parent) {
         super(parent);
-        this.usersSelected = false;
+        this.usersSelected = false; // заглушка
         this.list = null;
-        this.tagList = [];
+        this.tagList = ['хочувМУЗЕЙ']; // заглушка
         this.currentPage = 1;
         this.currentItem = 0;
         EventModel.getTagList().then((tags) => {
@@ -55,17 +55,23 @@ export default class FeedUsersController extends Controller {
      */
     #actionCallback = (data, selectedTags, isEvent) => {
         this.view.render(data, selectedTags, isEvent);
-        this.addEventHandler(document.querySelector('.feed__options_field'), 'click', highlightTag);
+        this.addEventHandler(document.querySelector('.feed__options-field'), 'click', highlightTag);
         if (data) {
             this.#setUpVoteButtons();
         }
         this.addEventHandler(document.getElementById('form'), 'submit', this.#getFilters());
 
-        // Set two sliders and connect each other
-        let sliders = document.querySelectorAll('.slider');
-        this.sliderManager.setSliders(
-            {slider1: sliders[0], initialValue1: 18},   // TODO: change to profile preferences
-            {slider2: sliders[1], initialValue2: 25});
+        // TODO: change to profile preferences
+        if (isEvent) {
+            this.sliderManager.setSlider(document.querySelector('.slider'), 18);
+        } else {
+            // Set two sliders and connect each other
+            let sliders = document.querySelectorAll('.slider');
+            this.sliderManager.setSliders(
+                {slider1: sliders[0], initialValue1: 18},
+                {slider2: sliders[1], initialValue2: 25});
+        }
+
     };
 
     #setUpVoteButtons() {
@@ -103,10 +109,10 @@ export default class FeedUsersController extends Controller {
 
         });
 
-        let otherFilters = form.querySelector('.feed__other_options');
+        let otherFilters = form.querySelector('.feed__other-options');
 
         // Get genders
-        let genderInputs = otherFilters.querySelectorAll('.feed__checkbox_label input');
+        let genderInputs = otherFilters.querySelectorAll('.feed__checkbox-label input');
         if (genderInputs.length === 2) {
             filters.men = genderInputs[0].checked;
             filters.women = genderInputs[1].checked;

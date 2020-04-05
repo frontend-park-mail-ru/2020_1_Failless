@@ -4,11 +4,8 @@
             <form action="submit" id="form">
                 <div class="feed__options-field">
                     <div class="feed__help">Фильтр тегов</div>
-                    {{#each tags as |tag| }}
-                        <div class="search-tag" style="opacity: 0.5">
-                            <div class="tag tag_size_middle" data-id="{{ tag.tag_id }}">{{ tag.name }}</div>
-                            <div class="x_btn" style="display: none">X</div>
-                        </div>
+                    {{#each tags}}
+                        {{> $Blocks/tag/template }}
                     {{/each}}
                 </div>
                 <div class="feed__options-field">
@@ -28,14 +25,29 @@
                             <span class="feed__checkbox-checkmark"></span>
                         </label>
                         <div class="feed__help">Возраст</div>
-                        <div class="slider">
-                            <div class="slider__maxmin">
-                                <div>18</div>
-                                <div>59</div>
+                        {{#if isEvent}}
+                            <div class="slider__container">
+                                <div class="slider">
+                                    <input type="range" min="18" max="100" value="18" step="1">
+                                    <span class="slider__value" slider_value="18"></span>
+                                </div>
                             </div>
-                            <input type="range" min="18" max="60" value="18" step="1">
-                            <span class="slider__value" slider_value="18"></span>
-                        </div>
+                        {{else}}
+                            <div class="slider__container">
+                                <label class="slider__title">Min</label>
+                                <div class="slider">
+                                    <input type="range" min="18" max="100" value="18" step="1" name="slider_min">
+                                    <span class="slider__value" slider_value="18"></span>
+                                </div>
+                            </div>
+                            <div class="slider__container">
+                                <label class="slider__title">Max</label>
+                                <div class="slider">
+                                    <input type="range" min="18" max="100" value="18" step="1" name="slider_max">
+                                    <span class="slider__value" slider_value="18"></span>
+                                </div>
+                            </div>
+                        {{/if}}
                         <div class="feed__help">Местоположение</div>
                         <img class="feed__map" src="/1.jpg" alt="map here">
                     </div>
@@ -45,7 +57,6 @@
 
                 <div class="options-footer">
                     <button class="re_btn re_btn__filled">Сохранить</button>
-                    <button class="re_btn re_btn__outline">Ещё что-то</button>
                 </div>
 
             </form>

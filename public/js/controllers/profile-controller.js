@@ -26,11 +26,6 @@ export default class ProfileController extends MyController {
         this.user = null;
         this.activeModalWindow = null;
         this.localTags = [...tags];
-      
-        // TODO: kill meeee
-        document.addEventListener('DOMContentLoaded', () => {
-            this._highlightCircle(2);
-        });
     }
 
     /**
