@@ -137,4 +137,16 @@ export default class EventModel extends Model {
             });
         });
     }
+
+    static createEvent(body) {
+        return NetworkModule.fetchPost({path: '/event/new', body: body}).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
+            throw new Error(error);
+        });
+    }
 }

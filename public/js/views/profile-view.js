@@ -73,4 +73,8 @@ export default class ProfileView extends MyView {
             })
         );
     }
+
+    drawEventCard() {
+
+    }
 }

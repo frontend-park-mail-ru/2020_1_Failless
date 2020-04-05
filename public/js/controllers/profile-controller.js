@@ -388,9 +388,7 @@ export default class ProfileController extends MyController {
         this.addEventView.render();
         const closeBtn = document.getElementsByClassName('profile-edit__icon')[0];
         this.addEventHandler(closeBtn, 'click', this.#removeProfileSettings);
-        // closeBtn.addEventListener('click', this.#removeProfileSettings.bind(this));
-        // table.addEventListener('click', this.#drawUnfoldedLine.bind(this));
-        document.querySelector('#submit-event').addEventListener('click', (event) => {
+        document.querySelector('.btn.btn_square.btn_size_middle.btn_color_dark-blue').addEventListener('click', (event) => {
             event.preventDefault();
             const form = document.querySelector('.edit-field__form');
             const fields = form.querySelectorAll('edit-field__input');
@@ -403,8 +401,10 @@ export default class ProfileController extends MyController {
                 // photos: form[4].photos,
             };
 
-            EventModel.createEvent(body).then((message) => {
-                console.log(message);
+            EventModel.createEvent(body).then((event) => {
+                console.log(event);
+                this.#removeProfileSettings(null);
+                this.view.drawEventCard();
                 // draw help window 'OK'
                 // add event card to profile page
             }).catch((onerror) => {
