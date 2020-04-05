@@ -160,10 +160,16 @@ export default class ProfileController extends MyController {
             social: this.user.links,
         };
 
+        this.removeErrorMessage(event);
+
         // Send request
         UserModel.putProfile(userProfile)
             .then(response => {
-                console.log('ok', response);
+                if (Object.prototype.hasOwnProperty.call(response, 'message')) {
+                    this.view.addErrorMessage(document.getElementsByClassName('re_btn re_btn__filled')[0], [response.message]);
+                } else {
+                    console.log('ok', response);
+                }
             })
             .catch(reason => console.log('ERROR', reason));
     };
