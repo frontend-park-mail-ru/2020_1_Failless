@@ -6,7 +6,7 @@ import Controller from 'Eventum/core/controller.js';
 import FeedUsersView from 'Eventum/views/feed-users-view.js';
 import settings from 'Settings/config.js'
 import SliderManager from "Blocks/slider/set-slider.js";
-import {MIN_AGE, MAX_AGE} from "Eventum/utils/static-data.js";
+import {MIN_AGE, MAX_AGE, staticTags} from "Eventum/utils/static-data.js";
 import {highlightTag} from "Eventum/utils/tag-logic.js";
 
 /**
@@ -22,11 +22,17 @@ export default class FeedUsersController extends Controller {
         super(parent);
         this.usersSelected = false; // заглушка
         this.list = null;
-        this.tagList = ['хочувМУЗЕЙ']; // заглушка
+        this.tagList = []; // заглушка
         this.currentPage = 1;
         this.currentItem = 0;
         EventModel.getTagList().then((tags) => {
-            this.view = new FeedUsersView(parent, tags);
+            if (tags) {
+                this.view = new FeedUsersView(parent, tags);
+            } else {
+                this.view = new FeedUsersView(parent, staticTags);
+            }
+        }).catch((onerror) => {
+            this.view = new FeedUsersView(parent, staticTags);
         });
         this.uid = null;
         this.sliderManager = new SliderManager();
@@ -95,7 +101,7 @@ export default class FeedUsersController extends Controller {
             women: true,
             minAge: MIN_AGE,
             maxAge: MAX_AGE,
-            limit: 3,
+            limit: 10,
         };
 
         // Get keywords (TODO: add more separators)
@@ -104,8 +110,8 @@ export default class FeedUsersController extends Controller {
         }
 
         // Get active tags
-        form.querySelectorAll('.tag__container.tag__container__active').forEach((tag) => {
-            filters.tags.push(Number(tag.firstElementChild.id));
+        form.querySelectorAll('.tag__container.tag__container_active').forEach((tag) => {
+            filters.tags.push(+tag.firstElementChild.getAttribute('data-id'));
         });
 
         let otherFilters = form.querySelector('.feed__other-options');
@@ -128,7 +134,8 @@ export default class FeedUsersController extends Controller {
         EventModel.getFeedEvents({
             uid: this.uid,
             page: this.currentPage,
-            limit: filters.limit,
+            limit: 10,
+            user_limit: filters.limit,
             query: String(...filters.keyWords),
             tags: filters.tags,
             Location: null,

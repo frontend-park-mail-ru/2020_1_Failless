@@ -15,10 +15,6 @@ export default class UserModel extends Model {
         this.profile = null;
     }
 
-    static getUser() {
-        return this.user;
-    }
-
     /**
      * Send user login data to server
      * @param {Object} userData - json with login data
@@ -30,7 +26,6 @@ export default class UserModel extends Model {
                 throw new Error('Server error');
             }
             return response.json().then(user => {
-                console.log(this.user);
                 this.user = user;
                 return user;
             });
@@ -46,7 +41,6 @@ export default class UserModel extends Model {
      * @return {Promise} promise to get user login data
      */
     static getLogin() {
-        console.log(this.user);
         if (this.user) {
             return new Promise((resolve) => {
                 resolve(this.user);
@@ -145,8 +139,6 @@ export default class UserModel extends Model {
     static getProfile() {
         return this.getLogin().then(user => {
             if (user) {
-                console.log('Get profile page of user ', user);
-                console.log(this.profile);
                 if (this.profile) {
                     return new Promise((resolve) => {
                         resolve(this.profile);

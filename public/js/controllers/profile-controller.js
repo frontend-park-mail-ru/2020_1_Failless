@@ -37,9 +37,9 @@ export default class ProfileController extends MyController {
         });
 
         // TODO: kill meeee
-        document.addEventListener('DOMContentLoaded', () => {
-            this.highlightCircle(2);
-        });
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     this.highlightCircle(2);
+        // });
     }
 
     /**

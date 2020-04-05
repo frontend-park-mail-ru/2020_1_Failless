@@ -6,7 +6,6 @@
  * @returns {String}
  */
 const getCookie = (name) => {
-    console.log(document.cookie);
     if (!document.cookie) {
         return void 0;
     }
@@ -18,8 +17,6 @@ const getCookie = (name) => {
     if (xsrfCookies.length === 0) {
         return void 0;
     }
-    console.log(decodeURIComponent(xsrfCookies[0].split('=')[1]));
-    console.log(decodeURIComponent(xsrfCookies[0].split('=')[0]));
     return decodeURIComponent(xsrfCookies[0].split('=')[1]);
 };
 

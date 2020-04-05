@@ -16,8 +16,8 @@ export default class AddEventView extends View {
         this.tags = tags;
         this.data = null;
     }
-
     render() {
+        let k = 1;
         const template = eventPopupTemplate({
             id: 'submit-event',
             fields: [
@@ -44,7 +44,7 @@ export default class AddEventView extends View {
                 {
                     name: 'Количество человек',
                     select: true,
-                    options: Array.from(Array(15).keys(), n => ++n),
+                    options: Array(14).fill(undefined, undefined, undefined).map((_, idx) => 2 + idx)
                 },
                 // {
                 //     name: 'Изображение',

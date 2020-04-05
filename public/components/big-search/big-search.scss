@@ -28,6 +28,9 @@
     background-color: $color-white;
     display: flex;
     border-radius: 4px;
+    @media screen and (orientation: portrait) {
+      width: 370px;
+    }
   }
 
   &__icon {
@@ -42,7 +45,11 @@
     column-gap: 0;
     counter-reset: item-counter;
 
-    @media screen and (orientation: portrait) {
+    @media screen and (orientation: portrait) and (min-width: 400px) {
+      column-count: 1;
+    }
+
+    @media screen and (orientation: portrait) and (min-width: 600px) {
       column-count: 2;
     }
 
@@ -64,7 +71,11 @@
     margin-left: auto;
     margin-right: auto;
 
-    @media screen and (orientation: portrait) {
+    @media screen and (orientation: portrait) and (min-width: 300px) {
+      width: 246px;
+    }
+
+    @media screen and (orientation: portrait) and (min-width: 600px) {
       width: 504px;
     }
 
