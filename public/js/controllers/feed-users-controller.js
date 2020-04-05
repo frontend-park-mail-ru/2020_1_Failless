@@ -59,19 +59,15 @@ export default class FeedUsersController extends Controller {
         if (data) {
             this.#setUpVoteButtons();
         }
-        this.addEventHandler(document.getElementById('form'), 'submit', this.#getFilters());
+        this.addEventHandler(document.getElementById('form'), 'submit', this.#getFilters);
 
-        // TODO: change to profile preferences
-        if (isEvent) {
-            this.sliderManager.setSlider(document.querySelector('.slider'), 18);
-        } else {
-            // Set two sliders and connect each other
-            let sliders = document.querySelectorAll('.slider');
-            this.sliderManager.setSliders(
-                {slider1: sliders[0], initialValue1: 18},
-                {slider2: sliders[1], initialValue2: 25});
-        }
-
+        // TODO: change initialValue to profile preferences
+        // Set two sliders and connect each other
+        let sliders = document.querySelectorAll('.slider');
+        this.sliderManager.setSliders(
+            {slider1: sliders[0], initialValue1: 18},
+            {slider2: sliders[1], initialValue2: 25});
+        this.sliderManager.setSlider(sliders[2], 5);
     };
 
     #setUpVoteButtons() {
@@ -88,7 +84,8 @@ export default class FeedUsersController extends Controller {
         });
     }
 
-    #getFilters() {
+    #getFilters = (event) => {
+        event.preventDefault();
         const form = document.getElementById('form');
 
         let filters = {
@@ -98,15 +95,17 @@ export default class FeedUsersController extends Controller {
             women: true,
             minAge: MIN_AGE,
             maxAge: MAX_AGE,
+            limit: 3,
         };
 
         // Get keywords (TODO: add more separators)
-        filters.keyWords = form.search_text.value.split(' ');
+        if (form.search_text.value.split(' ')[0]) {
+            filters.keyWords = form.search_text.value.split(' ');
+        }
 
         // Get active tags
         form.querySelectorAll('.tag__container.tag__container__active').forEach((tag) => {
-            filters.tags.push(tag.firstElementChild.innerText);
-
+            filters.tags.push(Number(tag.firstElementChild.id));
         });
 
         let otherFilters = form.querySelector('.feed__other-options');
@@ -120,12 +119,29 @@ export default class FeedUsersController extends Controller {
 
         // Get ages
         let ageSliderSpans = otherFilters.querySelectorAll('.slider__value');
-        if (ageSliderSpans.length === 2) {
-            filters.minAge = Number(ageSliderSpans[0].getAttribute('slider_value'));
-            filters.maxAge = Number(ageSliderSpans[1].getAttribute('slider_value'));
-        }
+        filters.minAge = Number(ageSliderSpans[0].getAttribute('slider_value'));
+        filters.maxAge = Number(ageSliderSpans[1].getAttribute('slider_value'));
+
+        // Get limit
+        filters.limit = Number(ageSliderSpans[2].getAttribute('slider_value'));
 
         console.log(filters);
+
+        EventModel.getFeedEvents({
+            uid: this.uid,
+            page: this.currentPage,
+            limit: filters.limit,
+            query: String(...filters.keyWords),
+            tags: filters.tags,
+            Location: null,
+            minAge: filters.minAge,
+            maxAge: filters.maxAge,
+            men: filters.men,
+            women: filters.women,
+        }).then((response) => {
+                console.log(response);
+            });
+
         return filters;
     };
 

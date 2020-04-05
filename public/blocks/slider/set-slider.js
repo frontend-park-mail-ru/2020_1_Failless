@@ -1,41 +1,45 @@
-import {MIN_AGE, MAX_AGE} from '../../js/utils/static-data.js';
+import {MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT} from '../../js/utils/static-data.js';
 
 const CONST_OFFSET = 1;
 
+// TODO: separate pairs from individual sliders
 export default class SliderManager {
     constructor() {
         this.sliders = [];
     }
 
     setSliders({slider1, initialValue1}, {slider2, initialValue2}) {
-        this.#registerSlider(slider1, initialValue1, function(offset, maxOffset) {return offset <= maxOffset;});
-        this.#registerSlider(slider2, initialValue2, function(offset, maxOffset) {return offset >= maxOffset;});
+        let minSliderIndex = this.#registerSlider(slider1, initialValue1, function(offset, maxOffset) {return offset <= maxOffset;});
+        let maxSliderIndex = this.#registerSlider(slider2, initialValue2, function(offset, maxOffset) {return offset >= maxOffset;});
 
-        this.sliders.forEach((slider) => {
-            this.#configureSlider(slider, this.#moveSliders);
-        });
+        this.#configureSlider(this.sliders[minSliderIndex], this.#moveSliders, MAX_AGE, MIN_AGE);
+        this.#configureSlider(this.sliders[maxSliderIndex], this.#moveSliders, MAX_AGE, MIN_AGE);
 
         // Set maxOffset
-        this.sliders[0].maxOffset = this.#rightOffset();
-        this.sliders[1].maxOffset = this.#leftOffset();
+        this.sliders[minSliderIndex].maxOffset = this.#rightOffset();
+        this.sliders[maxSliderIndex].maxOffset = this.#leftOffset();
     }
 
     setSlider(slider, initialValue) {
-        this.#registerSlider(slider, initialValue, null);
-        this.#configureSlider(this.sliders[0], this.#moveOne);
+        this.#configureSlider(
+            this.sliders[this.#registerSlider(slider, initialValue, null)],
+            this.#moveOne,
+            MAX_LIMIT,
+            MIN_LIMIT);
     }
 
-    #registerSlider(slider1, initialValue1, offsetFunc) {
+    #registerSlider(slider, initialValue, offsetFunc) {
         this.sliders.push({
-            thumbLabel: slider1.querySelector('.slider__value'),
-            maxmin:     slider1.querySelector('.slider__maxmin'),
-            input:      slider1.querySelector('input'),
+            thumbLabel: slider.querySelector('.slider__value'),
+            maxmin:     slider.querySelector('.slider__maxmin'),
+            input:      slider.querySelector('input'),
             step:       null,
-            maxWidth:   slider1.getBoundingClientRect().width,
-            currentValue: initialValue1,
+            maxWidth:   slider.getBoundingClientRect().width,
+            currentValue: initialValue,
             maxOffset:  null,
             checkOffset: offsetFunc,
         });
+        return this.sliders.length - 1;
     }
 
     // TODO: DRY
@@ -82,33 +86,33 @@ export default class SliderManager {
     }
 
     #moveOne = (activeSlider) => {
-        this.sliders[0].currentValue = activeSlider.value;
-        let offset = CONST_OFFSET + this.sliders[0].step * (this.sliders[0].currentValue - MIN_AGE);
-        this.sliders[0].thumbLabel.setAttribute('slider_value', this.sliders[0].currentValue);
-        this.sliders[0].input.value = this.sliders[0].currentValue;
-        this.sliders[0].thumbLabel.style.left = offset.toString() + 'px';
+        this.sliders[2].currentValue = activeSlider.value;
+        let offset = CONST_OFFSET + this.sliders[2].step * (this.sliders[2].currentValue - MIN_LIMIT);
+        this.sliders[2].thumbLabel.setAttribute('slider_value', this.sliders[2].currentValue);
+        this.sliders[2].input.value = this.sliders[2].currentValue;
+        this.sliders[2].thumbLabel.style.left = offset.toString() + 'px';
     };
 
-    #configureSlider(slider, movementFunc) {
+    #configureSlider(slider, movementFunc, max, min) {
         // Set step
-        slider.step = (slider.maxWidth - 25) / (MAX_AGE - MIN_AGE);
+        slider.step = (slider.maxWidth - 25) / (max - min);
 
         // Render max and min values if there are ones
         if (slider.maxmin) {
-            slider.maxmin.firstElementChild.innerText = MIN_AGE;
-            slider.maxmin.lastElementChild.innerText = MAX_AGE;
+            slider.maxmin.firstElementChild.innerText = min;
+            slider.maxmin.lastElementChild.innerText = max;
         } else {
             slider.thumbLabel.style.top = '3px';
         }
 
         // Set input
-        slider.input.setAttribute('min', MIN_AGE);
-        slider.input.setAttribute('max', MAX_AGE);
+        slider.input.setAttribute('min', min);
+        slider.input.setAttribute('max', max);
 
         // Place slider
         slider.thumbLabel.setAttribute('slider_value', slider.currentValue);
         slider.input.setAttribute('value', slider.currentValue);
-        let leftOffset = CONST_OFFSET + slider.step * (slider.currentValue - MIN_AGE);
+        let leftOffset = CONST_OFFSET + slider.step * (slider.currentValue - min);
         slider.thumbLabel.style.left = leftOffset.toString() + 'px';
 
         // Add event listener (same for two so it may cause problems on touchscreens)

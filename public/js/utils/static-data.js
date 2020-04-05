@@ -44,5 +44,7 @@ const tags = [
 
 const MIN_AGE = 18;
 const MAX_AGE = 100;
+const MIN_LIMIT = 2;
+const MAX_LIMIT = 15;
 
-export {Event, events, Tag, tags, MIN_AGE, MAX_AGE};
+export {Event, events, Tag, tags, MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT};
