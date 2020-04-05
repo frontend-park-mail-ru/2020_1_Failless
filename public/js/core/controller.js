@@ -180,7 +180,6 @@ export default class Controller {
         if (!this.header) {
             this.header = document.querySelector('header');
         }
-        console.log(this.header);
 
         const currentScroll = window.pageYOffset;
 
