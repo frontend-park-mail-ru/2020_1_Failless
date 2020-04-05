@@ -42,14 +42,6 @@ export default class LoginController extends Controller {
         }
     }
 
-    _showSetEventModal(event) {
-        document.getElementsByClassName('modal__container')[0].style.display = 'flex';
-    };
-
-    _hideSetEventModal(event) {
-        document.getElementsByClassName('modal__container')[0].style.display = 'none';
-    };
-
     /**
      * Get data from input form on sign up page
      * @return {{password: *, phone: *, name: *, email: *}} input form

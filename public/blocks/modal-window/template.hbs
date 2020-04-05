@@ -9,10 +9,29 @@
             </div>
         </div>
         <div class="modal__body">
-            {{#each tags as |tag|}}
-                {{log this}}
-                {{> $Blocks/tag/template }}
-            {{/each}}
+            {{#if addTag}}
+                {{#each tags as |tag|}}
+                    {{log this}}
+                    {{> $Blocks/tag/template }}
+                {{/each}}
+            {{/if}}
+            {{#if profileSettings}}
+                {{#each fields}}
+                    <div id="{{id}}" class="profile-edit__filed">
+                        <div class="profile-edit__type">{{ name }}</div>
+                        <div class="profile-edit__value">{{ value }}</div>
+                        {{#if button }}
+                            <a class="profile-edit__btn" role="link">{{ button }}</a>
+                        {{else }}
+                            <a class="profile-edit__btn" role="link" href="">Изменить</a>
+                        {{/if}}
+                    </div>
+                    {{#with edit_field}}
+                        {{> $Blocks/edit-field/template }}
+                    {{/with}}
+                    <hr class="profile-edit__line"/>
+                {{/each}}
+            {{/if}}
         </div>
         {{#if last_buttons}}
             <div class="modal__footer">

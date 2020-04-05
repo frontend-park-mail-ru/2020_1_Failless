@@ -1,6 +1,13 @@
 @import "../../modules/variables";
 
 .edit-field {
+  display: none;
+  overflow: hidden;
+
+  &__active {
+    display: block;
+  }
+
   &__form {
     display: flex;
     flex-direction: column;

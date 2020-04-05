@@ -59,19 +59,38 @@ export default class ProfileController extends MyController {
                     this.view.render(profile);
                     this.user = profile;
 
-                    const photoInput = document.getElementById('photoUpload');
-                    this.addEventHandler(photoInput, 'change', this.#handleFile);
-                    const metaInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
-                    this.addEventHandler(metaInput, 'click', this.#handleInfo);
-                    this.addEventHandler(document.querySelector('.tags-redirect'), 'click', this.#showModalTags);
-                    // TODO: i dunno how to get last item to remove kek in the future
-                    const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
-                    this.addEventHandler(settings, 'click', this.#profileSettings);
-                    this.addEventHandler(document.querySelector('.profile-left__tags'), 'click', this.#removeTag);
-                    this.addEventHandler(document.getElementsByClassName('re_btn re_btn__outline logout')[0], 'click', logoutRedirect);
-
-                    this.addEventHandler(document.querySelector('#add-event-btn'), 'click', this.#createEventPopup.bind(this));
-                    this.addEventHandler(document.querySelector('#add-event-link'), 'click', this.#createEventPopup.bind(this));
+                    this.addEventHandler(
+                        document.getElementById('photoUpload'),
+                        'change',
+                        this.#handleFile);
+                    this.addEventHandler(
+                        document.getElementsByClassName('re_btn re_btn__filled')[0],
+                        'click',
+                        this.#handleInfo);
+                    this.addEventHandler(
+                        document.querySelector('.tags-redirect'),
+                        'click',
+                        this.#showModalTags);
+                    this.addEventHandler(   // TODO: i dunno how to get last item to remove kek in the future
+                        document.getElementsByClassName('re_btn re_btn__outline kek')[0],
+                        'click',
+                        this.#showProfileSettingsModal);
+                    this.addEventHandler(
+                        document.querySelector('.profile-left__tags'),
+                        'click',
+                        this.#removeTag);
+                    this.addEventHandler(
+                        document.getElementsByClassName('re_btn re_btn__outline logout')[0],
+                        'click',
+                        logoutRedirect);
+                    this.addEventHandler(
+                        document.querySelector('#add-event-btn'),
+                        'click',
+                        this.#createEventPopup.bind(this));
+                    this.addEventHandler(
+                        document.querySelector('#add-event-link'),
+                        'click',
+                        this.#createEventPopup.bind(this));
                 } else {
                     console.error('You have not got rights for this page');
                     console.log(profile);
@@ -186,6 +205,97 @@ export default class ProfileController extends MyController {
             }).catch(reason => console.log('ERROR'));
     };
 
+    #showProfileSettingsModal = (event) => {
+        event.preventDefault();
+        this.editView = new ModalView(document.body);
+
+        this.editView.renderProfileSettings(
+            {
+                title: 'Настройки',
+                profileSettings: true,
+                last_buttons: [{title: 'Сохранить'}]
+            },
+            this.user);
+
+        // Disable click through background
+        let modalBG = document.body.querySelector('.modal__bg');
+        modalBG.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+
+        // Add eventListeners on body
+        this.activeModalWindow = modalBG.firstElementChild;
+        this.activeModalWindow.querySelector('.modal__body').addEventListener(
+            'click', this.#profileSettingsDelegator.bind(this), false);
+
+        // Exit icon
+        this.activeModalWindow.querySelector('.modal__header-icon').addEventListener(
+            'click', (event) => {
+                event.preventDefault();
+                this.editView.clear();
+                this.editView = null;
+            });
+        // Bottom button event
+        this.activeModalWindow.querySelector(
+            '.modal__footer').querySelector(
+            '.re_btn.re_btn__outline').addEventListener(
+            'click', this.#submitProfileSettings.bind(this), false)
+    };
+
+    #submitProfileSettings = (event) => {
+        let requestBody = {
+            password: '',
+            email: '',
+            phone: '',
+        };
+
+        // Get all inputs
+        const modalBody = this.activeModalWindow.querySelector('.modal__body');
+        requestBody.password = modalBody.querySelectorAll('input[type=password]')[2].value;
+        requestBody.email = modalBody.querySelector('input[type=email]').value;
+        requestBody.phone = modalBody.querySelector('input[type=tel]').value;
+
+        // Send request
+        UserModel.putClaims(requestBody)
+            .then((profile) => {
+                console.log(this.user);
+                this.user = profile;
+                console.log(this.user);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    #profileSettingsDelegator = (event) => {
+        event.preventDefault();
+        let editButton = null;
+        let doneButton = null;
+
+        if (event.target.classList.contains('profile-edit__btn')) {
+            editButton = event.target;
+        } else if (event.target.classList.contains('font') || event.target.classList.contains('btn')) {
+            // TODO: replace with event bubbling
+            editButton = event.target.parentElement.parentElement.parentElement.parentElement.previousElementSibling.lastElementChild;
+            if (!editButton.classList.contains('profile-edit__btn')) {
+                return;
+            }
+        } else {
+            return;
+        }
+
+        editButton.classList.toggle('profile-edit__btn__active');
+
+        if (editButton.classList.contains('profile-edit__btn__active')) {
+            editButton.innerText = 'Отменить'
+        } else {
+            editButton.innerText = 'Изменить'
+        }
+
+        editButton.parentElement.nextElementSibling.classList.toggle('edit-field__active');
+    };
+
     /**
      * Show modal window with tags settings
      * @param {Event} event
@@ -206,13 +316,14 @@ export default class ProfileController extends MyController {
                 tag.activeClass = 'tag__container_active';
             }
         });
-        console.log(this.localTags);
         this.editView.render({
             title: 'Ваши теги',
+            addTag: true,
             tags: this.localTags,
             last_buttons: [{title: 'ОК'}]
         });
 
+        // Disable click through background
         let modalBG = document.body.querySelector('.modal__bg');
         modalBG.addEventListener('click', (event) => {
             event.preventDefault();
@@ -341,10 +452,12 @@ export default class ProfileController extends MyController {
         let template = editTemplate();
         if (event.target.tagName === 'A') {
             let filed = event.target.parentNode;
+            console.log(filed);
             switch (filed.id) {
                 case 'popupPasswd': {
                     console.log('draw password field');
                     this.editView.renderPasswordForm(filed);
+                    filed.querySelectorAll('.btn btn_square.btn_size_middle.btn_color_dark-blue');
                     break;
                 }
                 case 'popupMail': {

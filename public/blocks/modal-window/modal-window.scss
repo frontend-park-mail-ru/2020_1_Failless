@@ -2,7 +2,7 @@
 
 .modal {
   &__bg {
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
@@ -19,7 +19,7 @@
     height: auto;
     max-width: 75vw;
     box-sizing: border-box;
-    padding: 0 $re__small-padding;
+    padding: $re__small-padding 30px;
     background-color: $color-white;
     border-radius: $re--border-radius;
   }
