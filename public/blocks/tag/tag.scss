@@ -20,7 +20,7 @@
     transform-style: preserve-3d;
     cursor: pointer;
 
-    &__active {
+    &_active {
       opacity: 1;
 
       & .tag {

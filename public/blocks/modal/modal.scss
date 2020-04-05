@@ -1,0 +1,26 @@
+@import "../../modules/variables";
+
+.modal {
+  &__container {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  &__window {
+    background-color: $color-white;
+    width: 360px;
+    height: fit-content;
+    overflow: auto;
+    margin: auto;
+    padding: $re--big-padding;
+    border-radius: $re--border-radius;
+  }
+}

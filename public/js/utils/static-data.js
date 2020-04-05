@@ -24,7 +24,7 @@ function Tag(title) {
     this.title = '#' + title;
 }
 
-const tags = [
+const staticTags = [
     new Tag('хочувБАР'),
     new Tag('хочувКИНО'),
     new Tag('хочунаКАТОК'),

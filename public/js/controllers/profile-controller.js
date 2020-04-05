@@ -4,10 +4,13 @@ import ProfileView from 'Eventum/views/profile-view.js';
 import MyController from 'Eventum/controllers/my-controller.js';
 import UserModel from 'Eventum/models/user-model.js';
 import ProfileEditView from 'Eventum/views/profile-edit-view.js';
+import AddEventView from 'Eventum/views/add-event-view.js';
 import ModalView from 'Eventum/views/modal-view.js';
-import {tags} from "Eventum/utils/static-data.js";
+import {staticTags} from "Eventum/utils/static-data.js";
 import {highlightTag} from 'Eventum/utils/tag-logic.js';
 import logoutRedirect from 'Eventum/utils/logout.js';
+import EventModel from 'Eventum/models/event-model.js';
+import editTemplate from 'Blocks/edit-field/template.hbs'
 
 /**
  * @class ProfileController
@@ -25,7 +28,18 @@ export default class ProfileController extends MyController {
         this.image = '';
         this.user = null;
         this.activeModalWindow = null;
-        this.localTags = [...tags];
+        this.addEventView = null;
+        EventModel.getTagList().then((tags) => {
+            this.localTags = [...tags];
+        }).catch((onerror) => {
+            console.error(onerror);
+            this.localTags = [...staticTags];
+        });
+
+        // TODO: kill meeee
+        document.addEventListener('DOMContentLoaded', () => {
+            this.highlightCircle(2);
+        });
     }
 
     /**
@@ -48,9 +62,9 @@ export default class ProfileController extends MyController {
                     const photoInput = document.getElementById('photoUpload');
                     this.addEventHandler(photoInput, 'change', this.#handleFile);
                     // photoInput.addEventListener('change', this.#handleFile.bind(this), false);
-                    const textInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
-                    this.addEventHandler(textInput, 'click', this.#handleInfo);
-                    this.addEventHandler(document.querySelector('.tags_redirect'), 'click', this.#showModalTags);
+                    const metaInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
+                    this.addEventHandler(metaInput, 'click', this.#handleInfo);
+                    this.addEventHandler(document.querySelector('.tags-redirect'), 'click', this.#showModalTags);
                     // textInput.addEventListener('click', this.#handleInfo.bind(this), false);
                     // document.querySelector('.tags_redirect').addEventListener(
                     //     'click', this.#showModalTags.bind(this), false);
@@ -59,13 +73,16 @@ export default class ProfileController extends MyController {
                     this.addEventHandler(settings, 'click', this.#profileSettings);
                     this.addEventHandler(document.querySelector('.profile-left__tags'), 'click', this.#removeTag);
                     this.addEventHandler(document.getElementsByClassName('re_btn re_btn__outline logout')[0], 'click', logoutRedirect);
+
+                    this.addEventHandler(document.querySelector('#add-event-btn'), 'click', this.#createEventPopup.bind(this));
+                    this.addEventHandler(document.querySelector('#add-event-link'), 'click', this.#createEventPopup.bind(this));
                     // settings.addEventListener('click', this.#profileSettings.bind(this), false);
                     // document.querySelector('.profile-left__tags').addEventListener(
                     //     'click', this.#removeTag, false);
                     // document.getElementsByClassName('re_btn re_btn__outline logout')[0].addEventListener(
                     //     'click', logoutRedirect, false);
                 } else {
-                    console.error('You have no rights');
+                    console.error('You have not got rights for this page');
                     console.log(profile);
                 }
             }).catch(onerror => {
@@ -131,19 +148,25 @@ export default class ProfileController extends MyController {
         return button;
     };
 
+    /**
+     * Handle meta information such as tags, social and about
+     * @param {Event} event
+     */
     #handleInfo = (event) => {
         event.preventDefault();
 
         // Set options
-        const textInput = document.getElementsByClassName('feed__options_field_textarea')[0];
+        const textInput = document.getElementsByClassName('profile-left__options-field_textarea')[0];
         const tags = document.querySelectorAll('.tag');
         let selectedTags = [];
         tags.forEach((tag) => {
-            selectedTags.push(tag.id);
+            selectedTags.push(+tag.getAttribute('data-id'));
         });
+
         const userProfile = {
+            uid: this.user.uid,
             tags: selectedTags,
-            about: textInput.value, // TODO: check if it's safe
+            about: textInput.value, // TODO: check iftags it's safe
             social: this.user.links,
         };
 
@@ -175,46 +198,51 @@ export default class ProfileController extends MyController {
 
     /**
      * Show modal window with tags settings
-     * @param event
+     * @param {Event} event
      */
     #showModalTags = (event) => {
+        event.preventDefault();
         this.editView = new ModalView(document.body);
 
         // Rendering active tags in modal view
-        let activeTags = document.body.querySelectorAll('.tag__container.tag__container__active');
+        let activeTags = document.body.querySelectorAll('.tag__container.tag__container_active');
         let activeTagsTitles = [];
         for (let iii = 0; iii < activeTags.length; iii++) {
             activeTagsTitles.push(activeTags[iii].firstElementChild.innerText);
         }
         this.localTags.forEach((tag) => {
             tag.editable = true;
-            if (activeTagsTitles.includes(tag.title)) {
-                tag.active_class = 'tag__container__active';
+            if (activeTagsTitles.includes(tag.name)) {
+                tag.activeClass = 'tag__container_active';
             }
         });
+        console.log(this.localTags);
         this.editView.render({
             title: 'Ваши теги',
             tags: this.localTags,
-            last_buttons: [
-                {title: 'Сохранить',}]
-            });
+            last_buttons: [{title: 'ОК'}]
+        });
+
         let modalBG = document.body.querySelector('.modal__bg');
         modalBG.addEventListener('click', (event) => {
             event.preventDefault();
             event.stopPropagation();
         });
+
         this.activeModalWindow = modalBG.firstElementChild;
         this.activeModalWindow.querySelector('.modal__body').addEventListener(
             'click', highlightTag, false);
-        this.activeModalWindow.querySelector('.modal__header__icon').addEventListener(
+        this.activeModalWindow.querySelector('.modal__header-icon').addEventListener(
             'click', (event) => {
                 event.preventDefault();
                 this.editView.clear();
-                this.editView = null;});
+                this.editView = null;
+            });
+
         this.activeModalWindow.querySelector(
             '.modal__footer').querySelector(
-                '.re_btn.re_btn__outline').addEventListener(
-                    'click', this.#submitTagsHandler.bind(this), false)
+            '.re_btn.re_btn__outline').addEventListener(
+            'click', this.#submitTagsHandler.bind(this), false)
     };
 
     #submitTagsHandler = (event) => {
@@ -232,16 +260,18 @@ export default class ProfileController extends MyController {
         this.localTags = [];
         let length = 0;
         allTags.forEach((tag) => {
-            let tempTag = {
-                title: tag.firstElementChild.innerText,
-                editable: true,
-            };
-            if (tag.classList.contains('tag__container__active')) {
-                tempTag.active_class = 'tag__container__active';
-                tagsField.appendChild(tag);
-                length++;
+                let tempTag = {
+                    name: tag.firstElementChild.innerText,
+                    tag_id: tag.firstElementChild.getAttribute('data-id'),
+                    editable: true,
+                };
+                if (tag.classList.contains('tag__container_active')) {
+                    tempTag.activeClass = 'tag__container_active';
+                    tagsField.appendChild(tag);
+                    length++;
+                }
+                this.localTags.push(tempTag);
             }
-            this.localTags.push(tempTag);}
         );
 
         if (length === 0) {
@@ -268,7 +298,7 @@ export default class ProfileController extends MyController {
         if (elemContainer && elemContainer.classList.contains('tag__container')) {
             delete this.localTags.find((tag) => {
                 return (tag.title === elemContainer.firstElementChild.innerText);
-            }).active_class;
+            }).activeClass;
 
             // Check if it was the last tag
             if (elemContainer.parentElement.childElementCount === 1) {
@@ -281,7 +311,7 @@ export default class ProfileController extends MyController {
                 emptyMessage.appendChild(message);
                 elemContainer.parentElement.appendChild(emptyMessage);
             }
-          
+
             elemContainer.remove();
         }
     };
@@ -320,36 +350,68 @@ export default class ProfileController extends MyController {
     #drawUnfoldedLine = (event) => {
         event.preventDefault();
         console.log(event.target);
-        let template = Handlebars.templates['edit'];
+        let template = editTemplate();
         if (event.target.tagName === 'A') {
             let filed = event.target.parentNode;
             switch (filed.id) {
-            case 'popupPasswd': {
-                console.log('draw password field');
-                this.editView.renderPasswordForm(filed);
-                break;
-            }
-            case 'popupMail': {
-                console.log('draw email field');
-                break;
-            }
-            case 'popupSex': {
-                console.log('draw gender field');
-                break;
-            }
-            case 'popupPhone': {
-                console.log('draw phone field');
-                break;
-            }
-            case 'popupLang': {
-                console.log('draw lang field');
-                break;
-            }
-            case 'popupBirth': {
-                console.log('draw lang field');
-                break;
-            }
+                case 'popupPasswd': {
+                    console.log('draw password field');
+                    this.editView.renderPasswordForm(filed);
+                    break;
+                }
+                case 'popupMail': {
+                    console.log('draw email field');
+                    break;
+                }
+                case 'popupSex': {
+                    console.log('draw gender field');
+                    break;
+                }
+                case 'popupPhone': {
+                    console.log('draw phone field');
+                    break;
+                }
+                case 'popupLang': {
+                    console.log('draw lang field');
+                    break;
+                }
+                case 'popupBirth': {
+                    console.log('draw lang field');
+                    break;
+                }
             }
         }
     };
+
+    #createEventPopup(event) {
+        event.preventDefault();
+        this.addEventView = new AddEventView(this.parent, this.localTags);
+        this.addEventView.render();
+        const closeBtn = document.getElementsByClassName('profile-edit__icon')[0];
+        this.addEventHandler(closeBtn, 'click', this.#removeProfileSettings);
+        document.querySelector('.btn.btn_square.btn_size_middle.btn_color_dark-blue').addEventListener('click', (event) => {
+            event.preventDefault();
+            const form = document.querySelector('.profile-edit__form');
+            const fields = form.querySelectorAll('.edit-field__input');
+            const body = {
+                uid: this.user.uid,
+                title: fields[0].value,
+                description: fields[1].value,
+                tag_id: +fields[2].value,
+                date: fields[3].value,
+                limit: +fields[4].value,
+                // photos: form[4].photos,
+            };
+
+            EventModel.createEvent(body).then((event) => {
+                console.log(event);
+                this.#removeProfileSettings(null);
+                this.view.drawEventCard(event);
+                // TODO: draw help window 'OK'
+            }).catch((onerror) => {
+                console.log(onerror);
+            });
+        });
+
+    }
 }
