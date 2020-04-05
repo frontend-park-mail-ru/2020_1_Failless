@@ -4,8 +4,10 @@ import EventModel from 'Eventum/models/event-model.js';
 import UserModel from 'Eventum/models/user-model.js';
 import Controller from 'Eventum/core/controller.js';
 import FeedUsersView from 'Eventum/views/feed-users-view.js';
-import SetSliders from 'Blocks/slider/set-slider.js';
 import settings from 'Settings/config.js'
+import SliderManager from "Blocks/slider/set-slider.js";
+import {MIN_AGE, MAX_AGE} from "Eventum/utils/static-data.js";
+import {highlightTag} from "Eventum/utils/tag-logic.js";
 
 /**
  * @class FeedUsersController
@@ -18,21 +20,18 @@ export default class FeedUsersController extends Controller {
      */
     constructor(parent) {
         super(parent);
-        this.searching = false;
-        this.usersSelected = false;
+        this.usersSelected = false; // заглушка
         this.list = null;
-        this.tagList = [];
+        this.tagList = ['хочувМУЗЕЙ']; // заглушка
         this.currentPage = 1;
         this.currentItem = 0;
         EventModel.getTagList().then((tags) => {
             this.view = new FeedUsersView(parent, tags);
         });
         this.uid = null;
+        this.sliderManager = new SliderManager();
     }
 
-    searching;
-    currentProfile;
-    currentProfileEvents;
 
     /**
      * Create action
@@ -56,16 +55,19 @@ export default class FeedUsersController extends Controller {
      */
     #actionCallback = (data, selectedTags, isEvent) => {
         this.view.render(data, selectedTags, isEvent);
-        document.querySelectorAll('.search-tag').forEach((tag) => {
-            this.addEventHandler(tag, 'click', this.#highlightTag);
-            // tag.addEventListener('click', this.#highlightTag);
-        });
+        this.addEventHandler(document.querySelector('.feed__options-field'), 'click', highlightTag);
         if (data) {
             this.#setUpVoteButtons();
         }
-        this.addEventHandler(document.getElementById('form'), 'submit', this.#setOptions);
-        // document.getElementById('form').addEventListener('submit', this.#setOptions);
-        SetSliders(18, 60, 25);
+        this.addEventHandler(document.getElementById('form'), 'submit', this.#getFilters);
+
+        // TODO: change initialValue to profile preferences
+        // Set two sliders and connect each other
+        let sliders = document.querySelectorAll('.slider');
+        this.sliderManager.setSliders(
+            {slider1: sliders[0], initialValue1: 18},
+            {slider2: sliders[1], initialValue2: 25});
+        this.sliderManager.setSlider(sliders[2], 5);
     };
 
     #setUpVoteButtons() {
@@ -82,81 +84,73 @@ export default class FeedUsersController extends Controller {
         });
     }
 
-    /**
-     *
-     * @param {Event} event
-     */
-    #highlightTag = (event) => {
-        event.preventDefault();
-        const dataId = event.currentTarget.getAttribute('data-id');
-        // TODO: parse data-id of element
-        this.tagList.push(dataId);
-        this.#selectTag(this.tagList).then((resolve) => {
-            // TODO: if redraw creates in the selectTags then do something or nothing if not then create redraw
-        });
-
-        let hideButton = event.currentTarget.querySelector('.x_btn');
-        console.log(event);
-        console.log(hideButton);
-        if (event.currentTarget.style.opacity === '0.5') {
-            event.currentTarget.style.opacity = '1';
-            hideButton.style.display = 'block';
-        } else {
-            event.currentTarget.style.opacity = '0.5';
-            hideButton.style.display = 'none';
-        }
-    };
-
-    #setOptions = (event) => {
+    #getFilters = (event) => {
         event.preventDefault();
         const form = document.getElementById('form');
-        let searchOptions = {
-            text: form.search_text.value,
+
+        let filters = {
             tags: [],
+            keyWords: [],
+            men: true,
+            women: true,
+            minAge: MIN_AGE,
+            maxAge: MAX_AGE,
+            limit: 3,
         };
 
-        form.querySelectorAll('.search-tag').forEach((tag) => {
-            if (tag.style.opacity === '1') {
-                searchOptions.tags.push(tag.getElementsByClassName('tag tag_size_middle')[0].innerText);
-            }
-        });
-
-        console.log(searchOptions);
-
-        // TODO: Send searchOptions to back-end
-
-        if (!this.searching) {
-            this.searching = true;
-            this.#getNextPerson();
-        } // else don't
-        // cause changing settings shouldn't change current person on the screen
-    };
-
-    #getNextPerson = (event) => {
-        if (event) {
-            event.preventDefault();
+        // Get keywords (TODO: add more separators)
+        if (form.search_text.value.split(' ')[0]) {
+            filters.keyWords = form.search_text.value.split(' ');
         }
 
-        // TODO: Send request to back and fill currentProfile
-
-        this.currentProfile = {
-            name: 'Another Egor',
-            age: 30,
-            about: 'Вон другой парень',
-            photos: ['/ProfilePhotos/2.jpg'],
-        };
-
-        let columns = this.parent.getElementsByClassName('feed__column');
-        const template = {
-            profile: this.currentProfile,
-            events: this.currentProfileEvents,
-            isEvents: false,
-        };
-        columns[1].innerHTML = Handlebars.templates['feed-center']({profile: this.currentProfile});
-        columns[2].innerHTML = Handlebars.templates['feed-right']({
-            profile: this.currentProfile,
-            events: this.currentProfileEvents
+        // Get active tags
+        form.querySelectorAll('.tag__container.tag__container__active').forEach((tag) => {
+            filters.tags.push(Number(tag.firstElementChild.id));
         });
+
+        let otherFilters = form.querySelector('.feed__other-options');
+
+        // Get genders
+        let genderInputs = otherFilters.querySelectorAll('.feed__checkbox-label input');
+        if (genderInputs.length === 2) {
+            filters.men = genderInputs[0].checked;
+            filters.women = genderInputs[1].checked;
+        }
+
+        // Get ages
+        let ageSliderSpans = otherFilters.querySelectorAll('.slider__value');
+        filters.minAge = Number(ageSliderSpans[0].getAttribute('slider_value'));
+        filters.maxAge = Number(ageSliderSpans[1].getAttribute('slider_value'));
+
+        // Get limit
+        filters.limit = Number(ageSliderSpans[2].getAttribute('slider_value'));
+
+        EventModel.getFeedEvents({
+            uid: this.uid,
+            page: this.currentPage,
+            limit: filters.limit,
+            query: String(...filters.keyWords),
+            tags: filters.tags,
+            Location: null,
+            minAge: filters.minAge,
+            maxAge: filters.maxAge,
+            men: filters.men,
+            women: filters.women,
+        })
+            .then((events) => {
+                this.list = events;
+                if (this.list) {
+                    this.view.updateData(this.list[0], !this.usersSelected);
+                    return;
+                }
+                this.view.updateData(null, !this.usersSelected);
+            })
+            .catch((onerror) => {
+                console.error(onerror);
+                return onerror;
+            });
+
+        return filters;
     };
 
     #voteHandler = (isLike) => {

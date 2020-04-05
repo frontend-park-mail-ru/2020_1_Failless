@@ -16,6 +16,7 @@
   cursor: pointer;
   margin-top: -12px;
   box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
 }
 
 @mixin slider-track() {
@@ -31,6 +32,7 @@ input[type=range] {
   margin: $re--medium-padding 0;
   width: 100%;
   cursor: grab;
+  pointer-events: none;
 
   &:focus {
     outline: none;
@@ -120,5 +122,18 @@ input[type=range] {
     &::before {
       content: attr(slider_value);
     }
+  }
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  &__title {
+    font-size: 10px;
+    font-weight: 500;
+    color: $color-black;
+    margin-right: 5px;
   }
 }

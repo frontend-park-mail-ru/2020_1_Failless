@@ -2,11 +2,12 @@
 
 .options-footer {
   padding: $re--big-padding 0;
-  width: 93%;
-  height: auto;
+  //width: 93%;
+  //height: auto;
   position: sticky;
+  bottom: 0;
   background-color: white;
-  box-shadow: 0 -10px 5px -6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 -6px 5px -6px rgba(0, 0, 0, 0.12);
   display: flex;
   justify-content: space-evenly;
   align-items: center;

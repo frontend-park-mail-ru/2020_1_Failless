@@ -33,7 +33,18 @@ export default class EventModel extends Model {
 
     /**
      * Get event data from server
-     * @param {{query: string, page: number}} eventsRequest - request with query, limits and page
+     * @param {{
+     *      uid: number,
+     *      page: number,
+     *      limit: number,
+     *      query: string,
+     *      tags: []number,
+     *      Location: location
+     *      minAge: number,
+     *      maxAge: number,
+     *      men: boolean,
+     *      women: boolean,
+     * }} eventsRequest - request with query, limits and page
      * @return {Promise} promise to get user data
      */
     static getFeedEvents(eventsRequest) {
@@ -127,7 +138,6 @@ export default class EventModel extends Model {
                 throw new Error('Server error');
             }
             return response.json().then((tags) => {
-                console.log(tags);
                 this.tags = tags;
                 return tags;
             });
