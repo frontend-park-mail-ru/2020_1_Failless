@@ -149,4 +149,16 @@ export default class EventModel extends Model {
             throw new Error(error);
         });
     }
+
+    static getEventFollowers(eid) {
+        return NetworkModule.fetchGet({path: `/event/${eid}/follow`}).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
+            throw new Error(error);
+        });
+    }
 }

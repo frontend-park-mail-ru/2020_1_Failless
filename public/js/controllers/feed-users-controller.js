@@ -60,7 +60,22 @@ export default class FeedUsersController extends Controller {
      * @param {boolean} isEvent
      */
     #actionCallback = (data, selectedTags, isEvent) => {
-        this.view.render(data, selectedTags, isEvent);
+        if (data) {
+            EventModel.getEventFollowers(data.eid).then((followers) => {
+                this.view.render(data, selectedTags, isEvent, followers);
+                this.#initMainEventHandlers(data);
+            });
+        } else {
+            this.view.render(data, selectedTags, isEvent);
+            this.#initMainEventHandlers(data);
+        }
+    };
+
+    /**
+     *
+     * @param data
+     */
+    #initMainEventHandlers(data) {
         this.addEventHandler(document.querySelector('.feed__options-field'), 'click', highlightTag);
         if (data) {
             this.#setUpVoteButtons();
@@ -74,7 +89,7 @@ export default class FeedUsersController extends Controller {
             {slider1: sliders[0], initialValue1: 18},
             {slider2: sliders[1], initialValue2: 25});
         this.sliderManager.setSlider(sliders[2], 5);
-    };
+    }
 
     #setUpVoteButtons() {
         const approveBtn = document.getElementsByClassName('re_btn__approve')[0];

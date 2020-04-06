@@ -31,8 +31,9 @@ export default class FeedUsersView extends View {
      * @param {Object} data
      * @param {Array} selectedTags
      * @param {boolean} isEvent
+     * @param {Array }followers
      */
-    render(data, selectedTags, isEvent) {
+    render(data, selectedTags, isEvent, followers = null) {
         this.data = data;
         this.isEvent = isEvent;
         this.#setUpPhotos();
@@ -47,7 +48,7 @@ export default class FeedUsersView extends View {
             tags: this.tags,
             data: this.data,
             isEvent: isEvent,
-            users: null,  // TODO: take it by AJAX
+            users: followers,
             events: null, // TODO: take it by AJAX
         };
         console.log(this.data);
