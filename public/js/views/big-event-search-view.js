@@ -55,4 +55,10 @@ export default class BigEventSearchView extends View {
 
         this.resultsArea.insertAdjacentHTML('beforeend', template);
     }
+
+    renderNotFound() {
+        this.resultsArea.innerHTML = '';
+        let template = `<h2 class="big-search__message">Ничего не найдено</h2>`;
+        this.resultsArea.parentElement.insertAdjacentHTML('beforeend', template);
+    }
 }

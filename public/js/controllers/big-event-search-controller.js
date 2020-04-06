@@ -43,13 +43,19 @@ export default class BigEventSearchController extends Controller {
     #completeRequest = (event) => {
         if (event.code === 'Enter') {
             event.preventDefault();
+            const msg = document.querySelector('.big-search__message');
+            if (msg) {
+                msg.remove();
+            }
             console.log(event.target.value);
 
             this.removeErrorMessage(event);
 
-            EventModel.getEvents({page: 1, limit: 10, query: event.target.value})
+            EventModel.getEvents({page: this.pageDownloaded, limit: 10, query: event.target.value})
                 .then(events => {
-                    if (Object.prototype.hasOwnProperty.call(events, 'message')) {
+                    if (events === null) {
+                        this.view.renderNotFound();
+                    } else if (Object.prototype.hasOwnProperty.call(events, 'message')) {
                         this.view.addErrorMessage(document.getElementsByClassName('big-search__icon')[0], [events.message]);
                     } else {
                         ++this.pageDownloaded;
