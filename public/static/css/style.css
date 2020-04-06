@@ -189,7 +189,7 @@
   width: 8px;
 }
 .feed__column {
-  width: 244px;
+  width: 258px;
   flex: 1 1 auto;
   background-color: white;
   border-radius: 4px;
@@ -1618,7 +1618,7 @@
 }
 
 .big-event {
-  width: 244px;
+  width: 236px;
   box-sizing: border-box;
   break-inside: avoid;
   counter-increment: item-counter;
@@ -2128,7 +2128,7 @@ textarea:focus {
 }
 
 .container {
-  width: 1000px;
+  width: 1084px;
   box-sizing: border-box;
 }
 
