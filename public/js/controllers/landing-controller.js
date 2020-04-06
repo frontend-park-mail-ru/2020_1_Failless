@@ -1,7 +1,7 @@
 'use strict';
 
-import Controller from '../core/controller.js';
-import LandingView from '../views/landing-view.js';
+import Controller from 'Eventum/core/controller.js';
+import LandingView from 'Eventum/views/landing-view.js';
 
 /**
  * @class LandingController
@@ -23,5 +23,17 @@ export default class LandingController extends Controller {
     action() {
         super.action();
         this.view.render();
+
+        document.querySelectorAll('.re_btn__white').forEach((btn) => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                window.history.pushState({}, '', '/signup');
+                window.history.pushState({}, '', '/signup');
+                window.history.back();
+            });
+        });
+
+        this.addEventHandler(window, 'scroll', this.stickyHeader);
     }
 }

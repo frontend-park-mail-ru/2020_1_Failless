@@ -1,0 +1,11 @@
+<div class="event">
+    <div class="event__photos">
+        {{#each photos as | img |}}
+            <img class="event__item event__item event__item_one" src="{{ img }}" alt="{{ img }}">
+        {{/each}}
+    </div>
+    <div class="event__title">{{ title }}</div>
+    <div class="event__place">{{ place }}</div>
+    <div class="event__description">{{ description }}</div>
+    <hr class="event__line">
+</div>

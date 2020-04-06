@@ -1,0 +1,414 @@
+@import "../../modules/images";
+@import "../../modules/variables";
+
+$people-img: $screen-img-path + "landing.jpg";
+
+.landing {
+  width: 100%;
+  margin-top: $header-height;
+  display: block;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-blue;
+
+  &__screen {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+
+    &_photo {
+      width: 100%;
+      box-sizing: border-box;
+      background-size: cover;
+      background-position: center;
+      @media screen and (orientation: landscape) {
+        min-height: 712px !important;
+      }
+
+      @media screen and (max-width: 1000px) {
+        min-height: 512px !important;
+      }
+
+      background-image:
+              linear-gradient(
+                  135deg,
+                  rgba(8, 41, 55, 0.75) 0%,
+                  rgba(44, 21, 55, 0.75) 50%,
+                  rgba(55, 15, 19, 0.75) 100%),
+              url($people-img);
+
+    }
+
+    &_scenario {
+      background: $color-white;
+    }
+
+    &_creators {
+      background: rgba(18, 194, 233);
+    }
+
+    &_footer {
+      background: $color-black;
+      text-align: left;
+    }
+  }
+
+  /*-------------------------------------------*\
+     Photo
+  \*-------------------------------------------*/
+
+  &__photo {
+    &__logo {
+      margin-bottom: 50px;
+      cursor: default;
+    }
+
+    &__title {
+      font-size: 42px;
+      margin-bottom: $re--medium-padding;
+      cursor: default;
+    }
+
+    &__text {
+      font-size: 18px;
+      font-weight: 400;
+      cursor: default;
+    }
+
+    &__btn {
+      margin-top: 50px;
+    }
+  }
+
+  /*-------------------------------------------*\
+     Scenarios
+  \*-------------------------------------------*/
+
+  &__scenario {
+    padding-bottom: $re--large-padding;
+
+    &__row {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+
+      & svg {
+        min-width: 188px;
+        margin-right: 130px;
+      }
+    }
+
+    & .separator {
+      margin: $re--large-padding 0;
+    }
+
+    &__text {
+      box-sizing: border-box;
+      text-align: left;
+
+      &__title {
+        color: $color-black;
+        font-size: 25px;
+        font-weight: 700;
+        margin-bottom: 27px;
+      }
+
+      &__body {
+        color: #888888;
+        font-size: 18px;
+        font-weight: 400;
+      }
+    }
+  }
+
+  /*-------------------------------------------*\
+     Creators
+  \*-------------------------------------------*/
+
+  &__creators {
+    &__row {
+      display: flex;
+      justify-content: center;
+
+      & .separator_vertical {
+        margin: 20px 5vw (40px + $re--large-padding);
+
+        &:last-child {
+          display: none;
+        }
+      }
+    }
+  }
+
+  /*-------------------------------------------*\
+     Footer
+  \*-------------------------------------------*/
+
+  &__footer {
+    &__body {
+      display: flex;
+      align-items: flex-start;
+      margin: $re--huge-padding 0 $re--big-padding;
+    }
+
+    &__creds {
+      color: #686868;
+      font-size: 12px;
+      margin: $re--large-padding 0;
+      text-align: center;
+    }
+
+    &__logo {
+      width: fit-content;
+      width: -moz-fit-content;
+      font-size: 30px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      cursor: default;
+    }
+
+    &__about {
+      color: #7C7C7C;
+      font-size: 16px;
+      font-weight: 300;
+      cursor: default;
+    }
+
+    &__column {
+      min-width: 25%;
+
+      &:first-child {
+        display: flex;
+        flex-flow: column;
+        align-items: flex-start;
+        min-width: 50%;
+
+        & button {
+          margin-top: 39px;
+        }
+      }
+    }
+
+    &__section {
+      display: flex;
+      flex-flow: column;
+      margin-bottom: $re--large-padding;
+    }
+
+    &__title {
+      color: $color-white;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: $re--medium-padding;
+      cursor: default;
+    }
+
+    &__link {
+      margin-bottom: 3px;
+      color: #686868;
+      font-size: 13px;
+      font-weight: 300;
+      text-decoration: underline;
+      cursor: pointer;
+      @include transition(0.3s, ease-in-out);
+
+      &:hover {
+        color: $re--color-light-gray;
+      }
+    }
+  }
+
+  /*-------------------------------------------*\
+     Text
+  \*-------------------------------------------*/
+
+  &__title {
+    &_second {
+      padding: $re--large-padding 0;
+      font-size: 32px;
+      color: $color-white;
+      font-weight: 400;
+    }
+  }
+
+  &__text {
+    font-weight: bold;
+    font-size: 26px;
+    color: $color-white;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .landing__screen {
+    padding: 0 5vw;
+  }
+}
+
+/*-------------------------------------------*\
+   Photo MEDIA
+\*-------------------------------------------*/
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .landing__screen_photo {
+    padding: 0 10vw;
+  }
+
+  .landing__photo {
+    &__logo {
+      margin-bottom: 40px;
+    }
+
+    &__title {
+      font-size: 27px;
+      font-weight: bold;
+    }
+
+    &__text {
+      font-size: 13px;
+      font-weight: 300;
+    }
+
+    &__btn {
+      margin-top: 40px;
+    }
+  }
+}
+
+/*-------------------------------------------*\
+   Scenarios MEDIA
+\*-------------------------------------------*/
+
+@media only screen and (max-width: 1000px) {}
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .landing__screen_scenario {
+    box-sizing: border-box;
+    padding: 0 6vw $re--big-padding;
+  }
+
+  .landing__scenario {
+    &__row {
+      flex-flow: column;
+
+      & svg {
+        margin: 0 0 $re--big-padding 0;
+        max-height: 40vw;
+      }
+    }
+
+    & .separator {
+      margin: $re--big-padding 0;
+    }
+
+    &__text {
+      text-align: center;
+      padding: 0 10px;
+
+      &__title {
+        color: $color-black;
+        font-size: 19px;
+        font-weight: 700;
+        margin-bottom: $re--medium-padding;
+      }
+
+      &__body {
+        color: #888888;
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+/*-------------------------------------------*\
+   Creators MEDIA
+\*-------------------------------------------*/
+
+@media only screen and (max-width: 1000px) {}
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .landing__creators {
+    &__row {
+      flex-flow: column;
+
+      & .separator_vertical {
+        display: none;
+      }
+    }
+  }
+}
+
+/*-------------------------------------------*\
+   Footer MEDIA
+\*-------------------------------------------*/
+
+@media only screen and (max-width: 1000px) {}
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .landing {
+    &__footer {
+      &__body {
+        flex-flow: column;
+        margin: $re--large-padding 2vw 0;
+      }
+
+      &__creds {
+        margin: $re--medium-padding;
+        font-size: 8px;
+      }
+
+      &__logo {
+        font-size: 20px;
+        margin-bottom: $re--small-padding;
+      }
+
+      &__about {
+        font-size: 12px;
+      }
+
+      &__column {
+        width: 100%;
+        &:first-child {
+          align-items: center;
+
+          & button {
+            transform: scale(0.75);
+            margin-bottom: $re--big-padding;
+            align-items: center;
+            margin-top: $re--big-padding;
+          }
+        }
+      }
+
+      &__section {
+        align-items: center;
+        text-align: center;
+        margin-bottom: $re--big-padding;
+      }
+
+      &__title {
+        font-size: 12px;
+        margin-bottom: 9px;
+      }
+
+      &__link {
+        font-size: 10px;
+      }
+    }
+  }
+}
+
+/*-------------------------------------------*\
+   Text MEDIA
+\*-------------------------------------------*/
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .landing__title {
+    &_second {
+      padding: $re--large-padding 0;
+      font-size: 23px;
+    }
+  }
+}

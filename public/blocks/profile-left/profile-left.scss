@@ -1,0 +1,50 @@
+@import "../../modules/variables";
+
+.profile-left {
+  &__avatar {
+    width: 100px;
+    height: 100px;
+    margin: ($re--big-padding - $re--medium-padding) auto $re--big-padding;
+    border-radius: 50%;
+    box-shadow: 2px 3px 8px -5px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+    &_center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  &__center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  &__scroll {
+    overflow: auto;
+    // TODO: remove hardcode
+    height: 56.5vh;
+  }
+
+  &__options-field {
+    box-sizing: border-box;
+    margin-bottom: $re--medium-padding;
+    padding-bottom: $re--big-padding;
+    border-bottom: 1px solid $re--color-light-gray;
+
+    &_textarea {
+      width: 100%;
+      resize: none;
+    }
+  }
+
+  &__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $re--small-padding;
+  }
+}

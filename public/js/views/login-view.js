@@ -1,6 +1,7 @@
 'use strict';
 
-import View from '../core/view.js';
+import View from 'Eventum/core/view.js';
+import authTemplate from 'Components/auth/template.hbs';
 
 /**
  * @class create LoginView class
@@ -20,93 +21,23 @@ export default class LoginView extends View {
      * Render template
      */
     render() {
-        const template = [
-            {
-                block: 'auth',
-                content: [
-                    {
-                        elem: 'item',
-                        mix: {block: 'auth__item_main'},
-                        content: [
-                            {
-                                elem: 'title',
-                                mix: {block: 'auth__title_main'},
-                                content: 'Вход',
-                            },
-                            {
-                                elem: 'smth',
-                                attrs: {id: 'form'},
-                                tag: 'form',
-                                content: [
-                                    {
-                                        elem: 'input',
-                                        content: [
-                                            {
-                                                elem: 'help',
-                                                content: 'Телефон или Email',
-                                            },
-                                            {
-                                                block: 'input',
-                                                mix: {'block': 'input__auth'},
-                                                tag: 'input',
-                                                attrs: {placeholder: 'me@example.com'},
-                                            },
-                                        ]
-                                    },
-                                    {
-                                        elem: 'input',
-                                        content: [
-                                            {
-                                                elem: 'help',
-                                                content: 'Password',
-                                            },
-                                            {
-                                                block: 'input',
-                                                mix: {'block': 'input__auth'},
-                                                tag: 'input',
-                                                attrs: {placeholder: '*******', type: 'password'},
-                                            },
-                                        ]
-                                    },
-                                    {
-                                        elem: 'btn',
-                                        content: [{
-                                            block: 'btn',
-                                            mods: {color: 'ok', size: 'middle'},
-                                            btnText: 'Войти',
-                                            attrs: {type: 'submit'},
-                                        }],
-                                    }
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        elem: 'item',
-                        content: [
-                            {
-                                elem: 'title',
-                                content: 'Регистрация',
-                            },
-                            {
-                                elem: 'text',
-                                content: 'Ещё нет аккаунта? Пора его завести!',
-                            },
-                            {
-                                elem: 'btn',
-                                content: [{
-                                    block: 'btn',
-                                    mods: {color: 'w', size: 'large'},
-                                    btnText: 'Зарегистриророваться',
-                                    color: 'blue',
-                                    attrs: {type: 'submit'},
-                                }],
-                            }
-                        ],
-                    }
-                ]
-            }
-        ];
-        this.parent.insertAdjacentHTML('beforeend', bemhtml.apply(template));
+        this.parent.innerHTML += authTemplate({
+            title: 'ВХОД',
+            input: [
+                {
+                    title: 'Телефон или Email',
+                    type: 'text',
+                    placeholder: 'me@example.com',
+                    others: ['required', 'autofocus', 'login'],
+                },
+                {
+                    title: 'Пароль',
+                    type: 'password',
+                    placeholder: '*******',
+                    others: ['required'],
+                },
+            ],
+            button: 'Вход',
+        });
     }
 }

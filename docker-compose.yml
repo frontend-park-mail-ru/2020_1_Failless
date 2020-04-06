@@ -8,6 +8,5 @@ services:
    - ./nginx/nginx.conf:/etc/nginx/conf.d/app.conf
   ports:
    - "80:80"
-   - "3000:3000"
   restart: always
   image: nginx

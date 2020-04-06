@@ -1,0 +1,72 @@
+@import "../../modules/variables";
+.profile-edit {
+
+  &__overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .7);
+    z-index: 10;
+  }
+
+  &__popup {
+    position: absolute;
+    opacity: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__form {
+    width: 400px;
+    height: 100%;
+    background-color: white;
+    border-radius: 4px;
+    padding: 20px;
+  }
+
+  &__table {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__filed {
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  &__type {
+    width: 144px;
+  }
+
+  &__value {
+    width: 144px;
+  }
+
+  &__btn {
+    width: 144px;
+    color: #2a5885;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  &__title {
+    padding: 12px 0 12px 0;
+  }
+
+  &__line {
+    background-color: $color-gray;
+    width: 100%;
+  }
+
+  &__icon {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+  }
+}

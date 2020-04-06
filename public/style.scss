@@ -1,25 +1,146 @@
+@import "components/auth/auth";
+@import "components/big-search/big-search";
+@import "components/feed/feed";
+@import "components/landing/landing";
+@import "components/my/my";
+@import "components/profile-main/profile-main";
+@import "components/profile-edit/profile-edit";
+
+@import "blocks/creator-card/creator-card";
+@import "blocks/feed-center/feed-center";
+@import "blocks/feed-right/feed-right";
+@import "blocks/options-footer/options-footer";
+@import "blocks/profile-left/profile-left";
 @import "blocks/btn/btn";
 @import "blocks/header/header";
 @import "blocks/icon/icon";
+@import "blocks/modal-window/modal-window";
 @import "blocks/screen/screen";
-@import "blocks/landing/landing";
-@import "blocks/profile/profile";
 @import "blocks/tag/tag";
-@import "blocks/auth/auth";
 @import "blocks/input/input";
 @import "blocks/search/search";
 @import "blocks/event/event";
+@import "blocks/big-event/big-event";
+@import "blocks/edit-field/edit-field";
+@import "blocks/slider/slider";
+@import "blocks/section/section";
+@import "blocks/photo-columns/photo-columns";
+@import "blocks/circle/circle";
+@import "blocks/link-uploader/link-uploader";
+@import "blocks/validation-error/validation-error";
+@import "blocks/modal/modal";
+
 @import "modules/variables";
 @import "modules/efont";
+@import "modules/images";
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic');
 
 body {
   margin: 0;
   height: 100vh;
-  background: linear-gradient(
-                  135deg,
-                  $color-blue 0%,
-                  $color-purple 50%,
-                  $color-red 100%);
+  background: $re--color-light-gray;
   text-decoration: none;
-  font-family: "Helvetica Neue", sans-serif;
+  font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
+}
+
+textarea {
+  box-sizing: border-box;
+  padding: 4px;
+  border: 1px solid $re--color-middle-gray;
+  border-radius: $re--border-radius;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+
+  &:focus {
+    border-color: $color-black;
+  }
+}
+
+#application {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  align-items: center;
+}
+
+.container {
+  width: 1084px;
+  box-sizing: border-box;
+}
+
+@media only screen and (max-width: 1000px) {
+  .container {
+    width: 100%;
+    padding: 0 10px;
+  }
+}
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .container {
+    width: 100%;
+    padding: 0 10px;
+  }
+}
+
+@mixin h($font-size, $padding-bottom) {
+  font-size: $font-size;
+  font-weight: 700;
+  color: $color-black;
+  margin: 0 0 $padding-bottom;
+}
+
+h1 {
+  @include h(32px, $re--big-padding);
+}
+
+h2 {
+  @include h(22px, $re--medium-padding);
+}
+
+h3 {
+  @include h(12px, $re--small-padding);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.separator {
+  box-sizing: border-box;
+
+  &_vertical {
+    width: 1px;
+  }
+
+  &_horizontal {
+    width: 100%;
+    height: 1px;
+  }
+
+  &_gray_black {
+    background: #686868;
+    background: radial-gradient(circle, #686868 66%, rgba(25, 25, 25, 0) 95%);
+  }
+
+  &_white_blue {
+    background: $color-white;
+    background: radial-gradient(circle, $color-white 66%, rgba(18, 194, 233, 0) 95%);
+  }
+
+  &_lightgray_white {
+    background: $re--color-light-gray;
+    background: radial-gradient(circle, $re--color-light-gray 66%, rgba(255, 255, 255, 0) 95%);
+  }
+}
+
+.gradient-text {
+    background: $re--gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }

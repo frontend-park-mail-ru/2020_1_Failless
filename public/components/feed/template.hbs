@@ -1,0 +1,85 @@
+<div class="container">
+    <div class="feed">
+        <div class="feed__column">
+            <form action="submit" id="form">
+                <div class="feed__options-field">
+                    <div class="feed__help">Фильтр тегов</div>
+                    {{#each tags}}
+                        {{> $Blocks/tag/template }}
+                    {{/each}}
+                </div>
+                <div class="feed__options-field">
+                    <div class="feed__help">Ключевые слова</div>
+                    <input class="input input__auth" name="search_text" placeholder="Люди как люди">
+                </div>
+                <div class="feed__options-field">
+                    <div class="feed__help">Другие опции</div>
+                    <div class="feed__other-options">
+                        <div class="feed__help">Пол</div>
+                        <label class="feed__checkbox-label">Мужчины
+                            <input type="checkbox" checked="checked">
+                            <span class="feed__checkbox-checkmark"></span>
+                        </label>
+                        <label class="feed__checkbox-label">Женщины
+                            <input type="checkbox" checked="checked">
+                            <span class="feed__checkbox-checkmark"></span>
+                        </label>
+                        <div class="feed__help">Возраст</div>
+                        <div class="slider__container">
+                            <label class="slider__title">Min</label>
+                            <div class="slider">
+                                <input type="range" min="18" max="100" value="18" step="1" name="slider_min">
+                                <span class="slider__value" slider_value="18"></span>
+                            </div>
+                        </div>
+                        <div class="slider__container">
+                            <label class="slider__title">Max</label>
+                            <div class="slider">
+                                <input type="range" min="18" max="100" value="18" step="1" name="slider_max">
+                                <span class="slider__value" slider_value="18"></span>
+                            </div>
+                        </div>
+                        {{#if isEvent}}
+                            <div class="feed__help">Кол-во участников</div>
+                            <div class="slider__container">
+                                <div class="slider">
+                                    <div class="slider__maxmin">
+                                        <div>3</div>
+                                        <div>15</div>
+                                    </div>
+                                    <input type="range" min="2" max="15" value="5" step="1">
+                                    <span class="slider__value" slider_value="5"></span>
+                                </div>
+                            </div>
+                        {{/if}}
+                        <div class="feed__help">Местоположение</div>
+                        <img class="feed__map" src="https://eventum.s3.eu-north-1.amazonaws.com/app/map.jpg" alt="map here">
+                    </div>
+                </div>
+
+                <!-- TODO: add hider for footer shadow -->
+
+                <div class="options-footer">
+                    <button class="re_btn re_btn__filled">Сохранить</button>
+                </div>
+
+            </form>
+        </div>
+        <div class="feed__separator"></div>
+        <div class="feed__column feed__column_main">
+            {{#if data }}{{#with data}}
+                {{#if ../isEvent}}
+                    {{> $Blocks/feed-events-center/template }}
+                {{else}}
+                    {{> $Blocks/feed-center/template }}
+                {{/if}}
+            {{/with}}{{else}}
+                <h1>Больше ничего не нашлось ):</h1>
+            {{/if}}
+        </div>
+        <div class="feed__separator"></div>
+        <div class="feed__column">
+            {{> $Blocks/feed-right/template }}
+        </div>
+    </div>
+</div>

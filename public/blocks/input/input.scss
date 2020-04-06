@@ -1,20 +1,52 @@
+@import "../../modules/variables";
+
 .input {
+  box-sizing: border-box;
+  border-radius: 2px;
+  outline: none;
 
   &__text {
     &_small {
-      height: 100px;
       width: 232px;
+      height: 100px;
     }
+
     &_middle {
-      height: 120px;
       width: 300px;
+      height: 120px;
     }
   }
 
   &__auth {
     width: 100%;
+    font-size: 14px;
+    font-weight: 300;
     border-top-style: hidden;
     border-right-style: hidden;
     border-left-style: hidden;
+    border-bottom: 2px solid $re--color-light-gray;
+    transition-property: border-bottom-color;
+    transition-duration: 0.3s;
+
+    &:focus {
+      border-bottom-color: $color-purple;
+    }
+
+    &_incorrect {
+      border-bottom-color: red;
+    }
+  }
+
+  &__auth::placeholder {
+    color: $re--color-middle-gray;
+  }
+
+  &__search {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-size: 16px;
+    border: none;
+    vertical-align: middle;
   }
 }

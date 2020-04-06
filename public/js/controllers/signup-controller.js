@@ -1,99 +1,146 @@
 'use strict';
 
-import Controller from '../core/controller.js';
-import SignUpView from '../views/signup-view.js';
-import UserModel from '../models/user-model.js';
+import Controller from 'Eventum/core/controller.js';
+import SignUpView from 'Eventum/views/signup-view.js';
+import UserModel from 'Eventum/models/user-model.js';
+import ValidationModule from 'Eventum/utils/validation.js'
 
 export default class SignUpController extends Controller {
 
     /**
-     *
      * @param {HTMLElement} parent
      */
     constructor(parent) {
         super(parent);
         this.view = new SignUpView(parent);
+        this.form = null;
+        this.inputs = null;
     }
 
+    /**
+     * Create base business logic of SignUp
+     */
     action() {
         super.action();
         this.view.render();
-        const form = document.getElementById('form');
-        form.addEventListener('submit', this._signUpHandler.bind(this));
-        const regBtn = document.getElementsByClassName('btn_color_w')[0];
-        regBtn.addEventListener('click', function (event) {
-            event.preventDefault();
+        this.#initView();
+    }
 
-            window.history.pushState({}, '', '/login');
-            window.history.pushState({}, '', '/login');
-            window.history.back();
-        });
-        // const signUp = document.getElementsByClassName('btn btn_color_ok btn_size_large')[0];
-        // signUp.addEventListener('click', this._signUpHandler.bind(this));
+    /**
+     * Initialize view
+     */
+    #initView() {
+        let auth = document.body.getElementsByClassName('auth')[0];
+        if (auth) {
+            this.form = document.getElementById('form');
+            this.addEventHandler(this.form, 'submit', this.#signUpSubmitHandler);
+            // this.form.addEventListener('submit', this.#signUpSubmitHandler.bind(this));
 
-        // const loginRedirect = document.getElementsByClassName('btn btn_color_w btn_size_middle')[0];
-        // loginRedirect.addEventListener('click', this._loginRedirect.bind(this));
+            this.inputs = this.form.getElementsByClassName('input input__auth');
+            for (let input of this.inputs) {
+                this.addEventHandler(input, 'focus', this.removeErrorMessage);
+                this.addEventHandler(input, 'blur', this.#checkInputHandler);
+                // input.addEventListener('focus', this.removeErrorMessage.bind(this));
+                // input.addEventListener('blur', this.#checkInputHandler.bind(this));
+            }
+        }
     }
 
     /**
      * Get data from input form on sign up page
-     * @param {event} event
-     * @return {Object} input form
+     * @param {Event} event
+     * @return {{password: *, phone: *, name: *, email: *}} input form
      */
-    _getFromSignUp(event) {
-        const form = document.getElementById('form').getElementsByClassName('input input__auth');
+    #getFromSignUp() {
+        const name = this.form[0].value;
+        const email = this.form[1].value;
+        const phone = this.form[2].value;
+        const password = this.form[3].value;
+        const repeatPassword = this.form[4].value;
 
-        const name = form[0].value;
-        const email = form[1].value;
-        const phone = form[2].value;
-        const password = form[3].value;
-        const password2 = form[4].value;
-
-        if (password !== password2) {
-            console.log('Passwords must to be equal');
-            return null;
+        let errors_list = [];
+        errors_list.push(ValidationModule.validateUserData(name, 'name'));
+        errors_list.push(ValidationModule.validateUserData(email, 'email'));
+        errors_list.push(ValidationModule.validateUserData(phone, 'phone'));
+        errors_list.push(ValidationModule.validateUserData(password, 'password'));
+        errors_list.push(ValidationModule.validateUserData(repeatPassword, 'repeatPassword'));
+        if (repeatPassword !== password) {
+            errors_list.push('Пароли не совпадают');
+        }
+        
+        if (errors_list.some(val => val.length !== 0)) {
+            return void 0;
         }
 
         return {name, password, phone, email};
-    }
+    };
 
     /**
      * Handle click on submit event
-     * @param {event} event
+     * @param {Event} event
      */
-    _signUpHandler(event) {
+    #signUpSubmitHandler = (event) => {
         event.preventDefault();
 
-        const body = this._getFromSignUp(event);
+        const body = this.#getFromSignUp();
         if (!body) {
             console.log('do nothing');
             return;
         }
 
-        UserModel.postSignup(body).then((response) => {
+        this.removeErrorMessage(event);
+
+        UserModel.postSignUp(body).then((response) => {
             if (Object.prototype.hasOwnProperty.call(response, 'name')) {
-                console.log('redirect');
-                document.getElementsByClassName('auth')[0].remove();
                 window.history.pushState({}, '', '/login');
                 window.history.pushState({}, '', '/login');
                 window.history.back();
             } else {
-                console.log('Client error, stay here');
                 console.log(response);
-                // response.json().then(data => { console.log(data.message); });
+                this.view.addErrorMessage(this.form, [response.message]);
             }
-        }).catch(reason => { console.log(reason); });
-    }
+        }).catch(reason => console.log(reason));
+    };
 
     /**
-     * Handle click on login event
-     * @param {event} event
+     * Handle blur event
+     * @param {Event} event
      */
-    _loginRedirect(event) {
-        event.preventDefault();
-        
-        window.history.pushState({}, '', '/login');
-        window.history.pushState({}, '', '/login');
-        window.history.back();
-    }
+    #checkInputHandler = (event) => {
+        const name = this.form[0].value;
+        const email = this.form[1].value;
+        const phone = this.form[2].value;
+        const password = this.form[3].value;
+        const repeatPassword = this.form[4].value;
+
+        switch(true) {
+        case (event.target === this.form[0]):
+            const nameCheck = ValidationModule.validateUserData(name, 'name');
+            this.view.addErrorMessage(this.form[0], nameCheck);
+            break;
+        case (event.target === this.form[1]):
+            const emailCheck = ValidationModule.validateUserData(email, 'email');
+            this.view.addErrorMessage(this.form[1], emailCheck);
+            break;
+        case (event.target === this.form[2]):
+            const phoneCheck = ValidationModule.validateUserData(phone, 'phone');
+            this.view.addErrorMessage(this.form[2], phoneCheck);
+            break;
+        case (event.target === this.form[3]):
+            const passwordCheck = ValidationModule.validateUserData(password, 'password');
+            this.view.addErrorMessage(this.form[3], passwordCheck);
+
+            if (repeatPassword !== password) {
+                this.view.addErrorMessage(this.form[4], ['Пароли не совпадают']);
+            }
+            break;
+        case (event.target === this.form[4]):
+            const repeatPasswordCheck = ValidationModule.validateUserData(repeatPassword, 'repeatPassword');
+            if (repeatPassword !== password) {
+                repeatPasswordCheck.push('Пароли не совпадают');
+            }
+            this.view.addErrorMessage(this.form[4], repeatPasswordCheck);
+            break;
+        }
+    };
 }

@@ -1,5 +1,17 @@
 @import "../../modules/variables";
 
+@mixin swipe_btn($bg-color, $font-size) {
+  width: 218px;
+  height: 42px;
+  border-radius: 4px;
+  background-color: $bg-color;
+  text-align: center;
+  font-size: $font-size;
+  font-weight: 700;
+  border: none;
+  color: $color-white;
+}
+
 .btn {
   border-radius: 18px;
   border: none;
@@ -17,16 +29,19 @@
     }
   }
 
-  &_color_ok {
-    background-color: $color-red;
-  }
-
-  &_color_b {
-    background-color: $color-blue;
-  }
-
-  &_color_w {
-    background-color: $color-white;
+  &_color {
+    &_dark-blue {
+      background-color: $color-dark-blue;
+    }
+    &_w {
+      background-color: $color-white;
+    }
+    &_b {
+      background-color: $color-blue;
+    }
+    &_ok {
+      background-color: $color-red;
+    }
   }
 
   &__text {
@@ -36,6 +51,82 @@
     }
     &_b {
       color: $color-blue;
+    }
+  }
+
+  &_square {
+    border-radius: 4px;
+  }
+}
+
+// TODO: https://neumorphism.io/#30c3ff
+
+.re_btn {
+  min-width: 96px;
+  width: fit-content;
+  height: 34px;
+  padding: 0 10px;
+  border: 0 none;
+  border-radius: $re--border-radius;
+  font-size: 12px;
+  font-weight: 300;
+  @include transition(0.3s, ease-in-out);
+  outline: none;
+
+  &__filled {
+    color: $color-white;
+    background: $re--gradient;
+  }
+  &__outline {
+    color: $color-purple;
+    background: $color-white;
+    border: 1px solid $color-purple; // TODO: replace with gradient
+  }
+
+  &:hover {
+    border: 1px solid $color-white;
+    color: $color-white;
+    background: $re--gradient;
+    box-shadow: 5px 5px 10px #eaeaea,
+             -5px -5px 10px #f8f8f8;
+  }
+
+  &:active {
+    transition: 0.01s;
+    transform: scale(0.98);
+  }
+
+  &__reject {
+    @include swipe_btn($color-blue, 24px);
+  }
+
+  &__approve {
+    @include swipe_btn($color-red, 24px);
+  }
+
+  &__white {
+    min-width: 96px;
+    width: fit-content;
+    height: 34px;
+    box-sizing: content-box;
+    text-align: center;
+    padding: 5px 40px;
+    border: 1px solid $color-white;
+    border-radius: $re--border-radius;
+    @include transition(0.3s, ease-in-out);
+    outline: none;
+    background: none;
+
+    @media (hover: hover) {
+      &:hover {
+        background: $re--gradient;
+      }
+    }
+
+    &:active {
+      background: $re--gradient;
+      transition: 0.01s;
+      transform: scale(0.98);
     }
   }
 }

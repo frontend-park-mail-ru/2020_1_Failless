@@ -1,0 +1,25 @@
+<div class="modal__bg">
+    <div class="modal__window">
+        <div class="modal__header">
+            <h1>{{ title }}</h1>
+            <div class="modal__header-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
+                    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285 3.905 3.905 9.024 5.857 14.143 5.857 5.119 0 10.237-1.952 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"/>
+                </svg>
+            </div>
+        </div>
+        <div class="modal__body">
+            {{#each tags as |tag|}}
+                {{log this}}
+                {{> $Blocks/tag/template }}
+            {{/each}}
+        </div>
+        {{#if last_buttons}}
+            <div class="modal__footer">
+            {{#each last_buttons}}
+                <button class="re_btn re_btn__outline">{{ this.title }}</button>
+            {{/each}}
+            </div>
+        {{/if}}
+    </div>
+</div>

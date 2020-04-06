@@ -1,0 +1,38 @@
+@import "../../modules/variables";
+
+.feed-center {
+  &__photos {
+    width: 100%;
+    height: auto;
+    margin-bottom: $re--big-padding;
+  }
+
+  &__profile {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  &__tags {
+    display: flex;
+    align-items: flex-end;
+    flex-flow: column;
+  }
+
+  &__about {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    color: $color-black;
+  }
+
+  &__action-buttons {
+    width: 100%;
+    height: auto;
+    margin: $re--huge-padding 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}

@@ -1,5 +1,5 @@
-import NetworkModule from '../core/network.js';
-import Model from '../core/model.js';
+import NetworkModule from 'Eventum/core/network.js';
+import Model from 'Eventum/core/model.js';
 
 /**
  * @class UserModel
@@ -11,6 +11,8 @@ export default class UserModel extends Model {
      */
     constructor() {
         super();
+        this.user = null;
+        this.profile = null;
     }
 
     /**
@@ -23,9 +25,13 @@ export default class UserModel extends Model {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
-            return response.json();
+            return response.json().then(user => {
+                this.user = user;
+                return user;
+            });
         },
         (error) => {
+            console.log(error.toString());
             throw new Error(error);
         });
     }
@@ -35,14 +41,24 @@ export default class UserModel extends Model {
      * @return {Promise} promise to get user login data
      */
     static getLogin() {
+        if (this.user) {
+            return new Promise((resolve) => {
+                resolve(this.user);
+            });
+        }
         return NetworkModule.fetchGet({path: '/getuser'}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
-            return response.json();
+            return response.json().then((user) => {
+                this.user = user;
+                return user;
+            });
         },
         (error) => {
-            throw new Error(error);
+            return new Promise((resolve) => {
+                resolve({err: error});
+            });
         });
     }
 
@@ -51,22 +67,28 @@ export default class UserModel extends Model {
      * @return {Promise} promise to get user logout data
      */
     static getLogout() {
-        return NetworkModule.fetchGet({path: '/logout'}).then((response) => {
-            if (response.status > 499) {
-                throw new Error('Server error');
-            }
-            return response.json();
-        },
-        (error) => {
-            throw new Error(error);
-        });
+        if (this.user) {
+            return NetworkModule.fetchGet({path: '/logout'}).then((response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                this.user = null;
+                this.profile = null;
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+        } else {
+            return new Promise((resolve => resolve({message: 'Unauthorized', status: 401})));
+        }
     }
 
     /**
      * Send user signup data from server
      * @return {Promise} promise to set new user data
      */
-    static postSignup(newUserData) {
+    static postSignUp(newUserData) {
         return NetworkModule.fetchPost({path: '/signup', body: newUserData}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
@@ -82,8 +104,24 @@ export default class UserModel extends Model {
      * Send user profile data to server
      * @return {Promise} promise to set new user data
      */
-    static postProfile(profileUserData) {
-        return NetworkModule.fetchPost({path: '/profile', body: profileUserData}).then((response) => {
+    static putProfile(profileUserData) {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/meta`, body: profileUserData}).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
+            throw new Error(error);
+        });
+    }
+
+    /**
+     * Send user image data to server
+     * @return {Promise} promise to set new user data
+     */
+    static putImage(imageData) {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/upload`, body: imageData}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
@@ -99,14 +137,62 @@ export default class UserModel extends Model {
      * @return {Promise} promise to set new user data
      */
     static getProfile() {
-        return NetworkModule.fetchGet({path: '/profile'}).then((response) => {
-            if (response.status > 499) {
-                throw new Error('Server error');
+        return this.getLogin().then(user => {
+            if (user) {
+                if (this.profile) {
+                    return new Promise((resolve) => {
+                        resolve(this.profile);
+                    });
+                }
+                return NetworkModule.fetchGet({path: '/profile/' + user.uid}).then((response) => {
+                    if (response.status > 499) {
+                        throw new Error('Server error');
+                    }
+                    return response.json().then((profile) => {
+                        this.profile = profile;
+                        return profile;
+                    });
+                },
+                (error) => {
+                    throw new Error(error);
+                });
+            } else {
+                return new Promise((resolve => resolve({message: 'Authentication required', status: 409})));
             }
-            return response.json();
-        },
-        (error) => {
-            throw new Error(error);
         });
+    }
+
+    /**
+     * Send query to add tag to profile's tags
+     * @param tags - tags to add
+     */
+    static addTags(tags) { // TODO: i dunno the path
+        return NetworkModule.fetchPut({path: '', body: tags})
+            .then((response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
+    /**
+     * Send query to remove tag from profile's tags
+     * @param tag
+     */
+    static removeTag(tag) { // TODO: i dunno the path
+        return NetworkModule.fetchPut({path: '', body: tag})
+            .then((response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
     }
 }

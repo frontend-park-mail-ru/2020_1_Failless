@@ -1,84 +1,46 @@
 'use strict';
+import headerTemplate from 'Blocks/header/template.hbs';
 
 /**
  * Draw header
  * @param {HTMLElement} base
+ * @param {boolean} logged - is user auth
  */
 export default function createHeader(base, logged) {
     if (document.getElementsByClassName('header').length !== 0) {
         document.getElementsByClassName('header')[0].remove();
     }
 
-    let template = !logged ? [
+    const header = headerTemplate(
         {
-            block: 'header',
-            tag: 'nav',
-            content: [
+            buttons: !logged ? [
                 {
-                    block: 'image',
-                    tag: 'img',
-                    url: './static/images/logo.png',
-                    mix: {'block': 'icon_btn icon__size_m header__item'},
-                    attrs: {src: './static/images/logo.png', alt: 'Eventum'}
+                    link: '/search',
+                    name: 'Поиск',
                 },
                 {
-                    block: 'header__manage',
-                    content: [
-                        {
-                            block: 'header__item',
-                            tag: 'a',
-                            attrs: {href: '/signup'},
-                            content: 'Рега'
-                        },
-                        {
-                            block: 'header__item',
-                            tag: 'a',
-                            attrs: {href: '/login'},
-                            content: 'Войти'
-                        }
-                    ]
-                }
-            ]
-        }
-    ] : [
-        {
-            block: 'header',
-            tag: 'nav',
-            content: [
-                {
-                    block: 'image',
-                    tag: 'img',
-                    url: './static/images/logo.png',
-                    mix: {'block': 'icon_btn icon__size_m header__item'},
-                    attrs: {src: './static/images/logo.png', alt: 'Eventum'}
+                    link: '/signup',
+                    name: 'Регистрация',
                 },
                 {
-                    block: 'header__manage',
-                    content: [
-                        {
-                            block: 'header__item',
-                            tag: 'a',
-                            attrs: {href: '/search'},
-                            content: 'Поиск'
-                        }
-                        ,
-                        {
-                            block: 'header__item',
-                            tag: 'a',
-                            attrs: {href: '/logout'},
-                            content: 'Выйти'
-                        },
-                        {
-                            block: 'header__item',
-                            tag: 'a',
-                            attrs: {href: '/profile'},
-                            content: 'Профиль'
-                        },
-                    ]
-                }
+                    link: '/login',
+                    name: 'Войти',
+                },
+            ] : [
+                {
+                    link: '/search',
+                    name: 'Поиск',
+                },
+                {
+                    link: '/feed/users',
+                    name: 'Лента',
+                },
+                {
+                    link: '/my/profile',
+                    name: 'Профиль',
+                },
             ]
-        }
-    ];
+        });
 
-    base.insertAdjacentHTML('afterbegin', bemhtml.apply(template));
+    base.insertAdjacentHTML('afterbegin', header);
 }

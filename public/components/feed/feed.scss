@@ -1,0 +1,126 @@
+@import '../../modules/variables';
+
+.feed {
+  width: 100%;
+  margin: (10px + $header-height) 0 10px;
+  display: flex;
+  flex: 1 1 100%;
+
+  &__separator {
+    width: 8px;
+  }
+
+  &__column {
+    width: 258px;
+    flex: 1 1 auto;
+    background-color: $color-white;
+    border-radius: $re--border-radius;
+    padding: $re--medium-padding $re--medium-padding 0;
+    max-height: 88.5vh; // TODO: bullshit
+    overflow: auto;
+    box-shadow: 0 0 20px -9px rgba(0, 0, 0, 0.5);
+
+    &_main {
+      flex: 1 2 auto;
+      width: 620px;
+    }
+  }
+
+  &__other-options {
+    padding: 0 $re--small-padding;
+  }
+
+  &__options-field {
+    box-sizing: border-box;
+    margin-bottom: $re--medium-padding;
+    padding-bottom: $re--big-padding;
+    border-bottom: 1px solid $re--color-light-gray;
+
+    &_textarea {
+      width: 100%;
+      resize: none;
+    }
+  }
+
+  /* Customize the label (the container) */
+  &__checkbox {
+    &-label {
+      display: block;
+      position: relative;
+      padding-left: 19px;
+      margin-bottom: 7px;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 500;
+      color: $color-black;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      /* Hide the browser's default checkbox */
+      & > input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+
+        /* When the checkbox is checked, add a blue background */
+        &:checked ~ .feed__checkbox-checkmark {
+          background: $re--gradient;
+
+          /* Show the checkmark when checked */
+          &:after {
+            display: block;
+          }
+        }
+
+        /* Show the checkmark when checked */
+        &:checked ~ .feed__checkbox-label { // TODO: doesn't work
+          color: $re--color-middle-gray;
+        }
+      }
+    }
+
+    /* Create a custom checkbox */
+    &-checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 10px;
+      width: 10px;
+      background-color: $color-white;
+      border: 1px solid $re--color-light-gray;
+
+      /* Create the checkmark/indicator (hidden when not checked) */
+      &:after {
+        content: "";
+        position: absolute;
+        display: none;
+        /* Style the checkmark/indicator */
+        left: 4px;
+        top: 1px;
+        width: 2px;
+        height: 5px;
+        border: solid white;
+        border-width: 0 1px 1px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+    }
+  }
+
+  &__map {
+    width: 100%;
+    height: auto;
+  }
+
+  &__help {
+    font-weight: bold;
+    font-size: 12px;
+    color: $color-black;
+    padding-bottom: $re--small-padding;
+  }
+}

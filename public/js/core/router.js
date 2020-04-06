@@ -1,6 +1,6 @@
 'use strict';
 
-import UserModel from '../models/user-model.js';
+import UserModel from 'Eventum/models/user-model.js';
 
 /**
  * @class create Router class
@@ -13,8 +13,8 @@ export default class Router {
 
     /**
      * adding route function
-     * @param path
-     * @param controller
+     * @param {string} path
+     * @param {Controller} controller
      */
     addRoute(path, controller) {
         this.urls.set(path, controller);
@@ -26,16 +26,21 @@ export default class Router {
     route() {
         window.addEventListener('popstate', () => {
             const currentPath = window.location.pathname;
-            this._handle(currentPath);
+            this.#handle(currentPath);
         });
-        this._handle(window.location.pathname);
+        this.#handle(window.location.pathname);
     }
 
-    _checkUserExist() {
+    #checkUserExist() {
         return UserModel.getLogin();
     }
 
-    _handle(current) {
+    /**
+     * Handle current url path
+     * @param {string} current
+     * @private
+     */
+    #handle = (current) => {
         let controller = this.urls.get(current);
         if (!controller) {
             // todo: 404 handler
@@ -51,14 +56,6 @@ export default class Router {
             this.currentController.destructor();
         }
         this.currentController = controller;
-        console.log(controller);
         this.currentController.action();
-        // this._checkUserExist().then(user => {
-        //     console.log(user);
-        //     const userLogged = user.Logged;
-        // }).catch((onerror) => {
-        //     console.log(onerror.toString());
-        //     this.currentController.action();
-        // });
-    }
+    };
 }

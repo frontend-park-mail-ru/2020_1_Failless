@@ -1,53 +1,14 @@
 'use strict';
 
-import View from '../core/view.js';
-
-let profilePhotos = ['ProfilePhotos/1.jpg', 'ProfilePhotos/2.jpg', 'ProfilePhotos/3.jpg'];
-const getBlocks = (profilePhotos) => {
-    let blocks = [];
-    profilePhotos.forEach(elem => {
-        blocks.push({
-            block: 'profile',
-            elem: 'photo',
-            mods: {'me': true},
-            tag: 'img',
-            attrs: {src: '' + elem}
-        });
-    });
-    return blocks;
-};
-
-const tagNames = ['#хочувБАР', '#хочувКИНО', '#хочунаКАТОК', '#хочуГУЛЯТЬ', '#хочуКУШАЦ', '#хочуСПАТЬ'];
-
-const getTags = (tagNames) => {
-    let blocks = [];
-    tagNames.forEach(elem => {
-        blocks.push({
-            block: 'tag',
-            mods: {'size': 'middle'},
-            content: elem,
-        });
-    });
-    return blocks;
-};
-
-const eventPhotos = ['EventPhotos/3.jpg', 'EventPhotos/4.jpg'];
-const getEventPhotos = (eventPhotos) => {
-    let blocks = [];
-    eventPhotos.forEach((elem) => {
-        blocks.push({
-            elem: 'item',
-            mix: {block: 'event__item', mods: {'one': true}},
-            tag: 'img',
-            attrs: {src: elem}
-        });
-    });
-    return blocks;
-};
+import MyView from 'Eventum/views/my-view.js';
+import settings from 'Settings/config.js';
+import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
+import profileMainTemplate from 'Components/profile-main/template.hbs';
+import eventCardTemplate from 'Blocks/event/template.hbs';
 /**
- *
+ * @class create ProfileView class
  */
-export default class ProfileView extends View {
+export default class ProfileView extends MyView {
 
     /**
      * Create view
@@ -60,148 +21,61 @@ export default class ProfileView extends View {
 
     /**
      * Render template
-     * @param {JSON} profile -  user profile from server
+     * @param {
+     *  {
+     *      birthday: string,
+     *      password: string,
+     *      gender: string,
+     *      phone: string,
+     *      name: string,
+     *      about: string,
+     *      rating: string,
+     *      location: string,
+     *      avatar: string,
+     *      photos: string,
+     *      email: string,
+     *      tags: {
+     *          title: string,
+     *          id: string,
+     *      }
+     *  } } profile -  user profile from server
      */
     render(profile) {
+        super.render();
+
         let allowEdit = true;
-        const template = [
-            {
-                block: 'profile',
-                content: [
-                    {
-                        elem: 'title',
-                        tag: 'h1',
-                        content: profile.name,
-                    },
-                    {
-                        elem: 'page',
-                        content: [
-                            {
-                                elem: 'column',
-                                mix: {block: 'profile', elem: 'filed'},
-                                content: [
-                                    {
-                                        elem: 'title',
-                                        mix: {block: 'profile__title_blue'},
-                                        tag: 'h3',
-                                        content: 'О себе',
-                                    },
-                                    {
-                                        block: 'input',
-                                        mix: {block: 'input__text_small'},
-                                        tag: 'textarea',
-                                        attrs: {placeholders: 'Расскажите о себе и своих увлечениях'},
-                                        content: profile.about,
-                                    },
-                                    {
-                                        elem: 'btn',
-                                        content: allowEdit ? [
-                                            {
-                                                block: 'btn',
-                                                mods: {color: 'ok', size: 'middle'},
-                                                btnText: 'Готово',
-                                                attrs: {type: 'submit'},
-                                            },
-                                            {
-                                                block: 'btn',
-                                                mods: {color: 'b', size: 'middle'},
-                                                btnText: 'Настройки',
-                                            },
-                                        ] : []
-                                    },
-                                ],
-                            },
-                            {
-                                elem: 'column',
-                                mix: {block: 'profile', elem: 'filed'},
-                                content: [
-                                    {
-                                        elem: 'title',
-                                        mix: {block: 'profile__title_blue'},
-                                        tag: 'h3',
-                                        content: 'Фото'
-                                    },
-                                    {
-                                        elem: 'photos',
-                                        content: {
-                                            block: 'profile',
-                                            elem: 'photo_img',
-                                            mods: {'me': true},
-                                            tag: 'img',
-                                            attrs: {src: profile.avatar.path}
-                                        },//getBlocks(profilePhotos),
-                                    },
-                                    {
-                                        block: 'icon',
-                                        elem: 'input',
-                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'large'}}],
-                                        tag: 'input',
-                                        attrs: { type: 'file' },
-                                        content: 'Добавить фото'
-                                    },
-                                ],
-                            },
-                            {
-                                elem: 'column',
-                                mix: {block: 'profile', elem: 'filed'},
-                                content: [
-                                    {
-                                        elem: 'title',
-                                        mix: {block: 'profile__title_blue'},
-                                        tag: 'h3',
-                                        content: 'Ваши тэги',
-                                    },
-                                    {
-                                        block: 'icon',
-                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'x'}}],
-                                    },
-                                    {
-                                        elem: 'tags',
-                                        content: getTags(tagNames),
-                                    },
-                                    {
-                                        elem: 'title',
-                                        mix: {block: 'profile__title_blue'},
-                                        tag: 'h3',
-                                        content: 'Ваши эвенты',
-                                    },
-                                    {
-                                        block: 'icon',
-                                        mix: [{block: 'icon', elem: 'add'}, {block: 'icon', mods: {'size': 'x'}}],
-                                    },
-                                    {
-                                        elem: 'events',
-                                        content: [
-                                            {
-                                                block: 'event',
-                                                content: [
-                                                    {
-                                                        elem: 'photos',
-                                                        content: getEventPhotos(eventPhotos),
-                                                    },
-                                                    {
-                                                        elem: 'title',
-                                                        content: 'Концерт',
-                                                    },
-                                                    {
-                                                        elem: 'place',
-                                                        content: 'Москва',
-                                                    },
-                                                    {
-                                                        elem: 'description',
-                                                        content: 'Ну как его похвалить? Ну классный концерт, шикарный концерт, как его ещё похвалить?'
-                                                    }
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                ],
-                            }
-                        ],
-                    },
-                ]
+        if (profile.avatar.path === null) {
+            profile.avatar.path = 'default.png';
+        }
+
+        if ('tags' in profile) {
+            if (!profile.tags) {
+                profile.tags = [];
+            } else {
+                profile.tags.forEach((tag) => {
+                    tag.activeClass = 'tag__container_active';
+                    tag.editable = true;
+                });
             }
-        ];
-        this.parent.insertAdjacentHTML('beforeend', bemhtml.apply(template));
+        }
+
+        document.getElementsByClassName('my__left-column-body')[0].insertAdjacentHTML(
+            'beforeend', profileLeftTemplate({
+                profile: profile,
+                url: `${settings.aws}/users`,
+            })
+        );
+        document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
+            'beforeend', profileMainTemplate({
+                title: 'Профиль',
+                url: `${settings.aws}/users`,
+                profile: profile,
+            })
+        );
+    }
+
+    drawEventCard(eventInfo) {
+        document.querySelector('.profile-main__group').insertAdjacentHTML(
+            'afterbegin', eventCardTemplate(eventInfo));
     }
 }

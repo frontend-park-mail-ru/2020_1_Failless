@@ -1,0 +1,38 @@
+@import "../../modules/variables";
+
+.section {
+  width: 100%;
+  &__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & h1,
+    & h2,
+    & h3 {
+      margin: 0;
+    }
+
+    & a {
+      @extend %a-link;
+      text-align: right;
+      text-decoration: none;
+
+      &:hover {
+        color: $color-purple;
+        text-decoration: underline;
+      }
+    }
+
+    &_1 {
+      margin-bottom: $re--big-padding;
+    }
+    &_2 {
+      margin-bottom: $re--medium-padding;
+    }
+    &_3 {
+      margin-bottom: $re--small-padding;
+    }
+  }
+}

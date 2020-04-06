@@ -1,0 +1,39 @@
+<div class="edit-field">
+    <form id="{{ id }}" class="edit-field__form">
+        {{#each fields }}
+            <div class="edit-field__row">
+                <div class="edit-field__name">
+                    <div class="font font__helper font__color_g">{{ name }}</div>
+                </div>
+                <label>
+                    {{#if select }}
+                        <select class="edit-field__input edit-field__input_select">
+                            {{#each options as |tag| }}
+                                {{#if ../isTag}}
+                                    {{log this}}
+                                    <option value="{{ tag_id }}">{{ name }}</option>
+                                {{else}}
+                                    <option value="{{ this }}">{{ this }}</option>
+                                {{/if}}
+                            {{/each}}
+                        </select>
+                    {{else if textarea}}
+                        <textarea class="edit-field__input edit-field__input_textarea" placeholder="Опишите ваше событие"></textarea>
+                    {{else if file}}
+                        <a href="download-file">Загрузить изображение</a>
+                    {{else}}
+                        <input class="edit-field__input" type="{{ type }}"/>
+                    {{/if}}
+                </label>
+            </div>
+        {{/each}}
+        <div class="edit-field__buttons">
+            <button class="btn btn_square btn_size_middle btn_color_dark-blue">
+                <div class="font font__size_small font__color_lg">Подтвердить</div>
+            </button>
+            <button class="btn btn_square btn_size_middle btn_color_dark-blue">
+                <div class="font font__size_small font__color_lg">Отменить</div>
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,14 +1,14 @@
 .event {
-  display: block;
   width: 100%;
+  display: block;
   align-items: center;
   text-align: center;
 
   &__item {
     width: 84%;
+    margin-bottom: 20px;
     border-radius: 13px;
     background-color: white;
-    margin-bottom: 20px;
   }
 
   &__title {
@@ -26,18 +26,22 @@
   }
 
   &__photos {
-    height: 150px;
     width: auto;
+    height: 100px;
     overflow: auto;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
 
     &_one {
-      max-height: 100%;
       width: auto;
+      max-height: 100%;
       margin-right: 2px;
     }
   }
-
+  &__line {
+    width: 84%;
+    margin: 4px auto 4px;
+    border: 0.5px solid #c8c8c8;
+  }
 }

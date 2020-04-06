@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker-compose up -d --force-recreate --no-deps --build nginx
+docker-compose up -d --no-deps --build nginx

@@ -1,7 +1,8 @@
 'use strict';
 
-import createHeader from './header.js';
-import UserModel from '../models/user-model.js';
+import createHeader from 'Eventum/core/header.js';
+import UserModel from 'Eventum/models/user-model.js';
+import logoutRedirect from 'Eventum/utils/logout.js';
 
 /**
  * @class Basic controller class
@@ -14,131 +15,203 @@ export default class Controller {
      */
     constructor(parent) {
         this.parent = parent;
+        this.eventHandlers = [];
+
+        this.scrollUp = 'header__scroll_up';
+        this.scrollDown = 'header__scroll_down';
+        this.lastScroll = 0;
     }
 
     /**
      * virtual destructor
      */
     destructor() {
-        console.log('I call the police');
+        if (this.eventHandlers.length !== 0) {
+            for (const nodeVal of this.eventHandlers) {
+                for (const eventVal of nodeVal.events) {
+                    this.removeEventHandler(nodeVal.htmlNode, eventVal.event);
+                }
+            }
+        }
         this.parent.innerHTML = '';
-        // todo: remove listeners
+    }
+
+    animateHeader() {
+        window.addEventListener('scroll', this.stickyHeader.bind(this));
+        console.log(document.querySelector('.header'));
+        console.log(document.getElementsByClassName('header')[0]);
+        console.log(document.getElementsByTagName('header')[0]);
+        this.header = document.querySelector('.header');
     }
 
     /**
-     * Create action
+     * Create action and render header
      */
     action() {
-        let logged = false; // todo: rewrite to ajax
-        console.log('She\'s kind of cute');
-        createHeader(this.parent, false);
-
-        const sweetHomePage = document.getElementsByClassName('image icon_btn icon__size_m header__item')[0];
-        sweetHomePage.addEventListener('click', this._homeRedirect);
-
-        UserModel.getLogin()
-            .then((user) => {
-                console.log(logged);
-                if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
-                    createHeader(this.parent, false);
-                    const userSignUp = document.getElementsByClassName('header__item')[1];
-                    userSignUp.addEventListener('click', this._signUpRedirect);
-
-                    const userLogin = document.getElementsByClassName('header__item')[2];
-                    userLogin.addEventListener('click', this._loginRedirect);
-                } else {
-                    createHeader(this.parent, true);
-                    const eventSearch = document.getElementsByClassName('header__item')[1];
-                    eventSearch.addEventListener('click', this._eventSearchRedirect);
-
-                    const userLogout = document.getElementsByClassName('header__item')[2];
-                    userLogout.addEventListener('click', this._logoutRedirect);
-
-                    const userProfile = document.getElementsByClassName('header__item')[3];
-                    userProfile.addEventListener('click', this._profileRedirect);
-                }
-            })
-            .catch((onerror) => {
-                console.error(onerror);
-            });
-    }
-
-    /**
-     * Handle click on home event
-     * @param {event} event
-     */
-    _homeRedirect(event) {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/');
-        window.history.pushState({}, '', '/');
-        window.history.back();
-    }
-
-    /**
-     * Handle click on event search event
-     * @param {event} event
-     */
-    _eventSearchRedirect(event) {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/event');
-        window.history.pushState({}, '', '/event');
-        window.history.back();
-    }
-
-    /**
-     * Handle click on sign up event
-     * @param {event} event
-     */
-    _signUpRedirect(event) {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/signup');
-        window.history.pushState({}, '', '/signup');
-        window.history.back();
-    }
-
-    /**
-     * Handle click on login event
-     * @param {event} event
-     */
-    _loginRedirect(event) {
-        event.preventDefault();
-
-        window.history.pushState({}, '', '/login');
-        window.history.pushState({}, '', '/login');
-        window.history.back();
-    }
-
-    /**
-     * Handle click on login event
-     * @param {event} event
-     */
-    _logoutRedirect(event) {
-        event.preventDefault();
-
-        UserModel.getLogout().then((ok) => {
-            if (ok) {
-                window.history.pushState({}, '', '/');
-                window.history.pushState({}, '', '/');
-                window.history.back();
+        UserModel.getLogin().then((user) => {
+            if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
+                createHeader(this.parent, false);
             } else {
-                console.log('Client error, stay here');
+                createHeader(this.parent, true);
             }
+        }).catch((onerror) => {
+            createHeader(this.parent, false);
+            console.log('No internet connection');
+        }).then(() => {
+            const managePanel = document.getElementsByClassName('header__manage')[0];
+            this.addEventHandler(managePanel, 'click', this.#controlBtnPressed);
+            // managePanel.addEventListener('click', this.#controlBtnPressed.bind(this));
+            const logo = document.getElementsByClassName('header__logo gradient-text')[0];
+            this.addEventHandler(logo, 'click', this.#homeRedirect);
+            // logo.addEventListener('click', this.#homeRedirect.bind(this));
         });
     }
 
     /**
-     * Handle click on home event
-     * @param {event} event
+     * Handle button pressed event on the header block by button url
+     * @param {Event} event
+     * @private
      */
-    _profileRedirect(event) {
+    #controlBtnPressed = (event) => {
+        event.preventDefault();
+        if (event.target.tagName === 'A') {
+            let href = event.target.getAttribute('href');
+            if (href === '') {
+                href = '/';
+            }
+
+            if (href === '/logout') {
+                logoutRedirect(event);
+                return;
+            }
+
+            window.history.pushState({}, '', href);
+            window.history.pushState({}, '', href);
+            window.history.back();
+        }
+    };
+
+
+    /**
+     * Handle click on home event
+     * @param {Event} event
+     */
+    #homeRedirect = (event) => {
+        event.preventDefault();
+        window.history.pushState({}, '', '/');
+        window.history.pushState({}, '', '/');
+        window.history.back();
+    };
+
+    #setActiveLink = (index) => {
+        // TODO: remove all active links
+        //  Add active link on chosen index (look in my-controller.js)
+    };
+
+    /*
+    [{
+      htmlNode: домэлемент,
+      events: [{
+            event: 'click',
+            handler: callback
+      }]
+    }]
+    */
+    addEventHandler = (node, event, handler) => {
+        let foundNode = false;
+        let foundEvent = false;
+        if (node) {
+            if (this.eventHandlers.length !== 0) {
+                for (const nodeVal of this.eventHandlers) {
+                    if (nodeVal.htmlNode == node) {
+                        foundNode = true;
+                        for (const eventVal of nodeVal.events) {
+                            if (eventVal.event == event) {
+                                foundEvent = true;
+                                break;
+                            }
+                        }
+                        if (!foundEvent) {
+                            node.addEventListener(event, handler);
+                            nodeVal.events.push({
+                                event: event,
+                                handler: handler,
+                            });
+                        }
+                        break;
+                    }
+                }
+            }
+            if (!foundNode) {
+                node.addEventListener(event, handler);
+                this.eventHandlers.push({
+                    htmlNode: node,
+                    events: [{
+                        event: event,
+                        handler: handler,
+                    }]
+                });
+            }
+        }
+    };
+
+    removeEventHandler = (node, event) => {
+        if (this.eventHandlers.length !== 0) {
+            this.eventHandlers = [...this.eventHandlers.filter(nodeVal => {
+                if (nodeVal.htmlNode == node) {
+                    nodeVal.events = [...nodeVal.events.filter(eventVal => {
+                        if (eventVal.event == event) {
+                            node.removeEventListener(event, eventVal.handler);
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    })];
+                    return false;
+                } else {
+                    return true;
+                }
+            })];
+        }
+    };
+
+    removeErrorMessage = (event) => {
         event.preventDefault();
 
-        window.history.pushState({}, '', '/profile');
-        window.history.pushState({}, '', '/profile');
-        window.history.back();
-    }
+        event.target.classList.remove('input__auth_incorrect');
+        let errorElement = event.target.parentNode.getElementsByClassName('validation-error')[0];
+        if (errorElement) {
+            errorElement.remove();
+        }
+    };
 
+    /**
+     * Create slow header hiding and showing during scroll
+     * @param event
+     */
+    stickyHeader = (event) => {
+        this.header = document.querySelector('.header');
+        if (!this.header) {
+            this.header = document.querySelector('header');
+        }
+
+        const currentScroll = window.pageYOffset;
+
+        // Reached top
+        if (currentScroll === 0) {
+            this.header.classList.remove(this.scrollUp);
+            return;
+        }
+
+        if (currentScroll > this.lastScroll && !this.header.classList.contains(this.scrollDown)) {
+            // Scroll down
+            this.header.classList.remove(this.scrollUp);
+            this.header.classList.add(this.scrollDown);
+        } else if (currentScroll < this.lastScroll && this.header.classList.contains(this.scrollDown)) {
+            // Scroll up
+            this.header.classList.remove(this.scrollDown);
+            this.header.classList.add(this.scrollUp);
+        }
+        this.lastScroll = currentScroll;
+    };
 }

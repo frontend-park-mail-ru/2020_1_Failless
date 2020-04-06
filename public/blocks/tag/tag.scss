@@ -1,15 +1,54 @@
 @import "../../modules/variables";
 
 .tag {
+  width: fit-content;
   padding: 4px;
   border-radius: 4px;
   margin: 0 5px 5px 0;
   text-align: center;
-  color: white;
-  font-weight: bold;
-  background: linear-gradient(
-                  135deg,
-                  $color-blue 0%,
-                  $color-purple 50%,
-                  $color-red 100%);
+  color: $color-white;
+  font-weight: 700;
+  background: $re--gradient;
+  transform: translateZ(-1px);
+
+  &__container {
+    width: fit-content;
+    opacity: 0.5;
+    display: flex;
+    justify-content: left;
+    align-items: baseline;
+    transform-style: preserve-3d;
+    cursor: pointer;
+
+    &_active {
+      opacity: 1;
+
+      & .tag {
+        opacity: 1;
+      }
+
+      & .tag__button {
+        display: block;
+        opacity: 0;
+      }
+    }
+
+    &:hover {
+      & .tag__button {
+        opacity: 100;
+      }
+    }
+  }
+
+  &__button {
+    width: 10px;
+    display: none;
+    @include transition(0.3s, ease-in-out);
+  }
+}
+
+.search-tag {
+  display: flex;
+  justify-content: right;
+  align-items: center;
 }

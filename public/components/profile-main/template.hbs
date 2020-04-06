@@ -1,0 +1,60 @@
+<div class="profile-main">
+    <div class="profile-main__photos">
+        <div class="section">
+            <div class="section__header section__header_2">
+                <h2>Фото</h2>
+                <div class="link-uploader">
+                    <label for="photoUpload">Добавить</label>
+                    <input id="photoUpload" type="file"/>
+                </div>
+            </div>
+        </div>
+        <div class="photo-columns">
+            {{#if profile.photos}}
+                {{#each profile.photos as | photo |}}
+                    <img class="photo-columns__photo" src="{{../url}}/{{ photo.path }}" alt="{{ photo.path }}">
+                {{/each}}
+            {{else}}
+                <span class="font font_bold font__size_middle font__color_lg">Фотографий нет</span>
+            {{/if}}
+        </div>
+    </div>
+    <div class="profile-main__separator"></div>
+    <div class="profile-main__events">
+        <div class="section">
+            <div class="section__header section__header_2">
+                <h2>Эвенты</h2>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section__header section__header_3">
+                <h3>Ваши эвенты</h3>
+                <a href="/add-event" id="add-event-link">Добавить</a>
+            </div>
+        </div>
+        <div class="profile-main__group">
+            {{#if profile.events}}
+                {{#each profile.events as |event|}}
+                    {{> $Blocks/event/template }}
+                {{/each}}
+            {{else}}
+                <button class="re_btn re_btn__outline" id="add-event-btn">Добавить</button>
+            {{/if}}
+        </div>
+        <div class="section">
+            <div class="section__header section__header_3">
+                <h3>Ваши подписки</h3>
+            </div>
+        </div>
+        <div class="profile-main__group">
+            {{#if profile.events.others}}
+                {{#each profile.events.others as |event|}}
+                    {{> $Blocks/event/template }}
+                {{/each}}
+            {{else}}
+                <span class="font font_bold font__size_small font__color_lg">Подписок нет</span>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
