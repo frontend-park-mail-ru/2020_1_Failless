@@ -6,10 +6,18 @@ const CACHE_URLS = [
 	'/',
 	'/login',
 	'/signup',
-	'/search',
 	'/feed/users',
 	'/feed/events',
 	'/my/profile'
+];
+
+const CACHE_IMG = [
+	'https://eventum.s3.eu-north-1.amazonaws.com/events/default.png',
+	'https://eventum.s3.eu-north-1.amazonaws.com/app/creators/Andrey.jpg',
+	'https://eventum.s3.eu-north-1.amazonaws.com/app/creators/Egor.jpg',
+	'https://eventum.s3.eu-north-1.amazonaws.com/app/creators/Lisa.jpg',
+	'https://eventum.s3.eu-north-1.amazonaws.com/app/creators/Vova.jpg',
+	'https://eventum.s3.eu-north-1.amazonaws.com/app/creators/Sergey.jpeg'
 ];
 
 self.addEventListener('install', function(event) {
@@ -47,13 +55,34 @@ self.addEventListener('fetch', function(event) {
 				if (!response.ok) {
 					throw Error('response status ' + response.status);
 				}
+
+				if (event.request.method === 'GET') {
+					let responseToCache = response.clone();
+					
+					caches.open(CACHE_NAME).then(function(cache) {
+						console.warn('Put some cache:');
+						console.log(event.request);
+						console.log(responseToCache);
+						cache.put(event.request, responseToCache);
+					});
+				}
+
 				return response;
 			}).catch(function(error) {
-				console.warn('Constructing a fallback response, due to an error while fetching the real response:', error);
-				const fallbackResponse = {message: "You are out of network! Play Chrome Dino... oh no! Sorry we are Progressive App!", status: 228};
-				return new Response(JSON.stringify(fallbackResponse), {
-					headers: {'Content-Type': 'application/json'}
-				});
+				caches.match(event.request).then(function(response) {
+					// Cache hit - return response
+					if (response) {
+						console.warn('Found cache!', response);
+						return response;
+					}
+				})
+				.catch(function() {
+					console.warn('Constructing a fallback response, due to an error while fetching the real response:', error);
+					const fallbackResponse = {message: "You are out of network! Play Chrome Dino... oh no! Sorry we are Progressive App!", status: 228};
+					return new Response(JSON.stringify(fallbackResponse), {
+						headers: {'Content-Type': 'application/json'}
+					});
+				})
 			})
 		);
 	} else {		
@@ -77,10 +106,10 @@ self.addEventListener('fetch', function(event) {
 							// to clone it so we have two streams.
 							let responseToCache = response.clone();
 				
-							caches.open(CACHE_NAME)
-								.then(function(cache) {
+							caches.open(CACHE_NAME).then(function(cache) {
+								console.log(`Save request ${event.request} with response ${responseToCache}`);
 								cache.put(event.request, responseToCache);
-								});
+							});
 				
 							return response;
 						}
