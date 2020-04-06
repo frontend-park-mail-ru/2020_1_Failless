@@ -148,9 +148,11 @@ export default class FeedUsersController extends Controller {
                 this.list = events;
                 if (this.list) {
                     this.view.updateData(this.list[0], !this.usersSelected);
+                    this.#setUpVoteButtons();
                     return;
                 }
                 this.view.updateData(null, !this.usersSelected);
+                this.#setUpVoteButtons();
             })
             .catch((onerror) => {
                 console.error(onerror);
