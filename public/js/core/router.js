@@ -58,4 +58,12 @@ export default class Router {
         this.currentController = controller;
         this.currentController.action();
     };
+
+    static redirectForward(href) {
+        window.location.href = href;
+    }
+
+    static redirectBack() {
+        window.history.back();
+    }
 }

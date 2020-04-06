@@ -3,7 +3,8 @@
 import Controller from 'Eventum/core/controller.js';
 import LoginView from 'Eventum/views/login-view.js';
 import UserModel from 'Eventum/models/user-model.js';
-import ValidationModule from 'Eventum/utils/validation.js'
+import ValidationModule from 'Eventum/utils/validation.js';
+import router from "Eventum/core/router.js";
 
 /**
  * @class LoginController
@@ -111,9 +112,7 @@ export default class LoginController extends Controller {
 
         UserModel.postLogin(body).then((user) => {
             if (Object.prototype.hasOwnProperty.call(user, 'name')) {
-                window.history.pushState({}, '', '/my/profile');
-                window.history.pushState({}, '', '/my/profile');
-                window.history.back();
+                router.redirectForward('/my/profile');
             } else {
                 console.log(user);
                 this.view.addErrorMessage(this.form, [user.message]);

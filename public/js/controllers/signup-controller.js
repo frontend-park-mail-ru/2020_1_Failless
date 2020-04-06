@@ -4,6 +4,7 @@ import Controller from 'Eventum/core/controller.js';
 import SignUpView from 'Eventum/views/signup-view.js';
 import UserModel from 'Eventum/models/user-model.js';
 import ValidationModule from 'Eventum/utils/validation.js'
+import router from "Eventum/core/router.js";
 
 export default class SignUpController extends Controller {
 
@@ -92,9 +93,7 @@ export default class SignUpController extends Controller {
 
         UserModel.postSignUp(body).then((response) => {
             if (Object.prototype.hasOwnProperty.call(response, 'name')) {
-                window.history.pushState({}, '', '/login');
-                window.history.pushState({}, '', '/login');
-                window.history.back();
+                router.redirectForward('/login');
             } else {
                 console.log(response);
                 this.view.addErrorMessage(this.form, [response.message]);

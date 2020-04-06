@@ -3,6 +3,7 @@
 import createHeader from 'Eventum/core/header.js';
 import UserModel from 'Eventum/models/user-model.js';
 import logoutRedirect from 'Eventum/utils/logout.js';
+import router from "Eventum/core/router.js";
 
 /**
  * @class Basic controller class
@@ -85,9 +86,7 @@ export default class Controller {
                 return;
             }
 
-            window.history.pushState({}, '', href);
-            window.history.pushState({}, '', href);
-            window.history.back();
+            router.redirectForward(href);
         }
     };
 
@@ -98,9 +97,8 @@ export default class Controller {
      */
     #homeRedirect = (event) => {
         event.preventDefault();
-        window.history.pushState({}, '', '/');
-        window.history.pushState({}, '', '/');
-        window.history.back();
+
+        router.redirectForward('/');
     };
 
     #setActiveLink = (index) => {

@@ -2,6 +2,7 @@
 
 import Controller from 'Eventum/core/controller.js';
 import MyView from 'Eventum/views/my-view.js';
+import router from "Eventum/core/router.js";
 
 /**
  * @class MyController
@@ -38,9 +39,7 @@ export default class MyController extends Controller {
 
         console.log('chat redirects');
 
-        // window.history.pushState({}, '', '/my/chat');
-        // window.history.pushState({}, '', '/my/chat');
-        // window.history.back();
+        // router.redirectForward('/my/chat');
     };
 
     /**
@@ -52,9 +51,7 @@ export default class MyController extends Controller {
 
         console.log('mail redirect');
 
-        // window.history.pushState({}, '', '/my/mail');
-        // window.history.pushState({}, '', '/my/mail');
-        // window.history.back();
+        // router.redirectForward('/my/mail');
     };
 
     /**
@@ -66,9 +63,7 @@ export default class MyController extends Controller {
 
         console.log('profile redirect');
 
-        // window.history.pushState({}, '', '/my/profile');
-        // window.history.pushState({}, '', '/my/profile');
-        // window.history.back();
+        // router.redirectForward('/my/profile');
     };
 
     // highlightCircle(index) {
