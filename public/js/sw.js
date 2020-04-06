@@ -5,7 +5,6 @@ const CACHE_URLS = [
 	'bundle.js',
 	'/',
 	'/login',
-	'/search',
 	'/signup',
 	'/search',
 	'/feed/users',
