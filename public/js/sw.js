@@ -4,10 +4,16 @@ const CACHE_PREFIX = 'eventum';
 const CACHE_URLS = [
 	'bundle.js',
 	'/',
-	'/login'
+	'/login',
+	'/search',
+	'/signup',
+	'/search',
+	'/feed/users',
+	'/feed/events',
+	'/my/profile'
 ];
 
-this.addEventListener('install', function(event) {
+self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open(CACHE_NAME).then(function(cache) {
 			console.log('Install some cache');
@@ -18,7 +24,8 @@ this.addEventListener('install', function(event) {
     );
 });
 
-this.addEventListener('activate', function (event) {
+self.addEventListener('activate', function (event) {
+	console.warn('TEST');
     event.waitUntil(
         caches.keys().then(keyList => {
             return Promise.all(keyList.map(key => {
@@ -30,7 +37,7 @@ this.addEventListener('activate', function (event) {
     );
 });
 
-this.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', function(event) {
 	if (event.request.url.includes("/api/")) {
 		// response to API requests, Cache Update Refresh strategy
 		event.respondWith(
