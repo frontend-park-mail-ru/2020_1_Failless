@@ -18,7 +18,9 @@ self.addEventListener('install', function(event) {
         caches.open(CACHE_NAME).then(function(cache) {
 			console.log('Install some cache');
             return cache.addAll(CACHE_URLS);
-        }).catch(function(err) {
+        }).then(function() {
+			return self.skipWaiting();
+		  }).catch(function(err) {
 			console.log('Error with cache open ', err);
 		})
     );
@@ -32,7 +34,9 @@ self.addEventListener('activate', function (event) {
                     return caches.delete(key);
                 }
             }));
-        })
+        }).then(() => {
+			return self.clients.claim();
+		})
     );
 });
 
