@@ -36,7 +36,12 @@ export default class FeedUsersView extends View {
     render(data, selectedTags, isEvent, followers = null) {
         this.data = data;
         this.isEvent = isEvent;
-        this.#setUpPhotos();
+        this.#setUpPhotos(data, isEvent);
+        if (followers !== null) {
+            followers.forEach((user) => {
+                this.#setUpPhotos(user, !isEvent);
+            });
+        }
         this.tags.forEach((tag) => {
              tag.editable = true;
             if (selectedTags.includes(tag.name)) {
@@ -67,7 +72,7 @@ export default class FeedUsersView extends View {
         let columns = this.parent.getElementsByClassName('feed__column');
         columns[1].innerHTML = '';
         columns[2].innerHTML = '';
-        this.#setUpPhotos();
+        this.#setUpPhotos(data, isEvent);
 
         if (isEvent) {
             columns[1].innerHTML = feedEventsCenterTemplate(this.data);
@@ -77,18 +82,22 @@ export default class FeedUsersView extends View {
         columns[2].innerHTML = feedRightTemplate(rightTemplate);
     }
 
-    #setUpPhotos = () => {
-        if (!this.data) {
+    #setUpPhotos = (data, isEvent) => {
+        if (!data) {
             return;
         }
-        if (this.data.photos !== null) {
-            if (this.isEvent) {
-                this.data.photos.forEach((item) => getPageUrl(item, 'events'));
+        if (data.photos !== null) {
+            if (isEvent) {
+                data.photos.forEach((item) => getPageUrl(item, 'events'));
             } else {
-                this.data.photos.forEach((item) => getPageUrl(item, 'users'));
+                data.photos.forEach((item) => getPageUrl(item, 'users'));
             }
         } else {
-            this.data.photos = [getPageUrl('default.png', 'events')];
+            if (isEvent) {
+                data.photos = [getPageUrl('default.png', 'events')];
+            } else {
+                data.photos = [getPageUrl('default.png', 'users')];
+            }
         }
     }
 }
