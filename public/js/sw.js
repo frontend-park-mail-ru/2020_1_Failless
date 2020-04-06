@@ -25,7 +25,6 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('activate', function (event) {
-	console.warn('TEST');
     event.waitUntil(
         caches.keys().then(keyList => {
             return Promise.all(keyList.map(key => {
