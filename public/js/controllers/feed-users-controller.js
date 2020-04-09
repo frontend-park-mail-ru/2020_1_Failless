@@ -4,10 +4,10 @@ import EventModel from 'Eventum/models/event-model.js';
 import UserModel from 'Eventum/models/user-model.js';
 import Controller from 'Eventum/core/controller.js';
 import FeedUsersView from 'Eventum/views/feed-users-view.js';
-import settings from 'Settings/config.js'
-import SliderManager from "Blocks/slider/set-slider.js";
-import {MIN_AGE, MAX_AGE, staticTags} from "Eventum/utils/static-data.js";
-import {highlightTag} from "Eventum/utils/tag-logic.js";
+import settings from 'Settings/config.js';
+import SliderManager from 'Blocks/slider/set-slider.js';
+import {MIN_AGE, MAX_AGE, staticTags} from 'Eventum/utils/static-data.js';
+import {highlightTag} from 'Eventum/utils/tag-logic.js';
 
 /**
  * @class FeedUsersController
@@ -31,7 +31,7 @@ export default class FeedUsersController extends Controller {
             } else {
                 this.view = new FeedUsersView(parent, staticTags);
             }
-        }).catch((onerror) => {
+        }).catch(() => {
             this.view = new FeedUsersView(parent, staticTags);
         });
         this.uid = null;
@@ -188,15 +188,15 @@ export default class FeedUsersController extends Controller {
                 .then((response) => {
                     console.log(response);
                 }).catch((onerror) => {
-                console.error(onerror);
-            });
+                    console.error(onerror);
+                });
         } else {
             EventModel.eventVote(vote, isLike)
                 .then((response) => {
                     console.log(response);
                 }).catch((onerror) => {
-                console.error(onerror);
-            });
+                    console.error(onerror);
+                });
         }
 
         ++this.currentItem;

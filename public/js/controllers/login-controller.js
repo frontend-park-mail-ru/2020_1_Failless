@@ -4,7 +4,7 @@ import Controller from 'Eventum/core/controller.js';
 import LoginView from 'Eventum/views/login-view.js';
 import UserModel from 'Eventum/models/user-model.js';
 import ValidationModule from 'Eventum/utils/validation.js';
-import router from "Eventum/core/router.js";
+import router from 'Eventum/core/router.js';
 
 /**
  * @class LoginController
@@ -45,11 +45,11 @@ export default class LoginController extends Controller {
 
     _showSetEventModal(event) {
         document.getElementsByClassName('modal__container')[0].style.display = 'flex';
-    };
+    }
 
     _hideSetEventModal(event) {
         document.getElementsByClassName('modal__container')[0].style.display = 'none';
-    };
+    }
 
     /**
      * Get data from input form on sign up page
@@ -83,14 +83,14 @@ export default class LoginController extends Controller {
         const login = this.form[0].value;
 
         switch(true) {
-            case (event.target === form[0] && login.includes('@')):
-                const nameCheck = ValidationModule.validateUserData(login, 'email');
-                this.view.addErrorMessage(this.form[0], nameCheck);
-                break;
-            case (event.target === form[0]):
-                const emailCheck = ValidationModule.validateUserData(login, 'phone');
-                this.view.addErrorMessage(this.form[0], emailCheck);
-                break;
+        case (event.target === form[0] && login.includes('@')):
+            const nameCheck = ValidationModule.validateUserData(login, 'email');
+            this.view.addErrorMessage(this.form[0], nameCheck);
+            break;
+        case (event.target === form[0]):
+            const emailCheck = ValidationModule.validateUserData(login, 'phone');
+            this.view.addErrorMessage(this.form[0], emailCheck);
+            break;
         }
     };
 

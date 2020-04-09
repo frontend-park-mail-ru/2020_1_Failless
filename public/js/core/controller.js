@@ -42,7 +42,7 @@ export default class Controller {
      */
     action() {
         UserModel.getLogin().then((user) => {
-            createHeader(this.parent, Object.prototype.hasOwnProperty.call(user, 'uid'))
+            createHeader(this.parent, Object.prototype.hasOwnProperty.call(user, 'uid'));
         }).catch((onerror) => {
             createHeader(this.parent, false);
             console.log('No internet connection', onerror);

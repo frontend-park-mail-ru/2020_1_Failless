@@ -3,8 +3,8 @@
 import Controller from 'Eventum/core/controller.js';
 import SignUpView from 'Eventum/views/signup-view.js';
 import UserModel from 'Eventum/models/user-model.js';
-import ValidationModule from 'Eventum/utils/validation.js'
-import router from "Eventum/core/router.js";
+import ValidationModule from 'Eventum/utils/validation.js';
+import router from 'Eventum/core/router.js';
 
 export default class SignUpController extends Controller {
 

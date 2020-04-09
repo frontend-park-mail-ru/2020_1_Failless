@@ -6,11 +6,11 @@ import UserModel from 'Eventum/models/user-model.js';
 import ProfileEditView from 'Eventum/views/profile-edit-view.js';
 import AddEventView from 'Eventum/views/add-event-view.js';
 import ModalView from 'Eventum/views/modal-view.js';
-import {staticTags} from "Eventum/utils/static-data.js";
+import {staticTags} from 'Eventum/utils/static-data.js';
 import {highlightTag} from 'Eventum/utils/tag-logic.js';
 import logoutRedirect from 'Eventum/utils/logout.js';
 import EventModel from 'Eventum/models/event-model.js';
-import editTemplate from 'Blocks/edit-field/template.hbs'
+import editTemplate from 'Blocks/edit-field/template.hbs';
 
 /**
  * @class ProfileController
@@ -77,8 +77,8 @@ export default class ProfileController extends MyController {
                     console.log(profile);
                 }
             }).catch(onerror => {
-            console.error(onerror);
-        });
+                console.error(onerror);
+            });
     }
 
     #handleFile = (event) => {
@@ -238,7 +238,7 @@ export default class ProfileController extends MyController {
         this.activeModalWindow.querySelector(
             '.modal__footer').querySelector(
             '.re_btn.re_btn__outline').addEventListener(
-            'click', this.#submitTagsHandler.bind(this), false)
+            'click', this.#submitTagsHandler.bind(this), false);
     };
 
     #submitTagsHandler = (event) => {
@@ -256,18 +256,18 @@ export default class ProfileController extends MyController {
         this.localTags = [];
         let length = 0;
         allTags.forEach((tag) => {
-                let tempTag = {
-                    name: tag.firstElementChild.innerText,
-                    tag_id: tag.firstElementChild.getAttribute('data-id'),
-                    editable: true,
-                };
-                if (tag.classList.contains('tag__container_active')) {
-                    tempTag.activeClass = 'tag__container_active';
-                    tagsField.appendChild(tag);
-                    length++;
-                }
-                this.localTags.push(tempTag);
+            let tempTag = {
+                name: tag.firstElementChild.innerText,
+                tag_id: tag.firstElementChild.getAttribute('data-id'),
+                editable: true,
+            };
+            if (tag.classList.contains('tag__container_active')) {
+                tempTag.activeClass = 'tag__container_active';
+                tagsField.appendChild(tag);
+                length++;
             }
+            this.localTags.push(tempTag);
+        }
         );
 
         if (length === 0) {
@@ -278,7 +278,7 @@ export default class ProfileController extends MyController {
             let emptyMessage = document.createElement('div');
             emptyMessage.classList.add('center');
             let message = document.createElement('span');
-            message.classList.add("font", "font_bold", "font__size_small", "font__color_lg");
+            message.classList.add('font', 'font_bold', 'font__size_small', 'font__color_lg');
             message.innerText = emptyMessageText;
             emptyMessage.appendChild(message);
             tagsField.appendChild(emptyMessage);
@@ -302,7 +302,7 @@ export default class ProfileController extends MyController {
                 let emptyMessage = document.createElement('div');
                 emptyMessage.classList.add('center');
                 let message = document.createElement('span');
-                message.classList.add("font", "font_bold", "font__size_small", "font__color_lg");
+                message.classList.add('font', 'font_bold', 'font__size_small', 'font__color_lg');
                 message.innerText = 'Вы удалили все теги';
                 emptyMessage.appendChild(message);
                 elemContainer.parentElement.appendChild(emptyMessage);
@@ -348,31 +348,31 @@ export default class ProfileController extends MyController {
         if (event.target.tagName === 'A') {
             let filed = event.target.parentNode;
             switch (filed.id) {
-                case 'popupPasswd': {
-                    console.log('draw password field');
-                    this.editView.renderPasswordForm(filed);
-                    break;
-                }
-                case 'popupMail': {
-                    console.log('draw email field');
-                    break;
-                }
-                case 'popupSex': {
-                    console.log('draw gender field');
-                    break;
-                }
-                case 'popupPhone': {
-                    console.log('draw phone field');
-                    break;
-                }
-                case 'popupLang': {
-                    console.log('draw lang field');
-                    break;
-                }
-                case 'popupBirth': {
-                    console.log('draw lang field');
-                    break;
-                }
+            case 'popupPasswd': {
+                console.log('draw password field');
+                this.editView.renderPasswordForm(filed);
+                break;
+            }
+            case 'popupMail': {
+                console.log('draw email field');
+                break;
+            }
+            case 'popupSex': {
+                console.log('draw gender field');
+                break;
+            }
+            case 'popupPhone': {
+                console.log('draw phone field');
+                break;
+            }
+            case 'popupLang': {
+                console.log('draw lang field');
+                break;
+            }
+            case 'popupBirth': {
+                console.log('draw lang field');
+                break;
+            }
             }
         }
     };
