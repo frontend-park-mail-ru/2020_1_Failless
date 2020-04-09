@@ -2,7 +2,7 @@
 
 import Controller from 'Eventum/core/controller.js';
 import MyView from 'Eventum/views/my-view.js';
-import router from "Eventum/core/router.js";
+import router from 'Eventum/core/router.js';
 
 /**
  * @class MyController
@@ -63,7 +63,7 @@ export default class MyController extends Controller {
 
         console.log('profile redirect');
 
-        // router.redirectForward('/my/profile');
+        router.redirectForward('/my/profile');
     };
 
     // highlightCircle(index) {

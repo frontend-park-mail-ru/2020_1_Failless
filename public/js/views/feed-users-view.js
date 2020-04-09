@@ -1,7 +1,6 @@
 'use strict';
 
 import View from 'Eventum/core/view.js';
-import {events} from 'Eventum/utils/static-data.js';
 import getPageUrl from 'Eventum/utils/get-img-url.js';
 import feedTemplate from 'Components/feed/template.hbs';
 import feedCenterTemplate from 'Blocks/feed-center/template.hbs';
@@ -43,7 +42,7 @@ export default class FeedUsersView extends View {
             });
         }
         this.tags.forEach((tag) => {
-             tag.editable = true;
+            tag.editable = true;
             if (selectedTags.includes(tag.name)) {
                 tag.active_class = 'tag__container__active';
             }

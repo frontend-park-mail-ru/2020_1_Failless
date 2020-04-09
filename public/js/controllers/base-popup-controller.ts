@@ -1,6 +1,6 @@
 'use strict';
 
-import Controller from '../core/controller.js'
+import Controller from '../core/controller.js';
 import EventPopupView from '../views/popup/event-popup-view';
 
 /**
@@ -25,9 +25,9 @@ export default class PopupController extends Controller {
     newEvent() {
         this.eventPopup.render();
         let submit = document.getElementsByClassName('event-form__submit')[0];
-        submit.addEventListener('onclick', (event)=>{ console.log('submit was pressed'); });
+        submit.addEventListener('onclick', () => { console.log('submit was pressed'); });
         let upload = document.getElementsByClassName('event-form__upload')[0];
-        upload.addEventListener('onclick', (event) => { /* TODO: upload image to browser */ });
+        upload.addEventListener('onclick', () => { /* TODO: upload image to browser */ });
     }
 
 }

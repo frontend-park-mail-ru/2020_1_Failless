@@ -13,16 +13,16 @@ export default class ValidationModule {
      */
     static validateUserData = (input, attribute) => {
         switch (attribute) {
-            case 'password':
-                return this.validatePassword(input);
-            case 'repeatPassword':
-                return this.validateRepeatPassword(input);
-            case 'email':
-                return this.validateEmail(input);
-            case 'phone':
-                return this.validatePhone(input);
-            case 'name':
-                return this.validateName(input);
+        case 'password':
+            return this.validatePassword(input);
+        case 'repeatPassword':
+            return this.validateRepeatPassword(input);
+        case 'email':
+            return this.validateEmail(input);
+        case 'phone':
+            return this.validatePhone(input);
+        case 'name':
+            return this.validateName(input);
         }
     };
 
@@ -86,7 +86,7 @@ export default class ValidationModule {
         let errors = [];
 
         if (this.isEmpty(input) || !this.isString(input)) { 
-            errors.push("Пустой или некорректный повторный пароль");
+            errors.push('Пустой или некорректный повторный пароль');
         }
 
         return errors;

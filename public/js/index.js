@@ -16,9 +16,9 @@ if (navigator.serviceWorker) {
         navigator.serviceWorker.register('sw.js').then((registration) => {
             console.log('Service worker is supported! Enjoy! Scope:', registration.scope);
         })
-        .catch((err) => {
-            console.log('Na ja! Das ist nicht arbeiten! No SW!', err);
-        });
+            .catch((err) => {
+                console.log('Na ja! Das ist nicht arbeiten! No SW!', err);
+            });
     });   
 }
 

@@ -33,7 +33,7 @@ export default class BigEventSearchController extends Controller {
                 this.view.render();
                 this.addEventHandler(document.getElementById('searchInput'), 'keydown', this.#completeRequest);
                 console.error(onerror);
-        });
+            });
     }
 
     /**
@@ -63,8 +63,8 @@ export default class BigEventSearchController extends Controller {
                         this.view.renderResults(events);
                     }
                 }).catch(onerror => {
-                console.error(onerror);
-            });
+                    console.error(onerror);
+                });
         }
     };
 }

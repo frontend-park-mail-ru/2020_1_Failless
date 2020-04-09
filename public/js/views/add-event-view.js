@@ -17,7 +17,7 @@ export default class AddEventView extends View {
         this.data = null;
     }
     render() {
-        let k = 1;
+        // let k = 1;
         const template = eventPopupTemplate({
             id: 'submit-event',
             fields: [

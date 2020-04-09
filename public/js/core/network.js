@@ -11,8 +11,8 @@ export default class NetworkModule {
      * @return {Promise} Promise for the HTTP request
      */
     static fetchGet = ({
-                path = '/',
-            } = {}) => {
+        path = '/',
+    } = {}) => {
         const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'GET',
@@ -30,9 +30,9 @@ export default class NetworkModule {
      * @return {Promise} Promise for the HTTP request
      */
     static fetchPost = ({
-                    path = '/',
-                    body = null,
-                } = {}) => {
+        path = '/',
+        body = null,
+    } = {}) => {
         const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'POST',

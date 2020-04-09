@@ -43,7 +43,7 @@ export default class ProfileView extends MyView {
     render(profile) {
         super.render();
 
-        let allowEdit = true;
+        // let allowEdit = true;
         if (profile.avatar.path === null) {
             profile.avatar.path = 'default.png';
         }

@@ -3,7 +3,7 @@
 import createHeader from 'Eventum/core/header.js';
 import UserModel from 'Eventum/models/user-model.js';
 import logoutRedirect from 'Eventum/utils/logout.js';
-import router from "Eventum/core/router.js";
+import router from 'Eventum/core/router.js';
 
 /**
  * @class Basic controller class
@@ -37,34 +37,24 @@ export default class Controller {
         this.parent.innerHTML = '';
     }
 
-    animateHeader() {
-        window.addEventListener('scroll', this.stickyHeader.bind(this));
-        console.log(document.querySelector('.header'));
-        console.log(document.getElementsByClassName('header')[0]);
-        console.log(document.getElementsByTagName('header')[0]);
-        this.header = document.querySelector('.header');
-    }
-
     /**
      * Create action and render header
      */
     action() {
         UserModel.getLogin().then((user) => {
-            if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
-                createHeader(this.parent, false);
-            } else {
-                createHeader(this.parent, true);
-            }
+            createHeader(this.parent, Object.prototype.hasOwnProperty.call(user, 'uid'))
         }).catch((onerror) => {
             createHeader(this.parent, false);
-            console.log('No internet connection');
+            console.log('No internet connection', onerror);
         }).then(() => {
-            const managePanel = document.getElementsByClassName('header__manage')[0];
-            this.addEventHandler(managePanel, 'click', this.#controlBtnPressed);
-            // managePanel.addEventListener('click', this.#controlBtnPressed.bind(this));
-            const logo = document.getElementsByClassName('header__logo gradient-text')[0];
-            this.addEventHandler(logo, 'click', this.#homeRedirect);
-            // logo.addEventListener('click', this.#homeRedirect.bind(this));
+            this.addEventHandler(
+                document.getElementsByClassName('header__manage')[0],
+                'click',
+                this.#controlBtnPressed);
+            this.addEventHandler(
+                document.getElementsByClassName('header__logo gradient-text')[0],
+                'click',
+                this.#homeRedirect);
         });
     }
 
@@ -101,7 +91,7 @@ export default class Controller {
         router.redirectForward('/');
     };
 
-    #setActiveLink = (index) => {
+    #setActiveLink = () => {
         // TODO: remove all active links
         //  Add active link on chosen index (look in my-controller.js)
     };
@@ -187,7 +177,7 @@ export default class Controller {
      * Create slow header hiding and showing during scroll
      * @param event
      */
-    stickyHeader = (event) => {
+    stickyHeader = () => {
         this.header = document.querySelector('.header');
         if (!this.header) {
             this.header = document.querySelector('header');
