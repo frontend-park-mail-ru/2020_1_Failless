@@ -102,11 +102,15 @@ export default class ValidationModule {
         const emailReg = RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\' +
             '[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}' +
             '\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$');
+        const anotherEmailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
         if (this.isEmpty(input) || !this.isString(input)) {
             errors.push('Пустая или некорректная почта');
         }
-        if (!emailReg.test(input)) {
+        // if (!emailReg.test(input)) {
+        //     errors.push('Введите корректный email-адрес (например, aaaa@aaa.aa)');
+        // }
+        if (anotherEmailReg.exec(input) === null) {
             errors.push('Введите корректный email-адрес (например, aaaa@aaa.aa)');
         }
         if (input.length > 256) {
@@ -123,6 +127,10 @@ export default class ValidationModule {
      */
     static validatePhone = (input) => {
         const errors = [];
+        // +79997771234
+        // const regex = /^\+?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{6})$/;
+        // 89997771234
+        const regex = /^\+?([0-9]{1})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{7})$/;
 
         if (this.isEmpty(input) || !this.isString(input)) {
             errors.push('Пустой или некорректный телефон');
@@ -135,6 +143,21 @@ export default class ValidationModule {
         if (input.replace(/[^0-9\.]+/g, '').length > 14) {
             errors.push('Длина не должна превышать 14 символов');
         }
+
+        if (regex.exec(input) === null) {
+            errors.push('Введите корректный телефон (например, 89997771234)');
+        }
+
+        // const regex = /^\+?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{7})$/;
+        // const str = `+381234567890`;
+        // let m;
+
+        // if ((m = regex.exec(str)) !== null) {
+        //     // The result can be accessed through the `m`-variable.
+        //     m.forEach((match, groupIndex) => {
+        //         console.log(`Found match, group ${groupIndex}: ${match}`);
+        //     });
+        // }
 
         return errors;
     };

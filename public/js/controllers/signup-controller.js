@@ -39,7 +39,7 @@ export default class SignUpController extends Controller {
 
             this.inputs = this.form.getElementsByClassName('input input__auth');
             for (let input of this.inputs) {
-                this.addEventHandler(input, 'focus', this.removeErrorMessage);
+                this.addEventHandler(input, 'focus', this.removeErrorMessage.bind(this));
                 this.addEventHandler(input, 'blur', this.#checkInputHandler);
                 // input.addEventListener('focus', this.removeErrorMessage.bind(this));
                 // input.addEventListener('blur', this.#checkInputHandler.bind(this));
@@ -140,6 +140,25 @@ export default class SignUpController extends Controller {
             }
             this.view.addErrorMessage(this.form[4], repeatPasswordCheck);
             break;
+        }
+    };
+
+    // Method inheritance doesn't work due to arrow functions :c
+    removeErrorMessage = (event) => {
+        event.preventDefault();
+
+        if (event.target === this.form[3]) {
+            this.form[4].classList.remove('input__auth_incorrect');
+            let errorElement = this.form[4].parentNode.getElementsByClassName('validation-error')[0];
+            if (errorElement) {
+                errorElement.remove();
+            }
+        }
+
+        event.target.classList.remove('input__auth_incorrect');
+        let errorElement = event.target.parentNode.getElementsByClassName('validation-error')[0];
+        if (errorElement) {
+            errorElement.remove();
         }
     };
 }
