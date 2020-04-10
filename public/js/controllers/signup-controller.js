@@ -95,7 +95,6 @@ export default class SignUpController extends Controller {
             if (Object.prototype.hasOwnProperty.call(response, 'name')) {
                 router.redirectForward('/login');
             } else {
-                console.log(response);
                 this.view.addErrorMessage(this.form, [response.message]);
             }
         }).catch(reason => console.log(reason));

@@ -5,14 +5,13 @@
         <!--TODO: image options-footer here-->
         <div class="feed-center__profile">
             <div>
-                <h1>{{ title }}</h1>
-                <h3>{{ date }}</h3>
-                <div class="feed-center__about">{{ description }}</div>
+                <h1>{{ name }}{{#if age}},  {{ age }}{{/if}}</h1>
+                <div class="feed-center__about">{{ about }}</div>
             </div>
             <div class="feed-center__tags">
-                {{#with tag}}
-                    {{> $Blocks/tag/template }}
-                {{/with}}
+                {{#each tags as |tag|}}
+                    <div class="tag tag_size_middle">{{ title }}</div>
+                {{/each}}
             </div>
         </div>
         <div class="feed-center__action-buttons">

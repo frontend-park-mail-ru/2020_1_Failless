@@ -17,25 +17,30 @@ export default class FeedController extends Controller {
     /**
      * Construct obj of ProfileSearchController class
      * @param {HTMLElement} parent
+     * @param {boolean} users - true, events - false
      */
-    constructor(parent) {
+    constructor(parent, users) {
         super(parent);
-        this.usersSelected = false; // заглушка
-        this.list = null;
+        this.usersFeed = users;
+        this.dataList = []; // {item, followers}
         this.tagList = []; // заглушка
         this.currentPage = 1;
         this.currentItem = 0;
-        EventModel.getTagList().then((tags) => {
-            if (tags) {
-                this.view = new FeedUsersView(parent, tags);
-            } else {
-                this.view = new FeedUsersView(parent, staticTags);
-            }
-        }).catch(() => {
-            this.view = new FeedUsersView(parent, staticTags);
-        });
+        this.view = new FeedUsersView(parent, staticTags);
+        EventModel.getTagList().then(
+            (tags) => {
+                if (tags) {
+                    this.view = new FeedUsersView(parent, tags);
+                }
+            });
         this.uid = null;
         this.sliderManager = new SliderManager();
+        this.defaultEventRequest = {
+            page: 1,
+            uid: this.uid,
+            limit: settings.pageLimit,
+            query: ''
+        };
     }
 
 
@@ -46,30 +51,22 @@ export default class FeedController extends Controller {
         super.action();
         UserModel.getProfile().then((user) => {
             this.uid = user.uid;
-            this.#initDataList(1)
-                .then((data) => {
-                    this.#actionCallback(data, this.tagList, !this.usersSelected);
+            this.defaultEventRequest.uid = this.uid;
+            // Show landing page with loading
+            // TODO: get selected tags from history
+            this.view.render(this.tagList, !this.usersFeed);
+
+            // Fetch content to show
+            this.#initDataList(this.defaultEventRequest).then(
+                (data) => {
+                    this.#updateAll();
+                },
+                (error) => {
+                    console.error(error);
+                    this.view.showError(error);
                 });
         });
     }
-
-    /**
-     * Call render method from view and initialize event handlers
-     * @param {Object} data
-     * @param {Array} selectedTags
-     * @param {boolean} isEvent
-     */
-    #actionCallback = (data, selectedTags, isEvent) => {
-        if (data) {
-            EventModel.getEventFollowers(data.eid).then((followers) => {
-                this.view.render(data, selectedTags, isEvent, followers);
-                this.#initMainEventHandlers(data);
-            });
-        } else {
-            this.view.render(data, selectedTags, isEvent);
-            this.#initMainEventHandlers(data);
-        }
-    };
 
     /**
      *
@@ -80,7 +77,7 @@ export default class FeedController extends Controller {
         if (data) {
             this.#setUpVoteButtons();
         }
-        this.addEventHandler(document.getElementById('form'), 'submit', this.#getFilters);
+        this.addEventHandler(document.getElementById('form'), 'submit', this.#applyFilters);
 
         // TODO: change initialValue to profile preferences
         // Set two sliders and connect each other
@@ -92,20 +89,34 @@ export default class FeedController extends Controller {
     }
 
     #setUpVoteButtons() {
-        const approveBtn = document.getElementsByClassName('re_btn__approve')[0];
-        approveBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            this.#voteHandler(!this.usersSelected, true);
-        });
-
-        const rejectBtn = document.getElementsByClassName('re_btn__reject')[0];
-        rejectBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            this.#voteHandler(!this.usersSelected, false);
-        });
+        this.addEventHandler(
+            document.querySelector('.re_btn__approve'),
+            'click',
+            (event) => {
+                event.preventDefault();
+                this.#voteHandler(true);
+            });
+        this.addEventHandler(
+            document.querySelector('.re_btn__reject'),
+            'click',
+            (event) => {
+                event.preventDefault();
+                this.#voteHandler(false);
+            });
     }
 
-    #getFilters = (event) => {
+    /**
+     *
+     * @param event
+     * @return {{keyWords: [],
+     *           maxAge: number,
+     *           men: boolean,
+     *           minAge: number,
+     *           limit: number,
+     *           tags: [],
+     *           women: boolean}}
+     */
+    #applyFilters = (event) => {
         event.preventDefault();
         const form = document.getElementById('form');
 
@@ -146,7 +157,7 @@ export default class FeedController extends Controller {
         // Get limit
         filters.limit = Number(ageSliderSpans[2].getAttribute('slider_value'));
 
-        EventModel.getFeedEvents({
+        this.#initDataList({
             uid: this.uid,
             page: this.currentPage,
             limit: 10,
@@ -158,98 +169,158 @@ export default class FeedController extends Controller {
             maxAge: filters.maxAge,
             men: filters.men,
             women: filters.women,
-        })
-            .then((events) => {
-                this.list = events;
-                if (this.list) {
-                    this.view.updateData(this.list[0], !this.usersSelected);
-                    this.#setUpVoteButtons();
-                    return;
-                }
-                this.view.updateData(null, !this.usersSelected);
-                this.#setUpVoteButtons();
-            })
-            .catch((onerror) => {
-                console.error(onerror);
-                return onerror;
-            });
-
-        return filters;
+        }).then(
+            (data) => {
+                this.#updateAll();
+            },
+            (error) => {
+                console.error(error);
+                this.view.showError(error);
+            }
+        );
     };
 
+    /**
+     * Handle click on like buttons
+     * @param isLike
+     */
     #voteHandler = (isLike) => {
+        // Get id-s
         const vote = {
             uid: this.uid,
-            id: this.list[this.currentItem].uid,
+            id: null,
             value: isLike ? 1 : -1,
         };
-        if (this.usersSelected) {
-            EventModel.userVote(vote, isLike)
-                .then((response) => {
-                    console.log(response);
-                }).catch((onerror) => {
+
+        // Send request with vote
+        if (this.usersFeed) {
+            vote.id = this.dataList[this.currentItem].item.uid;
+            EventModel.userVote(vote, isLike).catch(
+                (onerror) => {
                     console.error(onerror);
                 });
         } else {
-            EventModel.eventVote(vote, isLike)
-                .then((response) => {
-                    console.log(response);
-                }).catch((onerror) => {
+            vote.id = this.dataList[this.currentItem].item.eid;
+            EventModel.eventVote(vote, isLike).catch(
+                (onerror) => {
                     console.error(onerror);
                 });
         }
 
+        // Show next item
         ++this.currentItem;
         if (this.currentItem < settings.pageLimit) {
-            if (this.list.length <= this.currentItem) {
-                this.view.updateData(null, !this.usersSelected);
-            } else {
-                this.view.updateData(this.list[this.currentItem], !this.usersSelected);
-                this.#setUpVoteButtons();
+            if (this.dataList.length <= this.currentItem) { // empty list
+                this.view.updateCenter(null, !this.usersFeed);
+            } else { // not empty list
+                this.#updateAll();
             }
         } else {
+            // Go get next items
             this.currentItem = 0;
             ++this.currentPage;
-            this.#initDataList(this.currentPage)
-                .then((data) => {
-                    this.view.updateData(data, !this.usersSelected);
-                    this.#setUpVoteButtons();
+            this.dataList.length = 0;
+            this.defaultEventRequest.page = this.currentPage;
+            this.#initDataList(this.defaultEventRequest).then(
+                (data) => {
+                    this.#updateAll();
+                },
+                (error) => {
+                    console.error(error);
+                    this.view.showError(error);
                 });
-            // TODO: create request for the next page of events or users
         }
     };
 
-    #initDataList = (page) => {
-        if (this.usersSelected) {
-            return EventModel.getFeedUsers({page: page, uid: this.uid, limit: settings.pageLimit, query: ''})
-                .then((users) => {
-                    this.list = users;
-                    if (this.list) {
-                        return this.list[0];
+    /**
+     * Get either events or users list to show in feed
+     * @param page
+     * @return {Promise<T>}
+     */
+    #initDataList = (eventRequest) => {
+        console.log(eventRequest);
+        if (this.usersFeed) {
+            return EventModel.getFeedUsers(eventRequest).then(
+                (users) => {
+                    if (users) {
+                        users.forEach((user) => {
+                            this.dataList.push(
+                                {
+                                    item: user,
+                                    followers: null,
+                                })
+                        });
+                        return this.dataList[0];
+                    } else {
+                        return null;
                     }
-                    return null;
-                }).catch((onerror) => {
-                    console.error(onerror);
-                    return onerror;
+                },
+                (error) => {
+                    console.error(error);
+                    throw new Error(error);
                 });
         } else {
-            return EventModel.getFeedEvents({page: 1, uid: this.uid, limit: settings.pageLimit, query: ''})
-                .then((events) => {
-                    this.list = events;
-                    if (this.list) {
-                        return this.list[0];
+            return EventModel.getFeedEvents(eventRequest).then(
+                (events) => {
+                    if (events) {
+                        events.forEach((event) => {
+                            this.dataList.push(
+                                {
+                                    item: event,
+                                    followers: undefined,
+                                });
+                            const len = this.dataList.length;
+                            EventModel.getEventFollowers(event.eid).then(
+                                (followers) => {
+                                    this.dataList[len - 1].followers = followers;
+                                }
+                            )
+                        });
+                        return this.dataList[0];
+                    } else {
+                        return null;
                     }
-                    return null;
-                }).catch((onerror) => {
-                    console.error(onerror);
-                    return onerror;
+                },
+                (error) => {
+                    console.error(error);
+                    throw new Error(error);
                 });
         }
     };
 
-    #selectTag = (dataField) => {
-        // TODO: create ajax request to server for new page of events
-        // TODO: redraw main block
-        return new Promise(resolve => resolve);
-    };
+    /**
+     * Render both columns
+     * Show rendering icon if loading
+     */
+    #updateAll() {
+        // Show none
+        if (!this.dataList[this.currentItem]) {
+            this.view.updateCenter(null, !this.usersFeed);
+            this.view.updateRight(null, !this.usersFeed);
+            return;
+        }
+
+        // Render center column
+        this.view.updateCenter(this.dataList[this.currentItem].item, !this.usersFeed);
+
+        // Render right column
+        this.view.showLoadingRight();
+        if (this.usersFeed) {
+            console.log('users!!!');
+        } else {
+            this.#initMainEventHandlers(this.dataList[this.currentItem].item);
+            if (this.dataList[this.currentItem].followers === undefined) {
+                EventModel.getEventFollowers(this.dataList[this.currentItem].item.eid).then(
+                    (followers) => {
+                        this.view.updateRight(followers, !this.usersFeed);
+                    },
+                    (error) => {
+                        console.error(error);
+                        this.view.showErrorRight(error);
+                    });
+            } else {
+                this.view.updateRight(this.dataList[this.currentItem].followers, !this.usersFeed);
+            }
+        }
+    }
 }

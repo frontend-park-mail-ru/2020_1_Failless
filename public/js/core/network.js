@@ -13,6 +13,11 @@ export default class NetworkModule {
     static fetchGet = ({
         path = '/',
     } = {}) => {
+        if (path.includes('undefined')) {
+            return new Promise((resolve, reject) => {
+                reject(new Error('Invalid path, boy'));
+            });
+        }
         const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'GET',
@@ -33,6 +38,11 @@ export default class NetworkModule {
         path = '/',
         body = null,
     } = {}) => {
+        if (path.includes('undefined')) {
+            return new Promise((resolve, reject) => {
+                reject(new Error('Invalid path, boy'));
+            });
+        }
         const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'POST',
@@ -55,6 +65,11 @@ export default class NetworkModule {
         path = '/',
         body = null,
     } = {}) => {
+        if (path.includes('undefined')) {
+            return new Promise((resolve, reject) => {
+                reject(new Error('Invalid path, boy'));
+            });
+        }
         const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'PUT',

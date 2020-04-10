@@ -32,7 +32,7 @@ export default function createHeader(base, logged) {
                     name: 'Поиск',
                 },
                 {
-                    link: '/feed/users',
+                    link: '/feed/events',   // TODO: '/feed'
                     name: 'Лента',
                     sub_buttons: [
                         {

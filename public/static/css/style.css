@@ -179,8 +179,10 @@
 }
 
 .feed {
+  position: absolute;
+  top: 55px;
+  bottom: 10px;
   width: 100%;
-  margin: 55px 0 10px;
   display: flex;
   flex: 1 1 100%;
   /* Customize the label (the container) */
@@ -1479,7 +1481,7 @@
   opacity: 0;
 }
 .tag__container:hover .tag__button {
-  opacity: 100;
+  opacity: 0.3;
 }
 .tag__button {
   width: 10px;
@@ -2177,7 +2179,8 @@ textarea:focus {
 }
 
 .container {
-  width: 1084px;
+  position: relative;
+  width: 1000px;
   box-sizing: border-box;
 }
 
@@ -2247,6 +2250,42 @@ h3 {
   background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/*-------------------------------------------*\
+   Windows 8 spinner
+\*-------------------------------------------*/
+.spinner {
+  width: 60px;
+  height: 60px;
+  margin: 60px;
+  animation: rotate 1.4s infinite ease-in-out, background 1.4s infinite ease-in-out alternate;
+}
+
+@keyframes rotate {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-180deg);
+  }
+}
+@keyframes background {
+  0% {
+    background-color: #12C2E9;
+  }
+  50% {
+    background-color: #F64F59;
+  }
+  100% {
+    background-color: #C471ED;
+  }
+}
+.full-height {
+  height: 100%;
 }
 
 /*# sourceMappingURL=style.css.map */

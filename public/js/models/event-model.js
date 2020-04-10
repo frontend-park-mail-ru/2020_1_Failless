@@ -20,6 +20,12 @@ export default class EventModel extends Model {
      * @return {Promise} promise to get user data
      */
     static getEvents(eventsRequest) {
+        let errors = this.invalidEventRequest(eventsRequest);
+        if (errors.length !== 0) {
+            return new Promise(((resolve, reject) => {
+                reject(new Error(...errors));
+            }));
+        }
         return NetworkModule.fetchPost({path: '/events/search', body: eventsRequest}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
@@ -37,15 +43,22 @@ export default class EventModel extends Model {
      * @return {Promise} promise to get user data
      */
     static getFeedEvents(eventsRequest) {
-        return NetworkModule.fetchPost({path: '/events/feed', body: eventsRequest}).then((response) => {
-            if (response.status > 499) {
-                throw new Error('Server error');
-            }
-            return response.json();
-        },
-        (error) => {
-            throw new Error(error);
-        });
+        let errors = this.invalidEventRequest(eventsRequest);
+        if (errors.length !== 0) {
+            return new Promise(((resolve, reject) => {
+                reject(new Error(...errors));
+            }));
+        }
+        return NetworkModule.fetchPost({path: '/events/feed', body: eventsRequest}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
     }
 
     /**
@@ -54,15 +67,22 @@ export default class EventModel extends Model {
      * @return {Promise} promise to get user data
      */
     static getFeedUsers(eventsRequest) {
-        return NetworkModule.fetchPost({path: '/users/feed', body: eventsRequest}).then((response) => {
-            if (response.status > 499) {
-                throw new Error('Server error');
-            }
-            return response.json();
-        },
-        (error) => {
-            throw new Error(error);
-        });
+        let errors = this.invalidEventRequest(eventsRequest);
+        if (errors.length !== 0) {
+            return new Promise(((resolve, reject) => {
+                reject(new Error(...errors));
+            }));
+        }
+        return NetworkModule.fetchPost({path: '/users/feed', body: eventsRequest}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
     }
 
     /**
@@ -151,14 +171,97 @@ export default class EventModel extends Model {
     }
 
     static getEventFollowers(eid) {
-        return NetworkModule.fetchGet({path: `/event/${eid}/follow`}).then((response) => {
-            if (response.status > 499) {
-                throw new Error('Server error');
+        if (!eid) {
+            return new Promise(((resolve, reject) => {
+                reject(new Error('Invalid event id'));
+            }));
+        }
+        return NetworkModule.fetchGet({path: `/event/${eid}/follow`}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
+    static invalidEventRequest(eventRequest) {
+        let message = [];
+        const mustHaveProperties = [
+            {
+                name: 'uid',
+                type: 'number',
+            },
+            {
+                name: 'page',
+                type: 'number',
+            },
+
+            {
+                name: 'limit',
+                type: 'number',
+            },
+            {
+                name: 'query',
+                type: 'string',
+            },
+        ];
+        const mayHaveProperties = [
+            {
+                name: 'userLimit',
+                type: 'number',
+            },
+            {
+                name: 'tags',
+                type: 'object',
+            },
+            {
+                name: 'location',
+                type: 'string',
+            },
+            {
+                name: 'minAge',
+                type: 'number',
+            },
+            {
+                name: 'maxAge',
+                type: 'number',
+            },
+            {
+                name: 'men',
+                type: 'boolean',
+            },
+            {
+                name: 'women',
+                type: 'boolean',
+            },
+        ];
+
+        mustHaveProperties.every((prop) => {
+            if (Object.prototype.hasOwnProperty.call(eventRequest, prop.name)) {
+                if (typeof eventRequest.page !== prop.type) {
+                    message.push(
+                        `Invalid type of property "${prop.name}"\n` +
+                        `\tExpected ${prop.type}\n` +
+                        `\tActual ${typeof eventRequest.page}\n`);
+                }
+            } else {
+                message.push('No property "' + prop.name + '"\n');
             }
-            return response.json();
-        },
-        (error) => {
-            throw new Error(error);
         });
+        mayHaveProperties.every((prop) => {
+            if (Object.prototype.hasOwnProperty.call(eventRequest, prop.name)) {
+                if (typeof eventRequest.page !== prop.type) {
+                    message.push(
+                        `Invalid type of property "${prop.name}"\n` +
+                        `\tExpected ${prop.type}\n` +
+                        `\tActual ${typeof eventRequest.page}\n`);
+                }
+            }
+        });
+        return message;
     }
 }

@@ -1,8 +1,10 @@
 @import '../../modules/variables';
 
 .feed {
+  position: absolute;
+  top: (10px + $header-height);
+  bottom: 10px;
   width: 100%;
-  margin: (10px + $header-height) 0 10px;
   display: flex;
   flex: 1 1 100%;
 
@@ -16,7 +18,6 @@
     background-color: $color-white;
     border-radius: $re--border-radius;
     padding: $re--medium-padding $re--medium-padding 0;
-    max-height: 88.5vh; // TODO: bullshit
     overflow: auto;
     box-shadow: 0 0 20px -9px rgba(0, 0, 0, 0.5);
 

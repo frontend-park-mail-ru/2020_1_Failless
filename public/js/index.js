@@ -27,8 +27,8 @@ router.addRoute('/', new LandingController(application));
 router.addRoute('/login', new LoginController(application));
 router.addRoute('/signup', new SignUpController(application));
 router.addRoute('/search', new BigEventSearchController(application));  // big & middle events
-router.addRoute('/feed/users', new FeedController(application));   // profiles
-router.addRoute('/feed/events', new FeedController(application));  // events
+router.addRoute('/feed/users', new FeedController(application, true));   // profiles
+router.addRoute('/feed/events', new FeedController(application, false));  // events
 router.addRoute('/my/profile', new ProfileController(application));
 
 router.route();

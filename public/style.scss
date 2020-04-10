@@ -7,7 +7,7 @@
 @import "components/profile-edit/profile-edit";
 
 @import "blocks/creator-card/creator-card";
-@import "blocks/feed-center/feed-center";
+@import "blocks/feed-center-users/feed-center-users";
 @import "blocks/feed-right/feed-right";
 @import "blocks/options-footer/options-footer";
 @import "blocks/profile-left/profile-left";
@@ -68,7 +68,8 @@ textarea {
 }
 
 .container {
-  width: 1084px;
+  position: relative;
+  width: 1000px;
   box-sizing: border-box;
 }
 
@@ -143,4 +144,42 @@ h3 {
     background: $re--gradient;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+/*-------------------------------------------*\
+   Windows 8 spinner
+\*-------------------------------------------*/
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  margin: 60px;
+  animation: rotate 1.4s infinite ease-in-out, background 1.4s infinite ease-in-out alternate;
+}
+
+@keyframes rotate {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-180deg);
+  }
+}
+@keyframes background {
+  0% {
+  background-color: $color-blue;
+  }
+  50% {
+    background-color: $color-red;
+  }
+  100% {
+    background-color: $color-purple;
+  }
+}
+
+.full-height {
+  height: 100%;
 }

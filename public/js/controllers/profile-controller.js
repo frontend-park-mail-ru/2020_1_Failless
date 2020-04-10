@@ -11,6 +11,7 @@ import {highlightTag} from 'Eventum/utils/tag-logic.js';
 import logoutRedirect from 'Eventum/utils/logout.js';
 import EventModel from 'Eventum/models/event-model.js';
 import editTemplate from 'Blocks/edit-field/template.hbs';
+import {makeEmpty} from 'Eventum/utils/basic.js';
 
 /**
  * @class ProfileController
@@ -247,10 +248,7 @@ export default class ProfileController extends MyController {
         let tagsField = document.body.querySelector('.profile-left__tags');
         let prevLength = tagsField.length;
 
-        // Remove all tagsField children
-        while (tagsField.lastElementChild) {
-            tagsField.removeChild(tagsField.lastElementChild);
-        }
+        makeEmpty(tagsField);
 
         let allTags = this.activeModalWindow.querySelectorAll('.tag__container');
         this.localTags = [];
@@ -267,8 +265,7 @@ export default class ProfileController extends MyController {
                 length++;
             }
             this.localTags.push(tempTag);
-        }
-        );
+        });
 
         if (length === 0) {
             let emptyMessageText = (prevLength !== 0)
