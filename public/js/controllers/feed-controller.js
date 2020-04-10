@@ -10,9 +10,9 @@ import {MIN_AGE, MAX_AGE, staticTags} from 'Eventum/utils/static-data.js';
 import {highlightTag} from 'Eventum/utils/tag-logic.js';
 
 /**
- * @class FeedUsersController
+ * @class FeedController
  */
-export default class FeedUsersController extends Controller {
+export default class FeedController extends Controller {
 
     /**
      * Construct obj of ProfileSearchController class

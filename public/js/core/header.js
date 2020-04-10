@@ -34,12 +34,22 @@ export default function createHeader(base, logged) {
                 {
                     link: '/feed/users',
                     name: 'Лента',
+                    sub_buttons: [
+                        {
+                            link: '/feed/users',
+                            name: 'Юзеров',
+                        },
+                        {
+                            link: '/feed/events',
+                            name: 'Эвентов',
+                        }
+                    ]
                 },
                 {
                     link: '/my/profile',
                     name: 'Профиль',
                 },
-            ]
+            ],
         });
 
     base.insertAdjacentHTML('afterbegin', header);
