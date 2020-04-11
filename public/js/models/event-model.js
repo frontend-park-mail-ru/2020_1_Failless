@@ -20,7 +20,7 @@ export default class EventModel extends Model {
      * @return {Promise} promise to get user data
      */
     static getEvents(eventsRequest) {
-        let errors = this.invalidEventRequest(eventsRequest);
+        let errors = this.invalidFeedRequest(eventsRequest);
         if (errors.length !== 0) {
             return new Promise(((resolve, reject) => {
                 reject(new Error(...errors));
@@ -43,7 +43,7 @@ export default class EventModel extends Model {
      * @return {Promise} promise to get user data
      */
     static getFeedEvents(eventsRequest) {
-        let errors = this.invalidEventRequest(eventsRequest);
+        let errors = this.invalidFeedRequest(eventsRequest);
         if (errors.length !== 0) {
             return new Promise(((resolve, reject) => {
                 reject(new Error(...errors));
@@ -67,7 +67,7 @@ export default class EventModel extends Model {
      * @return {Promise} promise to get user data
      */
     static getFeedUsers(eventsRequest) {
-        let errors = this.invalidEventRequest(eventsRequest);
+        let errors = this.invalidFeedRequest(eventsRequest);
         if (errors.length !== 0) {
             return new Promise(((resolve, reject) => {
                 reject(new Error(...errors));
@@ -92,11 +92,11 @@ export default class EventModel extends Model {
      * @return {Promise} promise to get user data
      */
     static userVote(vote, isLike) {
-        let url = `/users/${vote.id}/`;
+        let url = '/users/';
         url += isLike ? 'like' : 'dislike';
-        return NetworkModule.fetchPost({
+        return NetworkModule.fetchPut({
             path: url,
-            body: vote
+            body: vote,
         }).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
@@ -188,7 +188,25 @@ export default class EventModel extends Model {
             });
     }
 
-    static invalidEventRequest(eventRequest) {
+    static getUserEvents(eid) {
+        if (!eid) {
+            return new Promise(((resolve, reject) => {
+                reject(new Error('Invalid event id'));
+            }));
+        }
+        return NetworkModule.fetchGet({path: `/event/${eid}/follow`}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
+    static invalidFeedRequest(eventRequest) {
         let message = [];
         const mustHaveProperties = [
             {

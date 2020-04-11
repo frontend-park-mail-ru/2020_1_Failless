@@ -61,7 +61,11 @@ export default class FeedUsersView extends View {
 
         if (data) {
             this.data = {...data};
-            this.data.tag.activeClass = 'tag__container_active';
+            if (isEvent) {
+                this.data.tag.activeClass = 'tag__container_active';
+            } else {
+                // this.data.tags.forEach((tag) => {tag.active_class = 'tag__container_active'});
+            }
         } else {
             this.data = data;
         }

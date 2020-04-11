@@ -72,7 +72,7 @@ export default class FeedController extends Controller {
      *
      * @param data
      */
-    #initMainEventHandlers(data) {
+    #initMainHandlers(data) {
         this.addEventHandler(document.querySelector('.feed__options-field'), 'click', highlightTag);
         if (data) {
             this.#setUpVoteButtons();
@@ -85,7 +85,9 @@ export default class FeedController extends Controller {
         this.sliderManager.setSliders(
             {slider1: sliders[0], initialValue1: 18},
             {slider2: sliders[1], initialValue2: 25});
-        this.sliderManager.setSlider(sliders[2], 5);
+        if (!this.usersFeed) {
+            this.sliderManager.setSlider(sliders[2], 5);
+        }
     }
 
     #setUpVoteButtons() {
@@ -154,14 +156,10 @@ export default class FeedController extends Controller {
         filters.minAge = Number(ageSliderSpans[0].getAttribute('slider_value'));
         filters.maxAge = Number(ageSliderSpans[1].getAttribute('slider_value'));
 
-        // Get limit
-        filters.limit = Number(ageSliderSpans[2].getAttribute('slider_value'));
-
-        this.#initDataList({
+        let request = {
             uid: this.uid,
             page: this.currentPage,
             limit: 10,
-            user_limit: filters.limit,
             query: String(...filters.keyWords),
             tags: filters.tags,
             Location: null,
@@ -169,7 +167,15 @@ export default class FeedController extends Controller {
             maxAge: filters.maxAge,
             men: filters.men,
             women: filters.women,
-        }).then(
+        };
+
+        // Get limit
+        if (!this.usersFeed) {
+            filters.limit = Number(ageSliderSpans[2].getAttribute('slider_value'));
+            request.user_limit = filters.limit;
+        }
+
+        this.#initDataList(request).then(
             (data) => {
                 this.#updateAll();
             },
@@ -195,7 +201,10 @@ export default class FeedController extends Controller {
         // Send request with vote
         if (this.usersFeed) {
             vote.id = this.dataList[this.currentItem].item.uid;
-            EventModel.userVote(vote, isLike).catch(
+            EventModel.userVote(vote, isLike).then(
+                (response) => {
+                    console.log(response);
+                },
                 (onerror) => {
                     console.error(onerror);
                 });
@@ -234,14 +243,13 @@ export default class FeedController extends Controller {
 
     /**
      * Get either events or users list to show in feed
-     * @param page
      * @return {Promise<T>}
      */
-    #initDataList = (eventRequest) => {
-        console.log(eventRequest);
+    #initDataList = (request) => {
         if (this.usersFeed) {
-            return EventModel.getFeedUsers(eventRequest).then(
+            return EventModel.getFeedUsers(request).then(
                 (users) => {
+                    console.log(users);
                     if (users) {
                         users.forEach((user) => {
                             this.dataList.push(
@@ -260,7 +268,7 @@ export default class FeedController extends Controller {
                     throw new Error(error);
                 });
         } else {
-            return EventModel.getFeedEvents(eventRequest).then(
+            return EventModel.getFeedEvents(request).then(
                 (events) => {
                     if (events) {
                         events.forEach((event) => {
@@ -305,12 +313,10 @@ export default class FeedController extends Controller {
 
         // Render right column
         this.view.showLoadingRight();
-        if (this.usersFeed) {
-            console.log('users!!!');
-        } else {
-            this.#initMainEventHandlers(this.dataList[this.currentItem].item);
-            if (this.dataList[this.currentItem].followers === undefined) {
-                EventModel.getEventFollowers(this.dataList[this.currentItem].item.eid).then(
+        this.#initMainHandlers(this.dataList[this.currentItem].item);
+        if (this.dataList[this.currentItem].followers === undefined) {
+            if (this.usersFeed) {
+                EventModel.getUserFollowers(this.dataList[this.currentItem].item.eid).then(
                     (followers) => {
                         this.view.updateRight(followers, !this.usersFeed);
                     },
@@ -319,8 +325,17 @@ export default class FeedController extends Controller {
                         this.view.showErrorRight(error);
                     });
             } else {
-                this.view.updateRight(this.dataList[this.currentItem].followers, !this.usersFeed);
+                EventModel.getEventFollowers(this.dataList[this.currentItem].item.eid).then(
+                    (followers) => {
+                        this.view.updateRight(followers, !this.usersFeed);
+                    },
+                    (error) => {
+                        console.error(error);
+                        this.view.showErrorRight(error);
+                    });
             }
+        } else {
+            this.view.updateRight(this.dataList[this.currentItem].followers, !this.usersFeed);
         }
     }
 }
