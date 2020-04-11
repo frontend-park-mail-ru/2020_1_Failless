@@ -36,12 +36,12 @@ export default class LandingController extends Controller {
             });
         });
 
-        document.querySelectorAll('.dot').forEach((dot) => {
+        document.querySelectorAll('.landing__dot').forEach((dot) => {
             dot.addEventListener('click', this.currentSlide);
         });
 
-        document.getElementsByClassName('prev')[0].addEventListener('click', this.plusSlides);
-        document.getElementsByClassName('next')[0].addEventListener('click', this.plusSlides);
+        document.getElementsByClassName('landing__prev')[0].addEventListener('click', this.plusSlides);
+        document.getElementsByClassName('landing__next')[0].addEventListener('click', this.plusSlides);
 
         this.addEventHandler(window, 'scroll', this.stickyHeader);
     }
@@ -49,31 +49,25 @@ export default class LandingController extends Controller {
 
     // Next/previous controls
     plusSlides = (event) => {
-        if (event.target === document.getElementsByClassName('next')[0]) {
+        if (event.target === document.getElementsByClassName('landing__next')[0]) {
             this.showSlides(this.slideIndex += 1);
         }
-        if (event.target === document.getElementsByClassName('prev')[0]) {
+        if (event.target === document.getElementsByClassName('landing__prev')[0]) {
             this.showSlides(this.slideIndex -= 1);
         }
     }
 
     // Thumbnail image controls
     currentSlide = (event) => {
-        if (event.target === document.querySelectorAll('.dot')[0]) {
-            this.showSlides(this.slideIndex = 1);
-        }
-        if (event.target === document.querySelectorAll('.dot')[1]) {
-            this.showSlides(this.slideIndex = 2);
-        }
-        if (event.target === document.querySelectorAll('.dot')[2]) {
-            this.showSlides(this.slideIndex = 3);
-        }
+        document.querySelectorAll('.landing__dot').forEach((dot, index) => {
+            if (event.target === dot) this.showSlides(this.slideIndex = index + 1);
+        });
     }
 
     showSlides = (n) => {
         let i;
-        let slides = document.getElementsByClassName("mySlides");
-        let dots = document.getElementsByClassName("dot");
+        let slides = document.getElementsByClassName('landing__mySlides');
+        let dots = document.getElementsByClassName('landing__dot');
 
         if (n) {
             clearTimeout(this.timer);
@@ -81,25 +75,25 @@ export default class LandingController extends Controller {
             if (n > slides.length) {this.slideIndex = 1}
             if (n < 1) {this.slideIndex = slides.length}
             for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
+                slides[i].style.display = 'none';
             }
             for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
+                dots[i].className = dots[i].className.replace(' active', '');
             }
-            slides[this.slideIndex-1].style.display = "block";
-            dots[this.slideIndex-1].className += " active";
+            slides[this.slideIndex-1].style.display = 'block';
+            dots[this.slideIndex-1].className += ' active';
             this.timer = setTimeout(this.showSlides, 5000); // Change image every 2 seconds
         } else {
             for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
+                slides[i].style.display = 'none';
             }
             for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
+                dots[i].className = dots[i].className.replace(' active', '');
             }
             this.slideIndex++;
             if (this.slideIndex > slides.length) {this.slideIndex = 1}
-            slides[this.slideIndex-1].style.display = "block";
-            dots[this.slideIndex-1].className += " active";
+            slides[this.slideIndex-1].style.display = 'block';
+            dots[this.slideIndex-1].className += ' active';
             this.timer = setTimeout(this.showSlides, 5000); // Change image every 2 seconds
         }
     }
