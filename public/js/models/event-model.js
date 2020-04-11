@@ -63,17 +63,17 @@ export default class EventModel extends Model {
 
     /**
      * Get event data from server
-     * @param {{query: string, page: number}} eventsRequest - request with query, limits and page
+     * @param {{query: string, page: number}} feedRequest - request with filters
      * @return {Promise} promise to get user data
      */
-    static getFeedUsers(eventsRequest) {
-        let errors = this.invalidFeedRequest(eventsRequest);
+    static getFeedUsers(feedRequest) {
+        let errors = this.invalidFeedRequest(feedRequest);
         if (errors.length !== 0) {
             return new Promise(((resolve, reject) => {
                 reject(new Error(...errors));
             }));
         }
-        return NetworkModule.fetchPost({path: '/users/feed', body: eventsRequest}).then(
+        return NetworkModule.fetchPost({path: '/users/feed', body: feedRequest}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');

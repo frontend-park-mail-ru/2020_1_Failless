@@ -35,11 +35,17 @@ export default class FeedController extends Controller {
             });
         this.uid = null;
         this.sliderManager = new SliderManager();
-        this.defaultEventRequest = {
-            page: 1,
+        this.defaultFeedRequest = {
             uid: this.uid,
+            page: 1,
             limit: settings.pageLimit,
-            query: ''
+            query: '',
+            tags: [],
+            location: null,
+            minAge: MIN_AGE,
+            maxAge: MAX_AGE,
+            men: true,
+            women: true,
         };
     }
 
@@ -51,13 +57,14 @@ export default class FeedController extends Controller {
         super.action();
         UserModel.getProfile().then((user) => {
             this.uid = user.uid;
-            this.defaultEventRequest.uid = this.uid;
+            this.defaultFeedRequest.uid = this.uid;
+            this.defaultFeedRequest.tags = user.tags;
             // Show landing page with loading
             // TODO: get selected tags from history
             this.view.render(this.tagList, !this.usersFeed);
 
             // Fetch content to show
-            this.#initDataList(this.defaultEventRequest).then(
+            this.#initDataList(this.defaultFeedRequest).then(
                 (data) => {
                     this.#updateAll();
                 },
@@ -229,8 +236,8 @@ export default class FeedController extends Controller {
             this.currentItem = 0;
             ++this.currentPage;
             this.dataList.length = 0;
-            this.defaultEventRequest.page = this.currentPage;
-            this.#initDataList(this.defaultEventRequest).then(
+            this.defaultFeedRequest.page = this.currentPage;
+            this.#initDataList(this.defaultFeedRequest).then(
                 (data) => {
                     this.#updateAll();
                 },
@@ -249,13 +256,16 @@ export default class FeedController extends Controller {
         if (this.usersFeed) {
             return EventModel.getFeedUsers(request).then(
                 (users) => {
-                    console.log(users);
                     if (users) {
                         users.forEach((user) => {
+                            console.log(user.events);
                             this.dataList.push(
                                 {
                                     item: user,
-                                    followers: null,
+                                    followers: {
+                                        personalEvents: user.events,
+                                        subscriptions: undefined,
+                                    },
                                 })
                         });
                         return this.dataList[0];
@@ -316,15 +326,10 @@ export default class FeedController extends Controller {
         this.#initMainHandlers(this.dataList[this.currentItem].item);
         if (this.dataList[this.currentItem].followers === undefined) {
             if (this.usersFeed) {
-                EventModel.getUserFollowers(this.dataList[this.currentItem].item.eid).then(
-                    (followers) => {
-                        this.view.updateRight(followers, !this.usersFeed);
-                    },
-                    (error) => {
-                        console.error(error);
-                        this.view.showErrorRight(error);
-                    });
+                // TODO: Load subscriptions
+                this.view.updateRight(this.dataList[this.currentItem].followers, !this.usersFeed);
             } else {
+                console.log('here2');
                 EventModel.getEventFollowers(this.dataList[this.currentItem].item.eid).then(
                     (followers) => {
                         this.view.updateRight(followers, !this.usersFeed);
@@ -335,6 +340,7 @@ export default class FeedController extends Controller {
                     });
             }
         } else {
+            console.log(this.dataList[this.currentItem].followers);
             this.view.updateRight(this.dataList[this.currentItem].followers, !this.usersFeed);
         }
     }
