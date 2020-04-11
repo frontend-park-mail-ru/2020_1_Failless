@@ -17,6 +17,7 @@ export default class LandingController extends Controller {
         super(parent);
         this.view = new LandingView(parent);
         this.slideIndex = 1;
+        this.timer = {};
     }
 
     /**
@@ -73,15 +74,33 @@ export default class LandingController extends Controller {
         let i;
         let slides = document.getElementsByClassName("mySlides");
         let dots = document.getElementsByClassName("dot");
-        if (n > slides.length) {this.slideIndex = 1}
-        if (n < 1) {this.slideIndex = slides.length}
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
+
+        if (n) {
+            clearTimeout(this.timer);
+            this.timer = {};
+            if (n > slides.length) {this.slideIndex = 1}
+            if (n < 1) {this.slideIndex = slides.length}
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[this.slideIndex-1].style.display = "block";
+            dots[this.slideIndex-1].className += " active";
+            this.timer = setTimeout(this.showSlides, 5000); // Change image every 2 seconds
+        } else {
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            this.slideIndex++;
+            if (this.slideIndex > slides.length) {this.slideIndex = 1}
+            slides[this.slideIndex-1].style.display = "block";
+            dots[this.slideIndex-1].className += " active";
+            this.timer = setTimeout(this.showSlides, 5000); // Change image every 2 seconds
         }
-        for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
-        }
-        slides[this.slideIndex-1].style.display = "block";
-        dots[this.slideIndex-1].className += " active";
     }
 }
