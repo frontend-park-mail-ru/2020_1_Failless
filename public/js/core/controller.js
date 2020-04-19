@@ -175,7 +175,6 @@ export default class Controller {
 
     /**
      * Create slow header hiding and showing during scroll
-     * @param event
      */
     stickyHeader = () => {
         this.header = document.querySelector('.header');

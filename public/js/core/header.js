@@ -32,18 +32,8 @@ export default function createHeader(base, logged) {
                     name: 'Поиск',
                 },
                 {
-                    link: '/feed/events',   // TODO: '/feed'
+                    link: '/feed',
                     name: 'Лента',
-                    sub_buttons: [
-                        {
-                            link: '/feed/users',
-                            name: 'Юзеров',
-                        },
-                        {
-                            link: '/feed/events',
-                            name: 'Эвентов',
-                        }
-                    ]
                 },
                 {
                     link: '/my/profile',

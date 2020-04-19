@@ -4,14 +4,13 @@ import View from 'Eventum/core/view.js';
 import getPageUrl from 'Eventum/utils/get-img-url.js';
 import feedTemplate from 'Components/feed/template.hbs';
 import feedCenterUsersTemplate from 'Blocks/feed-center-users/template.hbs';
-import feedEventsCenterTemplate from 'Blocks/feed-events-center/template.hbs';
 import feedRightTemplate from 'Blocks/feed-right/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic.js';
 
 /**
  * @class create SearchView class
  */
-export default class FeedUsersView extends View {
+export default class FeedView extends View {
 
     /**
      * Create view
@@ -22,7 +21,6 @@ export default class FeedUsersView extends View {
         super(parent);
         this.parent = parent;
         this.tags = [...tags];
-        this.isEvent = false;
         this.data = null;
         this.columns = [];
     }
@@ -31,7 +29,7 @@ export default class FeedUsersView extends View {
      * Render initial template
      * @param {Array} selectedTags
      */
-    render(selectedTags, isEvent) {
+    render(selectedTags) {
         // Mark some tags as selected
         if (selectedTags) {
             this.tags.forEach((tag) => {
@@ -44,7 +42,6 @@ export default class FeedUsersView extends View {
 
         this.parent.innerHTML += feedTemplate({
             tags: this.tags,
-            isEvent: isEvent,
         });
         this.#getColumns();
     }
@@ -52,43 +49,33 @@ export default class FeedUsersView extends View {
     /**
      * Updates central and right column of page
      * @param data
-     * @param {boolean} isEvent
      */
-    updateCenter(data, isEvent) {
+    updateCenter(data) {
         if (this.columns.length !== 3) {
             this.#getColumns();
         }
 
         if (data) {
             this.data = {...data};
-            if (isEvent) {
-                this.data.tag.activeClass = 'tag__container_active';
-            } else {
-                if (this.data.tags) {
-                    this.data.tags.forEach((tag) => {tag.active_class = 'tag__container_active'});
-                }
+            if (this.data.tags) {
+                this.data.tags.forEach((tag) => {tag.active_class = 'tag__container_active'});
             }
         } else {
             this.data = data;
         }
-        this.isEvent = isEvent;
-
         makeEmpty(this.columns[1]);
 
-        this.#setUpPhotos(this.data, isEvent);
+        this.#setUpPhotos(this.data);
 
-        this.columns[1].innerHTML = isEvent
-            ? feedEventsCenterTemplate({data: this.data})
-            : feedCenterUsersTemplate({data: this.data});
+        this.columns[1].innerHTML = feedCenterUsersTemplate({data: this.data});
     }
 
-    updateRight(followers, isEvent) {
+    updateRight(events) {
         makeEmpty(this.columns[2]);
 
         this.columns[2].innerHTML = feedRightTemplate({
-            users:      isEvent ? null : followers,
-            events:     isEvent ? followers : null,
-            isEvent:    isEvent,
+            personalEvents: events.personalEvents??null,
+            subscriptions:  events.subscriptions??null,
         });
     }
 
@@ -126,7 +113,7 @@ export default class FeedUsersView extends View {
      */
     #getColumns() {
         while (this.columns.length !== 3) {
-            this.columns = this.parent.querySelectorAll('.feed__column');
+            this.columns = this.parent.getElementsByClassName('feed__column');
         }
     }
 
@@ -141,24 +128,15 @@ export default class FeedUsersView extends View {
     /**
      * TODO: what the fuck does this do
      * @param data
-     * @param isEvent
      */
-    #setUpPhotos = (data, isEvent) => {
+    #setUpPhotos = (data) => {
         if (!data) {
             return;
         }
         if (data.photos) {
-            if (isEvent) {
-                data.photos.forEach((item) => getPageUrl(item, 'events'));
-            } else {
-                data.photos.forEach((item) => getPageUrl(item, 'users'));
-            }
+            data.photos.forEach((item) => getPageUrl(item, 'users'));
         } else {
-            if (isEvent) {
-                data.photos = [getPageUrl('default.png', 'events')];
-            } else {
-                data.photos = [getPageUrl('default.png', 'users')];
-            }
+            data.photos = [getPageUrl('default.png', 'users')];
         }
     }
 }

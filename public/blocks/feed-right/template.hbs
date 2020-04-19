@@ -1,33 +1,20 @@
 <div class="feed-right">
-    {{#if isEvent }}
-        {{#if followers}}
-            <div class="feed-right__title">
-                <div class="font font_bold font__color_black font__size_small-xx">Уже идут</div>
-            </div>
-            {{#each followers as |user-card|}}
-                {{> $Blocks/user-card/template }}
-            {{/each}}
-        {{else}}
-            <h3 class="feed-right__helper feed-right__helper_blue">"Подписчиков нет"</h3>
-        {{/if}}
+    {{#if personalEvents}}
+        <div class="feed-right__title">
+            <div class="font font_bold font__color_black font__size_small-xx">Персональные эвенты</div>
+        </div>
+        {{#each personalEvents as |event|}}
+            {{> $Blocks/event/template }}
+        {{/each}}
     {{else}}
-        {{#if users.personalEvents}}
-            <div class="feed-right__title">
-                <div class="font font_bold font__color_black font__size_small-xx">Персональные эвенты</div>
-            </div>
-            {{#each users.personalEvents as |event|}}
-                {{> $Blocks/event/template }}
-            {{/each}}
-        {{else}}
-            <h3 class="feed-right__helper feed-right__helper_blue">"Эвентов нет :("</h3>
-        {{/if}}
-        {{#if users.subscriptions}}
-            <div class="feed-right__title">
-                <div class="font font_bold font__color_black font__size_small-xx">Подписки</div>
-            </div>
-            {{#each users.subscriptions as |event|}}
-                {{> $Blocks/event/template }}
-            {{/each}}
-        {{/if}}
+        <h3 class="feed-right__helper feed-right__helper_blue">"Эвентов нет :("</h3>
+    {{/if}}
+    {{#if subscriptions}}
+        <div class="feed-right__title">
+            <div class="font font_bold font__color_black font__size_small-xx">Подписки</div>
+        </div>
+        {{#each subscriptions as |event|}}
+            {{> $Blocks/event/template }}
+        {{/each}}
     {{/if}}
 </div>
