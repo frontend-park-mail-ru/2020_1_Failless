@@ -32,14 +32,14 @@ export default function createHeader(base, logged) {
                     name: 'Поиск',
                 },
                 {
-                    link: '/feed/users',
+                    link: '/feed',
                     name: 'Лента',
                 },
                 {
                     link: '/my/profile',
                     name: 'Профиль',
                 },
-            ]
+            ],
         });
 
     base.insertAdjacentHTML('afterbegin', header);

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container full-height">
     <div class="feed">
         <div class="feed__column">
             <form action="submit" id="form">
@@ -10,7 +10,7 @@
                 </div>
                 <div class="feed__options-field">
                     <div class="feed__help">Ключевые слова</div>
-                    <input class="input input__auth" name="search_text" placeholder="Люди как люди">
+                    <input class="input input__auth font__size_small-xx" name="search_text" placeholder="Люди как люди">
                 </div>
                 <div class="feed__options-field">
                     <div class="feed__help">Другие опции</div>
@@ -60,26 +60,18 @@
                 <!-- TODO: add hider for footer shadow -->
 
                 <div class="options-footer">
-                    <button class="re_btn re_btn__filled">Сохранить</button>
+                    <button class="re_btn re_btn__filled">Найти</button>
                 </div>
 
             </form>
         </div>
         <div class="feed__separator"></div>
         <div class="feed__column feed__column_main">
-            {{#if data }}{{#with data}}
-                {{#if ../isEvent}}
-                    {{> $Blocks/feed-events-center/template }}
-                {{else}}
-                    {{> $Blocks/feed-center/template }}
-                {{/if}}
-            {{/with}}{{else}}
-                <h1>Больше ничего не нашлось ):</h1>
-            {{/if}}
+            <div class="spinner"></div>
         </div>
         <div class="feed__separator"></div>
         <div class="feed__column">
-            {{> $Blocks/feed-right/template }}
+            <div class="spinner"></div>
         </div>
     </div>
 </div>

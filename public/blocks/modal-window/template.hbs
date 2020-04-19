@@ -10,8 +10,10 @@
         </div>
         <div class="modal__body">
             {{#each tags as |tag|}}
-                {{log this}}
                 {{> $Blocks/tag/template }}
+            {{/each}}
+            {{#each message}}
+                <h2>{{ this }}</h2>
             {{/each}}
         </div>
         {{#if last_buttons}}

@@ -2,7 +2,7 @@
 
 import createHeader from 'Eventum/core/header.js';
 import UserModel from 'Eventum/models/user-model.js';
-import logoutRedirect from 'Eventum/utils/logout.js';
+import {logoutRedirect} from 'Eventum/utils/user-utils.js';
 import router from 'Eventum/core/router.js';
 
 /**
@@ -175,7 +175,6 @@ export default class Controller {
 
     /**
      * Create slow header hiding and showing during scroll
-     * @param event
      */
     stickyHeader = () => {
         this.header = document.querySelector('.header');
