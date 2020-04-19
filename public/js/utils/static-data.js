@@ -1,4 +1,5 @@
 import settings from 'Settings/config.js';
+import router from 'Eventum/core/router.js';
 
 function Event(photos, title, place, description) {
     this.photos = photos;
@@ -20,26 +21,22 @@ const events = [
         'Выставка Ван-Гога. Обещают привезти главный экспонат')
 ];
 
-function Tag(title) {
-    this.title = '#' + title;
-}
-
 const staticTags = [
-    new Tag('хочувБАР'),
-    new Tag('хочувКИНО'),
-    new Tag('хочунаКАТОК'),
-    new Tag('хочуГУЛЯТЬ'),
-    new Tag('хочуКУШАЦ'),
-    new Tag('хочувТЕАТР'),
-    new Tag('хочувКЛУБ'),
-    new Tag('хочунаКОНЦЕРТ'),
-    new Tag('хочунаВЫСТАВКУ'),
-    new Tag('хочунаСАЛЮТ'),
-    new Tag('хочувСПОРТ'),
-    new Tag('хочувМУЗЕЙ'),
-    new Tag('хочунаЛЕКЦИЮ'),
-    new Tag('хочуБОТАТЬ'),
-    new Tag('хочувПАРК'),
+    {name: 'хочувБАР',      tag_id: 1},
+    {name: 'хочувКИНО',     tag_id: 2},
+    {name: 'хочувТЕАТР',    tag_id: 3},
+    {name: 'хочувКЛУБ',     tag_id: 4},
+    {name: 'хочунаКОНЦЕРТ', tag_id: 5},
+    {name: 'хочуГУЛЯТЬ',    tag_id: 6},
+    {name: 'хочунаКАТОК',   tag_id: 7},
+    {name: 'хочунаВЫСТАВКУ',tag_id: 8},
+    {name: 'хочуСПАТЬ',     tag_id: 9},
+    {name: 'хочунаСАЛЮТ',   tag_id: 10},
+    {name: 'хочувСПОРТ',    tag_id: 11},
+    {name: 'хочувМУЗЕЙ',    tag_id: 12},
+    {name: 'хочунаЛЕКЦИЮ',  tag_id: 13},
+    {name: 'хочуБОТАТЬ',    tag_id: 14},
+    {name: 'хочувПАРК',     tag_id: 15},
 ];
 
 const MIN_AGE = 18;
@@ -47,4 +44,27 @@ const MAX_AGE = 100;
 const MIN_LIMIT = 2;
 const MAX_LIMIT = 15;
 
-export {Event, events, Tag, staticTags, MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT};
+const redirects = new Map([
+    [
+        'SignIn',
+        {
+            button_title:   'Зарегистрироваться',
+            handler:        (event) => {
+                event.preventDefault();
+                router.redirectForward('/signup');
+            }
+        },
+    ],
+    [
+        'Profile',
+        {
+            button_title:   'Открыть профиль',
+            handler:        (event) => {
+                event.preventDefault();
+                router.redirectForward('/my/profile');
+            }
+        },
+    ],
+]);
+
+export {Event, events, staticTags, MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT, redirects};

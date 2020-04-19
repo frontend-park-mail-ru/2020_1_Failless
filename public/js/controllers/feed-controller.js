@@ -8,6 +8,8 @@ import settings from 'Settings/config.js';
 import SliderManager from 'Blocks/slider/set-slider.js';
 import {MIN_AGE, MAX_AGE, staticTags} from 'Eventum/utils/static-data.js';
 import {highlightTag} from 'Eventum/utils/tag-logic.js';
+import {fullProfileCheck} from 'Eventum/utils/user-utils.js';
+import {showMessageWithRedirect} from 'Eventum/utils/render.js';
 
 /**
  * @class FeedController
@@ -27,13 +29,6 @@ export default class FeedController extends Controller {
         this.currentPage = 1;
         this.currentItem = 0;
         this.view = new FeedUsersView(parent, staticTags);
-        EventModel.getTagList().then(
-            (tags) => {
-                console.log("here1");
-                if (tags) {
-                    this.view = new FeedUsersView(parent, tags);
-                }
-            });
         this.uid = null;
         this.sliderManager = new SliderManager();
         this.defaultFeedRequest = {
@@ -52,22 +47,37 @@ export default class FeedController extends Controller {
 
 
     /**
-     * Create action
+     * Action when page renders for the first time
      */
     action() {
         super.action();
+        this.view.render(this.tagList, !this.usersFeed);
         UserModel.getProfile().then((user) => {
+            // Check if user has filled profile
+            let message = fullProfileCheck(user);
+            if (message.length !== 0) {
+                document.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    if (event.target.matches('.re_btn.re_btn__filled')
+                        ||
+                        event.target.matches('.re_btn__reject')
+                        ||
+                        event.target.matches('.re_btn__approve'))
+                    {
+                        event.stopPropagation();
+                        showMessageWithRedirect(message, 'Profile');
+                    }
+                });
+            }
+            this.#initFilterHandlers();
             this.uid = user.uid;
             this.defaultFeedRequest.uid = this.uid;
             this.defaultFeedRequest.tags = user.tags;
-            // Show landing page with loading
-            // TODO: get selected tags from history
-            this.view.render(this.tagList, !this.usersFeed);
-            this.#initFilterHandlers();
 
             // Fetch content to show
             this.#initDataList(this.defaultFeedRequest).then(
                 (data) => {
+                    console.log(data);
                     this.#updateAll();
                 },
                 (error) => {
@@ -85,7 +95,10 @@ export default class FeedController extends Controller {
             document.querySelector('.feed__options-field'),
             'click',
             highlightTag);
-        this.addEventHandler(document.getElementById('form'), 'submit', this.#applyFilters);
+        this.addEventHandler(   // Submit form
+            document.getElementById('form'),
+            'submit',
+            this.#applyFilters);
 
         // TODO: change initialValue to profile preferences
         // Set two sliders and connect each other
@@ -115,6 +128,8 @@ export default class FeedController extends Controller {
             });
     }
 
+
+
     /**
      *
      * @param event
@@ -129,7 +144,6 @@ export default class FeedController extends Controller {
     #applyFilters = (event) => {
         event.preventDefault();
         const form = document.getElementById('form');
-
         let filters = {
             tags: [],
             keyWords: [],
@@ -329,7 +343,6 @@ export default class FeedController extends Controller {
                 // TODO: Load subscriptions
                 this.view.updateRight(this.dataList[this.currentItem].followers, !this.usersFeed);
             } else {
-                console.log('here2');
                 EventModel.getEventFollowers(this.dataList[this.currentItem].item.eid).then(
                     (followers) => {
                         this.view.updateRight(followers, !this.usersFeed);
@@ -340,7 +353,6 @@ export default class FeedController extends Controller {
                     });
             }
         } else {
-            console.log(this.dataList[this.currentItem].followers);
             this.view.updateRight(this.dataList[this.currentItem].followers, !this.usersFeed);
         }
     }

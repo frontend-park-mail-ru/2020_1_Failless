@@ -55,7 +55,7 @@ export default class FeedUsersView extends View {
      * @param {boolean} isEvent
      */
     updateCenter(data, isEvent) {
-        if (!this.columns) {
+        if (this.columns.length !== 3) {
             this.#getColumns();
         }
 
@@ -64,7 +64,9 @@ export default class FeedUsersView extends View {
             if (isEvent) {
                 this.data.tag.activeClass = 'tag__container_active';
             } else {
-                // this.data.tags.forEach((tag) => {tag.active_class = 'tag__container_active'});
+                if (this.data.tags) {
+                    this.data.tags.forEach((tag) => {tag.active_class = 'tag__container_active'});
+                }
             }
         } else {
             this.data = data;
@@ -123,7 +125,9 @@ export default class FeedUsersView extends View {
      * Simply retrieve columns from document
      */
     #getColumns() {
-        this.columns = this.parent.querySelectorAll('.feed__column');
+        while (this.columns.length !== 3) {
+            this.columns = this.parent.querySelectorAll('.feed__column');
+        }
     }
 
     #clearColumns() {

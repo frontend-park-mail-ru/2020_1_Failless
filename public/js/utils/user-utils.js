@@ -19,4 +19,15 @@ const logoutRedirect = (event) => {
     });
 };
 
-export default logoutRedirect;
+function fullProfileCheck(user) {
+    let message = [];
+    if (user.about.length === 0) {
+        message.push('Добавьте описание');
+    }
+    if (!user.photos) {
+        message.push('Добавьте фото');
+    }
+    return message;
+}
+
+export {logoutRedirect, fullProfileCheck};

@@ -8,7 +8,7 @@ import AddEventView from 'Eventum/views/add-event-view.js';
 import ModalView from 'Eventum/views/modal-view.js';
 import {staticTags} from 'Eventum/utils/static-data.js';
 import {highlightTag} from 'Eventum/utils/tag-logic.js';
-import logoutRedirect from 'Eventum/utils/logout.js';
+import {logoutRedirect} from 'Eventum/utils/user-utils.js';
 import EventModel from 'Eventum/models/event-model.js';
 import editTemplate from 'Blocks/edit-field/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic.js';

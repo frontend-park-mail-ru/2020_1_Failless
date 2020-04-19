@@ -2,7 +2,7 @@
 
 import createHeader from 'Eventum/core/header.js';
 import UserModel from 'Eventum/models/user-model.js';
-import logoutRedirect from 'Eventum/utils/logout.js';
+import {logoutRedirect} from 'Eventum/utils/user-utils.js';
 import router from 'Eventum/core/router.js';
 
 /**
