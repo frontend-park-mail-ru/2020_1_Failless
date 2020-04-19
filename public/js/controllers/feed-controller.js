@@ -29,6 +29,7 @@ export default class FeedController extends Controller {
         this.view = new FeedUsersView(parent, staticTags);
         EventModel.getTagList().then(
             (tags) => {
+                console.log("here1");
                 if (tags) {
                     this.view = new FeedUsersView(parent, tags);
                 }
@@ -62,6 +63,7 @@ export default class FeedController extends Controller {
             // Show landing page with loading
             // TODO: get selected tags from history
             this.view.render(this.tagList, !this.usersFeed);
+            this.#initFilterHandlers();
 
             // Fetch content to show
             this.#initDataList(this.defaultFeedRequest).then(
@@ -76,14 +78,13 @@ export default class FeedController extends Controller {
     }
 
     /**
-     *
-     * @param data
+     *  Initialize filter handlers
      */
-    #initMainHandlers(data) {
-        this.addEventHandler(document.querySelector('.feed__options-field'), 'click', highlightTag);
-        if (data) {
-            this.#setUpVoteButtons();
-        }
+    #initFilterHandlers() {
+        this.addEventHandler(   // Highlight tags
+            document.querySelector('.feed__options-field'),
+            'click',
+            highlightTag);
         this.addEventHandler(document.getElementById('form'), 'submit', this.#applyFilters);
 
         // TODO: change initialValue to profile preferences
@@ -258,13 +259,12 @@ export default class FeedController extends Controller {
                 (users) => {
                     if (users) {
                         users.forEach((user) => {
-                            console.log(user.events);
                             this.dataList.push(
                                 {
                                     item: user,
                                     followers: {
                                         personalEvents: user.events,
-                                        subscriptions: undefined,
+                                        subscriptions: user.subscriptions,
                                     },
                                 })
                         });
@@ -323,7 +323,7 @@ export default class FeedController extends Controller {
 
         // Render right column
         this.view.showLoadingRight();
-        this.#initMainHandlers(this.dataList[this.currentItem].item);
+        this.#setUpVoteButtons();
         if (this.dataList[this.currentItem].followers === undefined) {
             if (this.usersFeed) {
                 // TODO: Load subscriptions
