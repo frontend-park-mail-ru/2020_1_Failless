@@ -6,6 +6,7 @@
 @import "components/profile-main/profile-main";
 @import "components/profile-edit/profile-edit";
 
+@import "blocks/chat-list-item/chat-list-item";
 @import "blocks/creator-card/creator-card";
 @import "blocks/feed-center-users/feed-center-users";
 @import "blocks/feed-right/feed-right";
@@ -36,6 +37,10 @@
 @import "modules/images";
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic');
+
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;

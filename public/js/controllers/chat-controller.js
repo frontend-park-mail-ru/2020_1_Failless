@@ -23,8 +23,17 @@ export default class ChatController extends MyController {
                     console.log(profile);
                     return;
                 }
-                // UserModel.getChats().then();
-                console.log(profile);
+                UserModel.getChats().then(
+                    (chats) => {
+                        this.view.renderChatList(chats).then();
+                    },
+                    (error) => {
+                        this.view.showLeftError(error).then();
+                        this.view.renderChatList().then();
+                        this.view.showCenterError(error).then();
+                        console.error(error);
+                    });
+                // TODO: do sth else
             },
             (error) => {
                 (async () => {await this.view.showCenterError(error);})();

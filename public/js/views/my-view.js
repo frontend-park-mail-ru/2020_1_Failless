@@ -32,7 +32,7 @@ export default class MyView extends View {
 
     getDOMElements() {
         while (this.leftColumn === null) {
-            this.leftColumn = document.querySelector('.my__left-column');
+            this.leftColumn = document.querySelector('.my__left-column-body');
         }
         while (this.mainArea === null) {
             this.mainArea = document.querySelector('.my__main-column');
