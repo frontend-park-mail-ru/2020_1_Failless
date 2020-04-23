@@ -1545,6 +1545,29 @@
   vertical-align: middle;
 }
 
+.link-uploader label, .section__header a {
+  color: #12C2E9;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.error {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+.error__message {
+  color: #D5D5D5;
+}
+
+#error__icon {
+  width: 150px;
+  fill: #D5D5D5;
+}
+
 .event {
   width: 100%;
   display: block;

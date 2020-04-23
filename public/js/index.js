@@ -6,6 +6,7 @@ import SignUpController from 'Eventum/controllers/signup-controller.js';
 import FeedController from 'Eventum/controllers/feed-controller.js';
 import BigEventSearchController from 'Eventum/controllers/big-event-search-controller.js';
 import ProfileController from 'Eventum/controllers/profile-controller.js';
+import ChatController from 'Eventum/controllers/chat-controller.js';
 import Router from 'Eventum/core/router.js';
 import 'Static/css/style.css';
 
@@ -29,5 +30,6 @@ router.addRoute('/signup',      new SignUpController(application));
 router.addRoute('/search',      new BigEventSearchController(application));  // big & middle events
 router.addRoute('/feed',        new FeedController(application));        // profiles
 router.addRoute('/my/profile',  new ProfileController(application));
+router.addRoute('/my/chats',    new ChatController(application));
 
 router.route();

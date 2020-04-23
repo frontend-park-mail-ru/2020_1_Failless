@@ -1,6 +1,8 @@
 'use strict';
 
 import errorTemplate from 'Blocks/validation-error/template.hbs';
+import serverErrorTemplate from 'Blocks/error/template.hbs';
+import {makeEmpty} from 'Eventum/utils/basic.js';
 
 /**
  * Base view class
@@ -33,5 +35,10 @@ export default class View {
 
         element.classList.add('input__auth_incorrect');
         element.insertAdjacentHTML('beforebegin', errorTemplate({message: messageValue[0]}));
+    }
+
+    async showServerError(element, message) {
+        makeEmpty(element);
+        element.insertAdjacentHTML('beforeend', serverErrorTemplate({message: message}));
     }
 }

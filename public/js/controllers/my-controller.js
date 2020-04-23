@@ -36,10 +36,7 @@ export default class MyController extends Controller {
      */
     #chatRedirect = (event) => {
         event.preventDefault();
-
-        console.log('chat redirects');
-
-        // router.redirectForward('/my/chat');
+        router.redirectForward('/my/chat');
     };
 
     /**
@@ -60,8 +57,6 @@ export default class MyController extends Controller {
      */
     #profileRedirect = (event) => {
         event.preventDefault();
-
-        console.log('profile redirect');
 
         router.redirectForward('/my/profile');
     };

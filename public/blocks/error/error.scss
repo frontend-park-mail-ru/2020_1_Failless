@@ -1,0 +1,19 @@
+@import "../../modules/variables";
+
+.error {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+
+  &__message {
+    color: $re--color-middle-gray;
+  }
+}
+
+#error__icon {
+  width: 150px;
+  fill: $re--color-middle-gray;
+}
