@@ -3,6 +3,7 @@
 import MyController from 'Eventum/controllers/my-controller.js';
 import ChatView from 'Eventum/views/chat-view.js';
 import UserModel from 'Eventum/models/user-model.js';
+import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item.js';
 
 /**
  * @class ChatController
@@ -40,5 +41,32 @@ export default class ChatController extends MyController {
                 console.error(error);
             }
         );
+
+        // Adding event handlers
+        this.addEventHandler(
+            this.view.getLeftColumn(),
+            'click',
+            (event) => {
+                event.preventDefault();
+                const chatListItem = event.target.closest('.chat-list-item');
+                setChatListItemAsRead(chatListItem);
+                toggleChatListItemActive(chatListItem);
+                this.#handleChatOpening(
+                    chatListItem.getAttribute('data-uid'),
+                    chatListItem.querySelector('.chat-list-item__title').innerText);
+            });
+        this.addEventHandler(
+            // TODO: render main area but make it invisible
+            this.view.getMainColumn()
+        )
+    }
+
+
+    #handleChatOpening = (uid, name) => {
+        // Async render
+        this.view.renderChatLoading(name).then();
+
+        // Open websocket connection
+        // Get latest messages
     }
 }

@@ -2,6 +2,7 @@
 
 import errorTemplate from 'Blocks/validation-error/template.hbs';
 import serverErrorTemplate from 'Blocks/error/template.hbs';
+import loadingTemplate from 'Blocks/loading/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic.js';
 
 /**
@@ -37,8 +38,25 @@ export default class View {
         element.insertAdjacentHTML('beforebegin', errorTemplate({message: messageValue[0]}));
     }
 
+    /**
+     * Show Server error inside an element
+     * !use with caution!
+     * @param {HTMLElement} element
+     * @param {String} message
+     * @return {Promise<void>}
+     */
     async showServerError(element, message) {
         makeEmpty(element);
         element.insertAdjacentHTML('beforeend', serverErrorTemplate({message: message}));
+    }
+
+    /**
+     * Show loading animation inside an element
+     * @param element
+     * @return {Promise<void>}
+     */
+    async showLoading(element) {
+        makeEmpty(element);
+        element.insertAdjacentHTML('beforeend', loadingTemplate());
     }
 }

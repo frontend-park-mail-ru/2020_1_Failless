@@ -5,6 +5,7 @@ import getPageUrl from 'Eventum/utils/get-img-url.js';
 import feedTemplate from 'Components/feed/template.hbs';
 import feedCenterUsersTemplate from 'Blocks/feed-center-users/template.hbs';
 import feedRightTemplate from 'Blocks/feed-right/template.hbs';
+import loadingTemplate from 'Blocks/loading/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic.js';
 
 /**
@@ -99,13 +100,13 @@ export default class FeedView extends View {
     showLoadingCenter() {
         makeEmpty(this.columns[1]);
 
-        this.columns[1].innerHTML = '<div class="spinner"></div>';
+        this.columns[1].insertAdjacentHTML('afterbegin', loadingTemplate());
     }
 
     showLoadingRight() {
         makeEmpty(this.columns[2]);
 
-        this.columns[2].innerHTML = '<div class="spinner"></div>';
+        this.columns[2].insertAdjacentHTML('afterbegin', loadingTemplate());
     }
 
     /**

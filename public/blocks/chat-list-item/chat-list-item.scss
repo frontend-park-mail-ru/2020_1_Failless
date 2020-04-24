@@ -1,17 +1,45 @@
 @import "../../modules/variables";
 
-.chat-list__item {
+.chat-list-item {
   width: 100%;
-  border-bottom: 1px solid $re--color-middle-gray;
+  border-bottom: 1px solid $re--color-light-gray;
   display: flex;
   align-items: center;
-  padding: 11px 0;
+  padding: 15px 15px;
+  cursor: pointer;
+  @include transition(0.1s, ease-in-out);
+
+  &_active {
+    background: $re--color-light-gray;
+  }
 
   &__avatar {
-    width: 45px;
+    position: relative;
     height: 45px;
+
+    & img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  &__alert {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
-    object-fit: cover;
+    border: 0.5px solid $color-white;
+    background: $re--gradient;
+    transform: scale(0);
+    @include transition(0.3s, ease-in-out);
+
+    &_unread {
+      transform: scale(1);
+    }
   }
 
   &__body {
@@ -30,14 +58,25 @@
 
   &__title {
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     color: $color-black;
+    @include transition(0.1s, ease-in-out);
   }
 
   &__time {
     font-size: 10px;
     font-weight: 300;
     color: $re--color-middle-gray;
+    @include transition(0.1s, ease-in-out);
+
+    &_active {
+      color: $color-black;
+    }
+
+    &_unread {
+      font-weight: 500;
+      color: $color-black;
+    }
   }
 
   &__message {
@@ -50,5 +89,9 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     color: $color-black;
+
+    &_unread {
+      font-weight: 500;
+    }
   }
 }

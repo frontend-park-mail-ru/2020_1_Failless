@@ -1,0 +1,59 @@
+@import "../../modules/variables";
+
+.chat {
+  display: flex;
+  flex-flow: column;
+  padding: 0;
+
+  &__header {
+    padding: 9px $re--medium-padding;
+    height: $header-height;
+    background: $color-white;
+    border-bottom: 1px solid $re--color-light-gray;
+  }
+
+  &__body {
+    flex: 1;
+  }
+
+  &__footer {
+    height: $header-height;
+    padding: 9px $re--medium-padding;
+    display: flex;
+    background: $color-white;
+    border-top: 1px solid $re--color-light-gray;
+  }
+
+  &__add-icon {
+    display: none;
+  }
+
+  &__input {
+    width: 100%;
+    margin: 0 $re--medium-padding;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 300;
+    color: $color-black;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom: 2px solid #F1F1F1;
+    transition-property: border-bottom-color;
+    transition-duration: 0.2s;
+    outline: none;
+
+    &:focus {
+      border-bottom-color: $color-purple;
+    }
+  }
+
+  &__button {
+    height: $header-height - 9px - 9px;
+
+
+    &_disabled {
+      opacity: 0.5;
+    }
+  }
+}

@@ -43,6 +43,12 @@
     //overflow: auto;
     position: relative;
     min-height: 692px;
+
+    &_page {
+      &-chat {
+        padding: 15px 0 0;
+      }
+    }
   }
 
   &__main-column {
