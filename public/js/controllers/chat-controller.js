@@ -46,21 +46,36 @@ export default class ChatController extends MyController {
         this.addEventHandler(
             this.view.getLeftColumn(),
             'click',
-            (event) => {
-                event.preventDefault();
-                const chatListItem = event.target.closest('.chat-list-item');
-                setChatListItemAsRead(chatListItem);
-                toggleChatListItemActive(chatListItem);
-                this.#handleChatOpening(
-                    chatListItem.getAttribute('data-uid'),
-                    chatListItem.querySelector('.chat-list-item__title').innerText);
-            });
+            this.#activateChatListItem
+        );
         this.addEventHandler(
-            // TODO: render main area but make it invisible
-            this.view.getMainColumn()
-        )
+            this.view.chatFooter.querySelector('.chat__button'),
+            'click',
+            this.#sendMessage
+        );
     }
 
+    #activateChatListItem = (event) => {
+        event.preventDefault();
+        const chatListItem = event.target.closest('.chat-list-item');
+        const previousChatListItem = this.view.leftColumn.querySelector('.chat-list-item_active');
+        if (previousChatListItem && chatListItem.getAttribute('data-uid') === previousChatListItem.getAttribute('data-uid')) {
+            return;
+        }
+        if (previousChatListItem) {
+            toggleChatListItemActive(previousChatListItem).then();
+        }
+        setChatListItemAsRead(chatListItem).then();
+        toggleChatListItemActive(chatListItem).then();
+        this.#handleChatOpening(
+            chatListItem.getAttribute('data-uid'),
+            chatListItem.querySelector('.chat-list-item__title').innerText);
+    };
+
+    #sendMessage = (event) => {
+        console.log(event.target.closest('.chat__input'));
+        alert('Sending message');
+    };
 
     #handleChatOpening = (uid, name) => {
         // Async render

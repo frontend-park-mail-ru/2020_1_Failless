@@ -1,8 +1,8 @@
-<header class="chat__header">
+<header class="chat__header {{#if active}}chat__header_active{{/if}}">
     <h2>{{ title }}</h2>
 </header>
 <main class="chat__body"></main>
-<footer class="chat__footer">
+<footer class="chat__footer {{#if active}}chat__footer_active{{/if}}">
 <!--    Add icon fill gradient  svg  -->
     <svg class="chat__add-icon"></svg>
     <input class="chat__input" type="text" placeholder="Напишите что-то хорошее">

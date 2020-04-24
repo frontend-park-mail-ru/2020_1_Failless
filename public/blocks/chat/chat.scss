@@ -10,6 +10,12 @@
     height: $header-height;
     background: $color-white;
     border-bottom: 1px solid $re--color-light-gray;
+    @include transition(0.1s, ease-in);
+    transform: scale(0);
+
+    &_active {
+      transform: scale(1);
+    }
   }
 
   &__body {
@@ -22,6 +28,12 @@
     display: flex;
     background: $color-white;
     border-top: 1px solid $re--color-light-gray;
+    @include transition(0.1s, ease-in);
+    transform: scale(0);
+
+    &_active {
+      transform: scale(1);
+    }
   }
 
   &__add-icon {

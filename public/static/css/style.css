@@ -873,6 +873,14 @@
   height: 45px;
   background: white;
   border-bottom: 1px solid #F1F1F1;
+  -webkit-transition: all 0.1s ease-in;
+  -moz-transition: all 0.1s ease-in;
+  -o-transition: all 0.1s ease-in;
+  transition: all 0.1s ease-in;
+  transform: scale(0);
+}
+.chat__header_active {
+  transform: scale(1);
 }
 .chat__body {
   flex: 1;
@@ -883,6 +891,14 @@
   display: flex;
   background: white;
   border-top: 1px solid #F1F1F1;
+  -webkit-transition: all 0.1s ease-in;
+  -moz-transition: all 0.1s ease-in;
+  -o-transition: all 0.1s ease-in;
+  transition: all 0.1s ease-in;
+  transform: scale(0);
+}
+.chat__footer_active {
+  transform: scale(1);
 }
 .chat__add-icon {
   display: none;
@@ -890,6 +906,7 @@
 .chat__input {
   width: 100%;
   margin: 0 15px;
+  text-align: right;
   font-size: 14px;
   font-weight: 300;
   color: #191919;
@@ -899,9 +916,13 @@
   border-bottom: 2px solid #F1F1F1;
   transition-property: border-bottom-color;
   transition-duration: 0.2s;
+  outline: none;
 }
 .chat__input:focus {
   border-bottom-color: #C471ED;
+}
+.chat__button {
+  height: 27px;
 }
 .chat__button_disabled {
   opacity: 0.5;
