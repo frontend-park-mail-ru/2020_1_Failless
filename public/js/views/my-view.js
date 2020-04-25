@@ -15,6 +15,7 @@ export default class MyView extends View {
     constructor(parent) {
         super(parent);
         this.parent = parent;
+        this.circleHeader = null;
         this.leftColumn = null;
         this.mainColumn = null;
     }
@@ -37,15 +38,23 @@ export default class MyView extends View {
         while (this.mainColumn === null) {
             this.mainColumn = document.querySelector('.my__main-column');
         }
+        while (!this.circleHeader) {
+            this.circleHeader = document.querySelector('.my__left-column-header');
+        }
     }
 
-    getLeftColumn() {
+    get leftColumnDiv() {
         this.setDOMElements();
         return this.leftColumn;
     }
 
-    getMainColumn() {
+    get mainColumnDiv() {
         this.setDOMElements();
         return this.mainColumn;
+    }
+
+    get leftHeaderDiv() {
+        this.setDOMElements();
+        return this.circleHeader;
     }
 }

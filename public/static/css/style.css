@@ -927,6 +927,7 @@
   transition-duration: 0.2s;
   outline: none;
   resize: none;
+  padding: 4px;
 }
 .chat__textarea:focus {
   border-bottom-color: #C471ED;
@@ -2539,11 +2540,11 @@ input[type=range]::-ms-fill-upper {
   transition: 0.01s;
   transform: scale(0.98);
 }
-.circle:hover, .circle:active, .circle__active {
+.circle:hover, .circle_active {
   background: linear-gradient(135deg, #12C2E9 0%, #C471ED 50%, #F64F59 100%);
   border-color: white;
 }
-.circle:hover #icon, .circle:active #icon, .circle__active #icon {
+.circle:hover #icon, .circle_active #icon {
   fill: white;
 }
 

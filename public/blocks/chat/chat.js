@@ -13,5 +13,5 @@ function scrollChatDown(chatBody) {
  */
 function resizeTextArea() {
     this.style.height = 'auto';
-    this.style.height = (this.scrollHeight) + 'px';
+    this.style.height = (this.scrollHeight + 2) + 'px';
 }

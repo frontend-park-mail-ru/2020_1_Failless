@@ -24,7 +24,7 @@ export default class ChatView extends MyView {
     }
 
     get chatHeaderDiv() {
-        this.setDOMElements();
+        this.setDOMChatElements();
         return this.chatHeader;
     }
 
@@ -33,18 +33,21 @@ export default class ChatView extends MyView {
      * @return {HTMLElement}
      */
     get chatBodyDiv() {
-        this.setDOMElements();
+        this.setDOMChatElements();
         return this.chatBody;
     }
 
     get chatFooterDiv() {
-        this.setDOMElements();
+        this.setDOMChatElements();
         return this.chatFooter;
     }
 
     render() {
         super.render();
         this.#adjustColumns();
+        (async () => {
+            this.leftHeaderDiv.querySelectorAll('.circle')[0].classList.add('circle_active');
+        })();
         makeEmpty(this.mainColumn);
         this.mainColumn.insertAdjacentHTML('afterbegin', chatTemplate({
             active: false,
@@ -53,7 +56,7 @@ export default class ChatView extends MyView {
                 message: 'Выберите чат слева',
             },
         }));
-        (async () => {this.#setDOMChatElements();})();
+        (async () => {this.setDOMChatElements();})();
     }
 
     #adjustColumns() {
@@ -62,7 +65,7 @@ export default class ChatView extends MyView {
         this.mainColumn.className = 'my__main-column chat';
     }
 
-    #setDOMChatElements() {
+    setDOMChatElements() {
         this.setDOMElements();
         while (this.chatHeader === null) {
             this.chatHeader = this.mainColumn.querySelector('.chat__header');
@@ -76,9 +79,9 @@ export default class ChatView extends MyView {
     }
 
     async renderEmptyList() {
-        this.setDOMElements();
-        makeEmpty(this.chatBody);
-        this.chatBody.insertAdjacentHTML('afterbegin', errorTemplate({
+        const chatBody = this.chatBodyDiv;
+        makeEmpty(chatBody);
+        chatBody.insertAdjacentHTML('afterbegin', errorTemplate({
             icon:       icons.get('sad'),
             message:    'На горизонте тихо...',
             button:     'Искать!'
@@ -109,8 +112,9 @@ export default class ChatView extends MyView {
      * @return {Promise<void>}
      */
     async renderChatList(chats) {
-        makeEmpty(this.leftColumn);
-        this.leftColumn.insertAdjacentHTML('afterbegin', '<h3 style="padding: 0 15px;">Диалоги</h3>');
+        const leftColumn = this.leftColumnDiv;
+        makeEmpty(leftColumn);
+        leftColumn.insertAdjacentHTML('afterbegin', '<h3 style="padding: 0 15px;">Диалоги</h3>');
         chats.forEach((chat) => {
             if (!chat.avatar) {
                 chat.avatar = images.get('user-default');
@@ -120,7 +124,7 @@ export default class ChatView extends MyView {
                 chat.unread = true;
                 chat.time = null;
             }
-            this.leftColumn.insertAdjacentHTML('beforeend', chatListItemTemplate({
+            leftColumn.insertAdjacentHTML('beforeend', chatListItemTemplate({
                 avatar: chat.avatar,
                 name:   chat.name,
                 uid:    chat.uid,
@@ -139,11 +143,11 @@ export default class ChatView extends MyView {
      * @return {Promise<void>}
      */
     async renderChatLoading(title) {
-        this.setDOMElements();
-        makeEmpty(this.chatBody);
-        this.#setDOMChatElements();
-        this.chatHeader.querySelector('h2').innerText = title;
-        this.showLoading(this.chatBody);
+        const chatBody = this.chatBodyDiv;
+        makeEmpty(chatBody);
+        this.setDOMChatElements();
+        this.chatHeaderDiv.querySelector('h2').innerText = title;
+        this.showLoading(chatBody);
     }
 
     /**

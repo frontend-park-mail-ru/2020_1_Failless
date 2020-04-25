@@ -1,7 +1,6 @@
 'use strict';
 
 import ProfileView from 'Eventum/views/profile-view.js';
-import MyController from 'Eventum/controllers/my-controller.js';
 import UserModel from 'Eventum/models/user-model.js';
 import ProfileEditView from 'Eventum/views/profile-edit-view.js';
 import AddEventView from 'Eventum/views/add-event-view.js';
@@ -12,11 +11,13 @@ import {logoutRedirect} from 'Eventum/utils/user-utils.js';
 import EventModel from 'Eventum/models/event-model.js';
 import editTemplate from 'Blocks/edit-field/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic.js';
+import Router from 'Eventum/core/router';
+import Controller from 'Eventum/core/controller';
 
 /**
  * @class ProfileController
  */
-export default class ProfileController extends MyController {
+export default class ProfileController extends Controller {
 
     /**
      * construct object of ProfileController class
@@ -36,11 +37,6 @@ export default class ProfileController extends MyController {
             console.error(onerror);
             this.localTags = [...staticTags];
         });
-
-        // TODO: kill meeee
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     this.highlightCircle(2);
-        // });
     }
 
     /**
@@ -58,6 +54,7 @@ export default class ProfileController extends MyController {
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
+                    (async () => {this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');})();
                     this.user = profile;
 
                     const photoInput = document.getElementById('photoUpload');
@@ -73,6 +70,23 @@ export default class ProfileController extends MyController {
 
                     this.addEventHandler(document.querySelector('#add-event-btn'), 'click', this.#createEventPopup.bind(this));
                     this.addEventHandler(document.querySelector('#add-event-link'), 'click', this.#createEventPopup.bind(this));
+                    // TODO: redirect error here
+                    this.addEventHandler(
+                        this.view.circleHeader,
+                        'click',
+                        (event) => {
+                            event.preventDefault();
+                            let circle = null;
+                            if (event.target.matches('.circle')) {
+                                circle = event.target;
+                            } else if (event.target.matches('#icon') || event.target.matches('path')) {
+                                circle = event.target.closest('.circle');
+                            } else {
+                                return;
+                            }
+                            Router.redirectForward(circle.getAttribute('data-circle-href'));
+                        },
+                    );
                 } else {
                     console.error('You have not got rights for this page');
                     console.log(profile);

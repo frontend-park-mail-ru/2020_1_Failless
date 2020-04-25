@@ -1,17 +1,17 @@
 'use strict';
 
-import MyController from 'Eventum/controllers/my-controller.js';
 import ChatView from 'Eventum/views/chat-view.js';
 import UserModel from 'Eventum/models/user-model.js';
 import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item.js';
 import Router from 'Eventum/core/router';
 import ChatModel from 'Eventum/models/chat-model';
 import {resizeTextArea} from 'Blocks/chat/chat';
+import Controller from 'Eventum/core/controller';
 
 /**
  * @class ChatController
  */
-export default class ChatController extends MyController {
+export default class ChatController extends Controller {
     constructor(parent) {
         super(parent);
         this.view = new ChatView(parent);
@@ -31,7 +31,7 @@ export default class ChatController extends MyController {
                 }
                 UserModel.getChats().then(
                     (chats) => {
-                        if (chats === null || chats.length === 0) {
+                        if (!chats || chats.length === 0) {
                             this.view.renderEmptyList().then(() => {
                                 this.addEventHandler(
                                     this.view.chatBodyDiv.querySelector('button'),
@@ -53,27 +53,44 @@ export default class ChatController extends MyController {
                 this.uid = profile.uid;
             },
             (error) => {
-                (async () => {await this.view.showCenterError(error);})();
+                this.view.showCenterError(error).then();
                 console.error(error);
             }
         );
 
         // Adding event handlers
+        this.view.setDOMChatElements(); // do it once instead of calling getters and checking there
         this.addEventHandler(
-            this.view.getLeftColumn(),
+            this.view.leftColumn,
             'click',
             this.#activateChatListItem
         );
-        const chatFooter = this.view.chatFooterDiv;
         this.addEventHandler(
-            chatFooter.querySelector('.chat__button'),
+            this.view.chatFooter.querySelector('.chat__button'),
             'click',
             this.#sendMessage
         );
         this.addEventHandler(
-            chatFooter.querySelector('textarea'),
+            this.view.chatFooter.querySelector('textarea'),
             'input',
             resizeTextArea,
+        );
+        // TODO: redirect error here
+        this.addEventHandler(
+            this.view.circleHeader,
+            'click',
+            (event) => {
+                event.preventDefault();
+                let circle = null;
+                if (event.target.matches('.circle')) {
+                    circle = event.target;
+                } else if (event.target.matches('#icon') || event.target.matches('path')) {
+                    circle = event.target.closest('.circle');
+                } else {
+                    return;
+                }
+                Router.redirectForward(circle.getAttribute('data-circle-href'));
+            },
         );
     }
 
