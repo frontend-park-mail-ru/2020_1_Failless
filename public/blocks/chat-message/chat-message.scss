@@ -5,6 +5,14 @@
   padding: 8px 10px;
   border-radius: $re--border-radius;
   line-height: 20px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
   color: $color-white;
   margin: 5px $re--medium-padding;
   @include transition(0.3s, ease-in-out);

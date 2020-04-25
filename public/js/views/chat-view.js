@@ -114,7 +114,7 @@ export default class ChatView extends MyView {
                 chat.avatar = images.get('user-default');
             }
             if (!chat.last_message) {
-                chat.last_message = 'Напишите первое сообщение!';
+                chat.last_message = 'Отправьте первое сообщение!';
                 chat.unread = true;
                 chat.time = null;
             }

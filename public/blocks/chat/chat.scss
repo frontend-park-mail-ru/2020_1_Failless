@@ -10,7 +10,7 @@
     height: $header-height;
     background: $color-white;
     border-bottom: 1px solid $re--color-light-gray;
-    @include transition(0.1s, ease-in);
+    @include transition(0.1s, cubic-bezier(0.3, 0.83, 0, 1.01));
     transform: scale(0);
 
     &_active {
@@ -27,9 +27,11 @@
   }
 
   &__footer {
-    height: $header-height;
+    min-height: $header-height; // TODO: fix button and change it back to just height
+    max-height: 30%;
     padding: 9px $re--medium-padding;
     display: flex;
+    align-items: flex-end;
     background: $color-white;
     border-top: 1px solid $re--color-light-gray;
     @include transition(0.1s, ease-in);
@@ -44,8 +46,9 @@
     display: none;
   }
 
-  &__input {
+  &__textarea {
     width: 100%;
+    max-height: 100%;
     margin: 0 $re--medium-padding;
     text-align: right;
     font-size: 14px;
@@ -58,6 +61,7 @@
     transition-property: border-bottom-color;
     transition-duration: 0.2s;
     outline: none;
+    resize: none;
 
     &:focus {
       border-bottom-color: $color-purple;

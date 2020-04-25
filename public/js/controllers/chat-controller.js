@@ -6,6 +6,7 @@ import UserModel from 'Eventum/models/user-model.js';
 import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item.js';
 import Router from 'Eventum/core/router';
 import ChatModel from 'Eventum/models/chat-model';
+import {resizeTextArea} from 'Blocks/chat/chat';
 
 /**
  * @class ChatController
@@ -15,6 +16,7 @@ export default class ChatController extends MyController {
         super(parent);
         this.view = new ChatView(parent);
         this.uid = null;
+        this.socket = null;
     }
 
     action() {
@@ -62,13 +64,24 @@ export default class ChatController extends MyController {
             'click',
             this.#activateChatListItem
         );
+        const chatFooter = this.view.chatFooterDiv;
         this.addEventHandler(
-            this.view.chatFooter.querySelector('.chat__button'),
+            chatFooter.querySelector('.chat__button'),
             'click',
             this.#sendMessage
         );
+        this.addEventHandler(
+            chatFooter.querySelector('textarea'),
+            'input',
+            resizeTextArea,
+        );
     }
 
+    /**
+     * Handle click on chat list item
+     *  deactivate previous if exists and activate current
+     * @param event
+     */
     #activateChatListItem = (event) => {
         event.preventDefault();
         const chatListItem = event.target.closest('.chat-list-item');
@@ -86,19 +99,24 @@ export default class ChatController extends MyController {
             chatListItem.querySelector('.chat-list-item__title').innerText);
     };
 
+    /**
+     * Send message to chat
+     * @param event
+     */
     #sendMessage = (event) => {
-        if (!event.target.previousElementSibling.value) {
+        let message = event.target.previousElementSibling.value;
+        if (!message) {
             return;
         }
-        console.log(event.target.previousElementSibling.value);
-
         this.view.renderMessage({
             id: this.uid,
-            body: event.target.previousElementSibling.value,
+            body: message,
             own: true,
             new: true,
         });
         event.target.previousElementSibling.value = '';
+        resizeTextArea.call(event.target.previousElementSibling);
+        // TODO: Send message via WebSocket
     };
 
     /**
@@ -114,6 +132,7 @@ export default class ChatController extends MyController {
 
         ChatModel.openChat(id2).then((socket) => {
             if (socket !== undefined) { // TODO: couldn't catch reject for some reason
+                this.socket = socket;
                 UserModel.getProfile().then((profile) => {
                     ChatModel.getLastMessages(profile.uid, id2, 30).then(
                         (messages) => {
@@ -123,7 +142,7 @@ export default class ChatController extends MyController {
                             this.view.showCenterError(error).then();
                         });
                 });
-                this.#chat(socket);
+                this.#chat();
             } else {
                 this.view.showCenterError('Failed to establish a connection').then();
                 this.view.renderLastMessages();
@@ -132,10 +151,9 @@ export default class ChatController extends MyController {
 
     /**
      * Chat here
-     * @param {WebSocket} socket
      */
-    #chat = (socket) => {
-        socket.onmessage = (message) => {
+    #chat = () => {
+        this.socket.onmessage = (message) => {
             console.log(message);
             console.log(message.data);
             message.data.new = true;
