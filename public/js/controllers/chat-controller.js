@@ -4,6 +4,8 @@ import MyController from 'Eventum/controllers/my-controller.js';
 import ChatView from 'Eventum/views/chat-view.js';
 import UserModel from 'Eventum/models/user-model.js';
 import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item.js';
+import Router from 'Eventum/core/router';
+import ChatModel from 'Eventum/models/chat-model';
 
 /**
  * @class ChatController
@@ -12,6 +14,7 @@ export default class ChatController extends MyController {
     constructor(parent) {
         super(parent);
         this.view = new ChatView(parent);
+        this.uid = null;
     }
 
     action() {
@@ -26,15 +29,26 @@ export default class ChatController extends MyController {
                 }
                 UserModel.getChats().then(
                     (chats) => {
+                        if (chats === null || chats.length === 0) {
+                            this.view.renderEmptyList().then(() => {
+                                this.addEventHandler(
+                                    this.view.chatBodyDiv.querySelector('button'),
+                                    'click',
+                                    () => {
+                                        Router.redirectForward('/feed');
+                                    }
+                                );
+                            });
+                            return;
+                        }
                         this.view.renderChatList(chats).then();
                     },
                     (error) => {
                         this.view.showLeftError(error).then();
-                        this.view.renderChatList().then();
                         this.view.showCenterError(error).then();
                         console.error(error);
                     });
-                // TODO: do sth else
+                this.uid = profile.uid;
             },
             (error) => {
                 (async () => {await this.view.showCenterError(error);})();
@@ -73,15 +87,59 @@ export default class ChatController extends MyController {
     };
 
     #sendMessage = (event) => {
-        console.log(event.target.closest('.chat__input'));
-        alert('Sending message');
+        if (!event.target.previousElementSibling.value) {
+            return;
+        }
+        console.log(event.target.previousElementSibling.value);
+
+        this.view.renderMessage({
+            id: this.uid,
+            body: event.target.previousElementSibling.value,
+            own: true,
+            new: true,
+        });
+        event.target.previousElementSibling.value = '';
     };
 
-    #handleChatOpening = (uid, name) => {
-        // Async render
+    /**
+     * Open new WS chat on click on chat in the list
+     * @param {String} id2
+     * @param {String} name
+     */
+    #handleChatOpening = (id2, name) => {
+        // async Render
+        // Open websocket connection
+        // async Get latest messages
         this.view.renderChatLoading(name).then();
 
-        // Open websocket connection
-        // Get latest messages
-    }
+        ChatModel.openChat(id2).then((socket) => {
+            if (socket !== undefined) { // TODO: couldn't catch reject for some reason
+                UserModel.getProfile().then((profile) => {
+                    ChatModel.getLastMessages(profile.uid, id2, 30).then(
+                        (messages) => {
+                            this.view.renderLastMessages(messages);
+                        },
+                        (error) => {
+                            this.view.showCenterError(error).then();
+                        });
+                });
+                this.#chat(socket);
+            } else {
+                this.view.showCenterError('Failed to establish a connection').then();
+                this.view.renderLastMessages();
+            }});
+    };
+
+    /**
+     * Chat here
+     * @param {WebSocket} socket
+     */
+    #chat = (socket) => {
+        socket.onmessage = (message) => {
+            console.log(message);
+            console.log(message.data);
+            message.data.new = true;
+            this.view.renderMessage(message.data);
+        };
+    };
 }

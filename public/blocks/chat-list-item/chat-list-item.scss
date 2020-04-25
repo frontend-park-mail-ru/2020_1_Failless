@@ -23,6 +23,13 @@
       border-radius: 50%;
       object-fit: cover;
     }
+
+    &_active {
+      & img {
+        box-shadow:  5px 5px 9px #e0e0e0,
+                   -5px -5px 9px #ffffff;
+      }
+    }
   }
 
   &__alert {
@@ -91,7 +98,11 @@
     color: $color-black;
 
     &_unread {
-      font-weight: 500;
+      font-weight: 600;
     }
+  }
+
+  &__empty-list {
+    @extend %center;
   }
 }

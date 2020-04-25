@@ -1,9 +1,15 @@
 'use strict';
 
 import MyView from 'Eventum/views/my-view.js';
-import {makeEmpty} from 'Eventum/utils/basic';
+import {makeEmpty} from 'Eventum/utils/basic.js';
 import chatListItemTemplate from 'Blocks/chat-list-item/template.hbs';
 import chatTemplate from 'Blocks/chat/template.hbs';
+import errorTemplate from 'Blocks/error/template.hbs';
+import chatMessageTemplate from 'Blocks/chat-message/template.hbs';
+import {icons} from 'Eventum/utils/static-data.js';
+import {images} from 'Eventum/utils/static-data';
+import {scrollChatDown} from 'Blocks/chat/chat';
+import {showMessage} from 'Blocks/chat-message/chat-message';
 
 /**
  * @class create ChatView class
@@ -22,6 +28,10 @@ export default class ChatView extends MyView {
         return this.chatHeader;
     }
 
+    /**
+     * Check if elements are set and return div of chatBody
+     * @return {HTMLElement}
+     */
     get chatBodyDiv() {
         this.setDOMElements();
         return this.chatBody;
@@ -36,7 +46,13 @@ export default class ChatView extends MyView {
         super.render();
         this.#adjustColumns();
         makeEmpty(this.mainColumn);
-        this.mainColumn.insertAdjacentHTML('afterbegin', chatTemplate({active: false}));
+        this.mainColumn.insertAdjacentHTML('afterbegin', chatTemplate({
+            active: false,
+            motivator: {
+                icon: icons.get('finger-left'),
+                message: 'Выберите чат слева',
+            },
+        }));
         (async () => {this.#setDOMChatElements();})();
     }
 
@@ -59,6 +75,16 @@ export default class ChatView extends MyView {
         }
     }
 
+    async renderEmptyList() {
+        this.setDOMElements();
+        makeEmpty(this.chatBody);
+        this.chatBody.insertAdjacentHTML('afterbegin', errorTemplate({
+            icon:       icons.get('sad'),
+            message:    'На горизонте тихо...',
+            button:     'Искать!'
+        }));
+    }
+
     async showCenterError(error) {
         this.setDOMElements();
         await this.showServerError(this.chatBody, error);
@@ -70,7 +96,8 @@ export default class ChatView extends MyView {
     }
 
     /**
-     *
+     * This function depends on non-empty chats
+     * so check it somewhere outside
      * @param chats[{
      *     name: String,
      *     time: String,
@@ -81,29 +108,16 @@ export default class ChatView extends MyView {
      */
     async renderChatList(chats) {
         makeEmpty(this.leftColumn);
-        // if (!chats) {
-        //     this.showLeftError(chats);
-        // }
-        chats = [
-            {
-                avatar: 'https://eventum.s3.eu-north-1.amazonaws.com/users/59059926-e98f-4e38-a44f-62b359df8351.jpg',
-                name:   'Егор',
-                uid:    0,
-                time:   'вчера',
-                last_message: 'Последнее сообщение, которое было не так давно',
-                unread:  false,
-            },
-            {
-                avatar: 'https://eventum.s3.eu-north-1.amazonaws.com/users/59059926-e98f-4e38-a44f-62b359df8351.jpg',
-                name:   'Апполинария',
-                uid:    1,
-                time:   'позавчера',
-                last_message: 'Последнее сообщение, которое было не так давно. Последнее сообщение, которое было не так давно',
-                unread: true,
-            },
-        ];
         this.leftColumn.insertAdjacentHTML('afterbegin', '<h3 style="padding: 0 15px;">Диалоги</h3>');
         chats.forEach((chat) => {
+            if (!chat.avatar) {
+                chat.avatar = images.get('user-default');
+            }
+            if (!chat.last_message) {
+                chat.last_message = 'Напишите первое сообщение!';
+                chat.unread = true;
+                chat.time = null;
+            }
             this.leftColumn.insertAdjacentHTML('beforeend', chatListItemTemplate({
                 avatar: chat.avatar,
                 name:   chat.name,
@@ -115,19 +129,86 @@ export default class ChatView extends MyView {
         });
     }
 
+    /**
+     * Show all chat elements
+     * but keep header and footer invisible
+     * and main area contain loading animation
+     * @param title
+     * @return {Promise<void>}
+     */
     async renderChatLoading(title) {
         this.setDOMElements();
         makeEmpty(this.chatBody);
-        // Render main areas such as chat screen and footer
-
         this.#setDOMChatElements();
         (async () => {this.showLoading(this.chatBody);})();
         (async () => {this.#activateUI(title);})();
     }
 
+    /**
+     * On initial render all chat elements (header, footer)
+     * ARE on the screen but invisible
+     * so this function makes them appear
+     * @param title
+     */
     #activateUI = (title) => {
         this.chatHeader.classList.add('chat__header_active');
         this.chatHeader.querySelector('h2').innerText = title;
         this.chatFooter.classList.add('chat__footer_active');
+    };
+
+    /**
+     * Render messages
+     * @param {Array<{id: Number, body: String}>} messages
+     */
+    renderLastMessages(messages) {
+        const chatBody = this.chatBodyDiv;
+        if (chatBody.firstElementChild.className === 'spinner' || chatBody.firstElementChild.className === 'error') {
+            makeEmpty(chatBody);
+        }
+        if (!messages) {
+            messages = [
+                {
+                    id: 1,
+                    body: 'MORNING FUCKERS!',
+                    own: false,
+                },
+                {
+                    id: 2,
+                    body: 'GOOD MORNING TO YA LADIES!',
+                    own: true,
+                },
+                {
+                    id: 1,
+                    body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est…',
+                    own: false,
+                },
+            ];
+        }
+        messages.forEach((message) => {
+            chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}))
+        });
+        messages.forEach((message) => {
+            chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}))
+        });
+        messages.forEach((message) => {
+            chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}))
+        });
+        scrollChatDown(chatBody);
+    }
+
+    /**
+     *
+     * @param {{
+     *      id: String,
+     *      body: String,
+     *      own: boolean,
+     *      new: boolean}} message
+     */
+    renderMessage(message) {
+        console.log(message);
+        const chatBody = this.chatBodyDiv;
+        chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}));
+        scrollChatDown(chatBody);
+        showMessage(chatBody.lastElementChild);
     }
 }

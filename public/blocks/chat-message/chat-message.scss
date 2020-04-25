@@ -1,0 +1,25 @@
+@import "../../modules/variables";
+
+.chat-message {
+  max-width: 75%;
+  padding: 8px 10px;
+  border-radius: $re--border-radius;
+  line-height: 20px;
+  color: $color-white;
+  margin: 5px $re--medium-padding;
+  @include transition(0.3s, ease-in-out);
+  transform: scale(1);
+
+  &_right {
+    align-self: flex-end;
+    background: $re--gradient-right;
+  }
+  &_left {
+    align-self: flex-start;
+    background: $re--gradient-left;
+  }
+
+  &_new {
+    transform: scale(0);
+  }
+}

@@ -8,6 +8,7 @@
 
 @import "blocks/chat/chat";
 @import "blocks/chat-list-item/chat-list-item";
+@import "blocks/chat-message/chat-message";
 @import "blocks/creator-card/creator-card";
 @import "blocks/feed-center-users/feed-center-users";
 @import "blocks/feed-right/feed-right";
@@ -79,6 +80,7 @@ textarea {
   position: relative;
   width: 1000px;
   box-sizing: border-box;
+  height: 100%;
 }
 
 @media only screen and (max-width: 1000px) {
