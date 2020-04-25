@@ -1,13 +1,13 @@
 'use strict';
 
-import MyView from 'Eventum/views/my-view.js';
-import {makeEmpty} from 'Eventum/utils/basic.js';
 import chatListItemTemplate from 'Blocks/chat-list-item/template.hbs';
+import chatMessageTemplate from 'Blocks/chat-message/template.hbs';
 import chatTemplate from 'Blocks/chat/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
-import chatMessageTemplate from 'Blocks/chat-message/template.hbs';
-import {icons} from 'Eventum/utils/static-data.js';
+import MyView from 'Eventum/views/my-view';
+import {icons} from 'Eventum/utils/static-data';
 import {images} from 'Eventum/utils/static-data';
+import {makeEmpty} from 'Eventum/utils/basic';
 import {scrollChatDown} from 'Blocks/chat/chat';
 import {showMessage} from 'Blocks/chat-message/chat-message';
 
@@ -23,6 +23,10 @@ export default class ChatView extends MyView {
         this.chatFooter = null;
     }
 
+    /**
+     * Check if elements are set and return div of chatHeader
+     * @return {HTMLElement}
+     */
     get chatHeaderDiv() {
         this.setDOMChatElements();
         return this.chatHeader;
@@ -37,6 +41,10 @@ export default class ChatView extends MyView {
         return this.chatBody;
     }
 
+    /**
+     * Check if elements are set and return div of chatFooter
+     * @return {HTMLElement}
+     */
     get chatFooterDiv() {
         this.setDOMChatElements();
         return this.chatFooter;
@@ -45,9 +53,7 @@ export default class ChatView extends MyView {
     render() {
         super.render();
         this.#adjustColumns();
-        (async () => {
-            this.leftHeaderDiv.querySelectorAll('.circle')[0].classList.add('circle_active');
-        })();
+        (async () => {this.leftHeaderDiv.querySelectorAll('.circle')[0].classList.add('circle_active');})();
         makeEmpty(this.mainColumn);
         this.mainColumn.insertAdjacentHTML('afterbegin', chatTemplate({
             active: false,
@@ -59,12 +65,19 @@ export default class ChatView extends MyView {
         (async () => {this.setDOMChatElements();})();
     }
 
+    /**
+     * Classes of cilumns in basic template are awful
+     * so this one appends chat classes and fixes sth
+     */
     #adjustColumns() {
         this.setDOMElements();
         this.leftColumn.className = 'my__left-column-body my__left-column-body_page-chat';
         this.mainColumn.className = 'my__main-column chat';
     }
 
+    /**
+     * Find this.* DOM elements
+     */
     setDOMChatElements() {
         this.setDOMElements();
         while (this.chatHeader === null) {
@@ -78,6 +91,10 @@ export default class ChatView extends MyView {
         }
     }
 
+    /**
+     * If user has no chats - show him motivational error
+     * @return {Promise<void>}
+     */
     async renderEmptyList() {
         const chatBody = this.chatBodyDiv;
         makeEmpty(chatBody);
@@ -88,12 +105,22 @@ export default class ChatView extends MyView {
         }));
     }
 
+    /**
+     * Show error in central column
+     * @param {Error} error
+     * @return {Promise<void>}
+     */
     async showCenterError(error) {
         this.setDOMElements();
         this.#disableChatUI();
         this.showServerError(this.chatBody, error);
     }
 
+    /**
+     * Show error in left column
+     * @param {Error} error
+     * @return {Promise<void>}
+     */
     async showLeftError(error) {
         this.setDOMElements();
         await this.#disableChatUI();

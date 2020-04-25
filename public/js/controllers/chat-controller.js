@@ -1,12 +1,12 @@
 'use strict';
 
-import ChatView from 'Eventum/views/chat-view.js';
-import UserModel from 'Eventum/models/user-model.js';
-import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item.js';
-import Router from 'Eventum/core/router';
 import ChatModel from 'Eventum/models/chat-model';
-import {resizeTextArea} from 'Blocks/chat/chat';
+import ChatView from 'Eventum/views/chat-view';
 import Controller from 'Eventum/core/controller';
+import Router from 'Eventum/core/router';
+import UserModel from 'Eventum/models/user-model';
+import {resizeTextArea} from 'Blocks/chat/chat';
+import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item';
 
 /**
  * @class ChatController
