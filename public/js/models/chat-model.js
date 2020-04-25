@@ -35,7 +35,7 @@ export default class ChatModel extends Model {
      * @param id1 - this user's id
      * @param id2 - match's id
      * @param limit - how many messages to fetch
-     * @return {Promise<Array<{id: Number, body: String}>>} - messages
+     * @return {Promise<Array<{uid: Number, body: String}>>} - messages
      */
     static async getLastMessages(id1, id2, limit) {
         return NetworkModule.fetchGet({path: `/profile/${id1}/chat`, body: {id2: id2, limit: limit}}).then(

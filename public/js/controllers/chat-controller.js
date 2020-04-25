@@ -108,6 +108,8 @@ export default class ChatController extends MyController {
         if (!message) {
             return;
         }
+        // Send message via WebSocket
+        (async () => {this.socket.send({uid: this.uid, message});})();
         this.view.renderMessage({
             id: this.uid,
             body: message,
@@ -116,7 +118,6 @@ export default class ChatController extends MyController {
         });
         event.target.previousElementSibling.value = '';
         resizeTextArea.call(event.target.previousElementSibling);
-        // TODO: Send message via WebSocket
     };
 
     /**
@@ -136,6 +137,12 @@ export default class ChatController extends MyController {
                 UserModel.getProfile().then((profile) => {
                     ChatModel.getLastMessages(profile.uid, id2, 30).then(
                         (messages) => {
+                            this.view.activateChatUI(name).then();
+                            // Append necessary fields
+                            messages.forEach((message) => {
+                                message.own = message.uid === this.uid;
+                                message.new = false;
+                            });
                             this.view.renderLastMessages(messages);
                         },
                         (error) => {
@@ -145,7 +152,7 @@ export default class ChatController extends MyController {
                 this.#chat();
             } else {
                 this.view.showCenterError('Failed to establish a connection').then();
-                this.view.renderLastMessages();
+                // this.view.renderLastMessages();
             }});
     };
 
@@ -156,6 +163,7 @@ export default class ChatController extends MyController {
         this.socket.onmessage = (message) => {
             console.log(message);
             console.log(message.data);
+            message.data.own = message.data.uid === this.uid;
             message.data.new = true;
             this.view.renderMessage(message.data);
         };

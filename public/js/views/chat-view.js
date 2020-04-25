@@ -87,11 +87,13 @@ export default class ChatView extends MyView {
 
     async showCenterError(error) {
         this.setDOMElements();
-        await this.showServerError(this.chatBody, error);
+        this.#disableChatUI();
+        this.showServerError(this.chatBody, error);
     }
 
     async showLeftError(error) {
         this.setDOMElements();
+        await this.#disableChatUI();
         await this.showServerError(this.leftColumn, error);
     }
 
@@ -140,27 +142,41 @@ export default class ChatView extends MyView {
         this.setDOMElements();
         makeEmpty(this.chatBody);
         this.#setDOMChatElements();
-        (async () => {this.showLoading(this.chatBody);})();
-        (async () => {this.#activateUI(title);})();
+        this.chatHeader.querySelector('h2').innerText = title;
+        this.showLoading(this.chatBody);
     }
 
     /**
      * On initial render all chat elements (header, footer)
      * ARE on the screen but invisible
      * so this function makes them appear
-     * @param title
      */
-    #activateUI = (title) => {
+    async #enableChatUI() {
         this.chatHeader.classList.add('chat__header_active');
-        this.chatHeader.querySelector('h2').innerText = title;
         this.chatFooter.classList.add('chat__footer_active');
-    };
+    }
+
+    async #disableChatUI() {
+        this.chatHeader.classList.remove('chat__header_active');
+        this.chatFooter.classList.remove('chat__footer_active');
+    }
+
+    async activateChatUI(title) {
+        this.#enableChatUI();
+        this.chatHeader.querySelector('h2').innerText = title;
+    }
 
     /**
      * Render messages
-     * @param {Array<{id: Number, body: String}>} messages
+     * @param {Array<{
+     *      id: Number,
+     *      body: String,
+     *      own: boolean,
+     *      new: boolean,
+ *      }>} messages
      */
     renderLastMessages(messages) {
+        (async () => {this.#enableChatUI();})();
         const chatBody = this.chatBodyDiv;
         if (chatBody.firstElementChild.className === 'spinner' || chatBody.firstElementChild.className === 'error') {
             makeEmpty(chatBody);
@@ -171,16 +187,19 @@ export default class ChatView extends MyView {
                     id: 1,
                     body: 'MORNING FUCKERS!',
                     own: false,
+                    new: false,
                 },
                 {
                     id: 2,
                     body: 'GOOD MORNING TO YA LADIES!',
                     own: true,
+                    new: false,
                 },
                 {
                     id: 1,
                     body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est…',
                     own: false,
+                    new: false,
                 },
             ];
         }
@@ -197,7 +216,7 @@ export default class ChatView extends MyView {
     }
 
     /**
-     *
+     * Render one particular message
      * @param {{
      *      id: String,
      *      body: String,
@@ -205,7 +224,6 @@ export default class ChatView extends MyView {
      *      new: boolean}} message
      */
     renderMessage(message) {
-        console.log(message);
         const chatBody = this.chatBodyDiv;
         chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}));
         scrollChatDown(chatBody);
