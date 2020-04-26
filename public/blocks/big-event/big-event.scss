@@ -3,7 +3,6 @@
 
 .big-event {
   width: $event-width;
-  box-sizing: border-box;
   break-inside: avoid;
   counter-increment: item-counter;
   text-align: left;

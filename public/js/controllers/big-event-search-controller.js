@@ -53,7 +53,7 @@ export default class BigEventSearchController extends Controller {
 
             EventModel.getEvents({page: this.pageDownloaded, limit: 10, query: event.target.value})
                 .then(events => {
-                    if (events === null) {
+                    if (!events) {
                         this.view.renderNotFound();
                     } else if (Object.prototype.hasOwnProperty.call(events, 'message')) {
                         this.view.addErrorMessage(document.getElementsByClassName('big-search__icon')[0], [events.message]);

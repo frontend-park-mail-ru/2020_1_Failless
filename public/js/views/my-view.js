@@ -32,10 +32,10 @@ export default class MyView extends View {
     }
 
     setDOMElements() {
-        while (this.leftColumn === null) {
+        while (!this.leftColumn) {
             this.leftColumn = document.querySelector('.my__left-column-body');
         }
-        while (this.mainColumn === null) {
+        while (!this.mainColumn) {
             this.mainColumn = document.querySelector('.my__main-column');
         }
         while (!this.circleHeader) {

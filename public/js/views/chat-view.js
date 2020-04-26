@@ -99,13 +99,13 @@ export default class ChatView extends MyView {
      */
     setDOMChatElements() {
         this.setDOMElements();
-        while (this.chatHeader === null) {
+        while (!this.chatHeader) {
             this.chatHeader = this.mainColumn.querySelector('.chat__header');
         }
-        while (this.chatBody === null) {
+        while (!this.chatBody) {
             this.chatBody = this.mainColumn.querySelector('.chat__body');
         }
-        while (this.chatFooter === null) {
+        while (!this.chatFooter) {
             this.chatFooter = this.mainColumn.querySelector('.chat__footer');
         }
         while (!this.chatListBody) {
