@@ -1,13 +1,13 @@
 'use strict';
 
-import Controller from 'Eventum/core/controller.js';
-import BigEventSearchView from 'Eventum/views/big-event-search-view.js';
-import EventModel from 'Eventum/models/event-model.js';
+import Controller from 'Eventum/core/controller';
+import BigEventSearchView from 'Eventum/views/big-event-search-view';
+import EventModel from 'Eventum/models/event-model';
 
 /**
  * @class SearchController
  */
-export default class BigEventSearchController extends Controller {
+export default class SearchController extends Controller {
 
     /**
      * Construct obj of BigEventSearchController class
@@ -15,29 +15,29 @@ export default class BigEventSearchController extends Controller {
      */
     constructor(parent) {
         super(parent);
-        this.searching = false;
         this.view = new BigEventSearchView(parent);
         this.pageDownloaded = 1;
     }
 
     /**
-     * Create action
+     * Create action and render random events
      */
     action() {
         super.action();
-        EventModel.getFeedEvents({page: 1, limit: 10, query: ''})
-            .then((events) => {
+        EventModel.getFeedEvents({page: 1, limit: 10, query: ''}).then(
+            (events) => {
                 this.view.render(events);
-                this.addEventHandler(document.getElementById('searchInput'), 'keydown', this.#completeRequest);
-            }).catch(onerror => {
+                this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
+            },
+            (onerror) => {
                 this.view.render();
-                this.addEventHandler(document.getElementById('searchInput'), 'keydown', this.#completeRequest);
+                this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
                 console.error(onerror);
             });
     }
 
     /**
-     * Wait press enter for sending request to backend for query results
+     * Send request to backend for query results on click 'Enter'
      * @param {KeyboardEvent} event - key-press event
      */
     #completeRequest = (event) => {
@@ -50,19 +50,19 @@ export default class BigEventSearchController extends Controller {
             console.log(event.target.value);
 
             this.removeErrorMessage(event);
-
-            EventModel.getEvents({page: this.pageDownloaded, limit: 10, query: event.target.value})
-                .then(events => {
+            EventModel.getEvents({page: this.pageDownloaded, limit: 10, query: event.target.value}).then(
+                (events) => {
                     if (!events) {
                         this.view.renderNotFound();
                     } else if (Object.prototype.hasOwnProperty.call(events, 'message')) {
-                        this.view.addErrorMessage(document.getElementsByClassName('big-search__icon')[0], [events.message]);
+                        this.view.addErrorMessage(document.querySelector('.big-search__icon'), [events.message]);
                     } else {
                         ++this.pageDownloaded;
                         console.log(events);
                         this.view.renderResults(events);
                     }
-                }).catch(onerror => {
+                },
+                (onerror) => {
                     console.error(onerror);
                 });
         }

@@ -1,5 +1,5 @@
-import NetworkModule from 'Eventum/core/network.js';
-import Model from 'Eventum/core/model.js';
+import NetworkModule from 'Eventum/core/network';
+import Model from 'Eventum/core/model';
 
 /**
  * @class EventModel
