@@ -72,6 +72,9 @@ export default class ChatView extends MyView {
                 icon: icons.get('finger-left'),
                 message: 'Выберите чат слева',
             },
+            send_icon: icons.get('arrow-up'),
+            return_icon: icons.get('arrow-left'),
+            more_icon: icons.get('dots'),
         }));
         makeEmpty(this.leftColumn);
         this.leftColumn.insertAdjacentHTML('afterbegin', chatListTemplate({
@@ -126,7 +129,7 @@ export default class ChatView extends MyView {
 
     /**
      * Show error in central column
-     * @param {Error} error
+     * @param {string} error
      * @return {Promise<void>}
      */
     async showCenterError(error) {
@@ -200,6 +203,7 @@ export default class ChatView extends MyView {
      * so this function makes them appear
      */
     async #enableChatUI() {
+        this.chatListBodyDiv;
         this.chatHeader.classList.add('chat__header_active');
         this.chatFooter.classList.add('chat__footer_active');
     }

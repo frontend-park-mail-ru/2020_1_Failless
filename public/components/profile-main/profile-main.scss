@@ -37,11 +37,18 @@
 
 @media only screen and (max-width: $breakpoint-1000) {
   .profile-main {
-    &__events {
-      padding-top: $re--medium-padding;
-      border-top: 1px solid $re--color-light-gray;
-      max-width: 100%;
+    flex-flow: column;
+    margin-bottom: $header-height + 10px;
+
+    &__photos {
+      overflow: unset;
     }
 
+    &__events {
+      max-width: 100%;
+      padding-top: $re--medium-padding;
+      border-top: 1px solid $re--color-light-gray;
+      overflow: unset;
+    }
   }
 }

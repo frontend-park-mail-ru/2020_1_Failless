@@ -39,3 +39,12 @@
     margin-left: $re--small-padding;
   }
 }
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .chat-list {
+    &__footer {
+      position: relative;
+      border-bottom: 1px solid $re--color-light-gray;
+    }
+  }
+}

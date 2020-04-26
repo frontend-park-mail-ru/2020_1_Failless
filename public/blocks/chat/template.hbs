@@ -1,5 +1,11 @@
 <header class="chat__header {{#if active}}chat__header_active{{/if}}">
+    <div class="chat__return-icon">
+        {{{ return_icon }}}
+    </div>
     <h2>{{ title }}</h2>
+    <div class="chat__more-icon">
+        {{{ more_icon }}}
+    </div>
 </header>
 <main class="chat__body">
     {{#with motivator}}
@@ -11,6 +17,7 @@
     <svg class="chat__add-icon"></svg>
     <textarea class="chat__textarea" placeholder="Напишите что-нибудь хорошее" rows="1"></textarea>
     <button class="chat__button re_btn re_btn__filled">Отправить</button>
+    <div class="chat__send-icon">{{{ send_icon }}}</div>
 </footer>
 
 <svg aria-hidden="true" focusable="false" style="width:0;height:0;position:absolute;">

@@ -10,7 +10,7 @@ $header-icon-width: 20px;
   display: flex;
   justify-content: center;
   flex: 0 0 auto; // grow shrink basis
-  z-index: 1;
+  z-index: 1000;
   position: fixed;
   top: 0;
   box-shadow: 0 0 10px rgba(0,0,0, 0.12);

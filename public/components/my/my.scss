@@ -72,14 +72,19 @@
 
 @media only screen and (max-width: $breakpoint-1000) {
   .my {
+    min-height: calc(100vh - 100px);
+    height: fit-content;
     position: relative;
     margin-top: $header-height;
     border-radius: 0;
     box-shadow: none;
     flex-flow: column;
+    overflow-x: hidden;
 
     &__left-column {
       width: 100%;
+      min-height: 100%;
+      height: fit-content;
     }
 
     &__left-column-header {
@@ -101,10 +106,9 @@
     }
 
     &__main-column {
+      width: 100%;
       padding: 0;
-      max-height: 0;
       border-radius: 0;
-      margin-bottom: 35px;
 
       &-body {
         height: 100%;
