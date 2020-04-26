@@ -6,6 +6,9 @@
 @import "components/profile-main/profile-main";
 @import "components/profile-edit/profile-edit";
 
+@import "blocks/chat/chat";
+@import "blocks/chat-list-item/chat-list-item";
+@import "blocks/chat-message/chat-message";
 @import "blocks/creator-card/creator-card";
 @import "blocks/feed-center-users/feed-center-users";
 @import "blocks/feed-right/feed-right";
@@ -14,11 +17,13 @@
 @import "blocks/btn/btn";
 @import "blocks/header/header";
 @import "blocks/icon/icon";
+@import "blocks/loading/loading";
 @import "blocks/modal-window/modal-window";
 @import "blocks/screen/screen";
 @import "blocks/tag/tag";
 @import "blocks/input/input";
 @import "blocks/search/search";
+@import "blocks/error/error";
 @import "blocks/event/event";
 @import "blocks/big-event/big-event";
 @import "blocks/edit-field/edit-field";
@@ -35,6 +40,10 @@
 @import "modules/images";
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic');
+
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -71,6 +80,7 @@ textarea {
   position: relative;
   width: 1000px;
   box-sizing: border-box;
+  height: 100%;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -144,40 +154,6 @@ h3 {
     background: $re--gradient;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
-
-/*-------------------------------------------*\
-   Windows 8 spinner
-\*-------------------------------------------*/
-
-.spinner {
-  width: 60px;
-  height: 60px;
-  margin: 60px;
-  animation: rotate 1.4s infinite ease-in-out, background 1.4s infinite ease-in-out alternate;
-}
-
-@keyframes rotate {
-  0% {
-    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-  }
-  50% {
-    transform: perspective(120px) rotateX(-180deg) rotateY(0deg);
-  }
-  100% {
-    transform: perspective(120px) rotateX(-180deg) rotateY(-180deg);
-  }
-}
-@keyframes background {
-  0% {
-  background-color: $color-blue;
-  }
-  50% {
-    background-color: $color-red;
-  }
-  100% {
-    background-color: $color-purple;
-  }
 }
 
 .full-height {

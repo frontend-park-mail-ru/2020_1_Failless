@@ -1,1 +1,5 @@
-<h3>{{message}}</h3>
+<div class="error">
+    {{{ icon }}}
+    <h2 class="error__message">{{ message }}</h2>
+    {{#if button }}<button class="re_btn re_btn__outline">{{ button }}</button>{{/if}}
+</div>

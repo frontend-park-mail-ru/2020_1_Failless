@@ -2,8 +2,9 @@
 
 .my {
   width: 100%;
-  height: 88.5vh; // TODO: bullshit
-  margin: (10px + $header-height) 0 10px;
+  position: absolute;
+  top: (10px + $header-height);
+  bottom: 10px;
   border-radius: $re--border-radius;
   background-color: $color-white;
   box-shadow: 20px 20px 60px #cdcdcd,
@@ -40,9 +41,15 @@
   &__left-column-body {
     padding: $re--medium-padding $re--medium-padding 0;
     max-height: calc(100% - 88px);
-    //overflow: auto;
     position: relative;
-    min-height: 692px;
+    min-height: 0px;
+
+    &_page {
+      &-chat {
+        padding: 15px 0 0;
+        min-height: 0;
+      }
+    }
   }
 
   &__main-column {

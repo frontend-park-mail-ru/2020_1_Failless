@@ -21,6 +21,14 @@ $re--gradient: linear-gradient(
                   $color-blue 0%,
                   $color-purple 50%,
                   $color-red 100%);
+$re--gradient-left: linear-gradient(
+                  135deg,
+                  $color-blue 0%,
+                  $color-purple 100%);
+$re--gradient-right: linear-gradient(
+                  135deg,
+                  $color-purple 0%,
+                  $color-red 100%);
 $re--huge-padding: 69px;
 $re--large-padding: 46px;
 $re--big-padding: 23px;
@@ -47,4 +55,13 @@ $header-height: 45px;
     color: $color-blue;
     font-size: 10px;
     font-weight: 400;
+}
+
+%center {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
 }

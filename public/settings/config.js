@@ -7,4 +7,5 @@ export default {
     img: 'img/',
     aws: 'https://eventum.s3.eu-north-1.amazonaws.com', //  app, users, events
     pageLimit: 10,
+    wsurl: DEBUG ? 'wss://localhost' : 'wss://eventum.rowbot.dev',
 };

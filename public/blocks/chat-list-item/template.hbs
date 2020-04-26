@@ -1,0 +1,13 @@
+<div class="chat-list-item" data-uid="{{ uid }}">
+    <div class="chat-list-item__avatar">
+        <img src="{{ avatar }}" alt="kek"/>
+        <div class="chat-list-item__alert {{#if unread}}chat-list-item__alert_unread{{/if}}"></div>
+    </div>
+    <div class="chat-list-item__body">
+        <header class="chat-list-item__header">
+            <div class="chat-list-item__title">{{ name }}</div>
+            <div class="chat-list-item__time {{#if unread}}chat-list-item__time_unread{{/if}}">{{ time }}</div>
+        </header>
+        <p class="chat-list-item__message {{#if unread}}chat-list-item__message_unread{{/if}}">{{ last_message }}</p>
+    </div>
+</div>
