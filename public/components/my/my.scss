@@ -39,8 +39,8 @@
   }
 
   &__left-column-body {
+    height: 100%;
     padding: $re--medium-padding $re--medium-padding 0;
-    max-height: calc(100% - 88px);
     position: relative;
     min-height: 0px;
 

@@ -1,0 +1,18 @@
+@import "../../modules/variables";
+
+.textarea {
+  width: 100%;
+  resize: none;
+  padding: 4px;
+  border: 1px solid $re--color-middle-gray;
+  border-radius: $re--border-radius;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+
+  &:focus {
+    border-color: $color-black;
+  }
+}

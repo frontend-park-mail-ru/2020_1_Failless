@@ -1,43 +1,45 @@
 @import "../../modules/variables";
 
 .profile-left {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+
   &__avatar {
     width: 100px;
     height: 100px;
     margin: ($re--big-padding - $re--medium-padding) auto $re--big-padding;
-    border-radius: 50%;
-    box-shadow: 2px 3px 8px -5px rgba(0, 0, 0, 0.5);
-    object-fit: cover;
-    &_center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-
-  &__center {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    & img {
+      box-shadow: 2px 3px 8px -5px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &__exit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: $re--medium-padding;
   }
 
 
-  &__scroll {
+  &__body {
+    flex-shrink: 2;
     overflow: auto;
-    // TODO: remove hardcode
-    height: 56.5vh;
   }
 
   &__options-field {
-    box-sizing: border-box;
     margin-bottom: $re--medium-padding;
     padding-bottom: $re--big-padding;
     border-bottom: 1px solid $re--color-light-gray;
+  }
 
-    &_textarea {
-      width: 100%;
-      resize: none;
-    }
+  &__textarea {
+    width: 100%;
+    resize: none;
   }
 
   &__header {
@@ -46,5 +48,16 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: $re--small-padding;
+  }
+
+  &__footer {
+    padding: $re--big-padding 0;
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    box-shadow: 0 -6px 5px -6px rgba(0, 0, 0, 0.12);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
   }
 }

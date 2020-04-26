@@ -1,13 +1,13 @@
 <div class="profile-left">
     <h2>{{ profile.name }}{{#if profile.age}}, {{ profile.age }}{{/if}}</h2>
-    <form action="submit" id="form">
-        <div class="profile-left__scroll">
-            <img class="profile-left__avatar profile-left__avatar_center" src="{{ url }}/{{ profile.avatar.path }}"
-                 alt="avatar">
+    <div class="profile-left__body">
+        <form action="submit" id="form">
+            <div class="profile-left__avatar">
+                {{> $Blocks/avatar/template}}
+            </div>
             <div class="profile-left__options-field">
                 <h3>О себе</h3>
-                <textarea class="profile-left__options-field_textarea" name="about" rows="10"
-                          placeholder="Расскажите о себе и своих увлечениях">{{ profile.about }}</textarea>
+                {{> $Blocks/textarea/template body=profile.about rows=10 name='about' placeholder='Расскажите о себе и своих увлечениях'}}
             </div>
             <div class="profile-left__options-field">
                 <div class="profile-left__header">
@@ -44,7 +44,7 @@
                         <!-- TODO: add networks -->
                     {{/each}}
                 {{else}}
-                    <div class="profile-left__center">
+                    <div>
                         <span class="icon icon__size_middle icon_color_lg icon__fb"></span>
                         <span class="icon icon__size_middle icon_color_lg icon__inst"></span>
                         <span class="icon icon__size_middle icon_color_lg icon__twitter"></span>
@@ -54,16 +54,13 @@
                     </div>
                 {{/if}}
             </div>
-            <div class="profile-left__center">
+            <div class="profile-left__exit">
                 <button class="re_btn re_btn__outline logout">Выйти</button>
             </div>
-        </div>
-
-        <!-- TODO: add hider for footer shadow -->
-
-        <div class="options-footer">
-            <button class="re_btn re_btn__filled">Сохранить</button>
-            <button class="re_btn re_btn__outline kek">Настройки</button>
-        </div>
-    </form>
+        </form>
+    </div>
+    <div class="profile-left__footer">
+        <button class="re_btn re_btn__outline kek">Настройки</button>
+        <button class="re_btn re_btn__filled">Сохранить</button>
+    </div>
 </div>
