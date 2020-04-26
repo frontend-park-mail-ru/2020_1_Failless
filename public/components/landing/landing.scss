@@ -240,7 +240,7 @@ $people-img: $screen-img-path + "landing.jpg";
   }
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: $breakpoint-1000) {
   .landing__screen {
     padding: 0 5vw;
   }
@@ -280,7 +280,7 @@ $people-img: $screen-img-path + "landing.jpg";
    Scenarios MEDIA
 \*-------------------------------------------*/
 
-@media only screen and (max-width: 1000px) {}
+@media only screen and (max-width: $breakpoint-1000) {}
 
 @media only screen and (max-width: $breakpoint-phone) {
   .landing__screen_scenario {
@@ -326,7 +326,7 @@ $people-img: $screen-img-path + "landing.jpg";
    Creators MEDIA
 \*-------------------------------------------*/
 
-@media only screen and (max-width: 1000px) {}
+@media only screen and (max-width: $breakpoint-1000) {}
 
 @media only screen and (max-width: $breakpoint-phone) {
   .landing__creators {
@@ -344,7 +344,7 @@ $people-img: $screen-img-path + "landing.jpg";
    Footer MEDIA
 \*-------------------------------------------*/
 
-@media only screen and (max-width: 1000px) {}
+@media only screen and (max-width: $breakpoint-1000) {}
 
 @media only screen and (max-width: $breakpoint-phone) {
   .landing {

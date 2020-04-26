@@ -36,6 +36,7 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    background: white;
   }
 
   &__left-column-body {
@@ -65,6 +66,50 @@
       height: calc(100% - 39px);
       display: flex;
       align-items: flex-start;
+    }
+  }
+}
+
+@media only screen and (max-width: $breakpoint-1000) {
+  .my {
+    position: relative;
+    margin-top: $header-height;
+    border-radius: 0;
+    box-shadow: none;
+    flex-flow: column;
+
+    &__left-column {
+      width: 100%;
+    }
+
+    &__left-column-header {
+      height: 55px;
+      z-index: 2;
+      border-top: 1px solid #f1f1f1;
+      position: fixed;
+      width: 100%;
+      top: 45px;
+    }
+
+    &__left-column-body {
+
+      &_page {
+        &-chat {
+
+        }
+      }
+    }
+
+    &__main-column {
+      padding: 0;
+      max-height: 0;
+      border-radius: 0;
+      margin-bottom: 35px;
+
+      &-body {
+        height: 100%;
+        padding: 0 $re--medium-padding;
+      }
     }
   }
 }

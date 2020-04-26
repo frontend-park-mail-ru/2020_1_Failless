@@ -68,19 +68,17 @@ body {
   height: 100%;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: $breakpoint-1000) {
   .container {
     width: 100%;
-    padding: 0 10px;
   }
 }
 
-@media only screen and (max-width: $breakpoint-phone) {
-  .container {
-    width: 100%;
-    padding: 0 10px;
-  }
-}
+//@media only screen and (max-width: $breakpoint-phone) {
+//  .container {
+//    width: 100%;
+//  }
+//}
 
 @mixin h($font-size, $padding-bottom) {
   font-size: $font-size;
