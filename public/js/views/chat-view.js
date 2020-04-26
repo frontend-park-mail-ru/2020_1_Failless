@@ -1,5 +1,6 @@
 'use strict';
 
+import chatListTemplate from 'Blocks/chat-list/template.hbs';
 import chatListItemTemplate from 'Blocks/chat-list-item/template.hbs';
 import chatMessageTemplate from 'Blocks/chat-message/template.hbs';
 import chatTemplate from 'Blocks/chat/template.hbs';
@@ -21,6 +22,7 @@ export default class ChatView extends MyView {
         this.chatHeader = null;
         this.chatBody = null;
         this.chatFooter = null;
+        this.chatListBody = null;
     }
 
     /**
@@ -50,6 +52,15 @@ export default class ChatView extends MyView {
         return this.chatFooter;
     }
 
+    /**
+     * Check if elements are set and return div of chatListBody
+     * @return {HTMLElement}
+     */
+    get chatListBodyDiv() {
+        this.setDOMChatElements();
+        return this.chatListBody;
+    }
+
     render() {
         super.render();
         this.#adjustColumns();
@@ -61,12 +72,20 @@ export default class ChatView extends MyView {
                 icon: icons.get('finger-left'),
                 message: 'Выберите чат слева',
             },
+            send_icon: icons.get('arrow-up'),
+            return_icon: icons.get('arrow-left'),
+            more_icon: icons.get('dots'),
+        }));
+        makeEmpty(this.leftColumn);
+        this.leftColumn.insertAdjacentHTML('afterbegin', chatListTemplate({
+            icon: icons.get('finger-up'),
+            message: 'Будьте осторожны при разговоре с незнакомцами',
         }));
         (async () => {this.setDOMChatElements();})();
     }
 
     /**
-     * Classes of cilumns in basic template are awful
+     * Classes of columns in basic template are awful
      * so this one appends chat classes and fixes sth
      */
     #adjustColumns() {
@@ -80,25 +99,29 @@ export default class ChatView extends MyView {
      */
     setDOMChatElements() {
         this.setDOMElements();
-        while (this.chatHeader === null) {
+        while (!this.chatHeader) {
             this.chatHeader = this.mainColumn.querySelector('.chat__header');
         }
-        while (this.chatBody === null) {
+        while (!this.chatBody) {
             this.chatBody = this.mainColumn.querySelector('.chat__body');
         }
-        while (this.chatFooter === null) {
+        while (!this.chatFooter) {
             this.chatFooter = this.mainColumn.querySelector('.chat__footer');
+        }
+        while (!this.chatListBody) {
+            this.chatListBody = this.leftColumn.querySelector('.chat-list__body');
         }
     }
 
     /**
      * If user has no chats - show him motivational error
+     * @param {Element} errorArea - since we render error
+     *  in main div on big screens and in chatlist area on mobiles
      * @return {Promise<void>}
      */
-    async renderEmptyList() {
-        const chatBody = this.chatBodyDiv;
-        makeEmpty(chatBody);
-        chatBody.insertAdjacentHTML('afterbegin', errorTemplate({
+    async renderEmptyList(errorArea) {
+        makeEmpty(errorArea);
+        errorArea.insertAdjacentHTML('afterbegin', errorTemplate({
             icon:       icons.get('sad'),
             message:    'На горизонте тихо...',
             button:     'Искать!'
@@ -107,7 +130,7 @@ export default class ChatView extends MyView {
 
     /**
      * Show error in central column
-     * @param {Error} error
+     * @param {string} error
      * @return {Promise<void>}
      */
     async showCenterError(error) {
@@ -122,9 +145,8 @@ export default class ChatView extends MyView {
      * @return {Promise<void>}
      */
     async showLeftError(error) {
-        this.setDOMElements();
         await this.#disableChatUI();
-        await this.showServerError(this.leftColumn, error);
+        await this.showServerError(this.chatListBodyDiv, error);
     }
 
     /**
@@ -139,9 +161,8 @@ export default class ChatView extends MyView {
      * @return {Promise<void>}
      */
     async renderChatList(chats) {
-        const leftColumn = this.leftColumnDiv;
-        makeEmpty(leftColumn);
-        leftColumn.insertAdjacentHTML('afterbegin', '<h3 style="padding: 0 15px;">Диалоги</h3>');
+        const chatBody = this.chatListBody;
+        makeEmpty(chatBody);
         chats.forEach((chat) => {
             if (!chat.avatar) {
                 chat.avatar = images.get('user-default');
@@ -151,7 +172,7 @@ export default class ChatView extends MyView {
                 chat.unread = true;
                 chat.time = null;
             }
-            leftColumn.insertAdjacentHTML('beforeend', chatListItemTemplate({
+            chatBody.insertAdjacentHTML('beforeend', chatListItemTemplate({
                 avatar: chat.avatar,
                 name:   chat.name,
                 uid:    chat.uid,
@@ -183,6 +204,7 @@ export default class ChatView extends MyView {
      * so this function makes them appear
      */
     async #enableChatUI() {
+        this.chatListBodyDiv;
         this.chatHeader.classList.add('chat__header_active');
         this.chatFooter.classList.add('chat__footer_active');
     }

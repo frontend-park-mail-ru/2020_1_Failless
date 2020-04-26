@@ -44,7 +44,7 @@ export default class ProfileView extends MyView {
         super.render();
 
         // let allowEdit = true;
-        if (profile.avatar.path === null) {
+        if (!profile.avatar.path) {
             profile.avatar.path = 'default.png';
         }
 
@@ -62,7 +62,7 @@ export default class ProfileView extends MyView {
         document.getElementsByClassName('my__left-column-body')[0].insertAdjacentHTML(
             'beforeend', profileLeftTemplate({
                 profile: profile,
-                url: `${settings.aws}/users`,
+                avatar: `${settings.aws}/users/${profile.avatar.path}`,
             })
         );
         document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(

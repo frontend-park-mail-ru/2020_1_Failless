@@ -5,8 +5,9 @@ import ChatView from 'Eventum/views/chat-view';
 import Controller from 'Eventum/core/controller';
 import Router from 'Eventum/core/router';
 import UserModel from 'Eventum/models/user-model';
-import {resizeTextArea} from 'Blocks/chat/chat';
+import {resizeTextArea, toggleChatOnMobile} from 'Blocks/chat/chat';
 import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item';
+import {detectMobile} from 'Eventum/utils/basic';
 
 /**
  * @class ChatController
@@ -31,14 +32,14 @@ export default class ChatController extends Controller {
                 }
                 UserModel.getChats().then(
                     (chats) => {
+                        chats = null;
                         if (!chats || chats.length === 0) {
-                            this.view.renderEmptyList().then(() => {
+                            const errorArea = detectMobile() ? this.view.chatListBodyDiv : this.view.chatBodyDiv;
+                            this.view.renderEmptyList(errorArea).then(() => {
                                 this.addEventHandler(
-                                    this.view.chatBodyDiv.querySelector('button'),
+                                    errorArea.querySelector('button'),
                                     'click',
-                                    () => {
-                                        Router.redirectForward('/feed');
-                                    }
+                                    () => {Router.redirectForward('/feed');}
                                 );
                             });
                             return;
@@ -61,20 +62,30 @@ export default class ChatController extends Controller {
         // Adding event handlers
         this.view.setDOMChatElements(); // do it once instead of calling getters and checking there
         this.addEventHandler(
-            this.view.leftColumn,
-            'click',
+            this.view.chatListBody, 'click',
             this.#activateChatListItem
         );
         this.addEventHandler(
-            this.view.chatFooter.querySelector('.chat__button'),
-            'click',
-            this.#sendMessage
+            this.view.chatFooter.querySelector('.chat__button'), 'click',
+            (event) => {
+                this.#sendMessage(event.target.previousElementSibling);
+            }
         );
-        this.addEventHandler(
-            this.view.chatFooter.querySelector('textarea'),
-            'input',
-            resizeTextArea,
+        this.addEventHandler(   // For mobile
+            this.view.chatFooter.querySelector('.chat__send-icon'), 'click',
+            (event) => {
+                if (event.target.matches('path')) {
+                    this.#sendMessage(event.target.parentElement.parentElement.parentElement.querySelector('textarea'));
+                } else {
+                    this.#sendMessage(event.target.parentElement.parentElement.querySelector('textarea'));
+                }
+            },
         );
+        const textInput = this.view.chatFooter.querySelector('textarea');
+        this.addEventHandler(textInput, 'input', resizeTextArea);
+        this.addEventHandler(textInput, 'keydown', (event) => {
+            if (event.keyCode === 13) {this.#sendMessage(event);}
+        });
         // TODO: redirect error here
         this.addEventHandler(
             this.view.circleHeader,
@@ -92,6 +103,14 @@ export default class ChatController extends Controller {
                 Router.redirectForward(circle.getAttribute('data-circle-href'));
             },
         );
+        // On mobile: close chat + deactivate chatListItem
+        this.addEventHandler(
+            this.view.chatHeader.querySelector('.chat__return-icon'),
+            'click',
+            () => {
+                toggleChatListItemActive(this.view.chatListBody.querySelector('.chat-list-item_active')).then();
+                toggleChatOnMobile.call(this.view.mainColumn);
+            });
     }
 
     /**
@@ -101,6 +120,9 @@ export default class ChatController extends Controller {
      */
     #activateChatListItem = (event) => {
         event.preventDefault();
+        if (event.target.matches('button')) {   // for some reason clicking on 'Искать' button
+            return;                             // on error message when the list is empty (mobile only)
+        }                                       // triggers this (i hope it's not a footgun)
         const chatListItem = event.target.closest('.chat-list-item');
         const previousChatListItem = this.view.leftColumn.querySelector('.chat-list-item_active');
         if (previousChatListItem && chatListItem.getAttribute('data-uid') === previousChatListItem.getAttribute('data-uid')) {
@@ -118,10 +140,10 @@ export default class ChatController extends Controller {
 
     /**
      * Send message to chat
-     * @param event
+     * @param {HTMLTextAreaElement} input
      */
-    #sendMessage = (event) => {
-        let message = event.target.previousElementSibling.value;
+    #sendMessage = (input) => {
+        let message = input.value;
         if (!message) {
             return;
         }
@@ -133,8 +155,8 @@ export default class ChatController extends Controller {
             own: true,
             new: true,
         });
-        event.target.previousElementSibling.value = '';
-        resizeTextArea.call(event.target.previousElementSibling);
+        input.value = '';
+        resizeTextArea.call(input);
     };
 
     /**
@@ -147,6 +169,7 @@ export default class ChatController extends Controller {
         // Open websocket connection
         // async Get latest messages
         this.view.renderChatLoading(name).then();
+        toggleChatOnMobile.call(this.view.mainColumnDiv);
 
         ChatModel.openChat(id2).then((socket) => {
             if (socket !== undefined) { // TODO: couldn't catch reject for some reason
@@ -169,7 +192,6 @@ export default class ChatController extends Controller {
                 this.#chat();
             } else {
                 this.view.showCenterError('Failed to establish a connection').then();
-                // this.view.renderLastMessages();
             }});
     };
 

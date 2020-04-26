@@ -32,10 +32,10 @@ export default class MyView extends View {
     }
 
     setDOMElements() {
-        while (this.leftColumn === null) {
+        while (!this.leftColumn) {
             this.leftColumn = document.querySelector('.my__left-column-body');
         }
-        while (this.mainColumn === null) {
+        while (!this.mainColumn) {
             this.mainColumn = document.querySelector('.my__main-column');
         }
         while (!this.circleHeader) {
@@ -43,16 +43,28 @@ export default class MyView extends View {
         }
     }
 
+    /**
+     * Check if elements are set and return div of leftColumn
+     * @return {HTMLElement}
+     */
     get leftColumnDiv() {
         this.setDOMElements();
         return this.leftColumn;
     }
 
+    /**
+     * Check if elements are set and return div of mainColumn
+     * @return {HTMLElement}
+     */
     get mainColumnDiv() {
         this.setDOMElements();
         return this.mainColumn;
     }
 
+    /**
+     * Check if elements are set and return div of leftHeader (circles)
+     * @return {HTMLElement}
+     */
     get leftHeaderDiv() {
         this.setDOMElements();
         return this.circleHeader;

@@ -3,37 +3,39 @@
 @import "components/feed/feed";
 @import "components/landing/landing";
 @import "components/my/my";
-@import "components/profile-main/profile-main";
 @import "components/profile-edit/profile-edit";
+@import "components/profile-main/profile-main";
 
+@import "blocks/avatar/avatar";
+@import "blocks/big-event/big-event";
+@import "blocks/btn/btn";
+@import "blocks/circle/circle";
 @import "blocks/chat/chat";
+@import "blocks/chat-list/chat-list";
 @import "blocks/chat-list-item/chat-list-item";
 @import "blocks/chat-message/chat-message";
 @import "blocks/creator-card/creator-card";
-@import "blocks/feed-center-users/feed-center-users";
-@import "blocks/feed-right/feed-right";
-@import "blocks/options-footer/options-footer";
-@import "blocks/profile-left/profile-left";
-@import "blocks/btn/btn";
-@import "blocks/header/header";
-@import "blocks/icon/icon";
-@import "blocks/loading/loading";
-@import "blocks/modal-window/modal-window";
-@import "blocks/screen/screen";
-@import "blocks/tag/tag";
-@import "blocks/input/input";
-@import "blocks/search/search";
+@import "blocks/edit-field/edit-field";
 @import "blocks/error/error";
 @import "blocks/event/event";
-@import "blocks/big-event/big-event";
-@import "blocks/edit-field/edit-field";
-@import "blocks/slider/slider";
-@import "blocks/section/section";
-@import "blocks/photo-columns/photo-columns";
-@import "blocks/circle/circle";
+@import "blocks/feed-center-users/feed-center-users";
+@import "blocks/feed-right/feed-right";
+@import "blocks/header/header";
+@import "blocks/icon/icon";
+@import "blocks/input/input";
 @import "blocks/link-uploader/link-uploader";
-@import "blocks/validation-error/validation-error";
+@import "blocks/loading/loading";
 @import "blocks/modal/modal";
+@import "blocks/modal-window/modal-window";
+@import "blocks/photo-columns/photo-columns";
+@import "blocks/profile-left/profile-left";
+@import "blocks/screen/screen";
+@import "blocks/search/search";
+@import "blocks/section/section";
+@import "blocks/slider/slider";
+@import "blocks/tag/tag";
+@import "blocks/textarea/textarea";
+@import "blocks/validation-error/validation-error";
 
 @import "modules/variables";
 @import "modules/efont";
@@ -41,7 +43,7 @@
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic');
 
-* {
+*, *:after, *:before {
   box-sizing: border-box;
 }
 
@@ -51,22 +53,6 @@ body {
   background: $re--color-light-gray;
   text-decoration: none;
   font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
-}
-
-textarea {
-  box-sizing: border-box;
-  padding: 4px;
-  border: 1px solid $re--color-middle-gray;
-  border-radius: $re--border-radius;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
-  font-size: 10px;
-  font-weight: 400;
-
-  &:focus {
-    border-color: $color-black;
-  }
 }
 
 #application {
@@ -79,23 +65,20 @@ textarea {
 .container {
   position: relative;
   width: 1000px;
-  box-sizing: border-box;
   height: 100%;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: $breakpoint-1000) {
   .container {
     width: 100%;
-    padding: 0 10px;
   }
 }
 
-@media only screen and (max-width: $breakpoint-phone) {
-  .container {
-    width: 100%;
-    padding: 0 10px;
-  }
-}
+//@media only screen and (max-width: $breakpoint-phone) {
+//  .container {
+//    width: 100%;
+//  }
+//}
 
 @mixin h($font-size, $padding-bottom) {
   font-size: $font-size;
@@ -123,7 +106,6 @@ h3 {
 }
 
 .separator {
-  box-sizing: border-box;
 
   &_vertical {
     width: 1px;
@@ -158,4 +140,8 @@ h3 {
 
 .full-height {
   height: 100%;
+}
+
+#gray__icon {
+  fill: $re--color-middle-gray;
 }

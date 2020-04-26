@@ -4,14 +4,21 @@
   display: flex;
   flex-flow: column;
   padding: 0;
+  @include transition(0.3s, ease-in-out);
 
   &__header {
-    padding: 9px $re--medium-padding;
     height: $header-height;
+    display: flex;
+    justify-content: space-between;
+    padding: 9px $re--medium-padding;
     background: $color-white;
     border-bottom: 1px solid $re--color-light-gray;
     @include transition(0.1s, cubic-bezier(0.3, 0.83, 0, 1.01));
     transform: scale(0);
+
+    & h2 {
+      margin: 0;
+    }
 
     &_active {
       transform: scale(1);
@@ -75,6 +82,57 @@
 
     &_disabled {
       opacity: 0.5;
+    }
+  }
+
+  &__send-icon {
+    display: none;
+    width: 30px;
+  }
+
+  &__return-icon {
+    display: none;
+    width: 20px;
+    margin: 4px 0 0 7px;
+  }
+
+  &__more-icon {
+    opacity: 0;
+    width: 20px;
+  }
+}
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .chat {
+    position: fixed;
+    top: $re--large-padding;
+    bottom: 0;
+    transform: translateX(100%);
+    z-index: 10;
+
+    &_active {
+      transform: translateX(0);
+    }
+
+    &__header {
+      transform: scale(1);
+    }
+
+    &__button {
+      display: none;
+    }
+
+    &__send-icon {
+      display: block;
+      @include transition(0.2s, ease-in);
+
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+
+    &__return-icon {
+      display: block;
     }
   }
 }

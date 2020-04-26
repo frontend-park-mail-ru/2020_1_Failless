@@ -3,16 +3,17 @@
 .error {
   @extend %center;
 
-  &__message {
-    color: $re--color-middle-gray;
+  & svg {
+    max-width: 150px;
   }
-}
 
-#error__icon {
-  width: 150px;
-  fill: $re--color-middle-gray;
-}
+  &__message {
+    padding: 0 $re--small-padding;
+    color: $re--color-middle-gray;
+    text-align: center;
+  }
 
-#helper__icon {
-  width: 150px;
+  &__button {
+    margin-bottom: $re--medium-padding;
+  }
 }
