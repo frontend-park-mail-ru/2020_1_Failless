@@ -7,6 +7,7 @@ import Router from 'Eventum/core/router';
 import UserModel from 'Eventum/models/user-model';
 import {resizeTextArea, toggleChatOnMobile} from 'Blocks/chat/chat';
 import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item';
+import {detectMobile} from 'Eventum/utils/basic';
 
 /**
  * @class ChatController
@@ -31,14 +32,14 @@ export default class ChatController extends Controller {
                 }
                 UserModel.getChats().then(
                     (chats) => {
+                        chats = null;
                         if (!chats || chats.length === 0) {
-                            this.view.renderEmptyList().then(() => {
+                            const errorArea = detectMobile() ? this.view.chatListBodyDiv : this.view.chatBodyDiv;
+                            this.view.renderEmptyList(errorArea).then(() => {
                                 this.addEventHandler(
-                                    this.view.chatBodyDiv.querySelector('button'),
+                                    errorArea.querySelector('button'),
                                     'click',
-                                    () => {
-                                        Router.redirectForward('/feed');
-                                    }
+                                    () => {Router.redirectForward('/feed');}
                                 );
                             });
                             return;
@@ -119,6 +120,9 @@ export default class ChatController extends Controller {
      */
     #activateChatListItem = (event) => {
         event.preventDefault();
+        if (event.target.matches('button')) {   // for some reason clicking on 'Искать' button
+            return;                             // on error message when the list is empty (mobile only)
+        }                                       // triggers this (i hope it's not a footgun)
         const chatListItem = event.target.closest('.chat-list-item');
         const previousChatListItem = this.view.leftColumn.querySelector('.chat-list-item_active');
         if (previousChatListItem && chatListItem.getAttribute('data-uid') === previousChatListItem.getAttribute('data-uid')) {

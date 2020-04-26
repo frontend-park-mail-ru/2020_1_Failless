@@ -115,12 +115,13 @@ export default class ChatView extends MyView {
 
     /**
      * If user has no chats - show him motivational error
+     * @param {Element} errorArea - since we render error
+     *  in main div on big screens and in chatlist area on mobiles
      * @return {Promise<void>}
      */
-    async renderEmptyList() {
-        const chatBody = this.chatBodyDiv;
-        makeEmpty(chatBody);
-        chatBody.insertAdjacentHTML('afterbegin', errorTemplate({
+    async renderEmptyList(errorArea) {
+        makeEmpty(errorArea);
+        errorArea.insertAdjacentHTML('afterbegin', errorTemplate({
             icon:       icons.get('sad'),
             message:    'На горизонте тихо...',
             button:     'Искать!'

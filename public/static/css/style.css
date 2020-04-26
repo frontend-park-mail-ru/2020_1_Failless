@@ -1755,6 +1755,9 @@
   color: #D5D5D5;
   text-align: center;
 }
+.error__button {
+  margin-bottom: 15px;
+}
 
 .event {
   width: 100%;
