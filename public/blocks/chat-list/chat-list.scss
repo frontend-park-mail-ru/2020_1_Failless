@@ -1,0 +1,41 @@
+@import "../../modules/variables";
+
+.chat-list {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+
+  &__header {
+    padding: 0 15px;
+  }
+
+  &__body {
+    height: 100%;
+  }
+
+  &__footer {
+    width: 100%;
+    height: 45px;
+    position: sticky;
+    bottom: 0;
+    padding: $re--small-padding;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-top: 1px solid $re--color-light-gray;
+  }
+
+  &__icon {
+    & svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__helper {
+    color: $re--color-middle-gray;
+    font-size: 10px;
+    font-weight: 300;
+    margin-left: $re--small-padding;
+  }
+}
