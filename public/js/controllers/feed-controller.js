@@ -90,6 +90,15 @@ export default class FeedController extends Controller {
         this.sliderManager.setSliders(
             {slider1: sliders[0], initialValue1: 18},
             {slider2: sliders[1], initialValue2: 25});
+
+        this.addEventHandler(document.querySelector('.feed__filters__filter-icon'), 'click',
+            () => {
+                document.querySelector('.feed__filters').classList.toggle('feed__filters_active');
+            });
+        this.addEventHandler(document.querySelector('.feed__filters__exit-icon'), 'click',
+            () => {
+                document.querySelector('.feed__filters').classList.remove('feed__filters_active');
+            })
     }
 
     #setUpVoteButtons() {
