@@ -161,7 +161,7 @@ export default class ProfileController extends Controller {
         event.preventDefault();
 
         // Set options
-        const textInput = document.getElementsByClassName('profile-left__options-field_textarea')[0];
+        const textInput = document.getElementsByClassName('textarea')[0];
         const tags = document.querySelectorAll('.tag');
         let selectedTags = [];
         tags.forEach((tag) => {
