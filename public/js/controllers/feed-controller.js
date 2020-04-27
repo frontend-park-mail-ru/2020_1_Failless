@@ -53,7 +53,7 @@ export default class FeedController extends Controller {
         this.view.render(this.tagList);
         UserModel.getProfile().then((user) => {
             // Check if user has filled profile
-            this.userMessages = fullProfileCheck(user);
+            this.userMessages = []; // fullProfileCheck(user);
             this.#initFilterHandlers();
             this.uid = user.uid;
             this.defaultFeedRequest.uid = this.uid;
@@ -207,9 +207,9 @@ export default class FeedController extends Controller {
         const isLike = event.target.matches('.re_btn__approve');
         // Get id-s
         const vote = {
-            uid:    this.uid,
-            id:     this.dataList[this.currentItem].item.uid,
-            value:  isLike ? 1 : -1,
+            uid: this.uid,
+            id: this.dataList[this.currentItem].item.uid,
+            value: isLike ? 1 : -1,
         };
 
         // Send request with vote
@@ -262,7 +262,7 @@ export default class FeedController extends Controller {
                                     personalEvents: user.events,
                                     subscriptions: user.subscriptions,
                                 },
-                            })
+                            });
                     });
                     return this.dataList[0];
                 } else {
@@ -293,6 +293,6 @@ export default class FeedController extends Controller {
 
         // Render right column
         this.view.showLoadingRight();
-        this.view.updateRight(this.dataList[this.currentItem].followers)
+        this.view.updateRight(this.dataList[this.currentItem].followers);
     }
 }
