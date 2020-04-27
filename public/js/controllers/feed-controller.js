@@ -98,7 +98,11 @@ export default class FeedController extends Controller {
         this.addEventHandler(document.querySelector('.feed__filters__exit-icon'), 'click',
             () => {
                 document.querySelector('.feed__filters').classList.remove('feed__filters_active');
-            })
+            });
+        this.addEventHandler(document.querySelector('.options-footer').firstElementChild, 'click',
+            () => {
+                document.querySelector('.feed__filters').classList.remove('feed__filters_active');
+            });
     }
 
     #setUpVoteButtons() {
@@ -107,8 +111,6 @@ export default class FeedController extends Controller {
             'click',
             this.#voteHandler);
     }
-
-
 
     /**
      *
