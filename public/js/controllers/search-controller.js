@@ -71,7 +71,6 @@ export default class SearchController extends Controller {
             this.removeErrorMessage(event);
             EventModel.getEvents({uid: this.uid, page: this.pageDownloaded, limit: 10, query: event.target.value}).then(
                 (events) => {
-                    console.log(events);
                     if (!events) {
                         this.view.renderNotFound();
                     } else if (Object.prototype.hasOwnProperty.call(events, 'message')) {
@@ -101,16 +100,12 @@ export default class SearchController extends Controller {
                     // TODO: Show registration modal window
                     return;
                 }
-                console.log(profile.uid,
-                    event.target.getAttribute('data-eid'),
-                    event.target.getAttribute('data-etype'));
                 EventModel.followEvent(
                     profile.uid,
                     event.target.getAttribute('data-eid'),
                     event.target.getAttribute('data-etype'))
                     .then(
                         (response) => {
-                            console.log(response);
                             changeActionText(event.target, 'green', 'Вы идёте');
                         },
                         (error) => {
