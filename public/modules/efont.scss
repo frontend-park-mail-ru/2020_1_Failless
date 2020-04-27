@@ -35,6 +35,14 @@ $eventum-font:  Montserrat, Helvetica Neue, Arial, sans-serif;
     &_g {
       color: #696969;
     }
+
+    &_green {
+      color: $color-green;
+    }
+
+    &_red {
+      color: $color-red;
+    }
   }
 
   &_bold {
