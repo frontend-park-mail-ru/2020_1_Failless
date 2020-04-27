@@ -136,7 +136,7 @@ export default class ChatView extends MyView {
     async showCenterError(error) {
         this.setDOMElements();
         this.#disableChatUI();
-        this.showServerError(this.chatBody, error);
+        this.showError(this.chatBody, error, 'warning');
     }
 
     /**
@@ -146,7 +146,7 @@ export default class ChatView extends MyView {
      */
     async showLeftError(error) {
         await this.#disableChatUI();
-        await this.showServerError(this.chatListBodyDiv, error);
+        await this.showError(this.leftColumn, error, 'warning', null);
     }
 
     /**

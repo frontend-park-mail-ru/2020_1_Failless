@@ -1,7 +1,7 @@
 'use strict';
 
 import Controller from 'Eventum/core/controller';
-import BigEventSearchView from 'Eventum/views/big-event-search-view';
+import SearchView from 'Eventum/views/search-view';
 import EventModel from 'Eventum/models/event-model';
 import UserModel from 'Eventum/models/user-model';
 import {changeActionText} from 'Blocks/big-event/big-event';
@@ -17,7 +17,7 @@ export default class SearchController extends Controller {
      */
     constructor(parent) {
         super(parent);
-        this.view = new BigEventSearchView(parent);
+        this.view = new SearchView(parent);
         this.pageDownloaded = 1;
         this.uid = null;
     }
@@ -27,40 +27,34 @@ export default class SearchController extends Controller {
      */
     action() {
         super.action();
+        this.view.render();
         UserModel.getProfile().then(
+            // User authorized
             (profile) => {
                 this.uid = profile.uid;
                 EventModel.getEvents({uid: profile.uid, page: 1, limit: 10}).then(
                     (events) => {
-                        console.log(events);
-                        this.view.render(events);
-                        this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
-                        this.addEventHandler(document.querySelector('.big-search__results'), 'click', this.#followEvent);
+                        this.view.renderResults(events);
                     },
-                    (onerror) => {
-                        this.view.render();
-                        this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
-                        this.addEventHandler(document.querySelector('.big-search__results'), 'click', this.#followEvent);
-                        console.error(onerror);
+                    (error) => {
+                        this.view.showSearchError(error);
+                        console.error(error);
                     });
             },
-            (error) => {
-                console.error(error);
+            // User is not authorized
+            () => {
                 EventModel.getEvents({page: 1, limit: 10}).then(
                     (events) => {
-                        console.log(events);
-                        this.view.render(events);
-                        this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
-                        this.addEventHandler(document.querySelector('.big-search__results'), 'click', this.#followEvent);
+                        this.view.renderResults(events);
                     },
-                    (onerror) => {
-                        this.view.render();
-                        this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
-                        this.addEventHandler(document.querySelector('.big-search__results'), 'click', this.#followEvent);
-                        console.error(onerror);
+                    (error) => {
+                        this.view.showSearchError(error);
+                        console.error(error);
                     });
             }
         );
+        this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
+        this.addEventHandler(document.querySelector('.big-search__results'), 'click', this.#followEvent);
     }
 
     /**
@@ -74,23 +68,22 @@ export default class SearchController extends Controller {
             if (msg) {
                 msg.remove();
             }
-            console.log(event.target.value);
-
             this.removeErrorMessage(event);
             EventModel.getEvents({uid: this.uid, page: this.pageDownloaded, limit: 10, query: event.target.value}).then(
                 (events) => {
+                    console.log(events);
                     if (!events) {
                         this.view.renderNotFound();
                     } else if (Object.prototype.hasOwnProperty.call(events, 'message')) {
                         this.view.addErrorMessage(document.querySelector('.big-search__icon'), [events.message]);
                     } else {
                         ++this.pageDownloaded;
-                        console.log(events);
                         this.view.renderResults(events);
                     }
                 },
-                (onerror) => {
-                    console.error(onerror);
+                (error) => {
+                    this.view.showSearchError(error);
+                    console.error(error);
                 });
         }
     };
