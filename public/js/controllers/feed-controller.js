@@ -53,7 +53,8 @@ export default class FeedController extends Controller {
         this.view.render(this.tagList);
         UserModel.getProfile().then((user) => {
             // Check if user has filled profile
-            this.userMessages = fullProfileCheck(user);
+            // this.userMessages = fullProfileCheck(user);
+            this.userMessages = [];
             this.#initFilterHandlers();
             this.uid = user.uid;
             this.defaultFeedRequest.uid = this.uid;

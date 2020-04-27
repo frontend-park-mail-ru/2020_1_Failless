@@ -125,7 +125,8 @@ export default class UserModel extends Model {
      * @return {Promise} promise to set new user data
      */
     static putImage(imageData) {
-        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/upload`, body: imageData}).then((response) => {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/upload`, body: imageData}).then(
+            (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
                 }
@@ -148,7 +149,8 @@ export default class UserModel extends Model {
                         resolve(this.profile);
                     });
                 }
-                return NetworkModule.fetchGet({path: '/profile/' + user.uid}).then((response) => {
+                return NetworkModule.fetchGet({path: '/profile/' + user.uid}).then(
+                    (response) => {
                         if (response.status > 499) {
                             throw new Error('Server error');
                         }

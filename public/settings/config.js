@@ -1,4 +1,4 @@
-const DEBUG = false;
+const DEBUG = true;
 export default {
     url: DEBUG ? 'http://localhost' : 'https://eventum.rowbot.dev',
     port: 3000,

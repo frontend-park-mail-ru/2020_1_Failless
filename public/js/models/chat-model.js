@@ -16,12 +16,12 @@ export default class ChatModel extends Model {
 
     /**
      *
-     * @param uid
+     * @param chatId
      * @return {Promise<WebSocket>} New socket
      * @reject {Promise<Error>} error
      */
-    static async openChat(uid) {
-        let socket = new WebSocket(`${settings.wsurl}:${settings.port}${settings.api}/chat/${uid}`);
+    static async openChat(chatId) {
+        let socket = new WebSocket(`${settings.wsurl}:${settings.port}${settings.api}/chat/${chatId}`);
         socket.onopen = () => {
             return Promise.resolve(socket);
         };
@@ -33,12 +33,12 @@ export default class ChatModel extends Model {
     /**
      *
      * @param id1 - this user's id
-     * @param id2 - match's id
+     * @param chatId - chat id
      * @param limit - how many messages to fetch
      * @return {Promise<Array<{uid: Number, body: String}>>} - messages
      */
-    static async getLastMessages(id1, id2, limit) {
-        return NetworkModule.fetchGet({path: `/user/chats/${id1}`, body: {id2: id2, limit: limit}}).then(
+    static async getLastMessages(id1, chatId, limit) {
+        return NetworkModule.fetchGet({path: `/user/chats/${id1}`, body: {chatId: chatId, limit: limit}}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');

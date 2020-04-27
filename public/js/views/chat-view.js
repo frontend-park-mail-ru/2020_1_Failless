@@ -167,19 +167,12 @@ export default class ChatView extends MyView {
             if (!chat.avatar) {
                 chat.avatar = images.get('user-default');
             }
-            if (!chat.last_message) {
-                chat.last_message = 'Отправьте первое сообщение!';
-                chat.unread = true;
-                chat.time = null;
+            if (!chat.last_msg) {
+                chat.last_msg = 'Отправьте первое сообщение!';
+                chat.unseen = true;
+                chat.last_date = null;
             }
-            chatBody.insertAdjacentHTML('beforeend', chatListItemTemplate({
-                avatar: chat.avatar,
-                name:   chat.name,
-                uid:    chat.uid,
-                time:   chat.time,
-                last_message:   chat.last_message,
-                unread: chat.unread,
-            }));
+            chatBody.insertAdjacentHTML('beforeend', chatListItemTemplate({...chat}));
         });
     }
 

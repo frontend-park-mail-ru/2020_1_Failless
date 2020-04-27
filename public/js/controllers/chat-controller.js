@@ -125,7 +125,7 @@ export default class ChatController extends Controller {
         }                                       // triggers this (i hope it's not a footgun)
         const chatListItem = event.target.closest('.chat-list-item');
         const previousChatListItem = this.view.leftColumn.querySelector('.chat-list-item_active');
-        if (previousChatListItem && chatListItem.getAttribute('data-uid') === previousChatListItem.getAttribute('data-uid')) {
+        if (previousChatListItem && chatListItem.getAttribute('data-cid') === previousChatListItem.getAttribute('data-cid')) {
             return;
         }
         if (previousChatListItem) {
@@ -134,7 +134,7 @@ export default class ChatController extends Controller {
         setChatListItemAsRead(chatListItem).then();
         toggleChatListItemActive(chatListItem).then();
         this.#handleChatOpening(
-            chatListItem.getAttribute('data-uid'),
+            chatListItem.getAttribute('data-cid'),
             chatListItem.querySelector('.chat-list-item__title').innerText);
     };
 
@@ -161,21 +161,21 @@ export default class ChatController extends Controller {
 
     /**
      * Open new WS chat on click on chat in the list
-     * @param {String} id2
+     * @param {String} chatId
      * @param {String} name
      */
-    #handleChatOpening = (id2, name) => {
+    #handleChatOpening = (chatId, name) => {
         // async Render
         // Open websocket connection
         // async Get latest messages
         this.view.renderChatLoading(name).then();
         toggleChatOnMobile.call(this.view.mainColumnDiv);
 
-        ChatModel.openChat(id2).then((socket) => {
+        ChatModel.openChat(chatId).then((socket) => {
             if (socket !== undefined) { // TODO: couldn't catch reject for some reason
                 this.socket = socket;
                 UserModel.getProfile().then((profile) => {
-                    ChatModel.getLastMessages(profile.uid, id2, 30).then(
+                    ChatModel.getLastMessages(profile.uid, chatId, 30).then(
                         (messages) => {
                             this.view.activateChatUI(name).then();
                             // Append necessary fields
