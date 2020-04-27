@@ -21,7 +21,7 @@ export default class NetworkModule {
         const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + settings.api + path, {
             method: 'GET',
-            mode: 'cors',
+            mode: 'no-cors',
             credentials: 'include',
             headers: {
                 'X-CSRF-Token': token
