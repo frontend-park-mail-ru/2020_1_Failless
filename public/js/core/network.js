@@ -24,7 +24,6 @@ export default class NetworkModule {
         api = api === null ? settings.api : api
         return fetch(settings.url + ':' + settings.port + api + path, {
             method: 'GET',
-            mode: 'no-cors',
             credentials: 'include',
             headers: {
                 'X-CSRF-Token': token
