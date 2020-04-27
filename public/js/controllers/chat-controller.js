@@ -32,7 +32,6 @@ export default class ChatController extends Controller {
                 }
                 UserModel.getChats({uid: profile.uid, limit: 10, page: 0}).then(
                     (chats) => {
-                        chats = null;
                         if (!chats || chats.length === 0) {
                             const errorArea = detectMobile() ? this.view.chatListBodyDiv : this.view.chatBodyDiv;
                             this.view.renderEmptyList(errorArea).then(() => {
