@@ -38,7 +38,7 @@ export default class ChatModel extends Model {
      * @return {Promise<Array<{uid: Number, body: String}>>} - messages
      */
     static async getLastMessages(id1, id2, limit) {
-        return NetworkModule.fetchGet({path: `/profile/${id1}/chat`, body: {id2: id2, limit: limit}}).then(
+        return NetworkModule.fetchGet({path: `/user/chats/${id1}`, body: {id2: id2, limit: limit}}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');

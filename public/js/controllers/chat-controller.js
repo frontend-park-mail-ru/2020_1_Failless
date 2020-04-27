@@ -30,7 +30,7 @@ export default class ChatController extends Controller {
                     console.log(profile);
                     return;
                 }
-                UserModel.getChats().then(
+                UserModel.getChats({uid: profile.uid, limit: 10, page: 0}).then(
                     (chats) => {
                         chats = null;
                         if (!chats || chats.length === 0) {

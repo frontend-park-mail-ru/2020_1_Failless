@@ -8,10 +8,12 @@ export default class NetworkModule {
 
     /**
      * @param {string} path Path to send the query to
+     * @param api
      * @return {Promise} Promise for the HTTP request
      */
     static fetchGet = ({
         path = '/',
+        api = null,
     } = {}) => {
         if (path.includes('undefined')) {
             return new Promise((resolve, reject) => {
@@ -19,7 +21,8 @@ export default class NetworkModule {
             });
         }
         const token = getCookie('csrf');
-        return fetch(settings.url + ':' + settings.port + settings.api + path, {
+        api = api === null ? settings.api : api
+        return fetch(settings.url + ':' + settings.port + api + path, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
@@ -32,11 +35,13 @@ export default class NetworkModule {
     /**
      * @param {string} path Path to send the query to
      * @param {Object} body Body of the query (will be serialized as json)
+     * @param {String} api
      * @return {Promise} Promise for the HTTP request
      */
     static fetchPost = ({
         path = '/',
         body = null,
+        api = null,
     } = {}) => {
         if (path.includes('undefined')) {
             return new Promise((resolve, reject) => {
@@ -44,7 +49,8 @@ export default class NetworkModule {
             });
         }
         const token = getCookie('csrf');
-        return fetch(settings.url + ':' + settings.port + settings.api + path, {
+        api = api === null ? settings.api : api
+        return fetch(settings.url + ':' + settings.port + api + path, {
             method: 'POST',
             mode: 'cors',
             credentials: 'include',
