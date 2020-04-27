@@ -65,19 +65,26 @@ export default class Controller {
      */
     #controlBtnPressed = (event) => {
         event.preventDefault();
-        if (event.target.tagName === 'A') {
-            let href = event.target.getAttribute('href');
-            if (href === '') {
-                href = '/';
-            }
-
-            if (href === '/logout') {
-                logoutRedirect(event);
-                return;
-            }
-
-            router.redirectForward(href);
+        let link = null;
+        if (event.target.tagName === 'DIV') {
+            link = event.target.querySelector('.header__item__link');
+        } else if (event.target.tagName === 'A') {
+            link = event.target;
+        } else {
+            return;
         }
+
+        let href = link.getAttribute('href');
+        if (href === '') {
+            href = '/';
+        }
+
+        if (href === '/logout') {
+            logoutRedirect(event);
+            return;
+        }
+
+        router.redirectForward(href);
     };
 
 
