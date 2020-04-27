@@ -24,10 +24,17 @@ export default class BigEventSearchView extends View {
      * @param {JSON} events
      */
     render(events) {
-        const search = {
-            events: events,
-        };
-        const template = bigSearchTemplate(search);
+        if (events) {
+            events.forEach((event) => {
+                if (Object.prototype.hasOwnProperty.call(event.Event, 'author')) {
+                    event.class = 'mid-event';
+                } else {
+                    event.class = 'big-event';
+                }
+            });
+        }
+
+        const template = bigSearchTemplate({events: events});
         this.parent.insertAdjacentHTML('beforeend', template);
         this.resultsArea = document.getElementsByClassName('big-search__grid')[0];
     }

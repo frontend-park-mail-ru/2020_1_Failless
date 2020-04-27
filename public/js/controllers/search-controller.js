@@ -3,6 +3,8 @@
 import Controller from 'Eventum/core/controller';
 import BigEventSearchView from 'Eventum/views/big-event-search-view';
 import EventModel from 'Eventum/models/event-model';
+import UserModel from 'Eventum/models/user-model';
+import {changeActionText} from 'Blocks/big-event/big-event';
 
 /**
  * @class SearchController
@@ -17,6 +19,7 @@ export default class SearchController extends Controller {
         super(parent);
         this.view = new BigEventSearchView(parent);
         this.pageDownloaded = 1;
+        this.uid = null;
     }
 
     /**
@@ -24,16 +27,40 @@ export default class SearchController extends Controller {
      */
     action() {
         super.action();
-        EventModel.getFeedEvents({page: 1, limit: 10, query: ''}).then(
-            (events) => {
-                this.view.render(events);
-                this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
+        UserModel.getProfile().then(
+            (profile) => {
+                this.uid = profile.uid;
+                EventModel.getEvents({uid: profile.uid, page: 1, limit: 10}).then(
+                    (events) => {
+                        console.log(events);
+                        this.view.render(events);
+                        this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
+                        this.addEventHandler(document.querySelector('.big-search__results'), 'click', this.#followEvent);
+                    },
+                    (onerror) => {
+                        this.view.render();
+                        this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
+                        this.addEventHandler(document.querySelector('.big-search__results'), 'click', this.#followEvent);
+                        console.error(onerror);
+                    });
             },
-            (onerror) => {
-                this.view.render();
-                this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
-                console.error(onerror);
-            });
+            (error) => {
+                console.error(error);
+                EventModel.getEvents({page: 1, limit: 10}).then(
+                    (events) => {
+                        console.log(events);
+                        this.view.render(events);
+                        this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
+                        this.addEventHandler(document.querySelector('.big-search__results'), 'click', this.#followEvent);
+                    },
+                    (onerror) => {
+                        this.view.render();
+                        this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
+                        this.addEventHandler(document.querySelector('.big-search__results'), 'click', this.#followEvent);
+                        console.error(onerror);
+                    });
+            }
+        );
     }
 
     /**
@@ -51,7 +78,7 @@ export default class SearchController extends Controller {
 
             this.removeErrorMessage(event);
 
-            EventModel.getEvents({page: this.pageDownloaded, limit: 10, query: event.target.value}).then(
+            EventModel.getEvents({uid: this.uid, page: this.pageDownloaded, limit: 10, query: event.target.value}).then(
                 (events) => {
                     if (!events) {
                         this.view.renderNotFound();
@@ -67,5 +94,42 @@ export default class SearchController extends Controller {
                     console.error(onerror);
                 });
         }
+    };
+
+    #followEvent = (event) => {
+        event.preventDefault();
+
+        if (!event.target.hasAttribute('data-eid') || !event.target.classList.contains('font__color_black')) {
+            return;
+        }
+
+        UserModel.getProfile().then(
+            (profile) => {
+                if (!profile) {
+                    // TODO: Show registration modal window
+                    return;
+                }
+                console.log(profile.uid,
+                    event.target.getAttribute('data-eid'),
+                    event.target.getAttribute('data-etype'));
+                EventModel.followEvent(
+                    profile.uid,
+                    event.target.getAttribute('data-eid'),
+                    event.target.getAttribute('data-etype'))
+                    .then(
+                        (response) => {
+                            console.log(response);
+                            changeActionText(event.target, 'green', 'Вы идёте');
+                        },
+                        (error) => {
+                            changeActionText(event.target, 'red', 'Ошибка');
+                            console.log(error);
+                        }
+                    );
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
     };
 }

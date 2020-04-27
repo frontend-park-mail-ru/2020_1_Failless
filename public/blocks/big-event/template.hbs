@@ -17,13 +17,13 @@
             {{#if middle}}
                 <li class="big-event__subscribe big-event__subscribe_middle">
                     <div class="big-event__link">
-                        <div class="font font__size_small-x font_underline font_pointer font__color_black">Откликнуться</div>
+                        <div data-eid="{{ eid }}" data-etype="{{ class }}" class="font font__size_small-x font_underline font_pointer font__color_{{#if followed}}green">Вы идёте{{else}}black">Откликнуться{{/if}}</div>
                     </div>
                 </li>
             {{else}}
                 <li class="big-event__subscribe big-event__subscribe_big">
                     <div class="big-event__link">
-                        <div class="font font__size_small-x font_underline font_pointer font__color_black">Иду</div>
+                        <div data-eid="{{ eid }}" data-etype="{{ class }}" class="font font__size_small-x font_underline font_pointer font__color_{{#if followed}}green">Вы идёте{{else}}black">Пойти{{/if}}</div>
                     </div>
                 </li>
             {{/if}}

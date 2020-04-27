@@ -10,8 +10,10 @@
     </header>
     <div class="big-search__results">
         <div class="big-search__grid">
-            {{#each events as |big-event|}}
-               {{> $Blocks/big-event/template }}
+            {{#each events}}
+               {{#with this.Event as |big-event|}}
+                   {{> $Blocks/big-event/template followed=../followed class=../class}}
+               {{/with}}
             {{/each}}
         </div>
     </div>

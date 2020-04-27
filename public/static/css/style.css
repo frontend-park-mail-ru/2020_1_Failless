@@ -2137,6 +2137,12 @@
 .font__color_g {
   color: #696969;
 }
+.font__color_green {
+  color: #10e718;
+}
+.font__color_red {
+  color: #F64F59;
+}
 .font_bold {
   font-weight: bold;
 }
@@ -2690,6 +2696,12 @@ input[type=range]::-ms-fill-upper {
 }
 .font__color_g {
   color: #696969;
+}
+.font__color_green {
+  color: #10e718;
+}
+.font__color_red {
+  color: #F64F59;
 }
 .font_bold {
   font-weight: bold;
