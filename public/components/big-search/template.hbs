@@ -9,12 +9,6 @@
         </div>
     </header>
     <div class="big-search__results">
-        <div class="big-search__grid">
-            {{#each events}}
-               {{#with this.Event as |big-event|}}
-                   {{> $Blocks/big-event/template followed=../followed class=../class}}
-               {{/with}}
-            {{/each}}
-        </div>
+        {{> $Blocks/loading/template}}
     </div>
 </main>
