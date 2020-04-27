@@ -9,10 +9,6 @@
         </div>
     </header>
     <div class="big-search__results">
-        <div class="big-search__grid">
-            {{#each events as |big-event|}}
-               {{> $Blocks/big-event/template }}
-            {{/each}}
-        </div>
+        {{> $Blocks/loading/template}}
     </div>
 </main>

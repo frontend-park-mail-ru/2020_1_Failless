@@ -42,15 +42,18 @@ export default class View {
     /**
      * Show Server error inside an element
      * !use with caution!
-     * @param {HTMLElement} element
+     * @param {Element} element
      * @param {String} message
+     * @param {String} icon - name of icon as in static-data.js
+     * @param {String} button - title for button
      * @return {Promise<void>}
      */
-    async showServerError(element, message) {
+    async showError(element, message, icon, button) {
         makeEmpty(element);
         element.insertAdjacentHTML('beforeend', errorTemplate({
-            icon:   icons.get('warning'),
+            icon:   icons.get(icon),
             message: message,
+            button: button,
         }));
     }
 

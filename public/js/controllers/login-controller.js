@@ -104,7 +104,6 @@ export default class LoginController extends Controller {
         const body = this.#getFromLogin();
 
         if (!body) {
-            console.log('do nothing');
             return;
         }
 
@@ -114,7 +113,6 @@ export default class LoginController extends Controller {
             if (Object.prototype.hasOwnProperty.call(user, 'name')) {
                 router.redirectForward('/my/profile');
             } else {
-                console.log(user);
                 this.view.addErrorMessage(this.form, [user.message]);
             }
         });
