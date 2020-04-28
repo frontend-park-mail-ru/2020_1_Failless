@@ -9,23 +9,15 @@ export default class ChatModel extends Model {
     /**
      * Create ChatModel object
      */
-    constructor() {
+    constructor(uid) {
         super();
-        this.userID = null;
-    }
-
-    /**
-     *
-     * @param uid
-     * @param chatId
-     * @return {Promise<WebSocket>} New socket
-     * @reject {Promise<Error>} error
-     */
-    static async openChat(uid, chatId) {
+        this.socket = null;
         let socket = new WebSocket(`${settings.wsurl}:3003/ws/connect`);
         socket.onopen = () => {
             console.log(socket);
-            // TODO: send uid and chatId
+            this.socket = socket;
+
+            socket.send(JSON.stringify({uid: uid}));
             return Promise.resolve(socket);
         };
         socket.onerror = () => {

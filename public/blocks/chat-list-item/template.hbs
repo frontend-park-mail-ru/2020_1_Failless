@@ -5,7 +5,7 @@
     </div>
     <div class="chat-list-item__body">
         <header class="chat-list-item__header">
-            <div class="chat-list-item__title">{{ title }}</div>
+            <div class="chat-list-item__title">{{#if name}}{{ name }}{{ else }}{{ title }}{{/if}}</div>
             <div class="chat-list-item__time {{#if new}}chat-list-item__time_unread{{/if}}">{{ last_date }}</div>
         </header>
         <p class="chat-list-item__message {{#if new}}chat-list-item__message_unread{{/if}}">{{ last_msg }}</p>
