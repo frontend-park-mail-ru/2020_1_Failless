@@ -21,8 +21,9 @@ export default class ChatModel extends Model {
      * @reject {Promise<Error>} error
      */
     static async openChat(chatId) {
-        let socket = new WebSocket(`${settings.wsurl}:${settings.port}${settings.api}/chat/${chatId}`);
+        let socket = new WebSocket(`${settings.wsurl}:3003/ws/connect`);
         socket.onopen = () => {
+            console.log(socket);
             return Promise.resolve(socket);
         };
         socket.onerror = () => {
