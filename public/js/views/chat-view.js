@@ -167,7 +167,7 @@ export default class ChatView extends MyView {
             if (!chat.avatar) {
                 chat.avatar = images.get('user-default');
             }
-            chat.unseen = !!chat.unseen;
+            chat.new = !!chat.unseen;
             if (!chat.last_msg) {
                 chat.last_msg = 'Отправьте первое сообщение!';
                 chat.unseen = true;
