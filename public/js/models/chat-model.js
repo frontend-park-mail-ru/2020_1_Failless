@@ -17,7 +17,7 @@ export default class ChatModel extends Model {
             console.log(socket);
             this.socket = socket;
 
-            socket.send(JSON.stringify({uid: uid}));
+            socket.send(JSON.stringify({uid: Number(uid)}));
             return Promise.resolve(socket);
         };
         socket.onerror = () => {
