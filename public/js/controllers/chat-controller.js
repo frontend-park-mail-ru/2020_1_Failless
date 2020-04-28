@@ -182,7 +182,8 @@ export default class ChatController extends Controller {
             return;
         }
         // Send message via WebSocket
-        (async () => {this.ChatManager.socket.send({uid: this.uid, message});})();
+        console.log("SEND");
+        (async () => {this.ChatManager.socket.send(JSON.stringify({uid: this.uid, text: message}));})();
         this.view.renderMessage({
             id: this.uid,
             body: message,
