@@ -16,14 +16,16 @@ export default class ChatModel extends Model {
 
     /**
      *
+     * @param uid
      * @param chatId
      * @return {Promise<WebSocket>} New socket
      * @reject {Promise<Error>} error
      */
-    static async openChat(chatId) {
+    static async openChat(uid, chatId) {
         let socket = new WebSocket(`${settings.wsurl}:3003/ws/connect`);
         socket.onopen = () => {
             console.log(socket);
+            // TODO: send uid and chatId
             return Promise.resolve(socket);
         };
         socket.onerror = () => {

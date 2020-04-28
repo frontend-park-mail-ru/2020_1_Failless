@@ -171,24 +171,27 @@ export default class ChatController extends Controller {
         this.view.renderChatLoading(name).then();
         toggleChatOnMobile.call(this.view.mainColumnDiv);
 
-        ChatModel.openChat(chatId).then((socket) => {
+        if (!this.uid) {
+            this.view.showCenterError('No profile').then();
+            return;
+        }
+        ChatModel.openChat(this.uid, chatId).then((socket) => {
             if (socket !== undefined) { // TODO: couldn't catch reject for some reason
                 this.socket = socket;
-                UserModel.getProfile().then((profile) => {
-                    ChatModel.getLastMessages(profile.uid, chatId, 30).then(
-                        (messages) => {
-                            this.view.activateChatUI(name).then();
-                            // Append necessary fields
-                            messages.forEach((message) => {
-                                message.own = message.uid === this.uid;
-                                message.new = false;
-                            });
-                            this.view.renderLastMessages(messages);
-                        },
-                        (error) => {
-                            this.view.showCenterError(error).then();
+                // todo: useless all down below
+                ChatModel.getLastMessages(this.uid, chatId, 30).then(
+                    (messages) => {
+                        this.view.activateChatUI(name).then();
+                        // Append necessary fields
+                        messages.forEach((message) => {
+                            message.own = message.uid === this.uid;
+                            message.new = false;
                         });
-                });
+                        this.view.renderLastMessages(messages);
+                    },
+                    (error) => {
+                        this.view.showCenterError(error).then();
+                    });
                 this.#chat();
             } else {
                 this.view.showCenterError('Failed to establish a connection').then();
