@@ -1,12 +1,12 @@
 <div class="chat-list-item" data-cid="{{ chat_id }}">
     <div class="chat-list-item__avatar">
         <img src="{{ avatar }}" alt="kek"/>
-        <div class="chat-list-item__alert {{#if unread}}chat-list-item__alert_unread{{/if}}"></div>
+        <div class="chat-list-item__alert {{#if unseen}}chat-list-item__alert_unread{{/if}}"></div>
     </div>
     <div class="chat-list-item__body">
         <header class="chat-list-item__header">
-            <div class="chat-list-item__title">{{ last_date }}</div>
-            <div class="chat-list-item__time {{#if unseen}}chat-list-item__time_unread{{/if}}">{{ time }}</div>
+            <div class="chat-list-item__title">{{ title }}</div>
+            <div class="chat-list-item__time {{#if unseen}}chat-list-item__time_unread{{/if}}">{{ last_date }}</div>
         </header>
         <p class="chat-list-item__message {{#if unseen}}chat-list-item__message_unread{{/if}}">{{ last_msg }}</p>
     </div>

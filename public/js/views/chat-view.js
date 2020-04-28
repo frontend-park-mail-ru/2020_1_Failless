@@ -136,7 +136,7 @@ export default class ChatView extends MyView {
     async showCenterError(error) {
         this.setDOMElements();
         this.#disableChatUI();
-        this.showError(this.chatBody, error, 'warning');
+        this.showError(this.chatBody, error, 'warning', null);
     }
 
     /**
@@ -167,6 +167,7 @@ export default class ChatView extends MyView {
             if (!chat.avatar) {
                 chat.avatar = images.get('user-default');
             }
+            chat.unseen = !!chat.unseen;
             if (!chat.last_msg) {
                 chat.last_msg = 'Отправьте первое сообщение!';
                 chat.unseen = true;
