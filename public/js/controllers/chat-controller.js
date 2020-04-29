@@ -204,41 +204,30 @@ export default class ChatController extends Controller {
             }
         });
         console.log(chat_id);
-        (async () => {this.ChatModel.socket.send(JSON.stringify({uid: this.uid, message: message, chat_id: chat_id}));})();
-        this.view.renderMessage({
-            id: this.uid,
-            body: message,
-            own: true,
-            new: true,
-        });
-        // Сейчас 29.05.2020 5:00 мск 
-        // Возвращается 3 блока для всех чатов (включая блок с одним сообщением... - хз что такое)
         this.ChatModel.socket.onmessage = event => {
-            this.ChatModel.chats.forEach((val1) => {
-                if (val1.active === true) {
-                    console.log(JSON.parse(event.data))
-                    if (Array.isArray(JSON.parse(event.data))) {
-                        JSON.parse(event.data).forEach(val2 => {
-                            if (val2.chat_id === val1.chat_id) {
-                                this.view.renderMessage({
-                                    id: this.uid,
-                                    body: val2.message,
-                                    own: true,
-                                    new: true,
-                                });
-                            }
-                        });
-                    } else {
-                        this.view.renderMessage({
-                            id: this.uid,
-                            body: JSON.parse(event.data).message,
-                            own: true,
-                            new: true,
-                        });
-                    }
+            console.log(event.data)
+            this.ChatModel.chats.forEach((val) => {
+                if (val.active === true) {
+                    console.log("JSON", JSON.parse(event.data))
+                    
+                    this.view.renderMessage({
+                        id: this.uid,
+                        body: JSON.parse(event.data).message,
+                        own: true,
+                        new: true,
+                    });
                 }
             });
         };
+        
+        (async () => {this.ChatModel.socket.send(JSON.stringify({uid: this.uid, message: message, chat_id: chat_id}));})();
+        // this.view.renderMessage({
+        //     id: this.uid,
+        //     body: message,
+        //     own: true,
+        //     new: true,
+        // });
+
         input.value = '';
         resizeTextArea.call(input);
     };
