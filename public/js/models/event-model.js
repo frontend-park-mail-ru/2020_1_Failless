@@ -1,6 +1,7 @@
 'use strict';
 
 import NetworkModule from 'Eventum/core/network';
+import settings from 'Settings/config.js';
 import Model from 'Eventum/core/model';
 import settings from 'Settings/config';
 
@@ -70,6 +71,7 @@ export default class EventModel extends Model {
     static userVote(vote, isLike) {
         let url = '/users/';
         url += isLike ? 'like' : 'dislike';
+<<<<<<< Updated upstream
         return NetworkModule.fetchPut({path: url, body: vote, api: settings.api,}).then(
             (response) => {
                 if (response.status > 499) {
@@ -80,6 +82,21 @@ export default class EventModel extends Model {
             (error) => {
                 throw new Error(error);
             });
+=======
+        return NetworkModule.fetchPut({
+            api: settings.api,
+            path: url,
+            body: vote,
+        }).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
+            throw new Error(error);
+        });
+>>>>>>> Stashed changes
     }
 
     /**

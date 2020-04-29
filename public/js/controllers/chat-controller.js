@@ -17,7 +17,8 @@ export default class ChatController extends Controller {
         super(parent);
         this.view = new ChatView(parent);
         this.uid = null;
-        this.ChatManager = null;
+        this.chat_id = null;
+        this.ChatModel = null;
     }
 
     action() {
@@ -44,8 +45,8 @@ export default class ChatController extends Controller {
             (profile) => {
                 if (profile) {
                     this.uid = profile.uid;
-                    this.ChatManager = new ChatModel(profile.uid);
-                    UserModel.getChats({uid: this.uid, limit: 10, page: 0}).then(
+                    this.ChatModel = new ChatModel(profile.uid);
+                    ChatModel.getChats({uid: this.uid, limit: 10, page: 0}).then(
                         (chats) => {
                             console.log(chats);
                             if (!chats || chats.length === 0) {
@@ -59,6 +60,11 @@ export default class ChatController extends Controller {
                                 });
                                 return;
                             }
+                            this.ChatModel.chats = chats;
+                            // после загрузки все чаты неактивны
+                            this.ChatModel.chats.forEach((val) => {
+                                Object.assign(val, {active: false});
+                            });
                             this.view.renderChatList(chats).then();
                         },
                         (error) => {
@@ -135,6 +141,12 @@ export default class ChatController extends Controller {
         this.#handleChatOpening(
             chatListItem.getAttribute('data-cid'),
             chatListItem.querySelector('.chat-list-item__title').innerText);
+        // Но один из чатов становится активным
+        this.ChatModel.chats.forEach((val) => {
+            if (val.chat_id === Number(chatListItem.getAttribute('data-cid'))){
+                val.active = true;
+            }
+        })
     };
 
     /**
@@ -182,14 +194,40 @@ export default class ChatController extends Controller {
             return;
         }
         // Send message via WebSocket
-        console.log("SEND");
-        (async () => {this.ChatManager.socket.send(JSON.stringify({uid: this.uid, text: message}));})();
+        console.log(message);
+        let chat_id = -1;
+        // Ищем активный чат
+        this.ChatModel.chats.forEach((val) => {
+            if (val.active === true) {
+                chat_id = val.chat_id;
+            }
+        });
+        console.log(chat_id);
+        (async () => {this.ChatModel.socket.send(JSON.stringify({uid: this.uid, message: message, chat_id: chat_id}));})();
         this.view.renderMessage({
             id: this.uid,
             body: message,
             own: true,
             new: true,
         });
+        // Сейчас 29.05.2020 5:00 мск 
+        // Возвращается 3 блока для всех чатов (включая блок с одним сообщением... - хз что такое)
+        this.ChatModel.socket.onmessage = event => {
+            this.ChatModel.chats.forEach((val1) => {
+                if (val1.active === true) {
+                    JSON.parse(event.data).forEach(val2 => {
+                        if (val2.chat_id === val1.chat_id) {
+                            this.view.renderMessage({
+                                id: this.uid,
+                                body: val2.message,
+                                own: true,
+                                new: true,
+                            });
+                        }
+                    });
+                }
+            });
+        };
         input.value = '';
         resizeTextArea.call(input);
     };

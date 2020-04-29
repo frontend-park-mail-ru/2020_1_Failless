@@ -174,6 +174,7 @@ export default class UserModel extends Model {
     }
 
     /**
+<<<<<<< Updated upstream
      * Fetch list of user's chats
      * @return {Promise<unknown>}
      */
@@ -200,6 +201,8 @@ export default class UserModel extends Model {
     }
 
     /**
+=======
+>>>>>>> Stashed changes
      * Send query to add tag to profile's tags
      * @param tags - tags to add
      */

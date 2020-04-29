@@ -272,6 +272,7 @@ export default class ChatView extends MyView {
      */
     renderMessage(message) {
         const chatBody = this.chatBodyDiv;
+        console.log(message)
         chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}));
         scrollChatDown(chatBody);
         showMessage(chatBody.lastElementChild);
