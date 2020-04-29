@@ -174,35 +174,6 @@ export default class UserModel extends Model {
     }
 
     /**
-<<<<<<< Updated upstream
-     * Fetch list of user's chats
-     * @return {Promise<unknown>}
-     */
-    static getChats(body = null) {
-        return this.getLogin().then(
-            (user) => {
-                return NetworkModule.fetchPost({path: '/list', api: settings.chat, body: body}).then(
-                    (response) => {
-                        if (response.status > 499) {
-                            throw new Error('Server error');
-                        }
-                        return response.json().then((chats) => {
-                            return chats;
-                        });
-                    },
-                    (error) => {
-                        throw new Error(error);
-                    });
-            },
-            (error) => {
-                throw new Error(error);
-            }
-        );
-    }
-
-    /**
-=======
->>>>>>> Stashed changes
      * Send query to add tag to profile's tags
      * @param tags - tags to add
      */
