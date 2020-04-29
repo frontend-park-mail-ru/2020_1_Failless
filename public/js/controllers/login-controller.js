@@ -21,6 +21,7 @@ export default class LoginController extends Controller {
 
         this.form = null;
         this.inputs = null;
+        this.pending = false;
     }
 
     action() {
@@ -101,15 +102,24 @@ export default class LoginController extends Controller {
     #loginSubmitHandler = (event) => {
         event.preventDefault();
 
+        if (this.pending) {
+            return;
+        }
+
         const body = this.#getFromLogin();
 
         if (!body) {
             return;
         }
 
+        this.pending = true;
+        this.view.showGlobalLoading();
+
         this.removeErrorMessage(event);
 
         UserModel.postLogin(body).then((user) => {
+            this.pending = false;
+            this.view.removeGlobalLoading();
             if (Object.prototype.hasOwnProperty.call(user, 'name')) {
                 router.redirectForward('/my/profile');
             } else {

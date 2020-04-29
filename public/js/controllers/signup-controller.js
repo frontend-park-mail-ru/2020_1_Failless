@@ -84,7 +84,6 @@ export default class SignUpController extends Controller {
         event.preventDefault();
 
         if (this.pending) {
-            console.log('wait');
             return;
         }
 
@@ -95,11 +94,13 @@ export default class SignUpController extends Controller {
         }
         this.removeErrorMessage(event);
 
-        this.pendingTrue();
+        this.pending = true;
+        this.view.showGlobalLoading();
 
         UserModel.postSignUp(body).then(
             (response) => {
-                this.pendingFalse();
+                this.pending = false;
+                this.view.removeGlobalLoading();
 
                 if (Object.prototype.hasOwnProperty.call(response, 'name')) {
                     router.redirectForward('/login');
@@ -109,7 +110,8 @@ export default class SignUpController extends Controller {
             },
             (reason) => {
                 console.log(reason);
-                this.pendingFalse();
+                this.pending = false;
+                this.view.removeGlobalLoading();
             });
     };
 
@@ -173,14 +175,4 @@ export default class SignUpController extends Controller {
             errorElement.remove();
         }
     };
-
-    async pendingTrue() {
-        this.pending = true;
-        await this.view.showGlobalLoading();
-    }
-
-    async pendingFalse() {
-        this.pending = false;
-        await this.view.removeGlobalLoading();
-    }
 }
