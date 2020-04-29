@@ -48,7 +48,6 @@ export default class ChatController extends Controller {
                     this.ChatModel = new ChatModel(profile.uid, this.receiveMessage);
                     ChatModel.getChats({uid: this.uid, limit: 10, page: 0}).then(
                         (chats) => {
-                            console.log(chats);
                             if (!chats || chats.length === 0) {
                                 const errorArea = detectMobile() ? this.view.chatListBodyDiv : this.view.chatBodyDiv;
                                 this.view.renderEmptyList(errorArea).then(() => {
@@ -71,6 +70,7 @@ export default class ChatController extends Controller {
                             this.view.showLeftError(error).then();
                             this.view.showCenterError(error).then();
                             console.error(error);
+                            this.ChatModel.socket.close();
                         });
                 } else {
                     this.view.showCenterError('No profile?!').then();
@@ -197,13 +197,11 @@ export default class ChatController extends Controller {
      * @param {HTMLTextAreaElement} input
      */
     #sendMessage = (input) => {
-        console.log(input.value);
         let message = input.value;
         if (!message) {
             return;
         }
         // Send message via WebSocket
-        console.log(message);
         let chat_id = -1;
         // Ищем активный чат
         this.ChatModel.chats.forEach((val) => {
@@ -211,7 +209,6 @@ export default class ChatController extends Controller {
                 chat_id = val.chat_id;
             }
         });
-        console.log(chat_id);
 
         (async () => {this.ChatModel.socket.send(JSON.stringify({uid: this.uid, message: message, chat_id: chat_id}));})();
         input.value = '';
@@ -223,7 +220,6 @@ export default class ChatController extends Controller {
         let activeChat = this.ChatModel.chats.find((chat) => {
             return chat.active;
         });
-
 
         // Check where to insert the message
         let message = JSON.parse(event.data);
