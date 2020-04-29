@@ -66,6 +66,7 @@ export default class ChatController extends Controller {
                                 Object.assign(val, {active: false});
                             });
                             this.view.renderChatList(chats).then();
+                            //===========MOVE OUT IT FROM HERE=========
                             this.ChatModel.socket.onmessage = event => {
                                 console.log(event.data)
                                 this.ChatModel.chats.forEach((val) => {
@@ -80,6 +81,7 @@ export default class ChatController extends Controller {
                                     }
                                 });
                             };
+                            //===========MOVE OUT IT FROM HERE=========
                         },
                         (error) => {
                             this.view.showLeftError(error).then();
@@ -155,12 +157,16 @@ export default class ChatController extends Controller {
         this.#handleChatOpening(
             chatListItem.getAttribute('data-cid'),
             chatListItem.querySelector('.chat-list-item__title').innerText);
-        // Но один из чатов становится активным
+        // Но один из чатов становится активным, а другой неактивыным
         this.ChatModel.chats.forEach((val) => {
             if (val.chat_id === Number(chatListItem.getAttribute('data-cid'))){
                 val.active = true;
+                return;
             }
-        })
+            if (val.active) {
+                val.active = false;
+            }
+        });
     };
 
     /**
