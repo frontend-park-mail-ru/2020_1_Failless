@@ -45,7 +45,7 @@ export default class ChatController extends Controller {
             (profile) => {
                 if (profile) {
                     this.uid = profile.uid;
-                    this.ChatModel = new ChatModel(profile.uid);
+                    this.ChatModel = new ChatModel(profile.uid, this.receiveMessage);
                     ChatModel.getChats({uid: this.uid, limit: 10, page: 0}).then(
                         (chats) => {
                             console.log(chats);
@@ -66,22 +66,6 @@ export default class ChatController extends Controller {
                                 Object.assign(val, {active: false});
                             });
                             this.view.renderChatList(chats).then();
-                            //===========MOVE OUT IT FROM HERE=========
-                            // this.ChatModel.socket.onmessage = event => {
-                            //     console.log(event.data)
-                            //     this.ChatModel.chats.forEach((val) => {
-                            //         if (val.active === true) {
-                            //             console.log("JSON", JSON.parse(event.data))
-                            //             this.view.renderMessage({
-                            //                 body: JSON.parse(event.data).message,
-                            //                 own: this.uid === JSON.parse(event.data).uid,
-                            //                 new: true,
-                            //             });
-                            //         }
-                            //     });
-                            // };
-                            //===========MOVE OUT IT FROM HERE=========
-                            this.ChatModel.socket.onmessage = this.receiveMessage;
                         },
                         (error) => {
                             this.view.showLeftError(error).then();
