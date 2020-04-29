@@ -3,7 +3,6 @@
 import NetworkModule from 'Eventum/core/network';
 import settings from 'Settings/config.js';
 import Model from 'Eventum/core/model';
-import settings from 'Settings/config';
 
 /**
  * @class EventModel
