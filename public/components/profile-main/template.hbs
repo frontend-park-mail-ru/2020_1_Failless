@@ -46,13 +46,13 @@
                 <h3>Ваши подписки</h3>
             </div>
         </div>
-        <div class="profile-main__group">
+        <div class="profile-main__group profile-main__subscriptions">
             {{#if profile.events.others}}
                 {{#each profile.events.others as |event|}}
                     {{> $Blocks/event/template }}
                 {{/each}}
             {{else}}
-                <span class="font font_bold font__size_small font__color_lg">Подписок нет</span>
+                {{> $Blocks/loading/template}}
             {{/if}}
         </div>
     </div>

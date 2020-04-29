@@ -54,6 +54,15 @@ export default class ProfileController extends Controller {
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
+                    EventModel.getUserSubscriptions(profile.uid).then(
+                        (subscriptions) => {
+                            console.log(subscriptions);
+                            this.view.renderSubscriptions(subscriptions).then();
+                        },
+                        (error) => {
+                            this.view.renderSubscriptionsError().then();
+                        }
+                    );
                     (async () => {this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');})();
                     this.user = profile;
 

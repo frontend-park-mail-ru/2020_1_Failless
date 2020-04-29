@@ -1,5 +1,6 @@
 import NetworkModule from 'Eventum/core/network';
 import Model from 'Eventum/core/model';
+import settings from 'Settings/config';
 
 /**
  * @class EventModel
@@ -71,6 +72,7 @@ export default class EventModel extends Model {
         return NetworkModule.fetchPut({
             path: url,
             body: vote,
+            api: settings.api,
         }).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
@@ -152,6 +154,20 @@ export default class EventModel extends Model {
                 return response.json();
             },
             (error) => {
+                throw new Error(error);
+            });
+    }
+
+    static getUserSubscriptions(uid) {
+        return NetworkModule.fetchGet({path: `/profile/${uid}/subscriptions`, api: settings.api}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                console.error(error);
                 throw new Error(error);
             });
     }

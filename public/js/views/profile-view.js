@@ -1,10 +1,12 @@
 'use strict';
 
-import MyView from 'Eventum/views/my-view.js';
-import settings from 'Settings/config.js';
+import MyView from 'Eventum/views/my-view';
+import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
 import eventCardTemplate from 'Blocks/event/template.hbs';
+import {makeEmpty} from 'Eventum/utils/basic';
+
 /**
  * @class create ProfileView class
  */
@@ -17,6 +19,12 @@ export default class ProfileView extends MyView {
     constructor(parent) {
         super(parent);
         this.parent = parent;
+        this.subscriptions = null;
+    }
+
+    get subscriptionsDiv() {
+        this.setDOMProfileElements();
+        return this.subscriptionsArea;
     }
 
     /**
@@ -72,6 +80,32 @@ export default class ProfileView extends MyView {
                 profile: profile,
             })
         );
+    }
+
+    setDOMProfileElements() {
+        while (!this.subscriptionsArea) {
+            this.subscriptionsArea = document.querySelector('.profile-main__subscriptions');
+        }
+    }
+
+    /**
+     * This function depends on non-empty chats
+     * so check it somewhere outside
+     * @param subscriptions[{event}]
+     * @return {Promise<void>}
+     */
+    async renderSubscriptions(subscriptions) {
+        const subsArea = this.subscriptionsDiv;
+        makeEmpty(subsArea);
+
+        subscriptions.forEach((sub) => {
+            subsArea.insertAdjacentHTML('beforeend', eventCardTemplate(sub));
+        });
+    }
+
+    // TODO: couldn't inherit from View for some reason
+    async renderSubscriptionsError() {
+        this.showError(this.subscriptionsDiv, 'Error in subscriptions', 'warning', null);
     }
 
     drawEventCard(eventInfo) {

@@ -149,7 +149,7 @@ export default class UserModel extends Model {
                         resolve(this.profile);
                     });
                 }
-                return NetworkModule.fetchGet({path: '/profile/' + user.uid}).then(
+                return NetworkModule.fetchGet({path: '/profile/' + user.uid, api: settings.api}).then(
                     (response) => {
                         if (response.status > 499) {
                             throw new Error('Server error');
