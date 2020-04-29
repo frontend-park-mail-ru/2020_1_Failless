@@ -172,8 +172,9 @@ export default class ChatController extends Controller {
                 messages.forEach((message) => {
                     message.own = message.uid === this.uid;
                     message.new = false;
+                    message.body = message.message;
                 });
-                this.view.renderLastMessages(messages);
+                this.view.renderLastMessages(messages.reverse());
             },
             (error) => {
                 this.view.showCenterError(error).then();
