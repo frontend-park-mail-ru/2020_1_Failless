@@ -16,8 +16,7 @@ export default class ChatModel extends Model {
 
         this.chats = [];
         this.socket = null;
-
-        let socket = new WebSocket(`${settings.wsurl}:3003/ws/connect`);
+        let socket = new WebSocket(`${settings.wsurl}:3000/ws/connect`);
         socket.onopen = () => {
             console.log(socket);
             this.socket = socket;
