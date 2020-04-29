@@ -17,6 +17,7 @@ export default class View {
      */
     constructor(parent) {
         this.parent = parent;
+        this.globalLoader = null;
     }
 
     /**
@@ -65,5 +66,16 @@ export default class View {
     async showLoading(element) {
         makeEmpty(element);
         element.insertAdjacentHTML('beforeend', loadingTemplate());
+    }
+
+    async showGlobalLoading() {
+        document.body.insertAdjacentHTML('beforeend', loadingTemplate({global: 'global'}));
+        this.globalLoader = document.body.querySelector('.spinner_global');
+        setTimeout(()=>{this.globalLoader.classList.remove('spinner_appear');},200);
+    }
+
+    async removeGlobalLoading() {
+        this.globalLoader.remove();
+        this.globalLoader = null;
     }
 }

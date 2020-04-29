@@ -6,16 +6,35 @@
 
 .spinner {
   @extend %center;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
 
   &__icon {
     width: 60px;
     height: 60px;
     margin: 60px;
     animation: rotate 1.4s infinite ease-in-out, background 1.4s infinite ease-in-out alternate;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
   }
 
   &__message {
     color: $re--color-middle-gray;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+  }
+
+  &_global {
+    position: fixed;
+    top: 0;
+    background: radial-gradient(white, transparent);
+  }
+
+  &_appear {
+    opacity: 0;
+    * {
+      opacity: 0;
+    }
   }
 }
 

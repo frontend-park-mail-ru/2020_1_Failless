@@ -5,6 +5,7 @@ import SignUpView from 'Eventum/views/signup-view.js';
 import UserModel from 'Eventum/models/user-model.js';
 import ValidationModule from 'Eventum/utils/validation.js';
 import router from 'Eventum/core/router.js';
+import {makeEmpty} from 'Eventum/utils/basic';
 
 export default class SignUpController extends Controller {
 
@@ -16,6 +17,7 @@ export default class SignUpController extends Controller {
         this.view = new SignUpView(parent);
         this.form = null;
         this.inputs = null;
+        this.pending = false;
     }
 
     /**
@@ -35,14 +37,12 @@ export default class SignUpController extends Controller {
         if (auth) {
             this.form = document.getElementById('form');
             this.addEventHandler(this.form, 'submit', this.#signUpSubmitHandler);
-            // this.form.addEventListener('submit', this.#signUpSubmitHandler.bind(this));
 
+            // TODO: Event delegation
             this.inputs = this.form.getElementsByClassName('input input__auth');
             for (let input of this.inputs) {
                 this.addEventHandler(input, 'focus', this.removeErrorMessage.bind(this));
                 this.addEventHandler(input, 'blur', this.#checkInputHandler);
-                // input.addEventListener('focus', this.removeErrorMessage.bind(this));
-                // input.addEventListener('blur', this.#checkInputHandler.bind(this));
             }
         }
     }
@@ -83,21 +83,34 @@ export default class SignUpController extends Controller {
     #signUpSubmitHandler = (event) => {
         event.preventDefault();
 
+        if (this.pending) {
+            console.log('wait');
+            return;
+        }
+
         const body = this.#getFromSignUp();
         if (!body) {
             console.log('do nothing');
             return;
         }
-
         this.removeErrorMessage(event);
 
-        UserModel.postSignUp(body).then((response) => {
-            if (Object.prototype.hasOwnProperty.call(response, 'name')) {
-                router.redirectForward('/login');
-            } else {
-                this.view.addErrorMessage(this.form, [response.message]);
-            }
-        }).catch(reason => console.log(reason));
+        this.pendingTrue();
+
+        UserModel.postSignUp(body).then(
+            (response) => {
+                this.pendingFalse();
+
+                if (Object.prototype.hasOwnProperty.call(response, 'name')) {
+                    router.redirectForward('/login');
+                } else {
+                    this.view.addErrorMessage(this.form, [response.message]);
+                }
+            },
+            (reason) => {
+                console.log(reason);
+                this.pendingFalse();
+            });
     };
 
     /**
@@ -160,4 +173,14 @@ export default class SignUpController extends Controller {
             errorElement.remove();
         }
     };
+
+    async pendingTrue() {
+        this.pending = true;
+        await this.view.showGlobalLoading();
+    }
+
+    async pendingFalse() {
+        this.pending = false;
+        await this.view.removeGlobalLoading();
+    }
 }
