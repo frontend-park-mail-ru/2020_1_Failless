@@ -106,7 +106,10 @@ export default class ChatController extends Controller {
         const textInput = this.view.chatFooter.querySelector('textarea');
         this.addEventHandler(textInput, 'input', resizeTextArea);
         this.addEventHandler(textInput, 'keydown', (event) => {
-            if (event.keyCode === 13) {this.#sendMessage(event);}
+            if (event.code === 'Enter') {
+                event.preventDefault();
+                this.#sendMessage(textInput);
+            }
         });
         // On mobile: close chat + deactivate chatListItem
         this.addEventHandler(
@@ -194,6 +197,7 @@ export default class ChatController extends Controller {
      * @param {HTMLTextAreaElement} input
      */
     #sendMessage = (input) => {
+        console.log(input.value);
         let message = input.value;
         if (!message) {
             return;
