@@ -215,16 +215,26 @@ export default class ChatController extends Controller {
         this.ChatModel.socket.onmessage = event => {
             this.ChatModel.chats.forEach((val1) => {
                 if (val1.active === true) {
-                    JSON.parse(event.data).forEach(val2 => {
-                        if (val2.chat_id === val1.chat_id) {
-                            this.view.renderMessage({
-                                id: this.uid,
-                                body: val2.message,
-                                own: true,
-                                new: true,
-                            });
-                        }
-                    });
+                    console.log(JSON.parse(event.data))
+                    if (Array.isArray(JSON.parse(event.data))) {
+                        JSON.parse(event.data).forEach(val2 => {
+                            if (val2.chat_id === val1.chat_id) {
+                                this.view.renderMessage({
+                                    id: this.uid,
+                                    body: val2.message,
+                                    own: true,
+                                    new: true,
+                                });
+                            }
+                        });
+                    } else {
+                        this.view.renderMessage({
+                            id: this.uid,
+                            body: JSON.parse(event.data).message,
+                            own: true,
+                            new: true,
+                        });
+                    }
                 }
             });
         };
