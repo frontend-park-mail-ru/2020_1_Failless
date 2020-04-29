@@ -103,7 +103,10 @@ export default class ProfileView extends MyView {
         });
     }
 
-    // TODO: couldn't inherit from View for some reason
+    /**
+     * Show error in subscription div
+     * @return {Promise<void>}
+     */
     async renderSubscriptionsError() {
         this.showError(this.subscriptionsDiv, 'Error in subscriptions', 'warning', null);
     }

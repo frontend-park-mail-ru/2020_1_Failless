@@ -1,16 +1,16 @@
 'use strict';
 
-import ProfileView from 'Eventum/views/profile-view.js';
-import UserModel from 'Eventum/models/user-model.js';
-import ProfileEditView from 'Eventum/views/profile-edit-view.js';
-import AddEventView from 'Eventum/views/add-event-view.js';
-import ModalView from 'Eventum/views/modal-view.js';
-import {staticTags} from 'Eventum/utils/static-data.js';
-import {highlightTag} from 'Eventum/utils/tag-logic.js';
-import {logoutRedirect} from 'Eventum/utils/user-utils.js';
-import EventModel from 'Eventum/models/event-model.js';
+import ProfileView from 'Eventum/views/profile-view';
+import UserModel from 'Eventum/models/user-model';
+import ProfileEditView from 'Eventum/views/profile-edit-view';
+import AddEventView from 'Eventum/views/add-event-view';
+import ModalView from 'Eventum/views/modal-view';
+import {staticTags} from 'Eventum/utils/static-data';
+import {highlightTag} from 'Eventum/utils/tag-logic';
+import {logoutRedirect} from 'Eventum/utils/user-utils';
+import EventModel from 'Eventum/models/event-model';
 import editTemplate from 'Blocks/edit-field/template.hbs';
-import {makeEmpty} from 'Eventum/utils/basic.js';
+import {makeEmpty} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
 import Controller from 'Eventum/core/controller';
 

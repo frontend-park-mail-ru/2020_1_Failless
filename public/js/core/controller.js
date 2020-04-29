@@ -1,9 +1,9 @@
 'use strict';
 
-import createHeader from 'Eventum/core/header.js';
-import UserModel from 'Eventum/models/user-model.js';
-import {logoutRedirect} from 'Eventum/utils/user-utils.js';
-import router from 'Eventum/core/router.js';
+import createHeader from 'Eventum/core/header';
+import UserModel from 'Eventum/models/user-model';
+import {logoutRedirect} from 'Eventum/utils/user-utils';
+import router from 'Eventum/core/router';
 
 /**
  * @class Basic controller class

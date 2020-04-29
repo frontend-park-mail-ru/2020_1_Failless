@@ -3,8 +3,8 @@
 import validationErrorTemplate from 'Blocks/validation-error/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import loadingTemplate from 'Blocks/loading/template.hbs';
-import {makeEmpty} from 'Eventum/utils/basic.js';
-import {icons} from 'Eventum/utils/static-data.js';
+import {makeEmpty} from 'Eventum/utils/basic';
+import {icons} from 'Eventum/utils/static-data';
 
 /**
  * Base view class

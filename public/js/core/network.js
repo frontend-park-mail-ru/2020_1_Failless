@@ -21,7 +21,7 @@ export default class NetworkModule {
             });
         }
         const token = getCookie('csrf');
-        api = api === null ? settings.api : api
+        api = api === null ? settings.api : api;
         return fetch(settings.url + ':' + settings.port + api + path, {
             method: 'GET',
             credentials: 'include',
@@ -48,7 +48,7 @@ export default class NetworkModule {
             });
         }
         const token = getCookie('csrf');
-        api = api === null ? settings.api : api
+        api = api === null ? settings.api : api;
         return fetch(settings.url + ':' + settings.port + api + path, {
             method: 'POST',
             mode: 'cors',
