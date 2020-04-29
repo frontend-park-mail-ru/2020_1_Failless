@@ -11,6 +11,7 @@ import {images} from 'Eventum/utils/static-data';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {scrollChatDown} from 'Blocks/chat/chat';
 import {showMessage} from 'Blocks/chat-message/chat-message';
+import {setChatListItemAsUnread} from 'Blocks/chat-list-item/chat-list-item';
 
 /**
  * @class create ChatView class
@@ -228,28 +229,6 @@ export default class ChatView extends MyView {
         if (chatBody.firstElementChild.className === 'spinner' || chatBody.firstElementChild.className === 'error') {
             makeEmpty(chatBody);
         }
-        if (!messages) {
-            messages = [
-                {
-                    id: 1,
-                    body: 'MORNING FUCKERS!',
-                    own: false,
-                    new: false,
-                },
-                {
-                    id: 2,
-                    body: 'GOOD MORNING TO YA LADIES!',
-                    own: true,
-                    new: false,
-                },
-                {
-                    id: 1,
-                    body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est…',
-                    own: false,
-                    new: false,
-                },
-            ];
-        }
         messages.forEach((message) => {
             chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}))
         });
@@ -258,17 +237,35 @@ export default class ChatView extends MyView {
 
     /**
      * Render one particular message
-     * @param {{
-     *      id: String,
+     * @param message {{
      *      body: String,
      *      own: boolean,
-     *      new: boolean}} message
+     *      new: boolean}}
      */
     renderMessage(message) {
         const chatBody = this.chatBodyDiv;
-        console.log(message)
         chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}));
         scrollChatDown(chatBody);
         showMessage(chatBody.lastElementChild);
+    }
+
+    /**
+     * Title speaks for itself
+     * @param message{{
+     *      chat_id: String
+     *      message: String
+     *      created: String
+     * }}
+     */
+    updateLastMessage(message) {
+        // Find chat list item with chat_id
+        let chatToUpdate = this.chatListBodyDiv.querySelector(`.chat-list-item[data-cid="${message.chat_id}"]`);
+
+        // Set it as unread
+        setChatListItemAsUnread(chatToUpdate).then();
+
+        // Update message its message
+        chatToUpdate.querySelector('.chat-list-item__time').innerText = message.created;
+        chatToUpdate.querySelector('.chat-list-item__message').innerText = message.message;
     }
 }
