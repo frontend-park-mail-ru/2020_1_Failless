@@ -7,14 +7,14 @@ import settings from 'Settings/config';
  * @class ChatModel
  */
 export default class ChatModel extends Model {
+
     /**
      * Create ChatModel object
      */
-    constructor(uid) {
+    constructor(uid, onMessage) {
         super();
 
         this.chats = [];
-
         this.socket = null;
         let socket = new WebSocket(`${settings.wsurl}:3000/ws/connect`);
         socket.onopen = () => {
@@ -22,10 +22,10 @@ export default class ChatModel extends Model {
             this.socket = socket;
 
             socket.send(JSON.stringify({uid: Number(uid)}));
-            return Promise.resolve(socket);
+            this.socket.onmessage = onMessage;
         };
-        socket.onerror = () => {
-            return null;    // TODO: can't catch reject for some reason
+        socket.onerror = (error) => {
+            console.log(error);
         };
     }
 
