@@ -253,12 +253,6 @@ export default class ChatView extends MyView {
         messages.forEach((message) => {
             chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}))
         });
-        messages.forEach((message) => {
-            chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}))
-        });
-        messages.forEach((message) => {
-            chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}))
-        });
         scrollChatDown(chatBody);
     }
 
