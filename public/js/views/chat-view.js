@@ -257,7 +257,7 @@ export default class ChatView extends MyView {
      *      created: String
      * }}
      */
-    updateLastMessage(message) {
+    async updateLastMessage(message) {
         // Find chat list item with chat_id
         let chatToUpdate = this.chatListBodyDiv.querySelector(`.chat-list-item[data-cid="${message.chat_id}"]`);
 

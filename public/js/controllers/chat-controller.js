@@ -67,21 +67,21 @@ export default class ChatController extends Controller {
                             });
                             this.view.renderChatList(chats).then();
                             //===========MOVE OUT IT FROM HERE=========
-                            this.ChatModel.socket.onmessage = event => {
-                                console.log(event.data)
-                                this.ChatModel.chats.forEach((val) => {
-                                    if (val.active === true) {
-                                        console.log("JSON", JSON.parse(event.data))
-                                        this.view.renderMessage({
-                                            id: this.uid,
-                                            body: JSON.parse(event.data).message,
-                                            own: this.uid === JSON.parse(event.data).uid,
-                                            new: true,
-                                        });
-                                    }
-                                });
-                            };
+                            // this.ChatModel.socket.onmessage = event => {
+                            //     console.log(event.data)
+                            //     this.ChatModel.chats.forEach((val) => {
+                            //         if (val.active === true) {
+                            //             console.log("JSON", JSON.parse(event.data))
+                            //             this.view.renderMessage({
+                            //                 body: JSON.parse(event.data).message,
+                            //                 own: this.uid === JSON.parse(event.data).uid,
+                            //                 new: true,
+                            //             });
+                            //         }
+                            //     });
+                            // };
                             //===========MOVE OUT IT FROM HERE=========
+                            this.ChatModel.socket.onmessage = this.receiveMessage;
                         },
                         (error) => {
                             this.view.showLeftError(error).then();
@@ -226,14 +226,27 @@ export default class ChatController extends Controller {
         console.log(chat_id);
 
         (async () => {this.ChatModel.socket.send(JSON.stringify({uid: this.uid, message: message, chat_id: chat_id}));})();
-        // this.view.renderMessage({
-        //     id: this.uid,
-        //     body: message,
-        //     own: true,
-        //     new: true,
-        // });
-
         input.value = '';
         resizeTextArea.call(input);
     };
+
+    receiveMessage = (event) => {
+        // Find active chat
+        let activeChat = this.ChatModel.chats.find((chat) => {
+            return chat.active;
+        });
+
+
+        // Check where to insert the message
+        let message = JSON.parse(event.data);
+        if (activeChat && message.chat_id === activeChat.chat_id) {
+            this.view.renderMessage({
+                body: message.message,
+                own: this.uid === message.uid,
+                new: true,
+            });
+        } else {
+            this.view.updateLastMessage(message).then();
+        }
+    }
 }
