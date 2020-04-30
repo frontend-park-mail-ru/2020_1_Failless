@@ -29,6 +29,14 @@ export default class ChatModel extends Model {
         };
     }
 
+    get WSSocket() {
+        while (this.socket === null) {
+            setTimeout(()=>{}, 500);
+        }
+        return this.socket;
+    }
+
+
     /**
      *
      * @param id1 - this user's id

@@ -59,6 +59,7 @@ export default class ChatController extends Controller {
                                 });
                                 return;
                             }
+                            this.ChatModel.WSSocket;
                             this.ChatModel.chats = chats;
                             // после загрузки все чаты неактивны
                             this.ChatModel.chats.forEach((val) => {
