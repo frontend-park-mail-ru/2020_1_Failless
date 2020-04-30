@@ -48,6 +48,7 @@ export default class ChatController extends Controller {
                     this.ChatModel = new ChatModel();
                     ChatModel.getChats({uid: this.uid, limit: 10, page: 0}).then(
                         (chats) => {
+                            console.log(chats);
                             if (!chats || chats.length === 0) {
                                 const errorArea = detectMobile() ? this.view.chatListBodyDiv : this.view.chatBodyDiv;
                                 this.view.renderEmptyList(errorArea).then(() => {
@@ -61,6 +62,7 @@ export default class ChatController extends Controller {
                             }
                             this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then(
                                 (response) => {
+                                    console.log(response);
                                     this.ChatModel.chats = chats;
                                     // после загрузки все чаты неактивны
                                     this.ChatModel.chats.forEach((val) => {
