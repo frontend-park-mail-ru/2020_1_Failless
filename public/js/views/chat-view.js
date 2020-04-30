@@ -226,7 +226,7 @@ export default class ChatView extends MyView {
     renderLastMessages(messages) {
         (async () => {this.#enableChatUI();})();
         const chatBody = this.chatBodyDiv;
-        if (chatBody.firstElementChild.className === 'spinner' || chatBody.firstElementChild.className === 'error') {
+        if (chatBody.firstElementChild.className.includes('spinner') || chatBody.firstElementChild.className.includes('error')) {
             makeEmpty(chatBody);
         }
         messages.forEach((message) => {
