@@ -54,10 +54,32 @@ export default class ProfileController extends Controller {
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
+                    EventModel.getUserEvents(profile.uid).then(
+                        (events) => {
+                            console.log(events);
+                            this.view.renderEvents(events);
+                        },
+                        (error) => {
+                            this.view.renderEventsError();
+                        }
+                    );
                     EventModel.getUserSubscriptions(profile.uid).then(
                         (subscriptions) => {
                             console.log(subscriptions);
-                            this.view.renderSubscriptions(subscriptions).then();
+                            if (subscriptions) {
+                                this.view.renderSubscriptions(subscriptions).then();
+                            } else {
+                                this.view.renderEmptySubscriptions().then(() => {
+                                    this.addEventHandler(
+                                        this.view.subscriptions.querySelector('.error__button'),
+                                        'click',
+                                        (event) => {
+                                            event.preventDefault();
+                                            Router.redirectForward('/search');
+                                        });
+                                    }
+                                );
+                            }
                         },
                         (error) => {
                             this.view.renderSubscriptionsError().then();

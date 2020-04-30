@@ -110,3 +110,9 @@
     }
   }
 }
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .my {
+    flex-flow: column;
+  }
+}

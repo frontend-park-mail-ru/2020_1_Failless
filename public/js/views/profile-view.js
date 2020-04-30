@@ -5,6 +5,7 @@ import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
 import eventCardTemplate from 'Blocks/event/template.hbs';
+import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 
 /**
@@ -20,11 +21,17 @@ export default class ProfileView extends MyView {
         super(parent);
         this.parent = parent;
         this.subscriptions = null;
+        this.personalEvents = null;
     }
 
     get subscriptionsDiv() {
         this.setDOMProfileElements();
-        return this.subscriptionsArea;
+        return this.subscriptions;
+    }
+
+    get personalEventsDiv() {
+        this.setDOMProfileElements();
+        return this.personalEvents;
     }
 
     /**
@@ -83,9 +90,27 @@ export default class ProfileView extends MyView {
     }
 
     setDOMProfileElements() {
-        while (!this.subscriptionsArea) {
-            this.subscriptionsArea = document.querySelector('.profile-main__subscriptions');
+        while (!this.subscriptions) {
+            this.subscriptions = document.querySelector('.profile-main__subscriptions');
         }
+        while (!this.personalEvents) {
+            this.personalEvents = document.querySelector('.profile-main__personal-events');
+        }
+    }
+
+    async renderEvents(events) {
+        this.setDOMProfileElements();
+        if (!events) {
+            this.personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
+        } else {
+            events.forEach((event) => {
+                this.personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(event));
+            });
+        }
+    }
+
+    async renderEventsError() {
+        this.showError(this.subscriptionsDiv, 'Error in subscriptions', 'warning', null);
     }
 
     /**
@@ -97,10 +122,22 @@ export default class ProfileView extends MyView {
     async renderSubscriptions(subscriptions) {
         const subsArea = this.subscriptionsDiv;
         makeEmpty(subsArea);
-
         subscriptions.forEach((sub) => {
             subsArea.insertAdjacentHTML('beforeend', eventCardTemplate(sub));
         });
+    }
+
+    /**
+     * Render motivational message to search for events
+     * @return {Promise<void>}
+     */
+    async renderEmptySubscriptions() {
+        const subsArea = this.subscriptionsDiv;
+        makeEmpty(subsArea);
+        subsArea.insertAdjacentHTML('afterbegin', errorTemplate({
+            message: 'Вы ещё никуда не идёте',
+            button: 'Найти эвент',
+        }));
     }
 
     /**

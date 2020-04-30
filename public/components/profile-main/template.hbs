@@ -32,7 +32,7 @@
                 <a href="/add-event" id="add-event-link">Добавить</a>
             </div>
         </div>
-        <div class="profile-main__group">
+        <div class="profile-main__group profile-main__personal-events">
             {{#if profile.events}}
                 {{#each profile.events as |event|}}
                     {{> $Blocks/event/template }}

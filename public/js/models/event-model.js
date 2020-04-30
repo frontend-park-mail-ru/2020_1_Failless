@@ -139,13 +139,12 @@ export default class EventModel extends Model {
             });
     }
 
-    static getUserEvents(eid) {
-        if (!eid) {
-            return new Promise(((resolve, reject) => {
-                reject(new Error('Invalid event id'));
-            }));
+    static getUserEvents(uid) {
+        return Promise.resolve(null);
+        if (!uid) {
+            throw new Error('Invalid profile id');
         }
-        return NetworkModule.fetchGet({path: `/event/${eid}/follow`}).then(
+        return NetworkModule.fetchGet({path: `/event/${id}/follow`}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
