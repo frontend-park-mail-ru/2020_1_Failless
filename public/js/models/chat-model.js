@@ -15,18 +15,28 @@ export default class ChatModel extends Model {
         super();
 
         this.chats = [];
+        this.connected = null;
         this.socket = null;
         let socket = new WebSocket(`${settings.wsurl}:3000/ws/connect`);
         socket.onopen = () => {
             console.log(socket);
             this.socket = socket;
+            this.connected = true;
 
             socket.send(JSON.stringify({uid: Number(uid)}));
             this.socket.onmessage = onMessage;
         };
         socket.onerror = (error) => {
+            this.connected = false;
             console.log(error);
         };
+    }
+
+    async connectedOrElse() {
+        while (this.connected === null) {
+            setTimeout(()=>{}, 300);
+        }
+        return this.connected;
     }
 
     /**
