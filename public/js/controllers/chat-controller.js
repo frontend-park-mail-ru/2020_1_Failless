@@ -45,7 +45,7 @@ export default class ChatController extends Controller {
             (profile) => {
                 if (profile) {
                     this.uid = profile.uid;
-                    this.ChatModel = new ChatModel(profile.uid, this.receiveMessage);
+                    this.ChatModel = new ChatModel();
                     ChatModel.getChats({uid: this.uid, limit: 10, page: 0}).then(
                         (chats) => {
                             if (!chats || chats.length === 0) {
@@ -59,23 +59,19 @@ export default class ChatController extends Controller {
                                 });
                                 return;
                             }
-                            (async () => {
-                                this.ChatModel.connectedOrElse().then((connected)=>{
-                                    if (connected) {
-                                        console.log(chats);
-                                        this.ChatModel.chats = chats;
-                                        // после загрузки все чаты неактивны
-                                        this.ChatModel.chats.forEach((val) => {
-                                            Object.assign(val, {active: false});
-                                        });
-                                        this.view.renderChatList(chats).then();
-                                    } else {
-                                        this.view.renderEmptyList(this.view.chatBodyDiv);
-                                    }
-                                });
-
-
-                            })();
+                            this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then(
+                                (response) => {
+                                    this.ChatModel.chats = chats;
+                                    // после загрузки все чаты неактивны
+                                    this.ChatModel.chats.forEach((val) => {
+                                        Object.assign(val, {active: false});
+                                    });
+                                    this.view.renderChatList(chats).then();
+                                },
+                                (error) => {
+                                    this.view.showLeftError(error);
+                                }
+                            );
                         },
                         (error) => {
                             this.view.showLeftError(error).then();

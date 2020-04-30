@@ -11,33 +11,28 @@ export default class ChatModel extends Model {
     /**
      * Create ChatModel object
      */
-    constructor(uid, onMessage) {
+    constructor() {
         super();
 
         this.chats = [];
-        this.connected = null;
         this.socket = null;
+
+    }
+
+    async establishConnection(uid, onMessage) {
         let socket = new WebSocket(`${settings.wsurl}:3000/ws/connect`);
         socket.onopen = () => {
             console.log(socket);
             this.socket = socket;
-            this.connected = true;
 
             socket.send(JSON.stringify({uid: Number(uid)}));
             this.socket.onmessage = onMessage;
+            return socket;
         };
         socket.onerror = (error) => {
-            this.connected = false;
             console.log(error);
+            return null;
         };
-    }
-
-    async connectedOrElse() {
-        while (this.connected === null) {
-            await setTimeout(()=>{}, 500);
-            console.log(this.connected);
-        }
-        return this.connected;
     }
 
     /**
