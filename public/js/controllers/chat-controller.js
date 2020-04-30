@@ -45,7 +45,7 @@ export default class ChatController extends Controller {
             (profile) => {
                 if (profile) {
                     this.uid = profile.uid;
-                    this.ChatModel = new ChatModel();
+                    this.ChatModel = new ChatModel(profile.uid, this.receiveMessage);
                     ChatModel.getChats({uid: this.uid, limit: 10, page: 0}).then(
                         (chats) => {
                             if (!chats || chats.length === 0) {
@@ -59,19 +59,18 @@ export default class ChatController extends Controller {
                                 });
                                 return;
                             }
-                            this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then(
-                                (response) => {
+                            (async () => {
+                                this.ChatModel.waitForOpenConnection().then(() => {
                                     this.ChatModel.chats = chats;
                                     // после загрузки все чаты неактивны
                                     this.ChatModel.chats.forEach((val) => {
                                         Object.assign(val, {active: false});
                                     });
                                     this.view.renderChatList(chats).then();
-                                },
-                                (error) => {
-                                    this.view.showLeftError(error);
-                                }
-                            );
+                                }).catch(() => {
+                                    this.view.renderEmptyList(this.view.chatBodyDiv);
+                                })
+                            })();
                         },
                         (error) => {
                             this.view.showLeftError(error).then();
