@@ -59,13 +59,18 @@ export default class ChatController extends Controller {
                                 });
                                 return;
                             }
-                            this.ChatModel.WSSocket;
-                            this.ChatModel.chats = chats;
-                            // после загрузки все чаты неактивны
-                            this.ChatModel.chats.forEach((val) => {
-                                Object.assign(val, {active: false});
-                            });
-                            this.view.renderChatList(chats).then();
+                            (async () => {
+                                while (!this.ChatModel.socket) {
+                                    console.log();
+                                }
+                                this.ChatModel.chats = chats;
+                                // после загрузки все чаты неактивны
+                                this.ChatModel.chats.forEach((val) => {
+                                    Object.assign(val, {active: false});
+                                });
+                                this.view.renderChatList(chats).then();
+
+                            })();
                         },
                         (error) => {
                             this.view.showLeftError(error).then();
