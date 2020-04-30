@@ -58,22 +58,21 @@ export default class ChatController extends Controller {
                                         () => {Router.redirectForward('/feed');}
                                     );
                                 });
-                                return;
+                            } else if (Object.prototype.hasOwnProperty.call(chats, 'message')) {
+                                this.view.showLeftError(chats.message);
+                            } else {
+                                this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then(
+                                    (response) => {
+                                        console.log(response);
+                                        this.ChatModel.chats = chats;
+                                        // после загрузки все чаты неактивны
+                                        this.ChatModel.chats.forEach((val) => {
+                                            Object.assign(val, {active: false});
+                                        });
+                                        this.view.renderChatList(chats).then();
+                                    }
+                                );
                             }
-                            this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then(
-                                (response) => {
-                                    console.log(response);
-                                    this.ChatModel.chats = chats;
-                                    // после загрузки все чаты неактивны
-                                    this.ChatModel.chats.forEach((val) => {
-                                        Object.assign(val, {active: false});
-                                    });
-                                    this.view.renderChatList(chats).then();
-                                },
-                                (error) => {
-                                    this.view.showLeftError(error);
-                                }
-                            );
                         },
                         (error) => {
                             this.view.showLeftError(error).then();
