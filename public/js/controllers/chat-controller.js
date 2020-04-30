@@ -62,6 +62,7 @@ export default class ChatController extends Controller {
                             (async () => {
                                 this.ChatModel.connectedOrElse().then((connected)=>{
                                     if (connected) {
+                                        console.log(chats);
                                         this.ChatModel.chats = chats;
                                         // после загрузки все чаты неактивны
                                         this.ChatModel.chats.forEach((val) => {

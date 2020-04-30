@@ -34,7 +34,8 @@ export default class ChatModel extends Model {
 
     async connectedOrElse() {
         while (this.connected === null) {
-            setTimeout(()=>{}, 300);
+            await setTimeout(()=>{}, 500);
+            console.log(this.connected);
         }
         return this.connected;
     }
