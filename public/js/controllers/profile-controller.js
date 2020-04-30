@@ -121,7 +121,7 @@ export default class ProfileController extends Controller {
         event.preventDefault();
         console.log(event.target);
         this.image = event.target.result;
-        const photoColumn = document.getElementsByClassName('photo-columns')[0];
+        const photoColumn = document.querySelector('.photo-columns');
         const newImage = document.createElement('IMG');
         newImage.src = event.target.result;
         newImage.className = 'photo';
@@ -212,8 +212,8 @@ export default class ProfileController extends Controller {
         document.getElementsByClassName('drawButtonIdentifier')[0].remove();
         UserModel.putImage(userProfile)
             .then(response => {
-                document.getElementsByClassName('photo')[0].src = this.image;
-            }).catch(reason => console.log('ERROR'));
+                document.querySelector('.photo').src = this.image;
+            }).catch(reason => console.error(reason));
     };
 
     /**
