@@ -174,7 +174,7 @@ export default class ChatView extends MyView {
                 chat.unseen = true;
                 chat.last_date = '';
             } else {
-                chat.last_msg = chat.last_msg.substring(6);
+                chat.last_msg = chat.last_msg.substring(5);
             }
             chat.last_date = '';
             chatBody.insertAdjacentHTML('beforeend', chatListItemTemplate({...chat}));
