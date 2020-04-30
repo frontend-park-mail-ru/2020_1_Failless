@@ -192,7 +192,7 @@ export default class Controller {
         const currentScroll = window.pageYOffset;
 
         // Reached top
-        if (currentScroll === 0) {
+        if (currentScroll <= 0) {
             this.header.classList.remove(this.scrollUp);
             return;
         }
