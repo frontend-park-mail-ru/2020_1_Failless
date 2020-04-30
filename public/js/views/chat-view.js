@@ -172,8 +172,11 @@ export default class ChatView extends MyView {
             if (!chat.last_msg) {
                 chat.last_msg = 'Отправьте первое сообщение!';
                 chat.unseen = true;
-                chat.last_date = null;
+                chat.last_date = '';
+            } else {
+                chat.last_msg = chat.last_msg.substring(6);
             }
+            chat.last_date = '';
             chatBody.insertAdjacentHTML('beforeend', chatListItemTemplate({...chat}));
         });
     }
