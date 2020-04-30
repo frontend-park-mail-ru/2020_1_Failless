@@ -66,16 +66,16 @@ export default class ProfileController extends Controller {
                     (async () => {this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');})();
                     this.user = profile;
 
-                    const photoInput = document.getElementById('photoUpload');
+                    const photoInput = document.querySelector('#photoUpload');
                     this.addEventHandler(photoInput, 'change', this.#handleFile);
-                    const metaInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
+                    const metaInput = document.querySelector('.re_btn.re_btn__filled');
                     this.addEventHandler(metaInput, 'click', this.#handleInfo);
                     this.addEventHandler(document.querySelector('.tags-redirect'), 'click', this.#showModalTags);
                     // TODO: i dunno how to get last item to remove kek in the future
-                    const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
+                    const settings = document.querySelector('.re_btn.re_btn__outline.kek');
                     this.addEventHandler(settings, 'click', this.#profileSettings);
                     this.addEventHandler(document.querySelector('.profile-left__tags'), 'click', this.#removeTag);
-                    this.addEventHandler(document.getElementsByClassName('re_btn re_btn__outline logout')[0], 'click', logoutRedirect);
+                    this.addEventHandler(document.querySelector('.re_btn.re_btn__outline.logout'), 'click', logoutRedirect);
 
                     this.addEventHandler(document.querySelector('#add-event-btn'), 'click', this.#createEventPopup.bind(this));
                     this.addEventHandler(document.querySelector('#add-event-link'), 'click', this.#createEventPopup.bind(this));
@@ -340,9 +340,9 @@ export default class ProfileController extends Controller {
         event.preventDefault();
         this.editView = new ProfileEditView(this.parent);
         this.editView.render(this.user);
-        const closeBtn = document.getElementsByClassName('profile-edit__icon')[0];
+        const closeBtn = document.querySelector('.profile-edit__icon');
         this.addEventHandler(closeBtn, 'click', this.#removeProfileSettings);
-        const table = document.getElementsByClassName('profile-edit__table')[0];
+        const table = document.querySelector('.profile-edit__table');
         this.addEventHandler(table, 'click', this.#drawUnfoldedLine);
     };
 
@@ -352,7 +352,7 @@ export default class ProfileController extends Controller {
      * @param {Event} event
      */
     #removeProfileSettings = (event) => {
-        const popup = document.getElementsByClassName('profile-edit')[0];
+        const popup = document.querySelector('.profile-edit');
         popup.parentNode.removeChild(popup);
         document.removeEventListener('click', this.#removeProfileSettings);
     };
@@ -401,9 +401,11 @@ export default class ProfileController extends Controller {
         event.preventDefault();
         this.addEventView = new AddEventView(this.parent, this.localTags);
         this.addEventView.render();
-        const closeBtn = document.getElementsByClassName('profile-edit__icon')[0];
+        const actionButtons = document.querySelector('.edit-field__buttons');
+        this.addEventHandler(actionButtons.lastElementChild, 'click', this.#removeProfileSettings);
+        const closeBtn = document.querySelector('.profile-edit__icon');
         this.addEventHandler(closeBtn, 'click', this.#removeProfileSettings);
-        document.querySelector('.btn.btn_square.btn_size_middle.btn_color_dark-blue').addEventListener('click', (event) => {
+        this.addEventHandler(actionButtons.firstElementChild, 'click', (event) => {
             event.preventDefault();
             const form = document.querySelector('.profile-edit__form');
             const fields = form.querySelectorAll('.edit-field__input');
@@ -418,7 +420,6 @@ export default class ProfileController extends Controller {
             };
 
             EventModel.createEvent(body).then((event) => {
-                console.log(event);
                 this.#removeProfileSettings(null);
                 this.view.drawEventCard(event);
                 // TODO: draw help window 'OK'
@@ -426,6 +427,5 @@ export default class ProfileController extends Controller {
                 console.log(onerror);
             });
         });
-
     }
 }
