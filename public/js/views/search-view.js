@@ -29,11 +29,16 @@ export default class SearchView extends View {
         return this.resultsArea;
     }
 
+    set cleanAreaDiv(val) {
+        this.resultsArea = val;
+    }
+
     /**
      * Render template
      */
     render() {
         this.parent.insertAdjacentHTML('beforeend', searchTemplate());
+        this.resultsArea = null;
         this.#setDOMElements();
     }
 
