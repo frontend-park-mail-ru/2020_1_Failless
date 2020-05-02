@@ -1,6 +1,6 @@
 'use strict';
 
-import UserModel from 'Eventum/models/user-model.js';
+import UserModel from 'Eventum/models/user-model';
 
 /**
  * @class create Router class

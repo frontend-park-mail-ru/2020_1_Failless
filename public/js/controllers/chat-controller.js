@@ -17,44 +17,80 @@ export default class ChatController extends Controller {
         super(parent);
         this.view = new ChatView(parent);
         this.uid = null;
-        this.socket = null;
+        this.chat_id = null;
+        this.ChatModel = null;
+    }
+
+    destructor() {
+        this.view.destructor();
+        super.destructor();
     }
 
     action() {
         super.action();
         this.view.render();
-        UserModel.getProfile().then(
-            (profile) => {
-                if (!profile) {
-                    console.error('Server error');
-                    console.log(profile);
+        // TODO: redirect error here
+        this.addEventHandler(
+            this.view.circleHeader,
+            'click',
+            (event) => {
+                event.preventDefault();
+                let circle = null;
+                if (event.target.matches('.circle')) {
+                    circle = event.target;
+                } else if (event.target.matches('#icon') || event.target.matches('path')) {
+                    circle = event.target.closest('.circle');
+                } else {
                     return;
                 }
-                UserModel.getChats({uid: profile.uid, limit: 10, page: 0}).then(
-                    (chats) => {
-                        if (!chats || chats.length === 0) {
-                            const errorArea = detectMobile() ? this.view.chatListBodyDiv : this.view.chatBodyDiv;
-                            this.view.renderEmptyList(errorArea).then(() => {
-                                this.addEventHandler(
-                                    errorArea.querySelector('button'),
-                                    'click',
-                                    () => {Router.redirectForward('/feed');}
+                Router.redirectForward(circle.getAttribute('data-circle-href'));
+            },
+        );
+        UserModel.getProfile().then(
+            (profile) => {
+                if (profile) {
+                    this.uid = profile.uid;
+                    this.ChatModel = new ChatModel();
+                    ChatModel.getChats({uid: this.uid, limit: 10, page: 0}).then(
+                        (chats) => {
+                            console.log(chats);
+                            if (!chats || chats.length === 0) {
+                                const errorArea = detectMobile() ? this.view.chatListBodyDiv : this.view.chatBodyDiv;
+                                this.view.renderEmptyList(errorArea).then(() => {
+                                    this.addEventHandler(
+                                        errorArea.querySelector('button'),
+                                        'click',
+                                        () => {Router.redirectForward('/feed');}
+                                    );
+                                });
+                            } else if (Object.prototype.hasOwnProperty.call(chats, 'message')) {
+                                this.view.showLeftError(chats.message);
+                            } else {
+                                this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then(
+                                    (response) => {
+                                        console.log(response);
+                                        this.ChatModel.chats = chats;
+                                        // после загрузки все чаты неактивны
+                                        this.ChatModel.chats.forEach((val) => {
+                                            Object.assign(val, {active: false});
+                                        });
+                                        this.view.renderChatList(chats).then();
+                                    }
                                 );
-                            });
-                            return;
-                        }
-                        this.view.renderChatList(chats).then();
-                    },
-                    (error) => {
-                        this.view.showLeftError(error).then();
-                        this.view.showCenterError(error).then();
-                        console.error(error);
-                    });
-                this.uid = profile.uid;
+                            }
+                        },
+                        (error) => {
+                            this.view.showLeftError(error).then();
+                            this.view.showCenterError(error).then();
+                            console.error(error);
+                            this.ChatModel.socket.close();
+                        });
+                } else {
+                    this.view.showCenterError('No profile?!').then();
+                }
             },
             (error) => {
                 this.view.showCenterError(error).then();
-                console.error(error);
             }
         );
 
@@ -83,25 +119,11 @@ export default class ChatController extends Controller {
         const textInput = this.view.chatFooter.querySelector('textarea');
         this.addEventHandler(textInput, 'input', resizeTextArea);
         this.addEventHandler(textInput, 'keydown', (event) => {
-            if (event.keyCode === 13) {this.#sendMessage(event);}
-        });
-        // TODO: redirect error here
-        this.addEventHandler(
-            this.view.circleHeader,
-            'click',
-            (event) => {
+            if (event.code === 'Enter') {
                 event.preventDefault();
-                let circle = null;
-                if (event.target.matches('.circle')) {
-                    circle = event.target;
-                } else if (event.target.matches('#icon') || event.target.matches('path')) {
-                    circle = event.target.closest('.circle');
-                } else {
-                    return;
-                }
-                Router.redirectForward(circle.getAttribute('data-circle-href'));
-            },
-        );
+                this.#sendMessage(textInput);
+            }
+        });
         // On mobile: close chat + deactivate chatListItem
         this.addEventHandler(
             this.view.chatHeader.querySelector('.chat__return-icon'),
@@ -135,27 +157,16 @@ export default class ChatController extends Controller {
         this.#handleChatOpening(
             chatListItem.getAttribute('data-cid'),
             chatListItem.querySelector('.chat-list-item__title').innerText);
-    };
-
-    /**
-     * Send message to chat
-     * @param {HTMLTextAreaElement} input
-     */
-    #sendMessage = (input) => {
-        let message = input.value;
-        if (!message) {
-            return;
-        }
-        // Send message via WebSocket
-        (async () => {this.socket.send({uid: this.uid, message});})();
-        this.view.renderMessage({
-            id: this.uid,
-            body: message,
-            own: true,
-            new: true,
+        // Но один из чатов становится активным, а другой неактивыным
+        this.ChatModel.chats.forEach((val) => {
+            if (val.chat_id === Number(chatListItem.getAttribute('data-cid'))){
+                val.active = true;
+                return;
+            }
+            if (val.active) {
+                val.active = false;
+            }
         });
-        input.value = '';
-        resizeTextArea.call(input);
     };
 
     /**
@@ -170,40 +181,69 @@ export default class ChatController extends Controller {
         this.view.renderChatLoading(name).then();
         toggleChatOnMobile.call(this.view.mainColumnDiv);
 
-        ChatModel.openChat(chatId).then((socket) => {
-            if (socket !== undefined) { // TODO: couldn't catch reject for some reason
-                this.socket = socket;
-                UserModel.getProfile().then((profile) => {
-                    ChatModel.getLastMessages(profile.uid, chatId, 30).then(
-                        (messages) => {
-                            this.view.activateChatUI(name).then();
-                            // Append necessary fields
-                            messages.forEach((message) => {
-                                message.own = message.uid === this.uid;
-                                message.new = false;
-                            });
-                            this.view.renderLastMessages(messages);
-                        },
-                        (error) => {
-                            this.view.showCenterError(error).then();
-                        });
+        if (!this.uid) {
+            this.view.showCenterError('No profile').then();
+            return;
+        }
+        ChatModel.getLastMessages(this.uid, chatId, 30).then(
+            (messages) => {
+                this.view.activateChatUI(name).then();
+                // Append necessary fields
+                messages.forEach((message) => {
+                    message.own = message.uid === this.uid;
+                    message.new = false;
+                    message.body = message.message;
                 });
-                this.#chat();
-            } else {
-                this.view.showCenterError('Failed to establish a connection').then();
-            }});
+                this.view.renderLastMessages(messages.reverse());
+            },
+            (error) => {
+                this.view.showCenterError(error).then();
+            });
     };
 
+    /***********************************************
+                        Chat part
+     ***********************************************/
+
     /**
-     * Chat here
+     * Send message to chat
+     * @param {HTMLTextAreaElement} input
      */
-    #chat = () => {
-        this.socket.onmessage = (message) => {
-            console.log(message);
-            console.log(message.data);
-            message.data.own = message.data.uid === this.uid;
-            message.data.new = true;
-            this.view.renderMessage(message.data);
-        };
+    #sendMessage = (input) => {
+        let message = input.value;
+        if (!message) {
+            return;
+        }
+        // Send message via WebSocket
+        let chat_id = -1;
+        // Ищем активный чат
+        this.ChatModel.chats.forEach((val) => {
+            if (val.active === true) {
+                chat_id = val.chat_id;
+            }
+        });
+
+        (async () => {this.ChatModel.socket.send(JSON.stringify({uid: this.uid, message: message, chat_id: chat_id}));})();
+        input.value = '';
+        resizeTextArea.call(input);
     };
+
+    receiveMessage = (event) => {
+        // Find active chat
+        let activeChat = this.ChatModel.chats.find((chat) => {
+            return chat.active;
+        });
+
+        // Check where to insert the message
+        let message = JSON.parse(event.data);
+        if (activeChat && message.chat_id === activeChat.chat_id) {
+            this.view.renderMessage({
+                body: message.message,
+                own: this.uid === message.uid,
+                new: true,
+            });
+        } else {
+            this.view.updateLastMessage(message).then();
+        }
+    }
 }

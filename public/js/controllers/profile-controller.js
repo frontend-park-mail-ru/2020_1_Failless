@@ -1,16 +1,16 @@
 'use strict';
 
-import ProfileView from 'Eventum/views/profile-view.js';
-import UserModel from 'Eventum/models/user-model.js';
-import ProfileEditView from 'Eventum/views/profile-edit-view.js';
-import AddEventView from 'Eventum/views/add-event-view.js';
-import ModalView from 'Eventum/views/modal-view.js';
-import {staticTags} from 'Eventum/utils/static-data.js';
-import {highlightTag} from 'Eventum/utils/tag-logic.js';
-import {logoutRedirect} from 'Eventum/utils/user-utils.js';
-import EventModel from 'Eventum/models/event-model.js';
+import ProfileView from 'Eventum/views/profile-view';
+import UserModel from 'Eventum/models/user-model';
+import ProfileEditView from 'Eventum/views/profile-edit-view';
+import AddEventView from 'Eventum/views/add-event-view';
+import ModalView from 'Eventum/views/modal-view';
+import {staticTags} from 'Eventum/utils/static-data';
+import {highlightTag} from 'Eventum/utils/tag-logic';
+import {logoutRedirect} from 'Eventum/utils/user-utils';
+import EventModel from 'Eventum/models/event-model';
 import editTemplate from 'Blocks/edit-field/template.hbs';
-import {makeEmpty} from 'Eventum/utils/basic.js';
+import {makeEmpty} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
 import Controller from 'Eventum/core/controller';
 
@@ -54,19 +54,50 @@ export default class ProfileController extends Controller {
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
+                    EventModel.getUserEvents(profile.uid).then(
+                        (events) => {
+                            console.log(events);
+                            this.view.renderEvents(events);
+                        },
+                        (error) => {
+                            this.view.renderEventsError();
+                        }
+                    );
+                    EventModel.getUserSubscriptions(profile.uid).then(
+                        (subscriptions) => {
+                            console.log(subscriptions);
+                            if (subscriptions) {
+                                this.view.renderSubscriptions(subscriptions).then();
+                            } else {
+                                this.view.renderEmptySubscriptions().then(() => {
+                                    this.addEventHandler(
+                                        this.view.subscriptions.querySelector('.error__button'),
+                                        'click',
+                                        (event) => {
+                                            event.preventDefault();
+                                            Router.redirectForward('/search');
+                                        });
+                                    }
+                                );
+                            }
+                        },
+                        (error) => {
+                            this.view.renderSubscriptionsError().then();
+                        }
+                    );
                     (async () => {this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');})();
                     this.user = profile;
 
-                    const photoInput = document.getElementById('photoUpload');
+                    const photoInput = document.querySelector('#photoUpload');
                     this.addEventHandler(photoInput, 'change', this.#handleFile);
-                    const metaInput = document.getElementsByClassName('re_btn re_btn__filled')[0];
+                    const metaInput = document.querySelector('.re_btn.re_btn__filled');
                     this.addEventHandler(metaInput, 'click', this.#handleInfo);
                     this.addEventHandler(document.querySelector('.tags-redirect'), 'click', this.#showModalTags);
                     // TODO: i dunno how to get last item to remove kek in the future
-                    const settings = document.getElementsByClassName('re_btn re_btn__outline kek')[0];
+                    const settings = document.querySelector('.re_btn.re_btn__outline.kek');
                     this.addEventHandler(settings, 'click', this.#profileSettings);
                     this.addEventHandler(document.querySelector('.profile-left__tags'), 'click', this.#removeTag);
-                    this.addEventHandler(document.getElementsByClassName('re_btn re_btn__outline logout')[0], 'click', logoutRedirect);
+                    this.addEventHandler(document.querySelector('.re_btn.re_btn__outline.logout'), 'click', logoutRedirect);
 
                     this.addEventHandler(document.querySelector('#add-event-btn'), 'click', this.#createEventPopup.bind(this));
                     this.addEventHandler(document.querySelector('#add-event-link'), 'click', this.#createEventPopup.bind(this));
@@ -112,7 +143,7 @@ export default class ProfileController extends Controller {
         event.preventDefault();
         console.log(event.target);
         this.image = event.target.result;
-        const photoColumn = document.getElementsByClassName('photo-columns')[0];
+        const photoColumn = document.querySelector('.photo-columns');
         const newImage = document.createElement('IMG');
         newImage.src = event.target.result;
         newImage.className = 'photo';
@@ -203,8 +234,8 @@ export default class ProfileController extends Controller {
         document.getElementsByClassName('drawButtonIdentifier')[0].remove();
         UserModel.putImage(userProfile)
             .then(response => {
-                document.getElementsByClassName('photo')[0].src = this.image;
-            }).catch(reason => console.log('ERROR'));
+                document.querySelector('.photo').src = this.image;
+            }).catch(reason => console.error(reason));
     };
 
     /**
@@ -331,9 +362,9 @@ export default class ProfileController extends Controller {
         event.preventDefault();
         this.editView = new ProfileEditView(this.parent);
         this.editView.render(this.user);
-        const closeBtn = document.getElementsByClassName('profile-edit__icon')[0];
+        const closeBtn = document.querySelector('.profile-edit__icon');
         this.addEventHandler(closeBtn, 'click', this.#removeProfileSettings);
-        const table = document.getElementsByClassName('profile-edit__table')[0];
+        const table = document.querySelector('.profile-edit__table');
         this.addEventHandler(table, 'click', this.#drawUnfoldedLine);
     };
 
@@ -343,7 +374,7 @@ export default class ProfileController extends Controller {
      * @param {Event} event
      */
     #removeProfileSettings = (event) => {
-        const popup = document.getElementsByClassName('profile-edit')[0];
+        const popup = document.querySelector('.profile-edit');
         popup.parentNode.removeChild(popup);
         document.removeEventListener('click', this.#removeProfileSettings);
     };
@@ -392,9 +423,11 @@ export default class ProfileController extends Controller {
         event.preventDefault();
         this.addEventView = new AddEventView(this.parent, this.localTags);
         this.addEventView.render();
-        const closeBtn = document.getElementsByClassName('profile-edit__icon')[0];
+        const actionButtons = document.querySelector('.edit-field__buttons');
+        this.addEventHandler(actionButtons.lastElementChild, 'click', this.#removeProfileSettings);
+        const closeBtn = document.querySelector('.profile-edit__icon');
         this.addEventHandler(closeBtn, 'click', this.#removeProfileSettings);
-        document.querySelector('.btn.btn_square.btn_size_middle.btn_color_dark-blue').addEventListener('click', (event) => {
+        this.addEventHandler(actionButtons.firstElementChild, 'click', (event) => {
             event.preventDefault();
             const form = document.querySelector('.profile-edit__form');
             const fields = form.querySelectorAll('.edit-field__input');
@@ -409,7 +442,6 @@ export default class ProfileController extends Controller {
             };
 
             EventModel.createEvent(body).then((event) => {
-                console.log(event);
                 this.#removeProfileSettings(null);
                 this.view.drawEventCard(event);
                 // TODO: draw help window 'OK'
@@ -417,6 +449,5 @@ export default class ProfileController extends Controller {
                 console.log(onerror);
             });
         });
-
     }
 }

@@ -53,8 +53,8 @@ export default class FeedController extends Controller {
         this.view.render(this.tagList);
         UserModel.getProfile().then((user) => {
             // Check if user has filled profile
-            // this.userMessages = fullProfileCheck(user);
-            this.userMessages = [];
+            this.userMessages = fullProfileCheck(user);
+            // this.userMessages = [];
             this.#initFilterHandlers();
             this.uid = user.uid;
             this.defaultFeedRequest.uid = this.uid;
@@ -252,6 +252,14 @@ export default class FeedController extends Controller {
      * @return {Promise<T>}
      */
     #initDataList = (request) => {
+        let tagUds = [];
+        if (request.tags) {
+            request.tags.forEach((tag) => {
+                tagUds.push(tag.tag_id);
+            });
+        }
+        request.tags = tagUds;
+        console.log(request);
         return EventModel.getFeedUsers(request).then(
             (users) => {
                 if (users) {

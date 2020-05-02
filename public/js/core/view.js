@@ -3,8 +3,8 @@
 import validationErrorTemplate from 'Blocks/validation-error/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import loadingTemplate from 'Blocks/loading/template.hbs';
-import {makeEmpty} from 'Eventum/utils/basic.js';
-import {icons} from 'Eventum/utils/static-data.js';
+import {makeEmpty} from 'Eventum/utils/basic';
+import {icons} from 'Eventum/utils/static-data';
 
 /**
  * Base view class
@@ -17,6 +17,7 @@ export default class View {
      */
     constructor(parent) {
         this.parent = parent;
+        this.globalLoader = null;
     }
 
     /**
@@ -65,5 +66,16 @@ export default class View {
     async showLoading(element) {
         makeEmpty(element);
         element.insertAdjacentHTML('beforeend', loadingTemplate());
+    }
+
+    async showGlobalLoading() {
+        document.body.insertAdjacentHTML('beforeend', loadingTemplate({global: 'global'}));
+        this.globalLoader = document.body.querySelector('.spinner_global');
+        setTimeout(()=>{this.globalLoader.classList.remove('spinner_appear');},200);
+    }
+
+    async removeGlobalLoading() {
+        this.globalLoader.remove();
+        this.globalLoader = null;
     }
 }

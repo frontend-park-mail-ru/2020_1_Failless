@@ -18,6 +18,15 @@
 
     & h2 {
       margin: 0;
+      text-align: center;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      color: $color-black;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-word;
     }
 
     &_active {
@@ -29,7 +38,6 @@
     flex: 1;
     display: flex;
     flex-flow: column;
-    justify-content: stretch;
     overflow: auto;
   }
 
@@ -102,6 +110,13 @@
   }
 }
 
+@media only screen and (max-width: $breakpoint-1000) {
+  .chat {
+    overflow-y: hidden;
+    max-height: calc(100vh - 100px);
+  }
+}
+
 @media only screen and (max-width: $breakpoint-phone) {
   .chat {
     position: fixed;
@@ -109,6 +124,7 @@
     bottom: 0;
     transform: translateX(100%);
     z-index: 10;
+    max-height: none;
 
     &_active {
       transform: translateX(0);

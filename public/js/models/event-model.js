@@ -1,4 +1,7 @@
+'use strict';
+
 import NetworkModule from 'Eventum/core/network';
+import settings from 'Settings/config.js';
 import Model from 'Eventum/core/model';
 
 /**
@@ -24,15 +27,16 @@ export default class EventModel extends Model {
         if (errors.length !== 0) {
             throw new Error(...errors);
         }
-        return NetworkModule.fetchPost({path: '/events/search', body: eventsRequest}).then((response) => {
-            if (response.status > 499) {
-                throw new Error('Server error');
-            }
-            return response.json();
-        },
-        (error) => {
-            throw new Error(error);
-        });
+        return NetworkModule.fetchPost({path: '/events/search', body: eventsRequest}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
     }
 
     /**
@@ -43,9 +47,7 @@ export default class EventModel extends Model {
     static getFeedUsers(feedRequest) {
         let errors = this.invalidEventRequest(feedRequest);
         if (errors.length !== 0) {
-            return new Promise(((resolve, reject) => {
-                reject(new Error(...errors));
-            }));
+            throw new Error(...errors);
         }
         return NetworkModule.fetchPost({path: '/users/feed', body: feedRequest}).then(
             (response) => {
@@ -69,6 +71,7 @@ export default class EventModel extends Model {
         let url = '/users/';
         url += isLike ? 'like' : 'dislike';
         return NetworkModule.fetchPut({
+            api: settings.api,
             path: url,
             body: vote,
         }).then((response) => {
@@ -88,9 +91,7 @@ export default class EventModel extends Model {
      */
     static getTagList() {
         if (this.tags) {
-            return new Promise((resolve) => {
-                resolve(this.tags);
-            });
+            return this.tags;
         }
         return NetworkModule.fetchGet({path: '/tags/feed'}).then((response) => {
             if (response.status > 499) {
@@ -138,13 +139,12 @@ export default class EventModel extends Model {
             });
     }
 
-    static getUserEvents(eid) {
-        if (!eid) {
-            return new Promise(((resolve, reject) => {
-                reject(new Error('Invalid event id'));
-            }));
+    static getUserEvents(uid) {
+        return Promise.resolve(null);
+        if (!uid) {
+            throw new Error('Invalid profile id');
         }
-        return NetworkModule.fetchGet({path: `/event/${eid}/follow`}).then(
+        return NetworkModule.fetchGet({path: `/event/${id}/follow`}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
@@ -152,6 +152,25 @@ export default class EventModel extends Model {
                 return response.json();
             },
             (error) => {
+                throw new Error(error);
+            });
+    }
+
+    /**
+     * Get events which user liked
+     * @param uid
+     * @return {Promise<unknown>}
+     */
+    static getUserSubscriptions(uid) {
+        return NetworkModule.fetchGet({path: `/profile/${uid}/subscriptions`, api: settings.api}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                console.error(error);
                 throw new Error(error);
             });
     }
