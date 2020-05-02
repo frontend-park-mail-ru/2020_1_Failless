@@ -21,6 +21,11 @@ export default class ChatController extends Controller {
         this.ChatModel = null;
     }
 
+    destructor() {
+        this.view.destructor();
+        super.destructor();
+    }
+
     action() {
         super.action();
         this.view.render();

@@ -26,6 +26,13 @@ export default class ChatView extends MyView {
         this.chatListBody = null;
     }
 
+    destructor() {
+        this.chatHeader = null;
+        this.chatBody = null;
+        this.chatFooter = null;
+        this.chatListBody = null;
+    }
+
     /**
      * Check if elements are set and return div of chatHeader
      * @return {HTMLElement}

@@ -20,6 +20,10 @@ export default class SearchView extends View {
         this.resultsArea = null;
     }
 
+    destructor() {
+        this.resultsArea = null;
+    }
+
     /**
      * Check if elements are set and return div of results area
      * @return {Element}
@@ -29,16 +33,11 @@ export default class SearchView extends View {
         return this.resultsArea;
     }
 
-    set cleanAreaDiv(val) {
-        this.resultsArea = val;
-    }
-
     /**
      * Render template
      */
     render() {
         this.parent.insertAdjacentHTML('beforeend', searchTemplate());
-        this.resultsArea = null;
         this.#setDOMElements();
     }
 

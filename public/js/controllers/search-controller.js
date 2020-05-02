@@ -22,6 +22,11 @@ export default class SearchController extends Controller {
         this.uid = null;
     }
 
+    destructor() {
+        this.view.destructor();
+        super.destructor();
+    }
+
     /**
      * Create action and render random events
      */
