@@ -8,6 +8,7 @@ import profileMainTemplate from 'Components/profile-main/template.hbs';
 import eventCardTemplate from 'Blocks/re--event/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
+import {determineClass} from 'Blocks/re--event/event';
 
 /**
  * @class create ProfileView class
@@ -73,9 +74,7 @@ export default class ProfileView extends MyView {
         super.render();
 
         if (profile.events) {
-            profile.events.forEach((event) => {
-                event.small = true;
-            });
+            profile.events.forEach((event) => determineClass(event));
         }
 
         // let allowEdit = true;
@@ -144,14 +143,13 @@ export default class ProfileView extends MyView {
     }
 
     async renderEvents(events) {
-        console.log(events);
         this.setDOMProfileElements();
-        makeEmpty(this.personalEvents)
+        makeEmpty(this.personalEvents);
         if (!events) {
             this.personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
         } else {
             events.forEach((event) => {
-                event.small = true;
+                determineClass(event);
                 this.personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(event));
             });
         }
@@ -171,6 +169,7 @@ export default class ProfileView extends MyView {
         const subsArea = this.subscriptionsDiv;
         makeEmpty(subsArea);
         subscriptions.forEach((sub) => {
+            determineClass(sub);
             sub.followed = true;
             subsArea.insertAdjacentHTML('beforeend', eventCardTemplate(sub));
         });

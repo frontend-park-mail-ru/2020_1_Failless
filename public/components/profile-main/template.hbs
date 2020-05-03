@@ -46,7 +46,7 @@
                 <h3>Ваши подписки</h3>
             </div>
         </div>
-        <div class="profile-main__group profile-main__subscriptions">
+        <div class="profile-main__group profile-main__subscriptions" data-bind-event="showAction">
             {{#if profile.events.others}}
                 {{#each profile.events.others as |event|}}
                     {{> $Blocks/event/template }}

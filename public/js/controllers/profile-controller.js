@@ -14,6 +14,7 @@ import {makeEmpty} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
 import Controller from 'Eventum/core/controller';
 import {CircleRedirect} from 'Blocks/circle/circle';
+import {toggleActionText} from 'Blocks/re--event/event';
 
 /**
  * @class ProfileController
@@ -137,6 +138,24 @@ export default class ProfileController extends Controller {
                             attr: 'circleRedirect',
                             events: [
                                 {type: 'click', handler: CircleRedirect},
+                            ]
+                        },
+                        {
+                            attr: 'showAction',
+                            events: [
+                                {type: 'mouseover', handler: (event) => {
+                                    if (event.target.matches('.re--event__link')) {
+                                        toggleActionText(event.target, 'Не идти');
+                                    }}},
+                                {type: 'click', handler: (event) => {
+                                    if (event.target.matches('.re--event__link')) {
+                                        console.log('unsubscribe');
+                                        // TODO: add unsubscribe
+                                    }}},
+                                {type: 'mouseout', handler: (event) => {
+                                    if (event.target.matches('.re--event__link')) {
+                                        toggleActionText(event.target, 'Вы идёте');
+                                    }}},
                             ]
                         },
                     ]);

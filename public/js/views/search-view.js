@@ -4,6 +4,7 @@ import View from 'Eventum/core/view';
 import searchTemplate from 'Components/big-search/template.hbs';
 import searchGridTemplate from 'Blocks/search-grid/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
+import {determineClass} from 'Blocks/re--event/event';
 
 /**
  * @class create SearchView class
@@ -56,9 +57,7 @@ export default class SearchView extends View {
         const resultsArea = this.resultsAreaDiv;
         makeEmpty(resultsArea);
         if (events) {
-            events.forEach((event) => {
-                event.mid = Object.prototype.hasOwnProperty.call(event.Event, 'author');
-            });
+            events.forEach((event) => determineClass(event.Event));
         }
         resultsArea.insertAdjacentHTML('afterbegin', searchGridTemplate({events}));
     }
