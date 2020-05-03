@@ -10,4 +10,12 @@ function detectMobile() {
     return window.innerWidth <= MOBILE_VIEW_PORT;
 }
 
-export {makeEmpty, detectMobile};
+/**
+ * Resize textarea vertically according to its content
+ */
+function resizeTextArea() {
+    this.style.height = 'auto';
+    this.style.height = (this.scrollHeight + 2) + 'px';
+}
+
+export {makeEmpty, detectMobile, resizeTextArea};

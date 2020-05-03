@@ -1,4 +1,4 @@
-export {scrollChatDown, resizeTextArea, toggleChatOnMobile};
+export {scrollChatDown, toggleChatOnMobile};
 
 /**
  * Automatically scroll chat to the bottom
@@ -6,14 +6,6 @@ export {scrollChatDown, resizeTextArea, toggleChatOnMobile};
  */
 function scrollChatDown(chatBody) {
     chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-/**
- * Resize textarea vertically according to its content
- */
-function resizeTextArea() {
-    this.style.height = 'auto';
-    this.style.height = (this.scrollHeight + 2) + 'px';
 }
 
 /**

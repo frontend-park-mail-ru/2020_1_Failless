@@ -9,6 +9,7 @@ import eventCardTemplate from 'Blocks/re--event/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {determineClass} from 'Blocks/re--event/event';
+import EventEdit from 'Blocks/event-edit/event-edit';
 
 /**
  * @class create ProfileView class
@@ -22,7 +23,6 @@ export default class ProfileView extends MyView {
     constructor(parent) {
         super(parent);
         this.parent = parent;
-        this.subscriptions = null;
         this.personalEvents = null;
 
         this.vDOM = {
@@ -33,20 +33,32 @@ export default class ProfileView extends MyView {
             mainColumn: {
                 comp: null,
                 element: null,
-                subscriptions: null,
-                personalEvents: null,
+                subscriptions: {
+                    comp: null,
+                    element: null,
+                },
+                personalEvents: {
+                    comp: null,
+                    element: null,
+                    event_edit: null, // component itself
+                },
             },
         };
     }
 
     get subscriptionsDiv() {
         this.setDOMProfileElements();
-        return this.subscriptions;
+        return this.vDOM.mainColumn.subscriptions.element;
     }
 
     get personalEventsDiv() {
         this.setDOMProfileElements();
-        return this.personalEvents;
+        return this.vDOM.mainColumn.personalEvents.element;
+    }
+
+    get eventEditDiv() {
+        this.setDOMProfileElements();
+        return this.vDOM.mainColumn.personalEvents.event_edit.element;
     }
 
     /**
@@ -115,6 +127,13 @@ export default class ProfileView extends MyView {
             data_bind: 'showSettings',
         });
 
+        const addEventButton = new Button({
+            style: 're_btn re_btn__outline',
+            state: null,
+            text: 'Добавить',
+            data_bind: 'addNewEventOnClick',
+        });
+
         document.getElementsByClassName('my__left-column-body')[0].insertAdjacentHTML(
             'beforeend', profileLeftTemplate({
                 profile: profile,
@@ -129,16 +148,24 @@ export default class ProfileView extends MyView {
                 title: 'Профиль',
                 url: `${settings.aws}/users`,
                 profile: profile,
+                add_event_button: addEventButton.data,
             })
+        );
+
+        this.vDOM.mainColumn.personalEvents.event_edit = new EventEdit(
+            document.querySelector('.event-edit')
         );
     }
 
     setDOMProfileElements() {
-        while (!this.subscriptions) {
-            this.subscriptions = document.querySelector('.profile-main__subscriptions');
+        while (!this.vDOM.mainColumn.subscriptions.element) {
+            this.vDOM.mainColumn.subscriptions.element = document.querySelector('.profile-main__subscriptions');
         }
-        while (!this.personalEvents) {
-            this.personalEvents = document.querySelector('.profile-main__personal-events');
+        while (!this.vDOM.mainColumn.personalEvents.element) {
+            this.vDOM.mainColumn.personalEvents.element = document.querySelector('.profile-main__personal-events');
+        }
+        while (!this.vDOM.mainColumn.personalEvents.event_edit.element) {
+            this.vDOM.mainColumn.personalEvents.event_edit.element = document.querySelector('.event-edit');
         }
     }
 

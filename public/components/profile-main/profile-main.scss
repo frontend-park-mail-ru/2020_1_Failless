@@ -18,8 +18,9 @@
   &__events {
     max-height: 100%;
     overflow-y: auto;
-    max-width: 20%;
-    min-width: 200px;
+    max-width: 30%;
+    min-width: 220px;
+    padding-right: 10px;
 
     @media only screen and (max-width: $breakpoint-phone) {
       max-width: 100%;
@@ -33,6 +34,7 @@
     justify-content: flex-start;
     align-items: center;
     margin-bottom: $re--big-padding;
+    padding: 0 10px;
   }
 
   &__separator {

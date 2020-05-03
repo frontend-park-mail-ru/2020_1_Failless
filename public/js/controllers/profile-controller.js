@@ -10,11 +10,12 @@ import {highlightTag} from 'Eventum/utils/tag-logic';
 import {logoutRedirect} from 'Eventum/utils/user-utils';
 import EventModel from 'Eventum/models/event-model';
 import editTemplate from 'Blocks/edit-field/template.hbs';
-import {makeEmpty} from 'Eventum/utils/basic';
+import {makeEmpty, resizeTextArea} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
 import Controller from 'Eventum/core/controller';
 import {CircleRedirect} from 'Blocks/circle/circle';
 import {toggleActionText} from 'Blocks/re--event/event';
+import SliderManager from 'Blocks/slider/set-slider';
 
 /**
  * @class ProfileController
@@ -39,6 +40,7 @@ export default class ProfileController extends Controller {
             console.error(onerror);
             this.localTags = [...staticTags];
         });
+        this.sliderManager = new SliderManager();
     }
 
     /**
@@ -56,6 +58,7 @@ export default class ProfileController extends Controller {
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
+                    this.#configureView();
                     EventModel.getUserEvents(profile.uid).then(
                         (events) => {
                             console.log(events);
@@ -74,7 +77,7 @@ export default class ProfileController extends Controller {
                             } else {
                                 this.view.renderEmptySubscriptions().then(() => {
                                     this.addEventHandler(
-                                        this.view.subscriptions.querySelector('.error__button'),
+                                        this.view.subscriptionsDiv.querySelector('.error__button'),
                                         'click',
                                         (event) => {
                                             event.preventDefault();
@@ -117,7 +120,8 @@ export default class ProfileController extends Controller {
                             ]
                         },
                         {
-                            attr: 'tagsRedirect',
+                            attr: 'showModalTags',
+                            many: true,
                             events: [
                                 {type: 'click', handler: this.#showModalTags},
                             ]
@@ -138,6 +142,25 @@ export default class ProfileController extends Controller {
                             attr: 'circleRedirect',
                             events: [
                                 {type: 'click', handler: CircleRedirect},
+                            ]
+                        },
+                        {
+                            attr: 'resizeTextArea',
+                            many: true,
+                            events: [
+                                {type: 'input', handler: resizeTextArea},
+                            ]
+                        },
+                        {
+                            attr: 'addNewEventOnClick',
+                            events: [
+                                {type: 'click', handler: this.#submitNewEvent}
+                            ]
+                        },
+                        {
+                            attr: 'addNewEventOnSubmit',
+                            events: [
+                                {type: 'submit', handler: this.#submitNewEvent}
                             ]
                         },
                         {
@@ -167,6 +190,19 @@ export default class ProfileController extends Controller {
                 console.error(onerror);
             });
     }
+
+    #configureView() {
+        this.sliderManager.setSlider(this.view.mainColumnDiv.querySelector('.slider'), 2);
+    }
+
+    #submitNewEvent = (event) => {
+        console.log('submit!');
+        // TODO: submit new event
+        // Check data
+        // Submit form to backend
+        // Show loading
+        // Render results
+    };
 
     #handleFile = (event) => {
         if (event.target.files && event.target.files[0]) {
@@ -286,32 +322,20 @@ export default class ProfileController extends Controller {
     #showModalTags = (event) => {
         event.preventDefault();
         this.editView = new ModalView(document.body);
-
-        // Rendering active tags in modal view
-        let activeTags = document.body.querySelectorAll('.tag__container.tag__container_active');
-        let activeTagsTitles = [];
-        for (let iii = 0; iii < activeTags.length; iii++) {
-            activeTagsTitles.push(activeTags[iii].firstElementChild.innerText);
-        }
-        this.localTags.forEach((tag) => {
-            tag.editable = true;
-            if (activeTagsTitles.includes(tag.name)) {
-                tag.activeClass = 'tag__container_active';
-            }
-        });
-        console.log(this.localTags);
+        let tags = staticTags.map((tag) => {tag.editable = true; return tag;});
+        console.log(tags);
         this.editView.render({
             title: 'Ваши теги',
-            tags: this.localTags,
+            tags: tags,
             last_buttons: [{title: 'ОК'}]
         });
 
+        // Adding event handlers
         let modalBG = document.body.querySelector('.modal__bg');
         modalBG.addEventListener('click', (event) => {
             event.preventDefault();
             event.stopPropagation();
         });
-
         this.activeModalWindow = modalBG.firstElementChild;
         this.activeModalWindow.querySelector('.modal__body').addEventListener(
             'click', highlightTag, false);
@@ -322,10 +346,49 @@ export default class ProfileController extends Controller {
                 this.editView = null;
             });
 
+        let activeTags = null;
+        let handler = null;
+        if (event.target.matches('a')) {
+            activeTags = this.view.leftColumnDiv.querySelectorAll('.tag__container.tag__container_active');
+            handler = this.#submitTagsHandler;
+        } else {
+            activeTags = this.view.personalEventsDiv.firstElementChild.querySelectorAll('.tag__container');
+            handler = (event) => {
+                event.preventDefault();
+                let finalTags = [];
+                let activatedTags = this.activeModalWindow.querySelectorAll('.tag__container_active');
+                if (activatedTags && activatedTags.length > 0) {
+                    activatedTags.forEach((tag) => {
+                        finalTags.push({
+                            activeClass: 'tag__container_active',
+                            tag_id: tag.firstElementChild.getAttribute('data-id'),
+                            name: tag.firstElementChild.innerText.slice(1),
+                        });
+                    });
+                }
+                this.view.vDOM.mainColumn.personalEvents.event_edit.addTags(finalTags);
+                this.editView.clear();
+                this.editView = null;
+            };
+        }
+
+        // Rendering active tags in modal view
+        if (activeTags && activeTags.length > 0) {
+            console.log(activeTags);
+            let activeTagIds = [];
+            activeTags.forEach((activeTag) => {activeTagIds.push(+activeTag.firstElementChild.getAttribute('data-id'));});
+            this.activeModalWindow.querySelectorAll('.tag__container').forEach((tag) => {
+                if (activeTagIds.includes(+tag.firstElementChild.getAttribute('data-id'))) {
+                    tag.classList.add('tag__container_active');
+                }
+            });
+        }
+
+        // Submit event handler
         this.activeModalWindow.querySelector(
             '.modal__footer').querySelector(
             '.re_btn.re_btn__outline').addEventListener(
-            'click', this.#submitTagsHandler.bind(this), false);
+            'click', handler, false);
     };
 
     #submitTagsHandler = (event) => {
@@ -458,6 +521,10 @@ export default class ProfileController extends Controller {
             }
             }
         }
+    };
+
+    #showNewEvent = (event) => {
+        this.view.renderNewEvent();
     };
 
     #createEventPopup(event) {

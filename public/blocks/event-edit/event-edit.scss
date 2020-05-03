@@ -1,0 +1,142 @@
+@import "../../modules/variables";
+
+.event-edit {
+  width: 100%;
+  margin-bottom: $re--medium-padding;
+  background: $color-white;
+  border-radius: $re--border-radius;
+  box-shadow:  3px 3px 10px #e5e5e5,
+             -3px -3px 10px #fdfdfd;
+  @include transition(0.3s, ease-in-out);
+  transform: scale(0);
+
+  & textarea {
+    border-radius: 0;
+    resize: none;
+    outline: none;
+    border: none;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+
+  &_active {
+    transform: scale(1);
+  }
+
+  &__photos {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $re--color-light-gray;
+
+    & img {
+      object-fit: cover;
+    }
+
+    & svg {
+      width: 50px;
+      margin: 50px;
+    }
+
+    &:hover {
+      & .dark-overlay {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__body {
+    padding: 0 $re--medium-padding;
+    text-align: left;
+  }
+
+  &__title {
+    width: 100%;
+    padding: $re--medium-padding 0 0;
+    color: $color-black;
+    font-size: 12px;
+    font-weight: 700;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+
+
+    &::placeholder {
+      color: $color-black;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  }
+
+  &__about {
+    width: 100%;
+    margin-top: $re--small-padding;
+    font-size: 10px;
+    font-weight: 400;
+    padding: 0;
+
+    &::placeholder {
+      font-size: 10px;
+      font-weight: 400;
+    }
+  }
+
+  &__header {
+    margin: $re--small-padding 0 5px;
+    color: $color-black;
+
+    &_small {
+      font-size: 10px;
+      font-weight: 500;
+    }
+  }
+
+  &__tags {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+
+    & svg {
+      width: 20px;
+      cursor: pointer;
+    }
+  }
+
+  &__time {
+    color: $re--color-middle-gray;
+    font-size: 10px;
+    font-weight: 300;
+
+    &::placeholder {
+      color: $re--color-middle-gray;
+      font-size: 10px;
+      font-weight: 300;
+    }
+  }
+
+  &__slider {
+    margin-top: $re--small-padding;
+
+    & .slider__container {
+      flex-flow: column;
+    }
+  }
+
+  &__helper {
+    margin: 0;
+    color: $re--color-middle-gray;
+    font-size: 9px;
+  }
+
+  &__save-button {
+    margin: $re--small-padding 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
