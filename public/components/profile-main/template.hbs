@@ -5,7 +5,7 @@
                 <h2>Фото</h2>
                 <div class="link-uploader">
                     <label for="photoUpload">Добавить</label>
-                    <input id="photoUpload" type="file"/>
+                    <input id="photoUpload" type="file" data-bind-event="photoUpload"/>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
         <div class="section">
             <div class="section__header section__header_3">
                 <h3>Ваши эвенты</h3>
-                <a href="/add-event" id="add-event-link">Добавить</a>
+                <a href="/add-event" data-bind-event="showAddEvent">Добавить</a>
             </div>
         </div>
         <div class="profile-main__group profile-main__personal-events">

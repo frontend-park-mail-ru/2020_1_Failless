@@ -14,11 +14,11 @@
                     <div class="section">
                         <div class="section__header section__header_3">
                             <h3>Ваши тэги</h3>
-                            <a href="" class="tags-redirect">Добавить</a>
+                            <a href="" class="tags-redirect" data-bind-event="tagsRedirect">Добавить</a>
                         </div>
                     </div>
                 </div>
-                <div class="profile-left__tags">
+                <div class="profile-left__tags" data-bind-event="removeTags">
                     {{#if profile.tags}}
                         {{#each profile.tags as |tag|}}
                             {{> $Blocks/tag/template }}
@@ -56,12 +56,11 @@
             </div>
             <div class="profile-left__exit">
                 {{> $Blocks/button-comp/template button_logout}}
-<!--                <button class="re_btn re_btn__outline logout">Выйти</button>-->
             </div>
         </form>
     </div>
     <div class="profile-left__footer">
-        <button class="re_btn re_btn__outline kek">Настройки</button>
-        <button class="re_btn re_btn__filled">Сохранить</button>
+        {{> $Blocks/button-comp/template settings_button}}
+        {{> $Blocks/button-comp/template save_button}}
     </div>
 </div>

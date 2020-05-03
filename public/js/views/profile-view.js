@@ -89,23 +89,34 @@ export default class ProfileView extends MyView {
         }
 
         // Create components
-        const buttonLogout = new Button({
+        const logoutButton = new Button({
             style: 're_btn re_btn__outline logout',
             state: null,
             text: 'Выйти',
             data_bind: 'logout',
         });
 
-        this.vDOM.leftColumn.logout_button = {
-            comp: buttonLogout,
-            element: null,
-        };
+        const saveButton = new Button({
+            style: 're_btn re_btn__filled',
+            state: null,
+            text: 'Сохранить',
+            data_bind: 'saveMeta',
+        });
+
+        const settingsButton = new Button({
+            style: 're_btn re_btn__outline',
+            state: null,
+            text: 'Настройки',
+            data_bind: 'showSettings',
+        });
 
         document.getElementsByClassName('my__left-column-body')[0].insertAdjacentHTML(
             'beforeend', profileLeftTemplate({
                 profile: profile,
                 avatar: `${settings.aws}/users/${profile.avatar.path}`,
-                button_logout: buttonLogout.data,
+                button_logout: logoutButton.data,
+                save_button: saveButton.data,
+                settings_button: settingsButton.data,
             })
         );
         document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
@@ -123,9 +134,6 @@ export default class ProfileView extends MyView {
         }
         while (!this.personalEvents) {
             this.personalEvents = document.querySelector('.profile-main__personal-events');
-        }
-        while (!this.vDOM.leftColumn.logout_button.element) {
-            this.vDOM.leftColumn.logout_button.element = document.querySelector('.re_btn.re_btn__outline.logout');
         }
     }
 
