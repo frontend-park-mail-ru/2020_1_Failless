@@ -89,7 +89,7 @@ export default class ProfileController extends Controller {
                     (async () => {this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');})();
                     this.user = profile;
 
-                    this.#initHandlers([
+                    this.initHandlers([
                         {
                             attr: 'logout',
                             events: [
@@ -146,27 +146,6 @@ export default class ProfileController extends Controller {
             }).catch(onerror => {
                 console.error(onerror);
             });
-    }
-
-    /**
-     * @param eventMap {Array<{
-     *      attr: string,
-     *      events: Array<{
-     *          type: string,
-     *          handler: Function
-     *      }>
-     * }>}
-     */
-    #initHandlers(eventMap) {
-        eventMap.forEach((eMap) => {
-            eMap.events.forEach((ev) => {
-                // TODO: add result of querySelector to view.vDOM
-                this.addEventHandler(
-                    document.querySelector(`[data-bind-event="${eMap.attr}"]`),
-                    ev.type,
-                    ev.handler);
-            });
-        });
     }
 
     #handleFile = (event) => {

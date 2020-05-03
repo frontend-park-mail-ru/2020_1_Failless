@@ -54,8 +54,6 @@ export default class FeedController extends Controller {
         UserModel.getProfile().then((user) => {
             // Check if user has filled profile
             this.userMessages = fullProfileCheck(user);
-            // this.userMessages = [];
-            this.#initFilterHandlers();
             this.uid = user.uid;
             this.defaultFeedRequest.uid = this.uid;
             this.defaultFeedRequest.tags = user.tags;
@@ -69,41 +67,51 @@ export default class FeedController extends Controller {
                     console.error(error);
                     this.view.showError(error);
                 });
+            this.#initFilters();
+            this.initHandlers([
+                {
+                    attr: 'highlightTag',
+                    events: [
+                        {type: 'click', handler: highlightTag},
+                    ]
+                },
+                {
+                    attr: 'applyFilters',
+                    events: [
+                        {type: 'submit', handler: this.#applyFilters},
+                    ]
+                },
+                {
+                    attr: 'toggleFiltersActive',
+                    events: [
+                        {type: 'click', handler: () => {document.querySelector('.feed__filters').classList.toggle('feed__filters_active');}},
+                    ]
+                },
+                {
+                    attr: 'removeFiltersActive1',
+                    events: [
+                        {type: 'click', handler: () => {document.querySelector('.feed__filters').classList.remove('feed__filters_active');}},
+                    ]
+                },
+                {
+                    attr: 'removeFiltersActive2',
+                    events: [
+                        {type: 'click', handler: () => {document.querySelector('.feed__filters').classList.remove('feed__filters_active');}},
+                    ]
+                },
+            ]);
         });
     }
 
     /**
-     *  Initialize filter handlers
+     *  Initialize filters with user preferences
      */
-    #initFilterHandlers() {
-        this.addEventHandler(   // Highlight tags
-            document.querySelector('.feed__options-field'),
-            'click',
-            highlightTag);
-        this.addEventHandler(   // Submit form
-            document.getElementById('form'),
-            'submit',
-            this.#applyFilters);
-
-        // TODO: change initialValue to profile preferences
+    async #initFilters() {
         // Set two sliders and connect each other
         let sliders = document.querySelectorAll('.slider');
         this.sliderManager.setSliders(
             {slider1: sliders[0], initialValue1: 18},
             {slider2: sliders[1], initialValue2: 25});
-
-        this.addEventHandler(document.querySelector('.feed__filters__filter-icon'), 'click',
-            () => {
-                document.querySelector('.feed__filters').classList.toggle('feed__filters_active');
-            });
-        this.addEventHandler(document.querySelector('.feed__filters__exit-icon'), 'click',
-            () => {
-                document.querySelector('.feed__filters').classList.remove('feed__filters_active');
-            });
-        this.addEventHandler(document.querySelector('.options-footer').firstElementChild, 'click',
-            () => {
-                document.querySelector('.feed__filters').classList.remove('feed__filters_active');
-            });
     }
 
     #setUpVoteButtons() {
@@ -259,7 +267,6 @@ export default class FeedController extends Controller {
             });
         }
         request.tags = tagUds;
-        console.log(request);
         return EventModel.getFeedUsers(request).then(
             (users) => {
                 if (users) {

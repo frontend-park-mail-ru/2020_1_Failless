@@ -59,6 +59,27 @@ export default class Controller {
     }
 
     /**
+     * @param eventMap {Array<{
+     *      attr: string,
+     *      events: Array<{
+     *          type: string,
+     *          handler: Function
+     *      }>
+     * }>}
+     */
+    initHandlers(eventMap) {
+        eventMap.forEach((eMap) => {
+            eMap.events.forEach((ev) => {
+                // TODO: add result of querySelector to view.vDOM
+                this.addEventHandler(
+                    document.querySelector(`[data-bind-event="${eMap.attr}"]`),
+                    ev.type,
+                    ev.handler);
+            });
+        });
+    }
+
+    /**
      * Handle button pressed event on the header block by button url
      * @param {Event} event
      * @private
