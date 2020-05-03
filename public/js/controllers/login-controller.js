@@ -35,6 +35,14 @@ export default class LoginController extends Controller {
                     {type: 'submit', handler: this.#loginSubmitHandler},
                 ]
             },
+            {
+                attr: 'checkInput',
+                many: true,
+                events: [
+                    {type: 'focus', handler: this.removeErrorMessage},
+                    {type: 'blur', handler: this.#checkInputHandler},
+                ]
+            }
         ]);
     }
 
@@ -42,13 +50,6 @@ export default class LoginController extends Controller {
         let auth = document.body.getElementsByClassName('auth')[0];
         if (auth) {
             this.form = document.getElementById('form');
-
-            // TODO: event delegation
-            this.inputs = this.form.getElementsByClassName('input input__auth');
-            for (let input of this.inputs) {
-                this.addEventHandler(input, 'focus', this.removeErrorMessage);
-                this.addEventHandler(input, 'blur', this.#checkInputHandler);
-            }
         }
     }
 

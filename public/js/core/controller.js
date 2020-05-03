@@ -61,21 +61,30 @@ export default class Controller {
     /**
      * @param eventMap {Array<{
      *      attr: string,
+     *      many: boolean,
      *      events: Array<{
      *          type: string,
-     *          handler: Function
+     *          handler: Function,
      *      }>
      * }>}
      */
     initHandlers(eventMap) {
         eventMap.forEach((eMap) => {
-            eMap.events.forEach((ev) => {
+            if (eMap.many) {
                 // TODO: add result of querySelector to view.vDOM
-                this.addEventHandler(
-                    document.querySelector(`[data-bind-event="${eMap.attr}"]`),
-                    ev.type,
-                    ev.handler);
-            });
+                const nodes = document.querySelectorAll(`[data-bind-event="${eMap.attr}"]`);
+                nodes.forEach((node) => {
+                    eMap.events.forEach((ev) => {
+                        this.addEventHandler(node, ev.type, ev.handler);
+                    });
+                });
+            } else {
+                // TODO: add result of querySelector to view.vDOM
+                const node = document.querySelector(`[data-bind-event="${eMap.attr}"]`);
+                eMap.events.forEach((ev) => {
+                    this.addEventHandler(node, ev.type, ev.handler);
+                });
+            }
         });
     }
 

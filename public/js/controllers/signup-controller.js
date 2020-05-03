@@ -33,6 +33,14 @@ export default class SignUpController extends Controller {
                     {type: 'submit', handler: this.#signUpSubmitHandler},
                 ]
             },
+            {
+                attr: 'checkInput',
+                many: true,
+                events: [
+                    {type: 'focus', handler: this.removeErrorMessage},
+                    {type: 'blur', handler: this.#checkInputHandler},
+                ]
+            }
         ]);
     }
 
@@ -43,13 +51,6 @@ export default class SignUpController extends Controller {
         let auth = document.body.getElementsByClassName('auth')[0];
         if (auth) {
             this.form = document.getElementById('form');
-
-            // TODO: Event delegation
-            this.inputs = this.form.getElementsByClassName('input input__auth');
-            for (let input of this.inputs) {
-                this.addEventHandler(input, 'focus', this.removeErrorMessage.bind(this));
-                this.addEventHandler(input, 'blur', this.#checkInputHandler);
-            }
         }
     }
 

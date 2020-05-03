@@ -88,13 +88,8 @@ export default class FeedController extends Controller {
                     ]
                 },
                 {
-                    attr: 'removeFiltersActive1',
-                    events: [
-                        {type: 'click', handler: () => {document.querySelector('.feed__filters').classList.remove('feed__filters_active');}},
-                    ]
-                },
-                {
-                    attr: 'removeFiltersActive2',
+                    attr: 'removeFiltersActive',
+                    many: true,
                     events: [
                         {type: 'click', handler: () => {document.querySelector('.feed__filters').classList.remove('feed__filters_active');}},
                     ]

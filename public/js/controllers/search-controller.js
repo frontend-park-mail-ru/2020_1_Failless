@@ -60,7 +60,7 @@ export default class SearchController extends Controller {
         );
         this.initHandlers([
             {
-                attr: 'sendRequest1',
+                attr: 'sendRequestOnEnter',
                 events: [
                     {type: 'keydown', handler: this.#completeRequest},
                 ]
@@ -72,7 +72,7 @@ export default class SearchController extends Controller {
                 ]
             },
             {
-                attr: 'sendRequest2',
+                attr: 'sendRequestOnClick',
                 events: [
                     {type: 'click', handler: this.#completeRequest},
                 ]
