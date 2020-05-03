@@ -22,6 +22,7 @@ export default class SignUpView extends View {
      */
     render() {
         this.parent.innerHTML += authTemplate({
+            data_bind: 'signup',
             title: 'РЕГИСТРАЦИЯ',
             title_style: 'auth__title__reg',
             input: [

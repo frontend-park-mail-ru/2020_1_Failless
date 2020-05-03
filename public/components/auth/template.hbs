@@ -1,7 +1,7 @@
 <div class="auth">
     <div class="auth__item">
         <div class="auth__title gradient-text {{ title_style }}">{{ title }}</div>
-        <form id="form">
+        <form id="form" data-bind-event="{{ data_bind }}">
             {{#each input}}
                 <div class="auth__input">
                     <div class="auth__help">{{ this.title }}</div>
