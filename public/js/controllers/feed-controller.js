@@ -260,16 +260,11 @@ export default class FeedController extends Controller {
      * @return {Promise<T>}
      */
     #initDataList = (request) => {
-        let tagUds = [];
-        if (request.tags) {
-            request.tags.forEach((tag) => {
-                tagUds.push(tag.tag_id);
-            });
-        }
-        request.tags = tagUds;
+        console.log(request);
         return EventModel.getFeedUsers(request).then(
             (users) => {
                 if (users) {
+                    console.log(users);
                     users.forEach((user) => {
                         this.dataList.push(
                             {
