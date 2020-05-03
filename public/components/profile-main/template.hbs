@@ -35,7 +35,7 @@
         <div class="profile-main__group profile-main__personal-events">
             {{#if profile.events}}
                 {{#each profile.events as |event|}}
-                    {{> $Blocks/event/template }}
+                    {{> $Blocks/re--event/template }}
                 {{/each}}
             {{else}}
                 <button class="re_btn re_btn__outline" id="add-event-btn">Добавить</button>

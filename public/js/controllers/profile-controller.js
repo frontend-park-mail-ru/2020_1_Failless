@@ -58,6 +58,7 @@ export default class ProfileController extends Controller {
                     EventModel.getUserEvents(profile.uid).then(
                         (events) => {
                             console.log(events);
+                            if (!events) {return;}
                             this.view.renderEvents(events);
                         },
                         (error) => {

@@ -52,14 +52,15 @@ export default class SearchView extends View {
     };
 
     renderResults(events) {
+        console.log(events);
         const resultsArea = this.resultsAreaDiv;
         makeEmpty(resultsArea);
         if (events) {
             events.forEach((event) => {
-                event.class = (Object.prototype.hasOwnProperty.call(event.Event, 'author')) ? 'mid-event' : 'big-event';
+                event.mid = Object.prototype.hasOwnProperty.call(event.Event, 'author');
             });
         }
-        resultsArea.insertAdjacentHTML('afterbegin', searchGridTemplate({events: events}));
+        resultsArea.insertAdjacentHTML('afterbegin', searchGridTemplate({events}));
     }
 
     renderNotFound() {

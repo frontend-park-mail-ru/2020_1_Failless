@@ -5,7 +5,7 @@ import MyView from 'Eventum/views/my-view';
 import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
-import eventCardTemplate from 'Blocks/event/template.hbs';
+import eventCardTemplate from 'Blocks/re--event/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 
@@ -71,6 +71,12 @@ export default class ProfileView extends MyView {
      */
     render(profile) {
         super.render();
+
+        if (profile.events) {
+            profile.events.forEach((event) => {
+                event.small = true;
+            });
+        }
 
         // let allowEdit = true;
         if (!profile.avatar.path) {
@@ -138,11 +144,14 @@ export default class ProfileView extends MyView {
     }
 
     async renderEvents(events) {
+        console.log(events);
         this.setDOMProfileElements();
+        makeEmpty(this.personalEvents)
         if (!events) {
             this.personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
         } else {
             events.forEach((event) => {
+                event.small = true;
                 this.personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(event));
             });
         }
@@ -162,6 +171,7 @@ export default class ProfileView extends MyView {
         const subsArea = this.subscriptionsDiv;
         makeEmpty(subsArea);
         subscriptions.forEach((sub) => {
+            sub.followed = true;
             subsArea.insertAdjacentHTML('beforeend', eventCardTemplate(sub));
         });
     }
