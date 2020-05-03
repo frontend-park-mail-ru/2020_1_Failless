@@ -8,6 +8,7 @@ import UserModel from 'Eventum/models/user-model';
 import {resizeTextArea, toggleChatOnMobile} from 'Blocks/chat/chat';
 import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item';
 import {detectMobile} from 'Eventum/utils/basic';
+import {CircleRedirect} from 'Blocks/circle/circle';
 
 /**
  * @class ChatController
@@ -29,23 +30,15 @@ export default class ChatController extends Controller {
     action() {
         super.action();
         this.view.render();
-        // TODO: redirect error here
-        this.addEventHandler(
-            this.view.circleHeader,
-            'click',
-            (event) => {
-                event.preventDefault();
-                let circle = null;
-                if (event.target.matches('.circle')) {
-                    circle = event.target;
-                } else if (event.target.matches('#icon') || event.target.matches('path')) {
-                    circle = event.target.closest('.circle');
-                } else {
-                    return;
-                }
-                Router.redirectForward(circle.getAttribute('data-circle-href'));
-            },
-        );
+        // TODO: do sth with it
+        this.initHandlers([
+            {
+                attr: 'circleRedirect',
+                events: [
+                    {type: 'click', handler: CircleRedirect},
+                ]
+            }
+        ]);
         UserModel.getProfile().then(
             (profile) => {
                 if (profile) {
@@ -94,44 +87,43 @@ export default class ChatController extends Controller {
             }
         );
 
-        // Adding event handlers
         this.view.setDOMChatElements(); // do it once instead of calling getters and checking there
-        this.addEventHandler(
-            this.view.chatListBody, 'click',
-            this.#activateChatListItem
-        );
-        this.addEventHandler(
-            this.view.chatFooter.querySelector('.chat__button'), 'click',
-            (event) => {
-                this.#sendMessage(event.target.previousElementSibling);
-            }
-        );
-        this.addEventHandler(   // For mobile
-            this.view.chatFooter.querySelector('.chat__send-icon'), 'click',
-            (event) => {
-                if (event.target.matches('path')) {
-                    this.#sendMessage(event.target.parentElement.parentElement.parentElement.querySelector('textarea'));
-                } else {
-                    this.#sendMessage(event.target.parentElement.parentElement.querySelector('textarea'));
-                }
+        this.initHandlers([
+            {
+                attr: 'activateChatListItem',
+                events: [
+                    {type: 'click', handler: this.#activateChatListItem},
+                ]
             },
-        );
-        const textInput = this.view.chatFooter.querySelector('textarea');
-        this.addEventHandler(textInput, 'input', resizeTextArea);
-        this.addEventHandler(textInput, 'keydown', (event) => {
-            if (event.code === 'Enter') {
-                event.preventDefault();
-                this.#sendMessage(textInput);
-            }
-        });
-        // On mobile: close chat + deactivate chatListItem
-        this.addEventHandler(
-            this.view.chatHeader.querySelector('.chat__return-icon'),
-            'click',
-            () => {
-                toggleChatListItemActive(this.view.chatListBody.querySelector('.chat-list-item_active')).then();
-                toggleChatOnMobile.call(this.view.mainColumn);
-            });
+            {
+                attr: 'sendMessageOnClick',
+                many: true,
+                events: [
+                    {type: 'click', handler: this.#sendMessage},
+                ]
+            },
+            {
+                attr: 'messageInput',
+                events: [
+                    {type: 'input', handler: resizeTextArea},
+                    {type: 'keydown', handler: (event) => {
+                        if (event.code === 'Enter') {
+                            event.preventDefault();
+                            this.#sendMessage();
+                        }
+                    }},
+                ]
+            },
+            {   // mobile only
+                attr: 'toggleMobileChat',
+                events: [
+                    {type: 'click', handler: () => {
+                        toggleChatListItemActive(this.view.chatListBody.querySelector('.chat-list-item_active')).then();
+                        toggleChatOnMobile.call(this.view.mainColumn);
+                    }},
+                ]
+            },
+        ]);
     }
 
     /**
@@ -207,10 +199,11 @@ export default class ChatController extends Controller {
 
     /**
      * Send message to chat
-     * @param {HTMLTextAreaElement} input
      */
-    #sendMessage = (input) => {
-        let message = input.value;
+    #sendMessage = () => {
+        let textarea = this.view.chatFooterDiv.querySelector('textarea');
+
+        const message = textarea.value;
         if (!message) {
             return;
         }
@@ -224,8 +217,8 @@ export default class ChatController extends Controller {
         });
 
         (async () => {this.ChatModel.socket.send(JSON.stringify({uid: this.uid, message: message, chat_id: chat_id}));})();
-        input.value = '';
-        resizeTextArea.call(input);
+        textarea.value = '';
+        resizeTextArea.call(textarea);
     };
 
     receiveMessage = (event) => {
