@@ -59,6 +59,42 @@ export default class Controller {
     }
 
     /**
+     * Add event handlers
+     *      attr - attribute of HTML element data-bind-event="attr"
+     *      many = true, in case many elements have the same eventHandler
+     *             be careful with type of event
+     *      events - that's pretty self explanatory
+     *
+     * @param eventMap {Array<{
+     *      attr: string,
+     *      many: boolean,
+     *      events: Array<{
+     *          type: string,
+     *          handler: Function,
+     *      }>
+     * }>}
+     */
+    initHandlers(eventMap) {
+        eventMap.forEach((eMap) => {
+            if (eMap.many) {
+                // TODO: add result of querySelector to view.vDOM
+                const nodes = document.querySelectorAll(`[data-bind-event="${eMap.attr}"]`);
+                nodes.forEach((node) => {
+                    eMap.events.forEach((ev) => {
+                        this.addEventHandler(node, ev.type, ev.handler);
+                    });
+                });
+            } else {
+                // TODO: add result of querySelector to view.vDOM
+                const node = document.querySelector(`[data-bind-event="${eMap.attr}"]`);
+                eMap.events.forEach((ev) => {
+                    this.addEventHandler(node, ev.type, ev.handler);
+                });
+            }
+        });
+    }
+
+    /**
      * Handle button pressed event on the header block by button url
      * @param {Event} event
      * @private

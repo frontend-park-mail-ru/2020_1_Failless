@@ -5,7 +5,6 @@ import SignUpView from 'Eventum/views/signup-view.js';
 import UserModel from 'Eventum/models/user-model.js';
 import ValidationModule from 'Eventum/utils/validation.js';
 import router from 'Eventum/core/router.js';
-import {makeEmpty} from 'Eventum/utils/basic';
 
 export default class SignUpController extends Controller {
 
@@ -27,6 +26,22 @@ export default class SignUpController extends Controller {
         super.action();
         this.view.render();
         this.#initView();
+        this.initHandlers([
+            {
+                attr: 'signup',
+                events: [
+                    {type: 'submit', handler: this.#signUpSubmitHandler},
+                ]
+            },
+            {
+                attr: 'checkInput',
+                many: true,
+                events: [
+                    {type: 'focus', handler: this.removeErrorMessage},
+                    {type: 'blur', handler: this.#checkInputHandler},
+                ]
+            }
+        ]);
     }
 
     /**
@@ -36,14 +51,6 @@ export default class SignUpController extends Controller {
         let auth = document.body.getElementsByClassName('auth')[0];
         if (auth) {
             this.form = document.getElementById('form');
-            this.addEventHandler(this.form, 'submit', this.#signUpSubmitHandler);
-
-            // TODO: Event delegation
-            this.inputs = this.form.getElementsByClassName('input input__auth');
-            for (let input of this.inputs) {
-                this.addEventHandler(input, 'focus', this.removeErrorMessage.bind(this));
-                this.addEventHandler(input, 'blur', this.#checkInputHandler);
-            }
         }
     }
 

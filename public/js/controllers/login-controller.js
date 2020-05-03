@@ -28,19 +28,28 @@ export default class LoginController extends Controller {
         super.action();
         this.view.render();
         this.#initView();
+        this.initHandlers([
+            {
+                attr: 'login',
+                events: [
+                    {type: 'submit', handler: this.#loginSubmitHandler},
+                ]
+            },
+            {
+                attr: 'checkInput',
+                many: true,
+                events: [
+                    {type: 'focus', handler: this.removeErrorMessage},
+                    {type: 'blur', handler: this.#checkInputHandler},
+                ]
+            }
+        ]);
     }
 
     #initView() {
         let auth = document.body.getElementsByClassName('auth')[0];
         if (auth) {
             this.form = document.getElementById('form');
-            this.addEventHandler(this.form, 'submit', this.#loginSubmitHandler);
-
-            this.inputs = this.form.getElementsByClassName('input input__auth');
-            for (let input of this.inputs) {
-                this.addEventHandler(input, 'focus', this.removeErrorMessage);
-                this.addEventHandler(input, 'blur', this.#checkInputHandler);
-            }
         }
     }
 

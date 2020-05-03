@@ -13,6 +13,7 @@ import editTemplate from 'Blocks/edit-field/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
 import Controller from 'Eventum/core/controller';
+import {CircleRedirect} from 'Blocks/circle/circle';
 
 /**
  * @class ProfileController
@@ -88,38 +89,58 @@ export default class ProfileController extends Controller {
                     (async () => {this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');})();
                     this.user = profile;
 
-                    const photoInput = document.querySelector('#photoUpload');
-                    this.addEventHandler(photoInput, 'change', this.#handleFile);
-                    const metaInput = document.querySelector('.re_btn.re_btn__filled');
-                    this.addEventHandler(metaInput, 'click', this.#handleInfo);
-                    this.addEventHandler(document.querySelector('.tags-redirect'), 'click', this.#showModalTags);
-                    // TODO: i dunno how to get last item to remove kek in the future
-                    const settings = document.querySelector('.re_btn.re_btn__outline.kek');
-                    this.addEventHandler(settings, 'click', this.#profileSettings);
-                    this.addEventHandler(document.querySelector('.profile-left__tags'), 'click', this.#removeTag);
-                    this.addEventHandler(document.querySelector('.re_btn.re_btn__outline.logout'), 'click', logoutRedirect);
-
-                    this.addEventHandler(document.querySelector('#add-event-btn'), 'click', this.#createEventPopup.bind(this));
-                    this.addEventHandler(document.querySelector('#add-event-link'), 'click', this.#createEventPopup.bind(this));
-                    // TODO: redirect error here
-                    this.addEventHandler(
-                        this.view.circleHeader,
-                        'click',
-                        (event) => {
-                            event.preventDefault();
-                            let circle = null;
-                            if (event.target.matches('.circle')) {
-                                circle = event.target;
-                            } else if (event.target.matches('#icon') || event.target.matches('path')) {
-                                circle = event.target.closest('.circle');
-                            } else {
-                                return;
-                            }
-                            Router.redirectForward(circle.getAttribute('data-circle-href'));
+                    this.initHandlers([
+                        {
+                            attr: 'logout',
+                            events: [
+                                {type: 'click', handler: logoutRedirect},
+                            ]
                         },
-                    );
+                        {
+                            attr: 'photoUpload',
+                            events: [
+                                {type: 'change', handler: this.#handleFile},
+                            ]
+                        },
+                        {
+                            attr: 'saveMeta',
+                            events: [
+                                {type: 'click', handler: this.#handleInfo},
+                            ]
+                        },
+                        {
+                            attr: 'showSettings',
+                            events: [
+                                {type: 'click', handler: this.#profileSettings},
+                            ]
+                        },
+                        {
+                            attr: 'tagsRedirect',
+                            events: [
+                                {type: 'click', handler: this.#showModalTags},
+                            ]
+                        },
+                        {
+                            attr: 'removeTags',
+                            events: [
+                                {type: 'click', handler: this.#removeTag},
+                            ]
+                        },
+                        {
+                            attr: 'showAddEvent',
+                            events: [
+                                {type: 'click', handler: this.#createEventPopup},
+                            ]
+                        },
+                        {
+                            attr: 'circleRedirect',
+                            events: [
+                                {type: 'click', handler: CircleRedirect},
+                            ]
+                        },
+                    ]);
                 } else {
-                    console.error('You have not got rights for this page');
+                    console.error('You have no rights for this page');
                     console.log(profile);
                 }
             }).catch(onerror => {

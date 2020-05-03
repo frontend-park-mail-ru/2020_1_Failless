@@ -58,9 +58,26 @@ export default class SearchController extends Controller {
                     });
             }
         );
-        this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
-        this.addEventHandler(document.querySelector('.big-search__results'), 'click', this.#followEvent);
-        this.addEventHandler(document.querySelector('.big-search__button'), 'click', this.#completeRequest);
+        this.initHandlers([
+            {
+                attr: 'sendRequestOnEnter',
+                events: [
+                    {type: 'keydown', handler: this.#completeRequest},
+                ]
+            },
+            {
+                attr: 'followEvent',
+                events: [
+                    {type: 'click', handler: this.#followEvent},
+                ]
+            },
+            {
+                attr: 'sendRequestOnClick',
+                events: [
+                    {type: 'click', handler: this.#completeRequest},
+                ]
+            },
+        ]);
     }
 
     /**

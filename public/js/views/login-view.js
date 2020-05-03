@@ -22,6 +22,7 @@ export default class LoginView extends View {
      */
     render() {
         this.parent.innerHTML += authTemplate({
+            data_bind: 'login',
             title: 'ВХОД',
             input: [
                 {

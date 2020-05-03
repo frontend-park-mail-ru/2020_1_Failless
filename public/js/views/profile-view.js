@@ -1,5 +1,6 @@
 'use strict';
 
+import Button from 'Blocks/button-comp/button-comp';
 import MyView from 'Eventum/views/my-view';
 import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
@@ -22,6 +23,19 @@ export default class ProfileView extends MyView {
         this.parent = parent;
         this.subscriptions = null;
         this.personalEvents = null;
+
+        this.vDOM = {
+            leftColumn: {
+                comp: null,
+                element: null,
+            },
+            mainColumn: {
+                comp: null,
+                element: null,
+                subscriptions: null,
+                personalEvents: null,
+            },
+        };
     }
 
     get subscriptionsDiv() {
@@ -74,10 +88,35 @@ export default class ProfileView extends MyView {
             }
         }
 
+        // Create components
+        const logoutButton = new Button({
+            style: 're_btn re_btn__outline logout',
+            state: null,
+            text: 'Выйти',
+            data_bind: 'logout',
+        });
+
+        const saveButton = new Button({
+            style: 're_btn re_btn__filled',
+            state: null,
+            text: 'Сохранить',
+            data_bind: 'saveMeta',
+        });
+
+        const settingsButton = new Button({
+            style: 're_btn re_btn__outline',
+            state: null,
+            text: 'Настройки',
+            data_bind: 'showSettings',
+        });
+
         document.getElementsByClassName('my__left-column-body')[0].insertAdjacentHTML(
             'beforeend', profileLeftTemplate({
                 profile: profile,
                 avatar: `${settings.aws}/users/${profile.avatar.path}`,
+                button_logout: logoutButton.data,
+                save_button: saveButton.data,
+                settings_button: settingsButton.data,
             })
         );
         document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
