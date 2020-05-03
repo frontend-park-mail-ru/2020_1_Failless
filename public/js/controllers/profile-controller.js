@@ -88,36 +88,15 @@ export default class ProfileController extends Controller {
                     (async () => {this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');})();
                     this.user = profile;
 
-                    const photoInput = document.querySelector('#photoUpload');
-                    this.addEventHandler(photoInput, 'change', this.#handleFile);
-                    const metaInput = document.querySelector('.re_btn.re_btn__filled');
-                    this.addEventHandler(metaInput, 'click', this.#handleInfo);
-                    this.addEventHandler(document.querySelector('.tags-redirect'), 'click', this.#showModalTags);
-                    // TODO: i dunno how to get last item to remove kek in the future
-                    const settings = document.querySelector('.re_btn.re_btn__outline.kek');
-                    this.addEventHandler(settings, 'click', this.#profileSettings);
-                    this.addEventHandler(document.querySelector('.profile-left__tags'), 'click', this.#removeTag);
-                    this.addEventHandler(document.querySelector('.re_btn.re_btn__outline.logout'), 'click', logoutRedirect);
-
-                    this.addEventHandler(document.querySelector('#add-event-btn'), 'click', this.#createEventPopup.bind(this));
-                    this.addEventHandler(document.querySelector('#add-event-link'), 'click', this.#createEventPopup.bind(this));
-                    // TODO: redirect error here
-                    this.addEventHandler(
-                        this.view.circleHeader,
-                        'click',
-                        (event) => {
-                            event.preventDefault();
-                            let circle = null;
-                            if (event.target.matches('.circle')) {
-                                circle = event.target;
-                            } else if (event.target.matches('#icon') || event.target.matches('path')) {
-                                circle = event.target.closest('.circle');
-                            } else {
-                                return;
-                            }
-                            Router.redirectForward(circle.getAttribute('data-circle-href'));
+                    this.#initHandlers([
+                        {
+                            attr: 'logout',
+                            events: [{
+                                type: 'click',
+                                handler: logoutRedirect,
+                            }]
                         },
-                    );
+                    ]);
                 } else {
                     console.error('You have not got rights for this page');
                     console.log(profile);
@@ -125,6 +104,53 @@ export default class ProfileController extends Controller {
             }).catch(onerror => {
                 console.error(onerror);
             });
+    }
+
+    /**
+     * @param eventMap {Array<{
+     *      attr: string,
+     *      events: Array<{
+     *          type: string,
+     *          handler: Function
+     *      }>
+     * }>}
+     */
+    #initHandlers(eventMap) {
+        eventMap.forEach((eMap) => {
+            eMap.events.forEach((ev) => {
+                this.addEventHandler(document.querySelector(`[data-bind-event="${eMap.attr}"]`), ev.type, ev.handler);
+            });
+        });
+
+        const photoInput = document.querySelector('#photoUpload');
+        this.addEventHandler(photoInput, 'change', this.#handleFile);
+        const metaInput = document.querySelector('.re_btn.re_btn__filled');
+        this.addEventHandler(metaInput, 'click', this.#handleInfo);
+        this.addEventHandler(document.querySelector('.tags-redirect'), 'click', this.#showModalTags);
+        // TODO: i dunno how to get last item to remove kek in the future
+        const settings = document.querySelector('.re_btn.re_btn__outline.kek');
+        this.addEventHandler(settings, 'click', this.#profileSettings);
+        this.addEventHandler(document.querySelector('.profile-left__tags'), 'click', this.#removeTag);
+
+        this.addEventHandler(document.querySelector('#add-event-btn'), 'click', this.#createEventPopup.bind(this));
+        this.addEventHandler(document.querySelector('#add-event-link'), 'click', this.#createEventPopup.bind(this));
+        // TODO: redirect error here
+        this.addEventHandler(
+            this.view.circleHeader,
+            'click',
+            (event) => {
+                event.preventDefault();
+                let circle = null;
+                if (event.target.matches('.circle')) {
+                    circle = event.target;
+                } else if (event.target.matches('#icon') || event.target.matches('path')) {
+                    circle = event.target.closest('.circle');
+                } else {
+                    return;
+                }
+                Router.redirectForward(circle.getAttribute('data-circle-href'));
+            },
+        );
     }
 
     #handleFile = (event) => {

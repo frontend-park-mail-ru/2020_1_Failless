@@ -1,5 +1,6 @@
 'use strict';
 
+import Button from 'Blocks/button-comp/button-comp';
 import MyView from 'Eventum/views/my-view';
 import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
@@ -22,6 +23,19 @@ export default class ProfileView extends MyView {
         this.parent = parent;
         this.subscriptions = null;
         this.personalEvents = null;
+
+        this.vDOM = {
+            leftColumn: {
+                comp: null,
+                element: null,
+            },
+            mainColumn: {
+                comp: null,
+                element: null,
+                subscriptions: null,
+                personalEvents: null,
+            },
+        };
     }
 
     get subscriptionsDiv() {
@@ -74,10 +88,24 @@ export default class ProfileView extends MyView {
             }
         }
 
+        // Create components
+        const buttonLogout = new Button({
+            style: 're_btn re_btn__outline logout',
+            state: null,
+            text: 'Выйти',
+            data_bind: 'logout',
+        });
+
+        this.vDOM.leftColumn.logout_button = {
+            comp: buttonLogout,
+            element: null,
+        };
+
         document.getElementsByClassName('my__left-column-body')[0].insertAdjacentHTML(
             'beforeend', profileLeftTemplate({
                 profile: profile,
                 avatar: `${settings.aws}/users/${profile.avatar.path}`,
+                button_logout: buttonLogout.data,
             })
         );
         document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
@@ -95,6 +123,9 @@ export default class ProfileView extends MyView {
         }
         while (!this.personalEvents) {
             this.personalEvents = document.querySelector('.profile-main__personal-events');
+        }
+        while (!this.vDOM.leftColumn.logout_button.element) {
+            this.vDOM.leftColumn.logout_button.element = document.querySelector('.re_btn.re_btn__outline.logout');
         }
     }
 
