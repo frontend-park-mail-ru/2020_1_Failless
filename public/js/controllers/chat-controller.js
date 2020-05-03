@@ -30,15 +30,6 @@ export default class ChatController extends Controller {
     action() {
         super.action();
         this.view.render();
-        // TODO: do sth with it
-        this.initHandlers([
-            {
-                attr: 'circleRedirect',
-                events: [
-                    {type: 'click', handler: CircleRedirect},
-                ]
-            }
-        ]);
         UserModel.getProfile().then(
             (profile) => {
                 if (profile) {
@@ -89,6 +80,12 @@ export default class ChatController extends Controller {
 
         this.view.setDOMChatElements(); // do it once instead of calling getters and checking there
         this.initHandlers([
+            {
+                attr: 'circleRedirect',
+                events: [
+                    {type: 'click', handler: CircleRedirect},
+                ]
+            },
             {
                 attr: 'activateChatListItem',
                 events: [
