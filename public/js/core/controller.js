@@ -59,6 +59,12 @@ export default class Controller {
     }
 
     /**
+     * Add event handlers
+     *      attr - attribute of HTML element data-bind-event="attr"
+     *      many = true, in case many elements have the same eventHandler
+     *             be careful with type of event
+     *      events - that's pretty self explanatory
+     *
      * @param eventMap {Array<{
      *      attr: string,
      *      many: boolean,
