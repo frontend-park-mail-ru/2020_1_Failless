@@ -2,7 +2,7 @@
 
 .profile-main {
   width: 100%;
-  height: calc(100% - 39px);
+  height: 100%;
   display: flex;
   align-items: flex-start;
 
@@ -20,6 +20,11 @@
     overflow-y: auto;
     max-width: 20%;
     min-width: 200px;
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      max-width: 100%;
+      width: 100%;
+    }
   }
 
   &__group {
