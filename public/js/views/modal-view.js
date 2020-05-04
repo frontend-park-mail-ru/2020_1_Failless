@@ -18,6 +18,10 @@ export default class ModalView extends View {
         this.modalWindow = null;
     }
 
+    destructor() {
+        this.modalWindow = null;
+    }
+
     setHandlers(buttonHandler) {
         this.modalWindow = this.parent.querySelector('.modal__bg');
         this.modalWindow.querySelector('.modal__header-icon').addEventListener(

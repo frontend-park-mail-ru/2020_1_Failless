@@ -40,6 +40,11 @@ export default class ProfileController extends Controller {
         });
     }
 
+    destructor() {
+        this.view.destructor();
+        super.destructor();
+    }
+
     /**
      * Create action
      */

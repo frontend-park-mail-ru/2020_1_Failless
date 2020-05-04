@@ -20,6 +20,12 @@ export default class MyView extends View {
         this.mainColumn = null;
     }
 
+    destructor() {
+        this.circleHeader = null;
+        this.leftColumn = null;
+        this.mainColumn = null;
+    }
+
     /**
      * Render template
      */
