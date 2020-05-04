@@ -109,6 +109,45 @@ export default class EventModel extends Model {
         });
     }
 
+    /**
+     *
+     * @param body {{
+     *      uid: Number,
+     *      title: string,
+     *      description: string|null,
+     *      tags: Array<{Number}>|null,
+     *      date: string|null,
+     *      photos: Array<{string}>|null,
+     * }}
+     * @return {Promise<unknown>}
+     */
+    static createSmallEvent(body) {
+        return NetworkModule.fetchPost({path: '/event/small', body: body}).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
+            throw new Error(error);
+        });
+    }
+
+    /**
+     * Send event to backend
+     * @param body {{
+     *      uid: Number,
+     *      title: string,
+     *      description: string|null,
+     *      type: number|null,
+     *      private: bool|null,
+     *      tag_id: Number,
+     *      limit: Number,
+     *      date: string|null,
+     *      photos: string|null,
+     * }}
+     * @return {Promise<unknown>}
+     */
     static createEvent(body) {
         return NetworkModule.fetchPost({path: '/event/new', body: body}).then((response) => {
             if (response.status > 499) {

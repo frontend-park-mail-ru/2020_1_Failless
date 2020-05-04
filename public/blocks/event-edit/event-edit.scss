@@ -9,6 +9,7 @@
              -3px -3px 10px #fdfdfd;
   @include transition(0.3s, ease-in-out);
   transform: scale(0);
+  // add margin-top and margin-right dynamically
 
   & textarea {
     border-radius: 0;
@@ -21,6 +22,8 @@
   }
 
   &_active {
+    margin-top: 0 !important;
+    margin-right: 0 !important;
     transform: scale(1);
   }
 
@@ -98,7 +101,7 @@
     width: 100%;
     display: flex;
     overflow-x: auto;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: flex-start;
 
     & svg {
@@ -120,8 +123,6 @@
   }
 
   &__slider {
-    margin-top: $re--small-padding;
-
     & .slider__container {
       flex-flow: column;
     }
@@ -133,10 +134,10 @@
     font-size: 9px;
   }
 
-  &__save-button {
+  &__buttons {
     margin: $re--small-padding 0;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
   }
 }

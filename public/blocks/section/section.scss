@@ -14,10 +14,12 @@
       margin: 0;
     }
 
-    & a {
+    & a,
+    & span {
       @extend %a-link;
       text-align: right;
       text-decoration: none;
+      cursor: pointer;
 
       &:hover {
         color: $color-purple;

@@ -56,9 +56,9 @@ export default class ProfileView extends MyView {
         return this.vDOM.mainColumn.personalEvents.element;
     }
 
-    get eventEditDiv() {
+    get eventEditComp() {
         this.setDOMProfileElements();
-        return this.vDOM.mainColumn.personalEvents.event_edit.element;
+        return this.vDOM.mainColumn.personalEvents.event_edit;
     }
 
     /**
@@ -128,7 +128,7 @@ export default class ProfileView extends MyView {
         });
 
         const addEventButton = new Button({
-            style: 're_btn re_btn__outline',
+            style: 're_btn re_btn__filled',
             state: null,
             text: 'Добавить',
             data_bind: 'addNewEventOnClick',
@@ -149,6 +149,7 @@ export default class ProfileView extends MyView {
                 url: `${settings.aws}/users`,
                 profile: profile,
                 add_event_button: addEventButton.data,
+                select_options: Array(14).fill(undefined, undefined, undefined).map((_, idx) => 2 + idx),
             })
         );
 
@@ -167,6 +168,10 @@ export default class ProfileView extends MyView {
         while (!this.vDOM.mainColumn.personalEvents.event_edit.element) {
             this.vDOM.mainColumn.personalEvents.event_edit.element = document.querySelector('.event-edit');
         }
+    }
+
+    async renderNewEvent(event) {
+        this.eventEditComp.element.insertAdjacentHTML('afterend', eventCardTemplate(event));
     }
 
     async renderEvents(events) {

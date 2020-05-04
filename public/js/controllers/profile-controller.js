@@ -3,7 +3,6 @@
 import ProfileView from 'Eventum/views/profile-view';
 import UserModel from 'Eventum/models/user-model';
 import ProfileEditView from 'Eventum/views/profile-edit-view';
-import AddEventView from 'Eventum/views/add-event-view';
 import ModalView from 'Eventum/views/modal-view';
 import {staticTags} from 'Eventum/utils/static-data';
 import {highlightTag} from 'Eventum/utils/tag-logic';
@@ -58,7 +57,6 @@ export default class ProfileController extends Controller {
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
-                    this.#configureView();
                     EventModel.getUserEvents(profile.uid).then(
                         (events) => {
                             console.log(events);
@@ -135,7 +133,7 @@ export default class ProfileController extends Controller {
                         {
                             attr: 'showAddEvent',
                             events: [
-                                {type: 'click', handler: this.#createEventPopup},
+                                {type: 'click', handler: () => {this.view.eventEditComp.show();}},
                             ]
                         },
                         {
@@ -158,9 +156,9 @@ export default class ProfileController extends Controller {
                             ]
                         },
                         {
-                            attr: 'addNewEventOnSubmit',
+                            attr: 'cancelNewEvent',
                             events: [
-                                {type: 'submit', handler: this.#submitNewEvent}
+                                {type: 'click', handler: () => {this.view.eventEditComp.hide();}}
                             ]
                         },
                         {
@@ -191,17 +189,60 @@ export default class ProfileController extends Controller {
             });
     }
 
-    #configureView() {
-        this.sliderManager.setSlider(this.view.mainColumnDiv.querySelector('.slider'), 2);
-    }
-
     #submitNewEvent = (event) => {
-        console.log('submit!');
-        // TODO: submit new event
-        // Check data
+        // Validate data
+        const eventEditComp = this.view.eventEditComp;
+        let data = eventEditComp.retrieveData();
+        if (!eventEditComp.validateData(data)) {
+            // TODO: show error
+            console.log('title is empty');
+            return;
+        }
+
         // Submit form to backend
-        // Show loading
-        // Render results
+        let request = {
+            title: data.title,
+            description: data.about === '' ? null : data.about,
+            limit: data.limit,
+            date: data.time === '' ? null : data.time,
+            photos: data.photos,
+        };
+
+        // TODO: Show loading
+        UserModel.getProfile().then(profile => {
+            request.uid = +profile.uid;
+            if (data.limit === 2) {
+                request.tags = data.tags;
+
+                EventModel.createSmallEvent(request).then(
+                    (response) => {
+                        // Render results
+                        console.log(response);
+                        response.class = 'small';
+                        this.view.renderNewEvent(response);
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+            } else {
+                request.tag_id = data.tags[0];
+                request.private = true;
+                request.type = null;
+                EventModel.createEvent(request).then(
+                    (response) => {
+                        // Render results
+                        console.log(response);
+                        this.view.renderNewEvent(data);
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+            }
+            eventEditComp.cleanData();
+            eventEditComp.hide();
+        });
     };
 
     #handleFile = (event) => {
@@ -522,40 +563,4 @@ export default class ProfileController extends Controller {
             }
         }
     };
-
-    #showNewEvent = (event) => {
-        this.view.renderNewEvent();
-    };
-
-    #createEventPopup(event) {
-        event.preventDefault();
-        this.addEventView = new AddEventView(this.parent, this.localTags);
-        this.addEventView.render();
-        const actionButtons = document.querySelector('.edit-field__buttons');
-        this.addEventHandler(actionButtons.lastElementChild, 'click', this.#removeProfileSettings);
-        const closeBtn = document.querySelector('.profile-edit__icon');
-        this.addEventHandler(closeBtn, 'click', this.#removeProfileSettings);
-        this.addEventHandler(actionButtons.firstElementChild, 'click', (event) => {
-            event.preventDefault();
-            const form = document.querySelector('.profile-edit__form');
-            const fields = form.querySelectorAll('.edit-field__input');
-            const body = {
-                uid: this.user.uid,
-                title: fields[0].value,
-                description: fields[1].value,
-                tag_id: +fields[2].value,
-                date: fields[3].value,
-                limit: +fields[4].value,
-                // photos: form[4].photos,
-            };
-
-            EventModel.createEvent(body).then((event) => {
-                this.#removeProfileSettings(null);
-                this.view.drawEventCard(event);
-                // TODO: draw help window 'OK'
-            }).catch((onerror) => {
-                console.log(onerror);
-            });
-        });
-    }
 }
