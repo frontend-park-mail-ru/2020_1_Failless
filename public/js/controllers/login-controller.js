@@ -24,6 +24,11 @@ export default class LoginController extends Controller {
         this.pending = false;
     }
 
+    destructor() {
+        this.view.destructor();
+        super.destructor();
+    }
+
     action() {
         super.action();
         this.view.render();

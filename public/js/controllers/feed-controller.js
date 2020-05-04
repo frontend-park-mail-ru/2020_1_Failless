@@ -44,6 +44,10 @@ export default class FeedController extends Controller {
         };
     }
 
+    destructor() {
+        this.view.destructor();
+        super.destructor();
+    }
 
     /**
      * Action when page renders for the first time

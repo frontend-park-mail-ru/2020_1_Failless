@@ -18,6 +18,11 @@ export default class LandingController extends Controller {
         this.view = new LandingView(parent);
     }
 
+    destructor() {
+        this.view.destructor();
+        super.destructor();
+    }
+
     /**
      * Create action
      */

@@ -16,6 +16,11 @@ export default class AddEventView extends View {
         this.tags = tags;
         this.data = null;
     }
+
+    destructor() {
+        this.data = null;
+    }
+
     render() {
         // let k = 1;
         const template = eventPopupTemplate({

@@ -19,6 +19,11 @@ export default class SignUpController extends Controller {
         this.pending = false;
     }
 
+    destructor() {
+        this.view.destructor();
+        super.destructor();
+    }
+
     /**
      * Create base business logic of SignUp
      */

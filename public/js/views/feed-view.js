@@ -26,6 +26,11 @@ export default class FeedView extends View {
         this.columns = [];
     }
 
+    destructor() {
+        this.data = null;
+        this.columns = [];
+    }
+
     /**
      * Render initial template
      * @param {Array} selectedTags

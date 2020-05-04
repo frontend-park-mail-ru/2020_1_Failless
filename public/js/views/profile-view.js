@@ -38,6 +38,24 @@ export default class ProfileView extends MyView {
         };
     }
 
+    destructor() {
+        this.subscriptions = null;
+        this.personalEvents = null;
+
+        this.vDOM = {
+            leftColumn: {
+                comp: null,
+                element: null,
+            },
+            mainColumn: {
+                comp: null,
+                element: null,
+                subscriptions: null,
+                personalEvents: null,
+            },
+        };
+    }
+
     get subscriptionsDiv() {
         this.setDOMProfileElements();
         return this.subscriptions;
