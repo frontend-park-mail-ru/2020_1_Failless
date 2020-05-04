@@ -42,7 +42,7 @@
     width: 100%;
     display: flex;
     overflow-x: auto;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: flex-start;
     margin-top: $re--medium-padding;
   }

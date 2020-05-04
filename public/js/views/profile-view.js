@@ -10,6 +10,8 @@ import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {determineClass} from 'Blocks/re--event/event';
 import EventEdit from 'Blocks/event-edit/event-edit';
+import {staticTags} from 'Eventum/utils/static-data';
+import {extendActiveTag} from 'Blocks/tag/tag';
 
 /**
  * @class create ProfileView class
@@ -23,7 +25,6 @@ export default class ProfileView extends MyView {
     constructor(parent) {
         super(parent);
         this.parent = parent;
-        this.personalEvents = null;
 
         this.vDOM = {
             leftColumn: {
@@ -171,18 +172,42 @@ export default class ProfileView extends MyView {
     }
 
     async renderNewEvent(event) {
+        let helper = this.personalEventsDiv.querySelector('span.font.font_bold.font__size_small.font__color_lg');
+        if (helper) {
+            helper.remove();
+        }
+        event.tags = event.tags.map(tag => extendActiveTag(tag));
+        event.class = 'small';
+        event.small = true;
         this.eventEditComp.element.insertAdjacentHTML('afterend', eventCardTemplate(event));
     }
 
+    /**
+     *
+     * @param events {{
+     *     eid: Number,
+     *     uid: Number,
+     *     title: string,
+     *     description: string|null,
+     *     tags: Array<{Number}>,
+     *     date: string
+     * }}
+     * @return {Promise<void>}
+     */
     async renderEvents(events) {
-        this.setDOMProfileElements();
-        makeEmpty(this.personalEvents);
-        if (!events) {
-            this.personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
+        const personalEvents = this.personalEventsDiv;
+        makeEmpty(personalEvents);
+        if (!events || events.length === 0) {
+            personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
         } else {
             events.forEach((event) => {
                 determineClass(event);
-                this.personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(event));
+                event.tags = event.tags.map((tag) => {
+                    let newTag = staticTags[tag - 1];
+                    newTag.activeClass = 'tag__container_active';
+                    return newTag;});
+                event.small = true;
+                personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(event));
             });
         }
     }

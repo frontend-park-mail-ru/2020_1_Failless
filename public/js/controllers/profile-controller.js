@@ -59,8 +59,6 @@ export default class ProfileController extends Controller {
                     this.view.render(profile);
                     EventModel.getUserEvents(profile.uid).then(
                         (events) => {
-                            console.log(events);
-                            if (!events) {return;}
                             this.view.renderEvents(events);
                         },
                         (error) => {
@@ -354,6 +352,7 @@ export default class ProfileController extends Controller {
             }).catch(reason => console.error(reason));
     };
 
+    // TODO: move it to view
     /**
      * Show modal window with tags settings
      * @param {Event} event
@@ -361,7 +360,7 @@ export default class ProfileController extends Controller {
     #showModalTags = (event) => {
         event.preventDefault();
         this.editView = new ModalView(document.body);
-        let tags = staticTags.map((tag) => {tag.editable = true; return tag;});
+        let tags = staticTags.map((tag) => {tag.editable = true; tag.activeClass = ''; return tag;});
         console.log(tags);
         this.editView.render({
             title: 'Ваши теги',
@@ -386,13 +385,13 @@ export default class ProfileController extends Controller {
             });
 
         let activeTags = null;
-        let handler = null;
+        let submitHandler = null;
         if (event.target.matches('a')) {
             activeTags = this.view.leftColumnDiv.querySelectorAll('.tag__container.tag__container_active');
-            handler = this.#submitTagsHandler;
+            submitHandler = this.#submitTagsHandler;
         } else {
-            activeTags = this.view.personalEventsDiv.firstElementChild.querySelectorAll('.tag__container');
-            handler = (event) => {
+            activeTags = this.view.eventEditComp.element.querySelectorAll('.tag__container');
+            submitHandler = (event) => {
                 event.preventDefault();
                 let finalTags = [];
                 let activatedTags = this.activeModalWindow.querySelectorAll('.tag__container_active');
@@ -405,7 +404,7 @@ export default class ProfileController extends Controller {
                         });
                     });
                 }
-                this.view.vDOM.mainColumn.personalEvents.event_edit.addTags(finalTags);
+                this.view.eventEditComp.addTags(finalTags);
                 this.editView.clear();
                 this.editView = null;
             };
@@ -427,7 +426,7 @@ export default class ProfileController extends Controller {
         this.activeModalWindow.querySelector(
             '.modal__footer').querySelector(
             '.re_btn.re_btn__outline').addEventListener(
-            'click', handler, false);
+            'click', submitHandler, false);
     };
 
     #submitTagsHandler = (event) => {

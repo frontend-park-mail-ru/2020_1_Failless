@@ -56,25 +56,12 @@ export default class EventEdit extends Component {
         });
     }
 
-    // /**
-    //  * TODO: check this one
-    //  */
-    // checkvDOM() {
-    //     console.log(this.vDOM);
-    //     setTimeout(() => {
-    //         this.fields.forEach((field) => {
-    //             if (!this.vDOM[field]) {
-    //                 return false;
-    //             }
-    //         });
-    //     }, 5000)
-    // }
-
     show() {
         this.element.classList.add('event-edit_active');
     }
 
     hide() {
+        this.cleanData();
         this.element.classList.remove('event-edit_active');
     }
 
@@ -154,45 +141,26 @@ export default class EventEdit extends Component {
                  Additional get functions
      ***********************************************/
     get photosDiv() {
-        // while (!this.checkvDOM()) {
-        //     this.#setvDOM();
-        // }
-
         return this.vDOM['photos'];
     }
 
     get titleTextArea() {
-        // while (!this.checkvDOM()) {
-        //     this.#setvDOM();
-        // }
         return this.vDOM['title'];
     }
 
     get aboutTextArea() {
-        // while (!this.checkvDOM()) {
-        //     this.#setvDOM();
-        // }
         return this.vDOM['about'];
     }
 
     get tagsDiv() {
-        // if (!this.checkvDOM()) {
-        //     this.#setvDOM();
-        // }
         return this.vDOM['tags'];
     }
 
     get timeInput() {
-        // if (!this.checkvDOM()) {
-        //     this.#setvDOM();
-        // }
         return this.vDOM['time'];
     }
 
     get sliderDiv() {
-        // if (!this.checkvDOM()) {
-        //     this.#setvDOM();
-        // }
         return this.vDOM['slider'];
     }
 }

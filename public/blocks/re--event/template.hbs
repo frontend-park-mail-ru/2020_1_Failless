@@ -3,9 +3,9 @@
     <div class="re--event__body">
         <h3 class="re--event__title">{{ title }}</h3>
         {{#if description}}<p class="re--event__about">{{ description }}</p>{{/if}}
-        {{#if tag}}
+        {{#if tags}}
         <div class="re--event__tags">
-            {{#each tag as |tag|}}
+            {{#each tags as |tag|}}
                 {{> $Blocks/tag/template }}
             {{/each}}
         </div>

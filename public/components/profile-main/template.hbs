@@ -32,15 +32,15 @@
                 <span data-bind-event="showAddEvent">Добавить</span>
             </div>
         </div>
-        <div class="profile-main__group profile-main__personal-events">
+        <div class="profile-main__group">
             {{> $Blocks/event-edit/template }}
-            {{#if profile.events}}
-                {{#each profile.events as |event|}}
-                    {{> $Blocks/re--event/template }}
-                {{/each}}
-            {{else}}
-                <button class="re_btn re_btn__outline" id="add-event-btn">Добавить</button>
-            {{/if}}
+            <div class="profile-main__personal-events">
+                {{#if profile.events}}
+                    {{#each profile.events as |event|}}
+                        {{> $Blocks/re--event/template }}
+                    {{/each}}
+                {{/if}}
+            </div>
         </div>
         <div class="section">
             <div class="section__header section__header_3">
