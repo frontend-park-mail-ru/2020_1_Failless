@@ -216,7 +216,7 @@ export default class ProfileController extends Controller {
             title: data.title,
             description: data.about === '' ? null : data.about,
             limit: data.limit,
-            date: data.time === '' ? null : data.time,
+            date: data.time === '' ? null : new Date(data.time).toISOString(),
             photos: data.photos,
         };
 

@@ -176,7 +176,7 @@ export default class ProfileView extends MyView {
         if (helper) {
             helper.remove();
         }
-        event.tags = event.tags.map(tag => extendActiveTag(tag));
+        if (event.tags) {event.tags = event.tags.map(tag => extendActiveTag(tag));}
         event.class = type;
         event[type] = true;
         this.eventEditComp.element.insertAdjacentHTML('afterend', eventCardTemplate(event));
@@ -202,11 +202,14 @@ export default class ProfileView extends MyView {
         } else {
             events.forEach((event) => {
                 determineClass(event);
-                event.tags = event.tags.map((tag) => {
-                    let newTag = staticTags[tag - 1];
-                    newTag.activeClass = 'tag__container_active';
-                    return newTag;});
+                if (event.tags) {
+                    event.tags = event.tags.map((tag) => {
+                        let newTag = staticTags[tag - 1];
+                        newTag.activeClass = 'tag__container_active';
+                        return newTag;});
+                }
                 event.small = true;
+                event.date = new Date(event.date).toLocaleString();
                 personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(event));
             });
         }
