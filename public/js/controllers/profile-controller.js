@@ -69,7 +69,6 @@ export default class ProfileController extends Controller {
                     );
                     EventModel.getUserSubscriptions(profile.uid).then(
                         (subscriptions) => {
-                            console.log(subscriptions);
                             if (subscriptions) {
                                 this.view.renderSubscriptions(subscriptions).then();
                             } else {
@@ -81,8 +80,7 @@ export default class ProfileController extends Controller {
                                             event.preventDefault();
                                             Router.redirectForward('/search');
                                         });
-                                    }
-                                );
+                                });
                             }
                         },
                         (error) => {

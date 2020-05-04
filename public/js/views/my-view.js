@@ -24,7 +24,6 @@ export default class MyView extends View {
      * Render template
      */
     render() {
-        console.log(document.referrer);
         // TODO: check previous url
         //  and if it contains '/my/' - don't render this
         this.parent.insertAdjacentHTML('beforeend', myTemplate());
