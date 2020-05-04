@@ -158,6 +158,22 @@ export default class ProfileController extends Controller {
                             ]
                         },
                         {
+                            attr: 'previewImagesForEvent',
+                            events: [
+                                {type: 'change', handler: () => {this.view.eventEditComp.previewImages();}}
+                            ]
+                        },
+                        {
+                            attr: 'removePreviewImage',
+                            events: [
+                                {type: 'click', handler: (event) => {
+                                    if (event.target.matches('.image-edit__close-icon_inner')) {
+                                        this.view.eventEditComp.removePreviewImage(event.target);
+                                    }
+                                }},
+                            ]
+                        },
+                        {
                             attr: 'showAction',
                             events: [
                                 {type: 'mouseover', handler: (event) => {
@@ -213,9 +229,7 @@ export default class ProfileController extends Controller {
                 EventModel.createSmallEvent(request).then(
                     (response) => {
                         // Render results
-                        console.log(response);
-                        response.class = 'small';
-                        this.view.renderNewEvent(response);
+                        this.view.renderNewEvent(response, 'small');
                     },
                     (error) => {
                         console.log(error);
@@ -236,7 +250,6 @@ export default class ProfileController extends Controller {
                     }
                 );
             }
-            eventEditComp.cleanData();
             eventEditComp.hide();
         });
     };

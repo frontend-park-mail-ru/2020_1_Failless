@@ -171,14 +171,14 @@ export default class ProfileView extends MyView {
         }
     }
 
-    async renderNewEvent(event) {
+    async renderNewEvent(event, type) {
         let helper = this.personalEventsDiv.querySelector('span.font.font_bold.font__size_small.font__color_lg');
         if (helper) {
             helper.remove();
         }
         event.tags = event.tags.map(tag => extendActiveTag(tag));
-        event.class = 'small';
-        event.small = true;
+        event.class = type;
+        event[type] = true;
         this.eventEditComp.element.insertAdjacentHTML('afterend', eventCardTemplate(event));
     }
 

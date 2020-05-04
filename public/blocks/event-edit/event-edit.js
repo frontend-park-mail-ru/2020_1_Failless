@@ -1,7 +1,9 @@
+'use strict';
+
 import Component from 'Eventum/core/component';
 import EventEditTemplate from 'Blocks/event-edit/template.hbs';
 import tagTemplate from 'Blocks/tag/template.hbs';
-import darkOverlayTemplate from 'Blocks/dark-overlay/template.hbs';
+import imageEditTemplate from 'Blocks/image-edit/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {icons} from 'Eventum/utils/static-data';
 
@@ -19,7 +21,7 @@ export default class EventEdit extends Component {
      */
     vDOM = Object;
 
-    fields = ['photos', 'title', 'about', 'tags', 'time', 'slider'];
+    fields = ['photos', 'title', 'about', 'tags', 'time', 'slider', 'photo-helper'];
 
     /**
      * Create Button component
@@ -61,7 +63,7 @@ export default class EventEdit extends Component {
     }
 
     hide() {
-        this.cleanData();
+        this.#cleanData();
         this.element.classList.remove('event-edit_active');
     }
 
@@ -95,7 +97,7 @@ export default class EventEdit extends Component {
     retrieveData() {
         let data = {};
 
-        data.photos = this.vDOM['photos'];
+        data.photos = this.#getImages();
         data.title = this.vDOM['title'].value;
         data.about = this.vDOM['about'].value;
         data.tags = [];
@@ -126,11 +128,15 @@ export default class EventEdit extends Component {
         return data.title !== '';
     }
 
-    cleanData() {
-        let photosDiv = this.photosDiv;
-        makeEmpty(photosDiv);
-        photosDiv.insertAdjacentHTML('afterbegin', darkOverlayTemplate({text: 'Добавить'}));
-        photosDiv.insertAdjacentHTML('beforeend', icons.get('event-default'));
+    /**
+     * Remove all data from the form
+     */
+    #cleanData() {
+        let oldImages = this.photosDiv.querySelectorAll('.image-edit');
+        if (oldImages && oldImages.length !== 0) {
+            oldImages.forEach(oldImage => oldImage.remove());
+            this.photoHelperDiv.style.display = 'flex';
+        }
         this.vDOM['title'].value = '';
         this.vDOM['about'].value = '';
         this.addTags(null);
@@ -138,10 +144,72 @@ export default class EventEdit extends Component {
     }
 
     /***********************************************
+                    Image upload part
+     ***********************************************/
+    #getImages() {
+        let images = [];
+
+        // TODO: get images
+
+        return images;
+    }
+
+    /**
+     * Render uploaded images with remove button
+     * TODO: check for .png, .jpeg, .jpg
+     */
+    previewImages() {
+        // Get the files
+        const files = this.photosDiv.querySelector('input').files;
+
+        if (!files || files.length === 0) {
+            console.log('here');
+            console.log(files);
+            return;
+        }
+
+        // Hide photo helper
+        this.photoHelperDiv.style.display = 'none';
+
+        // Render first image with width = 100%
+        // Get height of the parent element
+        // Set all next images with this height and width: auto;
+        let height = 0;
+        const initReader = new FileReader();
+        initReader.addEventListener('load', (event) => {
+            this.photosDiv.insertAdjacentHTML('beforeend', imageEditTemplate({src: event.target.result}));
+            const firstImage = this.photosDiv.querySelector('img');
+            firstImage.onload = () => {
+                height = this.photosDiv.offsetHeight - 5;
+                firstImage.style.cssText = `height: ${height}px; width: auto;`;
+                for (let iii = 1; iii < files.length; iii++) {
+                    const reader = new FileReader();
+                    reader.addEventListener('load', (event) => {
+                        this.photosDiv.insertAdjacentHTML('beforeend', imageEditTemplate({src: event.target.result, style: `height: ${height}px; width: auto;`}));
+                    });
+                    reader.readAsDataURL(files[iii]);
+                }
+            };
+        });
+        initReader.readAsDataURL(files[0]);
+    }
+
+    removePreviewImage(eventTarget) {
+        eventTarget.closest('.image-edit').remove();
+        if (this.photosDiv.childElementCount === 1) {
+            this.photoHelperDiv.style.display = 'flex';
+        }
+    }
+
+    /***********************************************
                  Additional get functions
      ***********************************************/
     get photosDiv() {
         return this.vDOM['photos'];
+    }
+
+    get photoHelperDiv() {
+        return this.vDOM['photo-helper'];
     }
 
     get titleTextArea() {

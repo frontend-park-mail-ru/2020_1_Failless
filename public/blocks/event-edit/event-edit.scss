@@ -28,12 +28,28 @@
   }
 
   &__photos {
-    position: relative;
     width: 100%;
+    overflow-x: auto;
+    display: flex;
+    align-items: center;
+    background: $re--color-light-gray;
+  }
+
+  &__photo-helper {
+    width: 100%;
+    height: 100%;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: $re--color-light-gray;
+
+    & input {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
 
     & img {
       object-fit: cover;
