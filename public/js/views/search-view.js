@@ -5,6 +5,7 @@ import searchTemplate from 'Components/big-search/template.hbs';
 import searchGridTemplate from 'Blocks/search-grid/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {determineClass} from 'Blocks/re--event/event';
+import {prettifyDateTime} from 'Blocks/chat-list-item/chat-list-item';
 
 /**
  * @class create SearchView class
@@ -50,16 +51,17 @@ export default class SearchView extends View {
 
     showSearchError = (error) => {
         console.error(error);
-        console.log(this);
         this.showError(this.resultsAreaDiv, error, 'warning', null);
     };
 
     renderResults(events) {
-        console.log(events);
         const resultsArea = this.resultsAreaDiv;
         makeEmpty(resultsArea);
         if (events) {
-            events.forEach((event) => determineClass(event.Event));
+            events.forEach((event) => {
+                determineClass(event.Event);
+                event.Event.date = new Date(event.Event.date).toLocaleString();
+            });
         }
         resultsArea.insertAdjacentHTML('afterbegin', searchGridTemplate({events}));
     }

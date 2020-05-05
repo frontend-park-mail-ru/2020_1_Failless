@@ -76,6 +76,7 @@
   }
 
   &__grid {
+    width: 100%;
     column-count: 1;
     //column-gap: 0;
     counter-reset: item-counter;
@@ -113,6 +114,7 @@
     @media only screen and (max-width: $breakpoint-phone) {
       width: 100%;
       margin-top: $header-height + 15px;
+      padding: 0 $re--medium-padding;
     }
 
     @media screen and (orientation: portrait) and (min-width: 600px) {
