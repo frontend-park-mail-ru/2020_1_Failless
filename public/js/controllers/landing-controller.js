@@ -49,6 +49,13 @@ export default class LandingController extends Controller {
                         {type: 'click', handler: Router.redirectForward.bind(this, '/signup')},
                     ]
                 },
+                {
+                    attr: 'feed',
+                    many: true,
+                    events: [
+                        {type: 'click', handler: Router.redirectForward.bind(this, '/feed')},
+                    ]
+                },
             ]);
 
             this.addEventHandler(window, 'scroll', this.stickyHeader);
