@@ -21,25 +21,40 @@ export default class LoginController extends Controller {
 
         this.form = null;
         this.inputs = null;
+        this.pending = false;
+    }
+
+    destructor() {
+        this.view.destructor();
+        super.destructor();
     }
 
     action() {
         super.action();
         this.view.render();
         this.#initView();
+        this.initHandlers([
+            {
+                attr: 'login',
+                events: [
+                    {type: 'submit', handler: this.#loginSubmitHandler},
+                ]
+            },
+            {
+                attr: 'checkInput',
+                many: true,
+                events: [
+                    {type: 'focus', handler: this.removeErrorMessage},
+                    {type: 'blur', handler: this.#checkInputHandler},
+                ]
+            }
+        ]);
     }
 
     #initView() {
         let auth = document.body.getElementsByClassName('auth')[0];
         if (auth) {
             this.form = document.getElementById('form');
-            this.addEventHandler(this.form, 'submit', this.#loginSubmitHandler);
-
-            this.inputs = this.form.getElementsByClassName('input input__auth');
-            for (let input of this.inputs) {
-                this.addEventHandler(input, 'focus', this.removeErrorMessage);
-                this.addEventHandler(input, 'blur', this.#checkInputHandler);
-            }
         }
     }
 
@@ -101,15 +116,24 @@ export default class LoginController extends Controller {
     #loginSubmitHandler = (event) => {
         event.preventDefault();
 
+        if (this.pending) {
+            return;
+        }
+
         const body = this.#getFromLogin();
 
         if (!body) {
             return;
         }
 
+        this.pending = true;
+        this.view.showGlobalLoading();
+
         this.removeErrorMessage(event);
 
         UserModel.postLogin(body).then((user) => {
+            this.pending = false;
+            this.view.removeGlobalLoading();
             if (Object.prototype.hasOwnProperty.call(user, 'name')) {
                 router.redirectForward('/my/profile');
             } else {

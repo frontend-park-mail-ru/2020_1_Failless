@@ -2,7 +2,7 @@
 
 import Controller from 'Eventum/core/controller.js';
 import LandingView from 'Eventum/views/landing-view.js';
-import router from 'Eventum/core/router.js';
+import Router from 'Eventum/core/router';
 
 /**
  * @class LandingController
@@ -18,19 +18,26 @@ export default class LandingController extends Controller {
         this.view = new LandingView(parent);
     }
 
+    destructor() {
+        this.view.destructor();
+        super.destructor();
+    }
+
     /**
      * Create action
      */
     action() {
         super.action();
         this.view.render();
-
-        document.querySelectorAll('.re_btn__white').forEach((btn) => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                router.redirectForward('/signup');
-            });
-        });
+        this.initHandlers([
+            {
+                attr: 'signup',
+                many: true,
+                events: [
+                    {type: 'click', handler: Router.redirectForward.bind(this, '/signup')},
+                ]
+            },
+        ]);
 
         this.addEventHandler(window, 'scroll', this.stickyHeader);
     }

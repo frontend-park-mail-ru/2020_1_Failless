@@ -1,9 +1,9 @@
 'use strict';
 
-import createHeader from 'Eventum/core/header.js';
-import UserModel from 'Eventum/models/user-model.js';
-import {logoutRedirect} from 'Eventum/utils/user-utils.js';
-import router from 'Eventum/core/router.js';
+import createHeader from 'Eventum/core/header';
+import UserModel from 'Eventum/models/user-model';
+import {logoutRedirect} from 'Eventum/utils/user-utils';
+import router from 'Eventum/core/router';
 
 /**
  * @class Basic controller class
@@ -55,6 +55,42 @@ export default class Controller {
                 document.getElementsByClassName('header__logo gradient-text')[0],
                 'click',
                 this.#homeRedirect);
+        });
+    }
+
+    /**
+     * Add event handlers
+     *      attr - attribute of HTML element data-bind-event="attr"
+     *      many = true, in case many elements have the same eventHandler
+     *             be careful with type of event
+     *      events - that's pretty self explanatory
+     *
+     * @param eventMap {Array<{
+     *      attr: string,
+     *      many: boolean,
+     *      events: Array<{
+     *          type: string,
+     *          handler: Function,
+     *      }>
+     * }>}
+     */
+    initHandlers(eventMap) {
+        eventMap.forEach((eMap) => {
+            if (eMap.many) {
+                // TODO: add result of querySelector to view.vDOM
+                const nodes = document.querySelectorAll(`[data-bind-event="${eMap.attr}"]`);
+                nodes.forEach((node) => {
+                    eMap.events.forEach((ev) => {
+                        this.addEventHandler(node, ev.type, ev.handler);
+                    });
+                });
+            } else {
+                // TODO: add result of querySelector to view.vDOM
+                const node = document.querySelector(`[data-bind-event="${eMap.attr}"]`);
+                eMap.events.forEach((ev) => {
+                    this.addEventHandler(node, ev.type, ev.handler);
+                });
+            }
         });
     }
 
@@ -192,7 +228,7 @@ export default class Controller {
         const currentScroll = window.pageYOffset;
 
         // Reached top
-        if (currentScroll === 0) {
+        if (currentScroll <= 0) {
             this.header.classList.remove(this.scrollUp);
             return;
         }

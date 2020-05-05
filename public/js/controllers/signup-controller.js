@@ -16,6 +16,12 @@ export default class SignUpController extends Controller {
         this.view = new SignUpView(parent);
         this.form = null;
         this.inputs = null;
+        this.pending = false;
+    }
+
+    destructor() {
+        this.view.destructor();
+        super.destructor();
     }
 
     /**
@@ -25,6 +31,22 @@ export default class SignUpController extends Controller {
         super.action();
         this.view.render();
         this.#initView();
+        this.initHandlers([
+            {
+                attr: 'signup',
+                events: [
+                    {type: 'submit', handler: this.#signUpSubmitHandler},
+                ]
+            },
+            {
+                attr: 'checkInput',
+                many: true,
+                events: [
+                    {type: 'focus', handler: this.removeErrorMessage},
+                    {type: 'blur', handler: this.#checkInputHandler},
+                ]
+            }
+        ]);
     }
 
     /**
@@ -34,16 +56,6 @@ export default class SignUpController extends Controller {
         let auth = document.body.getElementsByClassName('auth')[0];
         if (auth) {
             this.form = document.getElementById('form');
-            this.addEventHandler(this.form, 'submit', this.#signUpSubmitHandler);
-            // this.form.addEventListener('submit', this.#signUpSubmitHandler.bind(this));
-
-            this.inputs = this.form.getElementsByClassName('input input__auth');
-            for (let input of this.inputs) {
-                this.addEventHandler(input, 'focus', this.removeErrorMessage.bind(this));
-                this.addEventHandler(input, 'blur', this.#checkInputHandler);
-                // input.addEventListener('focus', this.removeErrorMessage.bind(this));
-                // input.addEventListener('blur', this.#checkInputHandler.bind(this));
-            }
         }
     }
 
@@ -83,21 +95,36 @@ export default class SignUpController extends Controller {
     #signUpSubmitHandler = (event) => {
         event.preventDefault();
 
+        if (this.pending) {
+            return;
+        }
+
         const body = this.#getFromSignUp();
         if (!body) {
             console.log('do nothing');
             return;
         }
-
         this.removeErrorMessage(event);
 
-        UserModel.postSignUp(body).then((response) => {
-            if (Object.prototype.hasOwnProperty.call(response, 'name')) {
-                router.redirectForward('/login');
-            } else {
-                this.view.addErrorMessage(this.form, [response.message]);
-            }
-        }).catch(reason => console.log(reason));
+        this.pending = true;
+        this.view.showGlobalLoading();
+
+        UserModel.postSignUp(body).then(
+            (response) => {
+                this.pending = false;
+                this.view.removeGlobalLoading();
+
+                if (Object.prototype.hasOwnProperty.call(response, 'name')) {
+                    router.redirectForward('/login');
+                } else {
+                    this.view.addErrorMessage(this.form, [response.message]);
+                }
+            },
+            (reason) => {
+                console.log(reason);
+                this.pending = false;
+                this.view.removeGlobalLoading();
+            });
     };
 
     /**

@@ -21,7 +21,7 @@ export default class NetworkModule {
             });
         }
         const token = getCookie('csrf');
-        api = api === null ? settings.api : api
+        api = api === null ? settings.api : api;
         return fetch(settings.url + ':' + settings.port + api + path, {
             method: 'GET',
             credentials: 'include',
@@ -48,7 +48,7 @@ export default class NetworkModule {
             });
         }
         const token = getCookie('csrf');
-        api = api === null ? settings.api : api
+        api = api === null ? settings.api : api;
         return fetch(settings.url + ':' + settings.port + api + path, {
             method: 'POST',
             mode: 'cors',
@@ -69,6 +69,7 @@ export default class NetworkModule {
     static fetchPut = ({
         path = '/',
         body = null,
+        api = null,
     } = {}) => {
         if (path.includes('undefined')) {
             return new Promise((resolve, reject) => {
@@ -76,7 +77,7 @@ export default class NetworkModule {
             });
         }
         const token = getCookie('csrf');
-        return fetch(settings.url + ':' + settings.port + settings.api + path, {
+        return fetch(settings.url + ':' + settings.port + api + path, {
             method: 'PUT',
             mode: 'cors',
             credentials: 'include',

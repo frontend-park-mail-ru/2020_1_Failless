@@ -17,6 +17,9 @@ export default class LandingView extends View {
         this.parent = parent;
     }
 
+    destructor() {
+    }
+
     /**
      * Render template
      */

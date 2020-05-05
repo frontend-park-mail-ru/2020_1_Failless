@@ -10,7 +10,6 @@
                         <select class="edit-field__input edit-field__input_select">
                             {{#each options as |tag| }}
                                 {{#if ../isTag}}
-                                    {{log this}}
                                     <option value="{{ tag_id }}">{{ name }}</option>
                                 {{else}}
                                     <option value="{{ this }}">{{ this }}</option>

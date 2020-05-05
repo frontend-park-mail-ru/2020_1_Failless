@@ -22,6 +22,11 @@ export default class SearchController extends Controller {
         this.uid = null;
     }
 
+    destructor() {
+        this.view.destructor();
+        super.destructor();
+    }
+
     /**
      * Create action and render random events
      */
@@ -53,8 +58,26 @@ export default class SearchController extends Controller {
                     });
             }
         );
-        this.addEventHandler(document.querySelector('#searchInput'), 'keydown', this.#completeRequest);
-        this.addEventHandler(document.querySelector('.big-search__results'), 'click', this.#followEvent);
+        this.initHandlers([
+            {
+                attr: 'sendRequestOnEnter',
+                events: [
+                    {type: 'keydown', handler: this.#completeRequest},
+                ]
+            },
+            {
+                attr: 'followEvent',
+                events: [
+                    {type: 'click', handler: this.#followEvent},
+                ]
+            },
+            {
+                attr: 'sendRequestOnClick',
+                events: [
+                    {type: 'click', handler: this.#completeRequest},
+                ]
+            },
+        ]);
     }
 
     /**
@@ -62,14 +85,15 @@ export default class SearchController extends Controller {
      * @param {KeyboardEvent} event - key-press event
      */
     #completeRequest = (event) => {
-        if (event.code === 'Enter') {
+        if (event.code === 'Enter' || event.type === 'click') {
             event.preventDefault();
             const msg = document.querySelector('.big-search__message');
             if (msg) {
                 msg.remove();
             }
             this.removeErrorMessage(event);
-            EventModel.getEvents({uid: this.uid, page: this.pageDownloaded, limit: 10, query: event.target.value}).then(
+            let payload = document.querySelector('#searchInput').value;
+            EventModel.getEvents({uid: this.uid, page: this.pageDownloaded, limit: 10, query: payload}).then(
                 (events) => {
                     if (!events) {
                         this.view.renderNotFound();

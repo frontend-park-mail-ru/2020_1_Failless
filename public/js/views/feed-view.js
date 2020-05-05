@@ -26,6 +26,11 @@ export default class FeedView extends View {
         this.columns = [];
     }
 
+    destructor() {
+        this.data = null;
+        this.columns = [];
+    }
+
     /**
      * Render initial template
      * @param {Array} selectedTags
@@ -59,7 +64,9 @@ export default class FeedView extends View {
         if (data) {
             this.data = {...data};
             if (this.data.tags) {
-                this.data.tags.forEach((tag) => {tag.active_class = 'tag__container_active'});
+                this.data.tags.forEach((tag) => {
+                    tag.active_class = 'tag__container_active';
+                });
             }
         } else {
             this.data = data;
@@ -75,8 +82,8 @@ export default class FeedView extends View {
         makeEmpty(this.columns[2]);
 
         this.columns[2].innerHTML = feedRightTemplate({
-            personalEvents: events.personalEvents??null,
-            subscriptions:  events.subscriptions??null,
+            personalEvents: events.personalEvents ?? null,
+            subscriptions: events.subscriptions ?? null,
         });
     }
 
@@ -134,10 +141,12 @@ export default class FeedView extends View {
         if (!data) {
             return;
         }
-        if (data.photos) {
-            data.photos.forEach((item) => getPageUrl(item, 'users'));
+        if (data.photos !== undefined && data.photos !== null) {
+            let photos = [];
+            data.photos.forEach((item) => photos.push(getPageUrl(item, 'users')));
+            data.photos = photos;
         } else {
             data.photos = [getPageUrl('default.png', 'users')];
         }
-    }
+    };
 }

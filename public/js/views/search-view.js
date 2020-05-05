@@ -2,7 +2,6 @@
 
 import View from 'Eventum/core/view';
 import searchTemplate from 'Components/big-search/template.hbs';
-import bigEventTemplate from 'Blocks/big-event/template.hbs';
 import searchGridTemplate from 'Blocks/search-grid/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 
@@ -18,6 +17,10 @@ export default class SearchView extends View {
     constructor(parent) {
         super(parent);
         this.parent = parent;
+        this.resultsArea = null;
+    }
+
+    destructor() {
         this.resultsArea = null;
     }
 
