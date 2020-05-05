@@ -109,6 +109,45 @@ export default class EventModel extends Model {
         });
     }
 
+    /**
+     *
+     * @param body {{
+     *      uid: Number,
+     *      title: string,
+     *      description: string|null,
+     *      tags: Array<{Number}>|null,
+     *      date: string|null,
+     *      photos: Array<{string}>|null,
+     * }}
+     * @return {Promise<unknown>}
+     */
+    static createSmallEvent(body) {
+        return NetworkModule.fetchPost({path: '/event/small', body: body}).then((response) => {
+            if (response.status > 499) {
+                throw new Error('Server error');
+            }
+            return response.json();
+        },
+        (error) => {
+            throw new Error(error);
+        });
+    }
+
+    /**
+     * Send event to backend
+     * @param body {{
+     *      uid: Number,
+     *      title: string,
+     *      description: string|null,
+     *      type: number|null,
+     *      private: bool|null,
+     *      tag_id: Number,
+     *      limit: Number,
+     *      date: string|null,
+     *      photos: string|null,
+     * }}
+     * @return {Promise<unknown>}
+     */
     static createEvent(body) {
         return NetworkModule.fetchPost({path: '/event/new', body: body}).then((response) => {
             if (response.status > 499) {
@@ -140,11 +179,10 @@ export default class EventModel extends Model {
     }
 
     static getUserEvents(uid) {
-        return Promise.resolve(null);
         if (!uid) {
             throw new Error('Invalid profile id');
         }
-        return NetworkModule.fetchGet({path: `/event/${id}/follow`}).then(
+        return NetworkModule.fetchGet({path: '/event/small', api: settings.api}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
@@ -183,6 +221,25 @@ export default class EventModel extends Model {
      */
     static followEvent(uid, eid, type) {
         return NetworkModule.fetchPost({path: `/event/${eid}/follow`, body: {uid: Number(uid), eid: Number(eid), type: type}}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
+    /**
+     *
+     * @param {Number} uid
+     * @param {Number} eid
+     * @param type
+     */
+    static unfollowEvent(uid, eid, type) {
+        return NetworkModule.fetchPost({path: `/event/${eid}/unfollow`, body: {uid: Number(uid), eid: Number(eid), type: type}}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');

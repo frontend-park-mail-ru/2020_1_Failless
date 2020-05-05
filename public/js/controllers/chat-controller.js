@@ -5,7 +5,8 @@ import ChatView from 'Eventum/views/chat-view';
 import Controller from 'Eventum/core/controller';
 import Router from 'Eventum/core/router';
 import UserModel from 'Eventum/models/user-model';
-import {resizeTextArea, toggleChatOnMobile} from 'Blocks/chat/chat';
+import {resizeTextArea} from 'Eventum/utils/basic';
+import {toggleChatOnMobile} from 'Blocks/chat/chat';
 import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item';
 import {detectMobile} from 'Eventum/utils/basic';
 import {CircleRedirect} from 'Blocks/circle/circle';
@@ -179,7 +180,7 @@ export default class ChatController extends Controller {
                 this.view.activateChatUI(name).then();
                 // Append necessary fields
                 messages.forEach((message) => {
-                    message.own = message.uid === this.uid;
+                    message.side = message.uid === this.uid ? 'right' : 'left';
                     message.new = false;
                     message.body = message.message;
                 });
@@ -229,7 +230,7 @@ export default class ChatController extends Controller {
         if (activeChat && message.chat_id === activeChat.chat_id) {
             this.view.renderMessage({
                 body: message.message,
-                own: this.uid === message.uid,
+                side: this.uid === message.uid ? 'right' : 'left',
                 new: true,
             });
         } else {

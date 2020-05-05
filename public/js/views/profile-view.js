@@ -8,6 +8,11 @@ import profileMainTemplate from 'Components/profile-main/template.hbs';
 import eventCardTemplate from 'Blocks/event/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
+import {determineClass} from 'Blocks/event/event';
+import EventEdit from 'Blocks/event-edit/event-edit';
+import {staticTags} from 'Eventum/utils/static-data';
+import {extendActiveTag} from 'Blocks/tag/tag';
+import {prettifyDateTime} from 'Blocks/chat-list-item/chat-list-item';
 
 /**
  * @class create ProfileView class
@@ -21,8 +26,6 @@ export default class ProfileView extends MyView {
     constructor(parent) {
         super(parent);
         this.parent = parent;
-        this.subscriptions = null;
-        this.personalEvents = null;
 
         this.vDOM = {
             leftColumn: {
@@ -32,8 +35,15 @@ export default class ProfileView extends MyView {
             mainColumn: {
                 comp: null,
                 element: null,
-                subscriptions: null,
-                personalEvents: null,
+                subscriptions: {
+                    comp: null,
+                    element: null,
+                },
+                personalEvents: {
+                    comp: null,
+                    element: null,
+                    event_edit: null, // component itself
+                },
             },
         };
     }
@@ -58,12 +68,17 @@ export default class ProfileView extends MyView {
 
     get subscriptionsDiv() {
         this.setDOMProfileElements();
-        return this.subscriptions;
+        return this.vDOM.mainColumn.subscriptions.element;
     }
 
     get personalEventsDiv() {
         this.setDOMProfileElements();
-        return this.personalEvents;
+        return this.vDOM.mainColumn.personalEvents.element;
+    }
+
+    get eventEditComp() {
+        this.setDOMProfileElements();
+        return this.vDOM.mainColumn.personalEvents.event_edit;
     }
 
     /**
@@ -89,6 +104,10 @@ export default class ProfileView extends MyView {
      */
     render(profile) {
         super.render();
+
+        if (profile.events) {
+            profile.events.forEach((event) => determineClass(event));
+        }
 
         // let allowEdit = true;
         if (!profile.avatar.path) {
@@ -128,6 +147,13 @@ export default class ProfileView extends MyView {
             data_bind: 'showSettings',
         });
 
+        const addEventButton = new Button({
+            style: 're_btn re_btn__filled',
+            state: null,
+            text: 'Добавить',
+            data_bind: 'addNewEventOnClick',
+        });
+
         document.getElementsByClassName('my__left-column-body')[0].insertAdjacentHTML(
             'beforeend', profileLeftTemplate({
                 profile: profile,
@@ -142,26 +168,69 @@ export default class ProfileView extends MyView {
                 title: 'Профиль',
                 url: `${settings.aws}/users`,
                 profile: profile,
+                add_event_button: addEventButton.data,
+                select_options: Array(14).fill(undefined, undefined, undefined).map((_, idx) => 2 + idx),
             })
+        );
+
+        this.vDOM.mainColumn.personalEvents.event_edit = new EventEdit(
+            document.querySelector('.event-edit')
         );
     }
 
     setDOMProfileElements() {
-        while (!this.subscriptions) {
-            this.subscriptions = document.querySelector('.profile-main__subscriptions');
+        while (!this.vDOM.mainColumn.subscriptions.element) {
+            this.vDOM.mainColumn.subscriptions.element = document.querySelector('.profile-main__subscriptions');
         }
-        while (!this.personalEvents) {
-            this.personalEvents = document.querySelector('.profile-main__personal-events');
+        while (!this.vDOM.mainColumn.personalEvents.element) {
+            this.vDOM.mainColumn.personalEvents.element = document.querySelector('.profile-main__personal-events');
+        }
+        while (!this.vDOM.mainColumn.personalEvents.event_edit.element) {
+            this.vDOM.mainColumn.personalEvents.event_edit.element = document.querySelector('.event-edit');
         }
     }
 
+    async renderNewEvent(event, type) {
+        let helper = this.personalEventsDiv.querySelector('span.font.font_bold.font__size_small.font__color_lg');
+        if (helper) {
+            helper.remove();
+        }
+        if (event.tags) {event.tags = event.tags.map(tag => extendActiveTag(tag));}
+        event.class = type;
+        event[type] = true;
+        event.date = new Date(event.date).toLocaleString();
+        this.eventEditComp.element.insertAdjacentHTML('afterend', eventCardTemplate(event));
+    }
+
+    /**
+     *
+     * @param events {{
+     *     eid: Number,
+     *     uid: Number,
+     *     title: string,
+     *     description: string|null,
+     *     tags: Array<{Number}>,
+     *     date: string
+     * }}
+     * @return {Promise<void>}
+     */
     async renderEvents(events) {
-        this.setDOMProfileElements();
-        if (!events) {
-            this.personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
+        const personalEvents = this.personalEventsDiv;
+        makeEmpty(personalEvents);
+        if (!events || events.length === 0) {
+            personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
         } else {
             events.forEach((event) => {
-                this.personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(event));
+                determineClass(event);
+                if (event.tags) {
+                    event.tags = event.tags.map((tag) => {
+                        let newTag = staticTags[tag - 1];
+                        newTag.activeClass = 'tag__container_active';
+                        return newTag;});
+                }
+                event.small = true;
+                event.date = new Date(event.date).toLocaleString();
+                personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(event));
             });
         }
     }
@@ -177,9 +246,15 @@ export default class ProfileView extends MyView {
      * @return {Promise<void>}
      */
     async renderSubscriptions(subscriptions) {
+        if (!subscriptions) {
+            this.renderEmptySubscriptions();
+            return;
+        }
         const subsArea = this.subscriptionsDiv;
         makeEmpty(subsArea);
         subscriptions.forEach((sub) => {
+            determineClass(sub);
+            sub.followed = true;
             subsArea.insertAdjacentHTML('beforeend', eventCardTemplate(sub));
         });
     }
@@ -205,8 +280,19 @@ export default class ProfileView extends MyView {
         this.showError(this.subscriptionsDiv, 'Error in subscriptions', 'warning', null);
     }
 
-    drawEventCard(eventInfo) {
-        document.querySelector('.profile-main__group').insertAdjacentHTML(
-            'afterbegin', eventCardTemplate(eventInfo));
+    /**
+     * Remove event from subscriptions
+     * @param {{HTMLLinkElement}} link
+     * @return {Promise<void>}
+     */
+    async removeSubscriptionByLink(link) {
+        let eventToRemove = link.closest('.event');
+        eventToRemove.style.cssText = 'transform: scale(0);';
+        setTimeout(() => {
+            eventToRemove.remove();
+            if (this.subscriptionsDiv.childElementCount === 0) {
+                this.renderEmptySubscriptions();
+            }
+        }, 300);
     }
 }

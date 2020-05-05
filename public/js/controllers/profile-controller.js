@@ -3,17 +3,17 @@
 import ProfileView from 'Eventum/views/profile-view';
 import UserModel from 'Eventum/models/user-model';
 import ProfileEditView from 'Eventum/views/profile-edit-view';
-import AddEventView from 'Eventum/views/add-event-view';
 import ModalView from 'Eventum/views/modal-view';
 import {staticTags} from 'Eventum/utils/static-data';
 import {highlightTag} from 'Eventum/utils/tag-logic';
 import {logoutRedirect} from 'Eventum/utils/user-utils';
 import EventModel from 'Eventum/models/event-model';
 import editTemplate from 'Blocks/edit-field/template.hbs';
-import {makeEmpty} from 'Eventum/utils/basic';
+import {makeEmpty, resizeTextArea} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
 import Controller from 'Eventum/core/controller';
 import {CircleRedirect} from 'Blocks/circle/circle';
+import {toggleActionText} from 'Blocks/event/event';
 
 /**
  * @class ProfileController
@@ -31,7 +31,6 @@ export default class ProfileController extends Controller {
         this.image = '';
         this.user = null;
         this.activeModalWindow = null;
-        this.addEventView = null;
         EventModel.getTagList().then((tags) => {
             this.localTags = [...tags];
         }).catch((onerror) => {
@@ -61,35 +60,12 @@ export default class ProfileController extends Controller {
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
                     EventModel.getUserEvents(profile.uid).then(
-                        (events) => {
-                            console.log(events);
-                            this.view.renderEvents(events);
-                        },
-                        (error) => {
-                            this.view.renderEventsError();
-                        }
+                        (events) => {this.view.renderEvents(events);},
+                        (error) => {this.view.renderEventsError(error);}
                     );
                     EventModel.getUserSubscriptions(profile.uid).then(
-                        (subscriptions) => {
-                            console.log(subscriptions);
-                            if (subscriptions) {
-                                this.view.renderSubscriptions(subscriptions).then();
-                            } else {
-                                this.view.renderEmptySubscriptions().then(() => {
-                                    this.addEventHandler(
-                                        this.view.subscriptions.querySelector('.error__button'),
-                                        'click',
-                                        (event) => {
-                                            event.preventDefault();
-                                            Router.redirectForward('/search');
-                                        });
-                                    }
-                                );
-                            }
-                        },
-                        (error) => {
-                            this.view.renderSubscriptionsError().then();
-                        }
+                        (subscriptions) => {this.view.renderSubscriptions(subscriptions);},
+                        (error) => {this.view.renderSubscriptionsError(error);}
                     );
                     (async () => {this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');})();
                     this.user = profile;
@@ -120,7 +96,8 @@ export default class ProfileController extends Controller {
                             ]
                         },
                         {
-                            attr: 'tagsRedirect',
+                            attr: 'showModalTags',
+                            many: true,
                             events: [
                                 {type: 'click', handler: this.#showModalTags},
                             ]
@@ -134,13 +111,67 @@ export default class ProfileController extends Controller {
                         {
                             attr: 'showAddEvent',
                             events: [
-                                {type: 'click', handler: this.#createEventPopup},
+                                {type: 'click', handler: () => {this.view.eventEditComp.show();}},
                             ]
                         },
                         {
                             attr: 'circleRedirect',
                             events: [
                                 {type: 'click', handler: CircleRedirect},
+                            ]
+                        },
+                        {
+                            attr: 'resizeTextArea',
+                            many: true,
+                            events: [
+                                {type: 'input', handler: resizeTextArea},
+                            ]
+                        },
+                        {
+                            attr: 'addNewEventOnClick',
+                            events: [
+                                {type: 'click', handler: this.#submitNewEvent}
+                            ]
+                        },
+                        {
+                            attr: 'cancelNewEvent',
+                            events: [
+                                {type: 'click', handler: () => {this.view.eventEditComp.hide();}}
+                            ]
+                        },
+                        {
+                            attr: 'previewImagesForEvent',
+                            events: [
+                                {type: 'change', handler: () => {this.view.eventEditComp.previewImages();}}
+                            ]
+                        },
+                        {
+                            attr: 'removePreviewImage',
+                            events: [
+                                {type: 'click', handler: (event) => {
+                                    if (event.target.matches('.image-edit__close-icon_inner')) {
+                                        this.view.eventEditComp.removePreviewImage(event.target);
+                                    }
+                                }},
+                            ]
+                        },
+                        {
+                            attr: 'showAction',
+                            events: [
+                                {type: 'mouseover', handler: (event) => {
+                                    if (event.target.matches('.event__link')) {
+                                        toggleActionText(event.target, 'Не идти');
+                                    }}},
+                                {type: 'click', handler: (event) => {
+                                    if (event.target.matches('.event__link')) {
+                                        this.#unfollowEvent(event);
+                                    } else if (event.target.matches('button.error__button')) {
+                                        Router.redirectForward('/search');
+                                    }}},
+                                {type: 'mouseout', handler: (event) => {
+                                    if (event.target.matches('.event__link')) {
+                                        toggleActionText(event.target, 'Вы идёте');
+                                    }}},
                             ]
                         },
                     ]);
@@ -152,6 +183,74 @@ export default class ProfileController extends Controller {
                 console.error(onerror);
             });
     }
+
+    /**
+     *
+     */
+    #unfollowEvent = (event) => {
+        UserModel.getProfile().then(
+            (profile) => {
+                let type = event.target.previousElementSibling.classList.contains('event__circle_mid') ? 'mid-event' : 'big-event';
+                EventModel.unfollowEvent(profile.uid, event.target.getAttribute('data-eid'), type)
+                    .then((response) => {this.view.removeSubscriptionByLink(event.target);});
+            },
+            error => console.log(error)
+        );
+
+    };
+
+    #submitNewEvent = (event) => {
+        // Validate data
+        const eventEditComp = this.view.eventEditComp;
+        let data = eventEditComp.retrieveData();
+        if (!eventEditComp.validateData(data)) {
+            // TODO: show error
+            console.log('title is empty');
+            return;
+        }
+
+        // Submit form to backend
+        let request = {
+            title: data.title,
+            description: data.about === '' ? null : data.about,
+            limit: data.limit,
+            date: data.time === '' ? null : new Date(data.time).toISOString(),
+            photos: data.photos,
+        };
+
+        // TODO: Show loading
+        UserModel.getProfile().then(profile => {
+            request.uid = +profile.uid;
+            if (data.limit === 2) {
+                request.tags = data.tags;
+
+                EventModel.createSmallEvent(request).then(
+                    (response) => {
+                        // Render results
+                        this.view.renderNewEvent(response, 'small');
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+            } else {
+                request.tag_id = data.tags[0];
+                request.private = true;
+                request.type = null;
+                EventModel.createEvent(request).then(
+                    (response) => {
+                        // Render results
+                        console.log(response);
+                        this.view.renderNewEvent(data);
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+            }
+            eventEditComp.hide();
+        });
+    };
 
     #handleFile = (event) => {
         if (event.target.files && event.target.files[0]) {
@@ -264,6 +363,7 @@ export default class ProfileController extends Controller {
             }).catch(reason => console.error(reason));
     };
 
+    // TODO: move it to view
     /**
      * Show modal window with tags settings
      * @param {Event} event
@@ -271,32 +371,20 @@ export default class ProfileController extends Controller {
     #showModalTags = (event) => {
         event.preventDefault();
         this.editView = new ModalView(document.body);
-
-        // Rendering active tags in modal view
-        let activeTags = document.body.querySelectorAll('.tag__container.tag__container_active');
-        let activeTagsTitles = [];
-        for (let iii = 0; iii < activeTags.length; iii++) {
-            activeTagsTitles.push(activeTags[iii].firstElementChild.innerText);
-        }
-        this.localTags.forEach((tag) => {
-            tag.editable = true;
-            if (activeTagsTitles.includes(tag.name)) {
-                tag.activeClass = 'tag__container_active';
-            }
-        });
-        console.log(this.localTags);
+        let tags = staticTags.map((tag) => {tag.editable = true; tag.activeClass = ''; return tag;});
+        console.log(tags);
         this.editView.render({
             title: 'Ваши теги',
-            tags: this.localTags,
+            tags: tags,
             last_buttons: [{title: 'ОК'}]
         });
 
+        // Adding event handlers
         let modalBG = document.body.querySelector('.modal__bg');
         modalBG.addEventListener('click', (event) => {
             event.preventDefault();
             event.stopPropagation();
         });
-
         this.activeModalWindow = modalBG.firstElementChild;
         this.activeModalWindow.querySelector('.modal__body').addEventListener(
             'click', highlightTag, false);
@@ -307,10 +395,49 @@ export default class ProfileController extends Controller {
                 this.editView = null;
             });
 
+        let activeTags = null;
+        let submitHandler = null;
+        if (event.target.matches('a')) {
+            activeTags = this.view.leftColumnDiv.querySelectorAll('.tag__container.tag__container_active');
+            submitHandler = this.#submitTagsHandler;
+        } else {
+            activeTags = this.view.eventEditComp.element.querySelectorAll('.tag__container');
+            submitHandler = (event) => {
+                event.preventDefault();
+                let finalTags = [];
+                let activatedTags = this.activeModalWindow.querySelectorAll('.tag__container_active');
+                if (activatedTags && activatedTags.length > 0) {
+                    activatedTags.forEach((tag) => {
+                        finalTags.push({
+                            activeClass: 'tag__container_active',
+                            tag_id: tag.firstElementChild.getAttribute('data-id'),
+                            name: tag.firstElementChild.innerText.slice(1),
+                        });
+                    });
+                }
+                this.view.eventEditComp.addTags(finalTags);
+                this.editView.clear();
+                this.editView = null;
+            };
+        }
+
+        // Rendering active tags in modal view
+        if (activeTags && activeTags.length > 0) {
+            console.log(activeTags);
+            let activeTagIds = [];
+            activeTags.forEach((activeTag) => {activeTagIds.push(+activeTag.firstElementChild.getAttribute('data-id'));});
+            this.activeModalWindow.querySelectorAll('.tag__container').forEach((tag) => {
+                if (activeTagIds.includes(+tag.firstElementChild.getAttribute('data-id'))) {
+                    tag.classList.add('tag__container_active');
+                }
+            });
+        }
+
+        // Submit event handler
         this.activeModalWindow.querySelector(
             '.modal__footer').querySelector(
             '.re_btn.re_btn__outline').addEventListener(
-            'click', this.#submitTagsHandler.bind(this), false);
+            'click', submitHandler, false);
     };
 
     #submitTagsHandler = (event) => {
@@ -444,36 +571,4 @@ export default class ProfileController extends Controller {
             }
         }
     };
-
-    #createEventPopup(event) {
-        event.preventDefault();
-        this.addEventView = new AddEventView(this.parent, this.localTags);
-        this.addEventView.render();
-        const actionButtons = document.querySelector('.edit-field__buttons');
-        this.addEventHandler(actionButtons.lastElementChild, 'click', this.#removeProfileSettings);
-        const closeBtn = document.querySelector('.profile-edit__icon');
-        this.addEventHandler(closeBtn, 'click', this.#removeProfileSettings);
-        this.addEventHandler(actionButtons.firstElementChild, 'click', (event) => {
-            event.preventDefault();
-            const form = document.querySelector('.profile-edit__form');
-            const fields = form.querySelectorAll('.edit-field__input');
-            const body = {
-                uid: this.user.uid,
-                title: fields[0].value,
-                description: fields[1].value,
-                tag_id: +fields[2].value,
-                date: fields[3].value,
-                limit: +fields[4].value,
-                // photos: form[4].photos,
-            };
-
-            EventModel.createEvent(body).then((event) => {
-                this.#removeProfileSettings(null);
-                this.view.drawEventCard(event);
-                // TODO: draw help window 'OK'
-            }).catch((onerror) => {
-                console.log(onerror);
-            });
-        });
-    }
 }

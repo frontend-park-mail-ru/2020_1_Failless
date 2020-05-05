@@ -7,7 +7,6 @@
 @import "components/profile-edit/profile-edit";
 
 @import "blocks/avatar/avatar";
-@import "blocks/big-event/big-event";
 @import "blocks/btn/btn";
 @import "blocks/chat/chat";
 @import "blocks/chat-list/chat-list";
@@ -15,9 +14,13 @@
 @import "blocks/chat-message/chat-message";
 @import "blocks/circle/circle";
 @import "blocks/creator-card/creator-card";
+@import "blocks/dark-overlay/dark-overlay";
 @import "blocks/edit-field/edit-field";
 @import "blocks/error/error";
 @import "blocks/event/event";
+@import "blocks/image-edit/image-edit";
+@import "blocks/event/event";
+@import "blocks/event-edit/event-edit";
 @import "blocks/feed-center-users/feed-center-users";
 @import "blocks/feed-right/feed-right";
 @import "blocks/header/header";
@@ -45,6 +48,15 @@
 
 * {
   box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+}
+
+html {
+    -ms-overflow-style: none;  /* IE 10+ */
+    scrollbar-width: none; /* Firefox */
 }
 
 body {

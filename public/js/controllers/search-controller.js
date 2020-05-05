@@ -4,7 +4,7 @@ import Controller from 'Eventum/core/controller';
 import SearchView from 'Eventum/views/search-view';
 import EventModel from 'Eventum/models/event-model';
 import UserModel from 'Eventum/models/user-model';
-import {changeActionText} from 'Blocks/big-event/big-event';
+import {changeActionText} from 'Blocks/event/event';
 
 /**
  * @class SearchController
@@ -19,7 +19,6 @@ export default class SearchController extends Controller {
         super(parent);
         this.view = new SearchView(parent);
         this.pageDownloaded = 1;
-        this.uid = null;
     }
 
     destructor() {
@@ -33,29 +32,11 @@ export default class SearchController extends Controller {
     action() {
         super.action();
         this.view.render();
-        UserModel.getProfile().then(
-            // User authorized
-            (profile) => {
-                this.uid = profile.uid;
-                EventModel.getEvents({uid: profile.uid, page: 1, limit: 10}).then(
-                    (events) => {
-                        this.view.renderResults(events);
-                    },
-                    (error) => {
-                        this.view.showSearchError(error);
-                        console.error(error);
-                    });
-            },
-            // User is not authorized
-            () => {
-                EventModel.getEvents({page: 1, limit: 10}).then(
-                    (events) => {
-                        this.view.renderResults(events);
-                    },
-                    (error) => {
-                        this.view.showSearchError(error);
-                        console.error(error);
-                    });
+        UserModel.getProfile().finally(
+            (profile) => { // User authorized
+                EventModel.getEvents({uid: profile ? profile.uid : null, page: 1, limit: 10})
+                    .then((events) => {this.view.renderResults(events);})
+                    .catch((error) => {this.view.showSearchError(error);});
             }
         );
         this.initHandlers([
@@ -92,22 +73,27 @@ export default class SearchController extends Controller {
                 msg.remove();
             }
             this.removeErrorMessage(event);
-            let payload = document.querySelector('#searchInput').value;
-            EventModel.getEvents({uid: this.uid, page: this.pageDownloaded, limit: 10, query: payload}).then(
-                (events) => {
-                    if (!events) {
-                        this.view.renderNotFound();
-                    } else if (Object.prototype.hasOwnProperty.call(events, 'message')) {
-                        this.view.addErrorMessage(document.querySelector('.big-search__icon'), [events.message]);
-                    } else {
-                        ++this.pageDownloaded;
-                        this.view.renderResults(events);
-                    }
-                },
-                (error) => {
-                    this.view.showSearchError(error);
-                    console.error(error);
-                });
+            let payload = document.querySelector('#searchInput').value; // TODO: fix this.uid
+            UserModel.getProfile()
+                .then((profile) => {
+                    return EventModel.getEvents({
+                        uid: profile.uid,
+                        page: this.pageDownloaded,
+                        limit: 10,
+                        query: payload
+                    });})
+                .then(
+                    (events) => {
+                        if (!events) {
+                            this.view.renderNotFound();
+                        } else if (Object.prototype.hasOwnProperty.call(events, 'message')) {
+                            this.view.addErrorMessage(document.querySelector('.big-search__icon'), [events.message]);
+                        } else {
+                            ++this.pageDownloaded;
+                            this.view.renderResults(events);
+                        }
+                    },
+                    (error) => {this.view.showSearchError(error);});
         }
     };
 
@@ -127,7 +113,7 @@ export default class SearchController extends Controller {
                 EventModel.followEvent(
                     profile.uid,
                     event.target.getAttribute('data-eid'),
-                    event.target.getAttribute('data-etype'))
+                    event.target.previousElementSibling.classList.contains('event__circle_mid') ? 'mid-event' : 'big-event')
                     .then(
                         (response) => {
                             changeActionText(event.target, 'green', 'Вы идёте');

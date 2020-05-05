@@ -11,7 +11,7 @@ import {images} from 'Eventum/utils/static-data';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {scrollChatDown} from 'Blocks/chat/chat';
 import {showMessage} from 'Blocks/chat-message/chat-message';
-import {setChatListItemAsUnread} from 'Blocks/chat-list-item/chat-list-item';
+import {prettifyDateTime, setChatListItemAsUnread} from 'Blocks/chat-list-item/chat-list-item';
 
 /**
  * @class create ChatView class
@@ -176,14 +176,8 @@ export default class ChatView extends MyView {
                 chat.avatar = images.get('user-default');
             }
             chat.new = !!chat.unseen;
-            if (!chat.last_msg) {
-                chat.last_msg = 'Отправьте первое сообщение!';
-                chat.unseen = true;
-                chat.last_date = '';
-            } else {
-                chat.last_msg = chat.last_msg.substring(5);
-            }
-            chat.last_date = '';
+            chat.last_msg = chat.last_msg.substring(5);
+            chat.last_date = prettifyDateTime(chat.last_date);
             chatBody.insertAdjacentHTML('beforeend', chatListItemTemplate({...chat}));
         });
     }
@@ -240,7 +234,8 @@ export default class ChatView extends MyView {
             makeEmpty(chatBody);
         }
         messages.forEach((message) => {
-            chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}))
+            this.renderMessage(message)
+            // chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}))
         });
         scrollChatDown(chatBody);
     }
@@ -249,11 +244,24 @@ export default class ChatView extends MyView {
      * Render one particular message
      * @param message {{
      *      body: String,
-     *      own: boolean,
+     *      side: 'right'|'left',
      *      new: boolean}}
      */
     renderMessage(message) {
         const chatBody = this.chatBodyDiv;
+        // Get last message
+        const lastMessage = chatBody.lastElementChild;
+        const side = message.side;
+        if (lastMessage && lastMessage.classList.contains(`chat-message_${side}`)) {
+            if (lastMessage.classList.contains(`chat-message_first_${side}`)) {
+                lastMessage.classList.remove(`chat-message_last_${side}`);
+            } else {
+                lastMessage.classList.replace(`chat-message_last_${side}`, `chat-message_mid_${side}`)
+            }
+        } else {    // if no last message or message is for the other side
+            message.style = `chat-message_first_${side}`;
+        }
+
         chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}));
         scrollChatDown(chatBody);
         showMessage(chatBody.lastElementChild);

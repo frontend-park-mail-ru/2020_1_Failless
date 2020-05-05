@@ -1,9 +1,15 @@
 @import "../../modules/variables";
 
+$message-radius: 18px;
+
 .chat-message {
   max-width: 75%;
+  margin: 1px 0;
   padding: 8px 10px;
-  border-radius: $re--border-radius;
+  border-radius: $message-radius;
+  font-size: 14px;
+  font-weight: 300;
+  color: $color-white;
   line-height: 20px;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -13,18 +19,47 @@
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-  color: $color-white;
-  margin: 5px $re--medium-padding;
   @include transition(0.3s, ease-in-out);
   transform: scale(1);
 
   &_right {
     align-self: flex-end;
     background: $re--gradient-right;
+    border-top-right-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
   }
+
   &_left {
     align-self: flex-start;
     background: $re--gradient-left;
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+  }
+
+  &_first_left {
+    border-top-left-radius: $message-radius;
+  }
+
+  &_mid_left {
+    border-bottom-left-radius: $re--border-radius;
+    border-top-left-radius: $re--border-radius;
+  }
+
+  &_last_left {
+    border-bottom-left-radius: $message-radius;
+  }
+
+  &_first_right {
+     border-top-right-radius: $message-radius;
+   }
+
+  &_mid_right {
+    border-bottom-right-radius: $re--border-radius;
+    border-top-right-radius: $re--border-radius;
+  }
+
+  &_last_right {
+    border-bottom-right-radius: $message-radius;
   }
 
   &_new {
