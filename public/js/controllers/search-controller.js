@@ -4,7 +4,7 @@ import Controller from 'Eventum/core/controller';
 import SearchView from 'Eventum/views/search-view';
 import EventModel from 'Eventum/models/event-model';
 import UserModel from 'Eventum/models/user-model';
-import {changeActionText} from 'Blocks/big-event/big-event';
+import {changeActionText} from 'Blocks/event/event';
 
 /**
  * @class SearchController
@@ -113,7 +113,7 @@ export default class SearchController extends Controller {
                 EventModel.followEvent(
                     profile.uid,
                     event.target.getAttribute('data-eid'),
-                    event.target.previousElementSibling.classList.contains('re--event__circle_mid') ? 'mid-event' : 'big-event')
+                    event.target.previousElementSibling.classList.contains('event__circle_mid') ? 'mid-event' : 'big-event')
                     .then(
                         (response) => {
                             changeActionText(event.target, 'green', 'Вы идёте');

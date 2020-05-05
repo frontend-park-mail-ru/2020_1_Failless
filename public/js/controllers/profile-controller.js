@@ -13,7 +13,7 @@ import {makeEmpty, resizeTextArea} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
 import Controller from 'Eventum/core/controller';
 import {CircleRedirect} from 'Blocks/circle/circle';
-import {toggleActionText} from 'Blocks/re--event/event';
+import {toggleActionText} from 'Blocks/event/event';
 
 /**
  * @class ProfileController
@@ -154,17 +154,17 @@ export default class ProfileController extends Controller {
                             attr: 'showAction',
                             events: [
                                 {type: 'mouseover', handler: (event) => {
-                                    if (event.target.matches('.re--event__link')) {
+                                    if (event.target.matches('.event__link')) {
                                         toggleActionText(event.target, 'Не идти');
                                     }}},
                                 {type: 'click', handler: (event) => {
-                                    if (event.target.matches('.re--event__link')) {
+                                    if (event.target.matches('.event__link')) {
                                         this.#unfollowEvent(event);
                                     } else if (event.target.matches('button.error__button')) {
                                         Router.redirectForward('/search');
                                     }}},
                                 {type: 'mouseout', handler: (event) => {
-                                    if (event.target.matches('.re--event__link')) {
+                                    if (event.target.matches('.event__link')) {
                                         toggleActionText(event.target, 'Вы идёте');
                                     }}},
                             ]
@@ -185,7 +185,7 @@ export default class ProfileController extends Controller {
     #unfollowEvent = (event) => {
         UserModel.getProfile().then(
             (profile) => {
-                let type = event.target.previousElementSibling.classList.contains('re--event__circle_mid') ? 'mid-event' : 'big-event';
+                let type = event.target.previousElementSibling.classList.contains('event__circle_mid') ? 'mid-event' : 'big-event';
                 EventModel.unfollowEvent(profile.uid, event.target.getAttribute('data-eid'), type)
                     .then((response) => {this.view.removeSubscriptionByLink(event.target);});
             },

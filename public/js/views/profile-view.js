@@ -5,13 +5,14 @@ import MyView from 'Eventum/views/my-view';
 import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
-import eventCardTemplate from 'Blocks/re--event/template.hbs';
+import eventCardTemplate from 'Blocks/event/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
-import {determineClass} from 'Blocks/re--event/event';
+import {determineClass} from 'Blocks/event/event';
 import EventEdit from 'Blocks/event-edit/event-edit';
 import {staticTags} from 'Eventum/utils/static-data';
 import {extendActiveTag} from 'Blocks/tag/tag';
+import {prettifyDateTime} from 'Blocks/chat-list-item/chat-list-item';
 
 /**
  * @class create ProfileView class
@@ -179,6 +180,7 @@ export default class ProfileView extends MyView {
         if (event.tags) {event.tags = event.tags.map(tag => extendActiveTag(tag));}
         event.class = type;
         event[type] = true;
+        event.date = new Date(event.date).toLocaleString();
         this.eventEditComp.element.insertAdjacentHTML('afterend', eventCardTemplate(event));
     }
 
@@ -266,7 +268,7 @@ export default class ProfileView extends MyView {
      * @return {Promise<void>}
      */
     async removeSubscriptionByLink(link) {
-        let eventToRemove = link.closest('.re--event');
+        let eventToRemove = link.closest('.event');
         eventToRemove.style.cssText = 'transform: scale(0);';
         setTimeout(() => {
             eventToRemove.remove();
