@@ -13,8 +13,7 @@ import {makeEmpty, resizeTextArea} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
 import Controller from 'Eventum/core/controller';
 import {CircleRedirect} from 'Blocks/circle/circle';
-import {changeToUnfollowed, toggleActionText} from 'Blocks/re--event/event';
-import SliderManager from 'Blocks/slider/set-slider';
+import {toggleActionText} from 'Blocks/re--event/event';
 
 /**
  * @class ProfileController
@@ -32,14 +31,12 @@ export default class ProfileController extends Controller {
         this.image = '';
         this.user = null;
         this.activeModalWindow = null;
-        this.addEventView = null;
         EventModel.getTagList().then((tags) => {
             this.localTags = [...tags];
         }).catch((onerror) => {
             console.error(onerror);
             this.localTags = [...staticTags];
         });
-        this.sliderManager = new SliderManager();
     }
 
     /**
@@ -58,32 +55,12 @@ export default class ProfileController extends Controller {
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
                     EventModel.getUserEvents(profile.uid).then(
-                        (events) => {
-                            this.view.renderEvents(events);
-                        },
-                        (error) => {
-                            this.view.renderEventsError();
-                        }
+                        (events) => {this.view.renderEvents(events);},
+                        (error) => {this.view.renderEventsError(error);}
                     );
                     EventModel.getUserSubscriptions(profile.uid).then(
-                        (subscriptions) => {
-                            if (subscriptions) {
-                                this.view.renderSubscriptions(subscriptions).then();
-                            } else {
-                                this.view.renderEmptySubscriptions().then(() => {
-                                    this.addEventHandler(
-                                        this.view.subscriptionsDiv.querySelector('.error__button'),
-                                        'click',
-                                        (event) => {
-                                            event.preventDefault();
-                                            Router.redirectForward('/search');
-                                        });
-                                });
-                            }
-                        },
-                        (error) => {
-                            this.view.renderSubscriptionsError().then();
-                        }
+                        (subscriptions) => {this.view.renderSubscriptions(subscriptions);},
+                        (error) => {this.view.renderSubscriptionsError(error);}
                     );
                     (async () => {this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');})();
                     this.user = profile;

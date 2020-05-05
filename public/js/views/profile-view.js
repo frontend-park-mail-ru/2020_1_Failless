@@ -226,6 +226,10 @@ export default class ProfileView extends MyView {
      * @return {Promise<void>}
      */
     async renderSubscriptions(subscriptions) {
+        if (!subscriptions) {
+            this.renderEmptySubscriptions();
+            return;
+        }
         const subsArea = this.subscriptionsDiv;
         makeEmpty(subsArea);
         subscriptions.forEach((sub) => {

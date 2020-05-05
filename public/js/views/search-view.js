@@ -48,8 +48,10 @@ export default class SearchView extends View {
         }
     };
 
-    showSearchError = (message) => {
-        this.showError(this.resultsAreaDiv, message, 'warning', null);
+    showSearchError = (error) => {
+        console.error(error);
+        console.log(this);
+        this.showError(this.resultsAreaDiv, error, 'warning', null);
     };
 
     renderResults(events) {
