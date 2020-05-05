@@ -232,6 +232,25 @@ export default class EventModel extends Model {
             });
     }
 
+    /**
+     *
+     * @param {Number} uid
+     * @param {Number} eid
+     * @param type
+     */
+    static unfollowEvent(uid, eid, type) {
+        return NetworkModule.fetchPost({path: `/event/${eid}/unfollow`, body: {uid: Number(uid), eid: Number(eid), type: type}}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
     static invalidEventRequest(eventRequest) {
         let message = [];
         const mustHaveProperties = [

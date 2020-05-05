@@ -7,6 +7,7 @@
   border-radius: $re--border-radius;
   box-shadow:  3px 3px 10px #e5e5e5,
              -3px -3px 10px #fdfdfd;
+  @include transition(0.3s, ease-in-out);
 
   &__photos {
     width: 100%;

@@ -13,7 +13,7 @@ import {makeEmpty, resizeTextArea} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
 import Controller from 'Eventum/core/controller';
 import {CircleRedirect} from 'Blocks/circle/circle';
-import {toggleActionText} from 'Blocks/re--event/event';
+import {changeToUnfollowed, toggleActionText} from 'Blocks/re--event/event';
 import SliderManager from 'Blocks/slider/set-slider';
 
 /**
@@ -182,8 +182,9 @@ export default class ProfileController extends Controller {
                                     }}},
                                 {type: 'click', handler: (event) => {
                                     if (event.target.matches('.re--event__link')) {
-                                        console.log('unsubscribe');
-                                        // TODO: add unsubscribe
+                                        this.#unfollowEvent(event);
+                                    } else if (event.target.matches('button.error__button')) {
+                                        Router.redirectForward('/search');
                                     }}},
                                 {type: 'mouseout', handler: (event) => {
                                     if (event.target.matches('.re--event__link')) {
@@ -200,6 +201,21 @@ export default class ProfileController extends Controller {
                 console.error(onerror);
             });
     }
+
+    /**
+     *
+     */
+    #unfollowEvent = (event) => {
+        UserModel.getProfile().then(
+            (profile) => {
+                let type = event.target.previousElementSibling.classList.contains('re--event__circle_mid') ? 'mid-event' : 'big-event';
+                EventModel.unfollowEvent(profile.uid, event.target.getAttribute('data-eid'), type)
+                    .then((response) => {this.view.removeSubscriptionByLink(event.target);});
+            },
+            error => console.log(error)
+        );
+
+    };
 
     #submitNewEvent = (event) => {
         // Validate data

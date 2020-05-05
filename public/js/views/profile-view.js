@@ -256,8 +256,19 @@ export default class ProfileView extends MyView {
         this.showError(this.subscriptionsDiv, 'Error in subscriptions', 'warning', null);
     }
 
-    drawEventCard(eventInfo) {
-        document.querySelector('.profile-main__group').insertAdjacentHTML(
-            'afterbegin', eventCardTemplate(eventInfo));
+    /**
+     * Remove event from subscriptions
+     * @param {{HTMLLinkElement}} link
+     * @return {Promise<void>}
+     */
+    async removeSubscriptionByLink(link) {
+        let eventToRemove = link.closest('.re--event');
+        eventToRemove.style.cssText = 'transform: scale(0);';
+        setTimeout(() => {
+            eventToRemove.remove();
+            if (this.subscriptionsDiv.childElementCount === 0) {
+                this.renderEmptySubscriptions();
+            }
+        }, 300);
     }
 }

@@ -127,7 +127,7 @@ export default class SearchController extends Controller {
                 EventModel.followEvent(
                     profile.uid,
                     event.target.getAttribute('data-eid'),
-                    event.target.getAttribute('data-etype'))
+                    event.target.previousElementSibling.classList.contains('re--event__circle_mid') ? 'mid-event' : 'big-event')
                     .then(
                         (response) => {
                             changeActionText(event.target, 'green', 'Вы идёте');
