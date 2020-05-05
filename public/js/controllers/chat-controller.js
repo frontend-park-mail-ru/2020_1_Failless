@@ -180,7 +180,7 @@ export default class ChatController extends Controller {
                 this.view.activateChatUI(name).then();
                 // Append necessary fields
                 messages.forEach((message) => {
-                    message.own = message.uid === this.uid;
+                    message.side = message.uid === this.uid ? 'right' : 'left';
                     message.new = false;
                     message.body = message.message;
                 });
@@ -230,7 +230,7 @@ export default class ChatController extends Controller {
         if (activeChat && message.chat_id === activeChat.chat_id) {
             this.view.renderMessage({
                 body: message.message,
-                own: this.uid === message.uid,
+                side: this.uid === message.uid ? 'right' : 'left',
                 new: true,
             });
         } else {
