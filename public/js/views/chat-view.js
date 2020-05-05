@@ -11,7 +11,7 @@ import {images} from 'Eventum/utils/static-data';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {scrollChatDown} from 'Blocks/chat/chat';
 import {showMessage} from 'Blocks/chat-message/chat-message';
-import {setChatListItemAsUnread} from 'Blocks/chat-list-item/chat-list-item';
+import {prettifyDateTime, setChatListItemAsUnread} from 'Blocks/chat-list-item/chat-list-item';
 
 /**
  * @class create ChatView class
@@ -176,14 +176,8 @@ export default class ChatView extends MyView {
                 chat.avatar = images.get('user-default');
             }
             chat.new = !!chat.unseen;
-            if (!chat.last_msg) {
-                chat.last_msg = 'Отправьте первое сообщение!';
-                chat.unseen = true;
-                chat.last_date = '';
-            } else {
-                chat.last_msg = chat.last_msg.substring(5);
-            }
-            chat.last_date = '';
+            chat.last_msg = chat.last_msg.substring(5);
+            chat.last_date = prettifyDateTime(chat.last_date);
             chatBody.insertAdjacentHTML('beforeend', chatListItemTemplate({...chat}));
         });
     }
