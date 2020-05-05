@@ -65,14 +65,7 @@ export default class Controller {
      *             be careful with type of event
      *      events - that's pretty self explanatory
      *
-     * @param eventMap {Array<{
-     *      attr: string,
-     *      many: boolean,
-     *      events: Array<{
-     *          type: string,
-     *          handler: Function,
-     *      }>
-     * }>}
+     * @param eventMap {({attr: string, events: [{handler: function(Event): (undefined), type: string}]}|{attr: string, many: boolean, events: [{handler: function(*): void, type: string}, {handler: function(Event): void, type: string}]})[]}
      */
     initHandlers(eventMap) {
         eventMap.forEach((eMap) => {

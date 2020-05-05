@@ -1,7 +1,7 @@
 @import "../../modules/images";
 @import "../../modules/variables";
 
-$people-img: $screen-img-path + "landing.jpg";
+$people-img: "https://eventum.s3.eu-north-1.amazonaws.com/app/2.jpg";
 
 .landing {
   width: 100%;
