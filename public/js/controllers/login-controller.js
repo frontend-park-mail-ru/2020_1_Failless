@@ -30,25 +30,36 @@ export default class LoginController extends Controller {
     }
 
     action() {
-        super.action();
-        this.view.render();
-        this.#initView();
-        this.initHandlers([
-            {
-                attr: 'login',
-                events: [
-                    {type: 'submit', handler: this.#loginSubmitHandler},
-                ]
-            },
-            {
-                attr: 'checkInput',
-                many: true,
-                events: [
-                    {type: 'focus', handler: this.removeErrorMessage},
-                    {type: 'blur', handler: this.#checkInputHandler},
-                ]
+        UserModel.getLogin().then((user) => {
+            if (!user) {
+                console.error('Server error');
+                console.log(user);
+                return;
             }
-        ]);
+            if (Object.prototype.hasOwnProperty.call(user, 'uid')) {
+                router.redirectForward('/');
+                return;
+            }
+            super.action();
+            this.view.render();
+            this.#initView();
+            this.initHandlers([
+                {
+                    attr: 'login',
+                    events: [
+                        {type: 'submit', handler: this.#loginSubmitHandler},
+                    ]
+                },
+                {
+                    attr: 'checkInput',
+                    many: true,
+                    events: [
+                        {type: 'focus', handler: this.removeErrorMessage},
+                        {type: 'blur', handler: this.#checkInputHandler},
+                    ]
+                }
+            ]);
+        });
     }
 
     #initView() {

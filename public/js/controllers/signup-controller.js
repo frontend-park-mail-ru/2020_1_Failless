@@ -28,25 +28,36 @@ export default class SignUpController extends Controller {
      * Create base business logic of SignUp
      */
     action() {
-        super.action();
-        this.view.render();
-        this.#initView();
-        this.initHandlers([
-            {
-                attr: 'signup',
-                events: [
-                    {type: 'submit', handler: this.#signUpSubmitHandler},
-                ]
-            },
-            {
-                attr: 'checkInput',
-                many: true,
-                events: [
-                    {type: 'focus', handler: this.removeErrorMessage},
-                    {type: 'blur', handler: this.#checkInputHandler},
-                ]
+        UserModel.getLogin().then((user) => {
+            if (!user) {
+                console.error('Server error');
+                console.log(user);
+                return;
             }
-        ]);
+            if (Object.prototype.hasOwnProperty.call(user, 'uid')) {
+                router.redirectForward('/');
+                return;
+            }
+            super.action();
+            this.view.render();
+            this.#initView();
+            this.initHandlers([
+                {
+                    attr: 'signup',
+                    events: [
+                        {type: 'submit', handler: this.#signUpSubmitHandler},
+                    ]
+                },
+                {
+                    attr: 'checkInput',
+                    many: true,
+                    events: [
+                        {type: 'focus', handler: this.removeErrorMessage},
+                        {type: 'blur', handler: this.#checkInputHandler},
+                    ]
+                }
+            ]);
+        });
     }
 
     /**
@@ -80,7 +91,7 @@ export default class SignUpController extends Controller {
         if (repeatPassword !== password) {
             errors_list.push('Пароли не совпадают');
         }
-        
+
         if (errors_list.some(val => val.length !== 0)) {
             return void 0;
         }
@@ -138,7 +149,7 @@ export default class SignUpController extends Controller {
         const password = this.form[3].value;
         const repeatPassword = this.form[4].value;
 
-        switch(true) {
+        switch (true) {
         case (event.target === this.form[0]):
             const nameCheck = ValidationModule.validateUserData(name, 'name');
             this.view.addErrorMessage(this.form[0], nameCheck);

@@ -5,7 +5,11 @@
             <div class="landing__photo__title">Мы соединяем людей</div>
             <div class="landing__photo__text">Заводите новые знакомства и посещайте любимые мероприятия вместе</div>
             <div class="landing__photo__btn">
-                <button class="re_btn__white font__size_small font_regular font__color_w" data-bind-event="signup">Присоединиться</button>
+                {{#if auth}}
+                    <button class="re_btn__white font__size_small font_regular font__color_w" data-bind-event="feed">Найти компанию</button>
+                {{else}}
+                    <button class="re_btn__white font__size_small font_regular font__color_w" data-bind-event="signup">Присоединиться</button>
+                {{/if}}
             </div>
         </div>
     </section>

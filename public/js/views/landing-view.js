@@ -22,14 +22,15 @@ export default class LandingView extends View {
 
     /**
      * Render template
+     * @param {boolean} isAuth
      */
-    render() {
+    render(isAuth = false) {
         const landing = landingTemplate({
+            auth: isAuth,
             creators: [
                 {
                     name: 'Андрей',
-                    // eslint-disable-next-line no-irregular-whitespace
-                    about: `Написал всё <br>Вообще всё,<br> что работает и не работает`,
+                    about: 'Написал всё <br>Вообще всё,<br> что работает и не работает',
                     avatar: 'https://eventum.s3.eu-north-1.amazonaws.com/app/creators/Andrey.jpg',
                     links: {
                         github: 'https://github.com/rowbotman',
