@@ -122,7 +122,7 @@ export default class EventModel extends Model {
      * @return {Promise<unknown>}
      */
     static createSmallEvent(body) {
-        return NetworkModule.fetchPost({path: '/event/small', body: body}).then((response) => {
+        return NetworkModule.fetchPost({path: '/events/small', body: body, api: settings.api}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
@@ -149,7 +149,7 @@ export default class EventModel extends Model {
      * @return {Promise<unknown>}
      */
     static createEvent(body) {
-        return NetworkModule.fetchPost({path: '/event/new', body: body}).then((response) => {
+        return NetworkModule.fetchPost({path: '/events/new', body: body}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
@@ -166,7 +166,7 @@ export default class EventModel extends Model {
                 reject(new Error('Invalid event id'));
             }));
         }
-        return NetworkModule.fetchGet({path: `/event/${eid}/follow`}).then(
+        return NetworkModule.fetchGet({path: `/events/${eid}/follow`}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
@@ -182,7 +182,7 @@ export default class EventModel extends Model {
         if (!uid) {
             throw new Error('Invalid profile id');
         }
-        return NetworkModule.fetchGet({path: '/event/small', api: settings.api}).then(
+        return NetworkModule.fetchGet({path: '/events/small', api: settings.api}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
