@@ -29,6 +29,7 @@ export default class EventEdit extends Component {
      */
     constructor(node) {
         super();
+        this.images = [];
         this.element = node;
         this.template = EventEditTemplate;
         this.#setMinValueForDateTimeInput();
@@ -106,7 +107,7 @@ export default class EventEdit extends Component {
     retrieveData() {
         let data = {};
 
-        data.photos = this.#getImages();
+        data.photos = this.images;
         data.title = this.vDOM['title'].value;
         data.about = this.vDOM['about'].value;
         data.tags = [];
@@ -117,8 +118,6 @@ export default class EventEdit extends Component {
         data.limit = +this.vDOM['slider'].querySelector('select').value;
 
         console.log(data);
-        data.photos = null;
-
         return data;
     }
 
@@ -155,13 +154,6 @@ export default class EventEdit extends Component {
     /***********************************************
                     Image upload part
      ***********************************************/
-    #getImages() {
-        let images = [];
-
-        // TODO: get images
-
-        return images;
-    }
 
     /**
      * Render uploaded images with remove button
@@ -184,8 +176,11 @@ export default class EventEdit extends Component {
         // Get height of the parent element
         // Set all next images with this height and width: auto;
         let height = 0;
+        this.images = [];
         const initReader = new FileReader();
         initReader.addEventListener('load', (event) => {
+            this.images.push(event.target.result.split(';')[1].split(',')[1]);
+            console.log(this.images)
             this.photosDiv.insertAdjacentHTML('beforeend', imageEditTemplate({src: event.target.result}));
             const firstImage = this.photosDiv.querySelector('img');
             firstImage.onload = () => {
@@ -194,6 +189,7 @@ export default class EventEdit extends Component {
                 for (let iii = 1; iii < files.length; iii++) {
                     const reader = new FileReader();
                     reader.addEventListener('load', (event) => {
+                        this.images.push(event.target.result.split(';')[1].split(',')[1]);
                         this.photosDiv.insertAdjacentHTML('beforeend', imageEditTemplate({src: event.target.result, style: `height: ${height}px; width: auto;`}));
                     });
                     reader.readAsDataURL(files[iii]);

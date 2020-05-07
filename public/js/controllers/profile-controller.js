@@ -142,7 +142,7 @@ export default class ProfileController extends Controller {
                         {
                             attr: 'previewImagesForEvent',
                             events: [
-                                {type: 'change', handler: () => {this.view.eventEditComp.previewImages();}}
+                                {type: 'change', handler: this.#previewImagesForEvent}
                             ]
                         },
                         {
@@ -182,6 +182,15 @@ export default class ProfileController extends Controller {
             }).catch(onerror => {
                 console.error(onerror);
             });
+    }
+
+    #previewImagesForEvent = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            console.log(event)
+            let FR = new FileReader();
+            FR.addEventListener("load", this.view.eventEditComp.previewImages());
+            FR.readAsDataURL(event.target.files[0]);
+        }
     }
 
     /**
