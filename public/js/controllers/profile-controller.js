@@ -186,12 +186,11 @@ export default class ProfileController extends Controller {
 
     #previewImagesForEvent = (event) => {
         if (event.target.files && event.target.files[0]) {
-            console.log(event)
             let FR = new FileReader();
-            FR.addEventListener("load", this.view.eventEditComp.previewImages());
+            FR.addEventListener('load', this.view.eventEditComp.previewImages());
             FR.readAsDataURL(event.target.files[0]);
         }
-    }
+    };
 
     /**
      *

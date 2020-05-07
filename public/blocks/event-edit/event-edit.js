@@ -179,8 +179,7 @@ export default class EventEdit extends Component {
         this.images = [];
         const initReader = new FileReader();
         initReader.addEventListener('load', (event) => {
-            this.images.push(event.target.result.split(';')[1].split(',')[1]);
-            console.log(this.images)
+            this.images.push({img: event.target.result.split(';')[1].split(',')[1]});
             this.photosDiv.insertAdjacentHTML('beforeend', imageEditTemplate({src: event.target.result}));
             const firstImage = this.photosDiv.querySelector('img');
             firstImage.onload = () => {

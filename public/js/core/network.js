@@ -16,9 +16,7 @@ export default class NetworkModule {
         api = null,
     } = {}) => {
         if (path.includes('undefined')) {
-            return new Promise((resolve, reject) => {
-                reject(new Error('Invalid path, boy'));
-            });
+            throw new Error('Invalid path, boy');
         }
         const token = getCookie('csrf');
         api = api === null ? settings.api : api;
@@ -43,9 +41,7 @@ export default class NetworkModule {
         api = null,
     } = {}) => {
         if (path.includes('undefined')) {
-            return new Promise((resolve, reject) => {
-                reject(new Error('Invalid path, boy'));
-            });
+            throw new Error('Invalid path, boy');
         }
         const token = getCookie('csrf');
         api = api === null ? settings.api : api;
@@ -72,9 +68,7 @@ export default class NetworkModule {
         api = null,
     } = {}) => {
         if (path.includes('undefined')) {
-            return new Promise((resolve, reject) => {
-                reject(new Error('Invalid path, boy'));
-            });
+            throw new Error('Invalid path, boy');
         }
         const token = getCookie('csrf');
         return fetch(settings.url + ':' + settings.port + api + path, {
