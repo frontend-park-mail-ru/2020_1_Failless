@@ -103,6 +103,15 @@ export default class Component {
         this.didRender();
     }
 
+    async renderIn(bodyElement) {
+        this.beforeRender();
+
+        bodyElement.insertAdjacentHTML('afterbegin', this.template({...this.data, without_parent: true}))
+        this.element = bodyElement;
+
+        this.didRender();
+    }
+
     /**
      * Do stuff after render
      */

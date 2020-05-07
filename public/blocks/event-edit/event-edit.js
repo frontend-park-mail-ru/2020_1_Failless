@@ -157,7 +157,7 @@ export default class EventEdit extends Component {
                 for (let iii = 1; iii < files.length; iii++) {
                     const reader = new FileReader();
                     reader.addEventListener('load', (event) => {
-                        this.images.push(event.target.result.split(';')[1].split(',')[1]);
+                        this.images.push({img: event.target.result.split(';')[1].split(',')[1]});
                         this.photosDiv.insertAdjacentHTML('beforeend', imageEditTemplate({src: event.target.result, style: `height: ${height}px; width: auto;`}));
                     });
                     reader.readAsDataURL(files[iii]);

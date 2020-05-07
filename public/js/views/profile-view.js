@@ -5,6 +5,7 @@ import MyView from 'Eventum/views/my-view';
 import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
+import loadingTemplate from 'Blocks/loading/template.hbs';
 import eventCardTemplate from 'Blocks/event/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
@@ -12,7 +13,6 @@ import {determineClass} from 'Blocks/event/event';
 import EventEdit from 'Blocks/event-edit/event-edit';
 import MidEventComponent from 'Blocks/event/mid-event-comp';
 import SmallEventComponent from 'Blocks/event/small-event-comp';
-import {extendActiveTag} from 'Blocks/tag/tag';
 
 /**
  * @class create ProfileView class
@@ -194,16 +194,51 @@ export default class ProfileView extends MyView {
         }
     }
 
-    async renderNewEvent(event, type) {
+    /**
+     * Show loading of new event
+     *
+     * 1) Create div with empty event
+     * 2) Insert loading inside this div
+     * 3) this.renderNewEvent() will look for this div to replace insides
+     *
+     * @return {Promise<void>}
+     */
+    async renderNewEventLoading() {
+        // Remove helper message if exists (case when you create your first event)
         let helper = this.personalEventsDiv.querySelector('span.font.font_bold.font__size_small.font__color_lg');
         if (helper) {
             helper.remove();
         }
-        if (event.tags) {event.tags = event.tags.map(tag => extendActiveTag(tag));}
-        event.class = type;
-        event[type] = true;
-        event.date = new Date(event.date).toLocaleString();
-        this.eventEditComp.element.insertAdjacentHTML('afterend', eventCardTemplate(event));
+
+        let emptyEvent = document.createElement('div');
+        emptyEvent.classList.add('event');
+        emptyEvent.insertAdjacentHTML('afterbegin', loadingTemplate());
+        return this.eventEditComp.element.insertAdjacentElement('afterend', emptyEvent);
+    }
+
+    /**
+     *
+     * @param event
+     * @param type {'big', 'mid', 'small'}
+     * @param bodyElement {HTMLElement}
+     * @return {Promise<void>}
+     */
+    async renderNewEvent(event, type, bodyElement) {
+        let eventComponent;
+
+        if (type === 'small') {
+            eventComponent = new SmallEventComponent(event);
+            this.vDOM.mainColumn.personalEvents.events.small_events.push(eventComponent);
+        } else if (type === 'mid') {
+            eventComponent = new MidEventComponent(event);
+            this.vDOM.mainColumn.personalEvents.events.mid_events.push(eventComponent);
+        } else {
+            console.log('sorry not implemented for type', type);
+            return;
+        }
+
+        makeEmpty(bodyElement);
+        await eventComponent.renderIn(bodyElement);
     }
 
     /**

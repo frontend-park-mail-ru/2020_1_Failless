@@ -226,21 +226,16 @@ export default class ProfileController extends Controller {
             photos: data.photos,
         };
 
-        // TODO: Show loading
         UserModel.getProfile().then(profile => {
             request.uid = +profile.uid;
             if (data.limit === 2) {
                 request.tags = data.tags;
-
-                EventModel.createSmallEvent(request).then(
-                    (response) => {
-                        // Render results
-                        this.view.renderNewEvent(response, 'small');
-                    },
-                    (error) => {
-                        console.log(error);
-                    }
-                );
+                Promise.all([
+                    EventModel.createSmallEvent(request),
+                    this.view.renderNewEventLoading(),
+                ]).then(responses => {
+                    this.view.renderNewEvent(responses[0], 'small', responses[1]);
+                }).catch(console.error);
             } else {
                 request.tag_id = data.tags[0];
                 request.private = true;

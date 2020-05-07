@@ -12,6 +12,8 @@
 
   &__photos {
     width: 100%;
+    display: flex;
+    overflow-x: auto;
 
     & img {
       width: 100%;
