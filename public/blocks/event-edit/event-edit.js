@@ -8,7 +8,6 @@ import {makeEmpty} from 'Eventum/utils/basic';
 import {icons} from 'Eventum/utils/static-data';
 
 export default class EventEdit extends Component {
-    fields = ['photos', 'title', 'about', 'tags', 'time', 'slider', 'photo-helper'];
 
     /**
      * Create Button component
@@ -17,20 +16,13 @@ export default class EventEdit extends Component {
     constructor(node) {
         super();
         this.images = [];
+        this.cssClass = 'event-edit';
+        this.fields = ['photos', 'title', 'about', 'tags', 'time', 'slider', 'photo-helper'];
         this.element = node;
         this.template = EventEditTemplate;
         this.#setMinValueForDateTimeInput();
         this.#setInitialMargins();
         window.addEventListener('resize', this.#setInitialMargins.bind(this));
-    }
-
-    get element() {
-        return this.node;
-    }
-
-    set element(node) {
-        this.node = node;
-        this.#setvDOM();
     }
 
     /**
@@ -44,15 +36,6 @@ export default class EventEdit extends Component {
     #setInitialMargins() {
         this.element.style.marginTop = '-' + this.element.offsetHeight.toString() + 'px';
         this.element.style.marginRight = '-' + this.element.offsetWidth.toString() + 'px';
-    }
-
-    /**
-     * Thanks to BEM it's so easy
-     */
-    #setvDOM() {
-        this.fields.forEach((field) => {
-            this.vDOM[field] = this.element.querySelector(`.event-edit__${field}`)
-        });
     }
 
     show() {
@@ -104,7 +87,6 @@ export default class EventEdit extends Component {
         data.time = this.vDOM['time'].value;
         data.limit = +this.vDOM['slider'].querySelector('select').value;
 
-        console.log(data);
         return data;
     }
 

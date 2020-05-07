@@ -2,6 +2,7 @@ export default class Component {
     data = null;
     template = null;
     cssClass = '';
+    fields = [];
 
     /**
      * Parent element
@@ -16,13 +17,22 @@ export default class Component {
     node = null;
 
     /**
-     *
+     * Stores references to all elements
      * @type {Object<HTMLElement>}
      */
-    vDOM = Object;
+    vDOM = {};
 
     constructor(data) {
         this.data = data;
+    }
+
+    get element() {
+        return this.node;
+    }
+
+    set element(node) {
+        this.node = node;
+        this.setvDOM();
     }
 
     get HTML() {
@@ -30,12 +40,28 @@ export default class Component {
     }
 
     /**
+     * Thanks to BEM it's so easy
+     */
+    setvDOM() {
+        this.fields.forEach((field) => {
+            this.vDOM[field] = this.element.querySelector(`.${this.cssClass}__${field}`)
+        });
+    }
+
+    /***********************************************
+                         Render
+     ***********************************************/
+
+    /**
      * Do stuff before render
      */
     beforeRender() {}
 
     /**
+     * NOT IMPLEMENTED (forgot to setvDOM)
+     *
      * Inserts component into place
+     *
      * @param parent {HTMLElement}
      * @param where {'beforebegin' | 'afterbegin' | 'beforeend' | 'afterend'}
      */
@@ -72,7 +98,7 @@ export default class Component {
         let newParent = document.createElement('div');
         newParent.classList.add(this.cssClass);
         newParent.insertAdjacentHTML('afterbegin', this.template({...this.data, without_parent: true}))
-        this.node = this.parent.insertAdjacentElement(where, newParent)
+        this.element = this.parent.insertAdjacentElement(where, newParent)
 
         this.didRender();
     }

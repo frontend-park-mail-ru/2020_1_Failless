@@ -1,3 +1,5 @@
+'use strict';
+
 import EventComp from 'Blocks/event/event-comp';
 
 export default class SmallEvent extends EventComp {

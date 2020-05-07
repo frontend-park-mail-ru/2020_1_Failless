@@ -1,3 +1,7 @@
+'use strict';
+
+import loadingTemplate from 'Blocks/loading/template.hbs';
+
 const MOBILE_VIEW_PORT = 480;
 
 function makeEmpty(element) {
@@ -18,4 +22,8 @@ function resizeTextArea() {
     this.style.height = (this.scrollHeight + 2) + 'px';
 }
 
-export {makeEmpty, detectMobile, resizeTextArea};
+async function showLoading(element) {
+    element.insertAdjacentHTML('beforeend', loadingTemplate());
+}
+
+export {makeEmpty, detectMobile, resizeTextArea, showLoading};
