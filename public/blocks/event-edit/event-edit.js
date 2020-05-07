@@ -8,19 +8,6 @@ import {makeEmpty} from 'Eventum/utils/basic';
 import {icons} from 'Eventum/utils/static-data';
 
 export default class EventEdit extends Component {
-    /**
-     * Node itself
-     * @type {HTMLElement}
-     */
-    node = null;
-    template = null;
-
-    /**
-     *
-     * @type {Object<HTMLElement>}
-     */
-    vDOM = Object;
-
     fields = ['photos', 'title', 'about', 'tags', 'time', 'slider', 'photo-helper'];
 
     /**

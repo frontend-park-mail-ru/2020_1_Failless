@@ -8,8 +8,10 @@ import profileMainTemplate from 'Components/profile-main/template.hbs';
 import eventCardTemplate from 'Blocks/event/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
-import {determineClass, prepareEventForRender} from 'Blocks/event/event';
+import {determineClass} from 'Blocks/event/event';
 import EventEdit from 'Blocks/event-edit/event-edit';
+import MidEventComponent from 'Blocks/event/mid-event-comp';
+import SmallEventComponent from 'Blocks/event/small-event-comp';
 import {extendActiveTag} from 'Blocks/tag/tag';
 
 /**
@@ -41,6 +43,10 @@ export default class ProfileView extends MyView {
                     comp: null,
                     element: null,
                     event_edit: null, // component itself
+                    events: {
+                        mid_events: [],
+                        small_events: [],
+                    },
                 },
             },
         };
@@ -232,13 +238,15 @@ export default class ProfileView extends MyView {
         if (!events || (events.mid_events.length === 0 && events.small_events.length === 0)) {
             personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
         } else {
-            events.mid_events.forEach((midEvents) => {
-                prepareEventForRender(midEvents, 'mid');
-                personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(midEvents));
-            });
             events.small_events.forEach((smallEvent) => {
-                prepareEventForRender(smallEvent, 'small');
-                personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(smallEvent));
+                let smallEventComponent = new SmallEventComponent(smallEvent);
+                this.vDOM.mainColumn.personalEvents.events.small_events.push(smallEventComponent);
+                smallEventComponent.renderAsElement(personalEvents, 'beforeend');
+            });
+            events.mid_events.forEach((midEvent) => {
+                let midEventComponent = new MidEventComponent(midEvent);
+                this.vDOM.mainColumn.personalEvents.events.mid_events.push(midEventComponent);
+                midEventComponent.renderAsElement(personalEvents, 'beforeend');
             });
         }
     }

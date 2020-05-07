@@ -1,4 +1,4 @@
-<div class="event">
+{{# without_parent}}{{else}}<div class="event">{{/without_parent}}
     <div class="event__photos"></div>
     <div class="event__body">
         <h3 class="event__title">{{ title }}</h3>
@@ -24,6 +24,5 @@
             </div>
             {{/if}}
         </footer>
-
     </div>
-</div>
+{{# without_parent}}{{else}}</div>{{/without_parent}}
