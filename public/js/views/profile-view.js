@@ -8,11 +8,9 @@ import profileMainTemplate from 'Components/profile-main/template.hbs';
 import eventCardTemplate from 'Blocks/event/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
-import {determineClass} from 'Blocks/event/event';
+import {determineClass, prepareEventForRender} from 'Blocks/event/event';
 import EventEdit from 'Blocks/event-edit/event-edit';
-import {staticTags} from 'Eventum/utils/static-data';
 import {extendActiveTag} from 'Blocks/tag/tag';
-import {prettifyDateTime} from 'Blocks/chat-list-item/chat-list-item';
 
 /**
  * @class create ProfileView class
@@ -204,38 +202,49 @@ export default class ProfileView extends MyView {
 
     /**
      *
-     * @param events {{
-     *     eid: Number,
-     *     uid: Number,
-     *     title: string,
-     *     description: string|null,
-     *     tags: Array<{Number}>,
-     *     date: string
-     * }}
+     * @param events {
+     *      mid_events: Array<{
+     *          eid: Number,
+     *          uid: Number,    (admin_id)
+     *          title: string,
+     *          description: string|null,
+     *          tags: Array<Number>|null,
+     *          date: string|null,
+     *          photos: Array<string>|null,
+     *          limit: Number,
+     *          member_amount: Number,
+     *          public: boolean,
+     *      }>,
+     *      small_events: Array<{
+     *          eid: Number,
+     *          uid: Number,
+     *          title: string,
+     *          description: string|null,
+     *          tags: Array<Number>|null,
+     *          date: string|null,
+     *          photos: Array<string>|null,
+     *      }>}
      * @return {Promise<void>}
      */
     async renderEvents(events) {
         const personalEvents = this.personalEventsDiv;
         makeEmpty(personalEvents);
-        if (!events || events.length === 0) {
+        if (!events || (events.mid_events.length === 0 && events.small_events.length === 0)) {
             personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
         } else {
-            events.forEach((event) => {
-                determineClass(event);
-                if (event.tags) {
-                    event.tags = event.tags.map((tag) => {
-                        let newTag = staticTags[tag - 1];
-                        newTag.activeClass = 'tag__container_active';
-                        return newTag;});
-                }
-                event.small = true;
-                event.date = new Date(event.date).toLocaleString();
-                personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(event));
+            events.mid_events.forEach((midEvents) => {
+                prepareEventForRender(midEvents, 'mid');
+                personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(midEvents));
+            });
+            events.small_events.forEach((smallEvent) => {
+                prepareEventForRender(smallEvent, 'small');
+                personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(smallEvent));
             });
         }
     }
 
-    async renderEventsError() {
+    async renderEventsError(error) {
+        console.error(error);
         this.showError(this.subscriptionsDiv, 'Error in subscriptions', 'warning', null);
     }
 
@@ -276,7 +285,8 @@ export default class ProfileView extends MyView {
      * Show error in subscription div
      * @return {Promise<void>}
      */
-    async renderSubscriptionsError() {
+    async renderSubscriptionsError(error) {
+        console.error(error);
         this.showError(this.subscriptionsDiv, 'Error in subscriptions', 'warning', null);
     }
 

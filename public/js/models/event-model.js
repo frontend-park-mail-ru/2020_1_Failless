@@ -178,11 +178,16 @@ export default class EventModel extends Model {
             });
     }
 
-    static getUserEvents(uid) {
+    /**
+     * Retrieve all user personal events
+     * small as well as mid
+     * @param uid
+     */
+    static getUserOwnEvents(uid) {
         if (!uid) {
             throw new Error('Invalid profile id');
         }
-        return NetworkModule.fetchGet({path: '/events/small', api: settings.api}).then(
+        return NetworkModule.fetchGet({path: `/profile/${uid}/own-events`, api: settings.api}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');

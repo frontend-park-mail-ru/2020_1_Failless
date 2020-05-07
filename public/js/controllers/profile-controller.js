@@ -59,7 +59,7 @@ export default class ProfileController extends Controller {
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
-                    EventModel.getUserEvents(profile.uid).then(
+                    EventModel.getUserOwnEvents(profile.uid).then(
                         (events) => {this.view.renderEvents(events);},
                         (error) => {this.view.renderEventsError(error);}
                     );

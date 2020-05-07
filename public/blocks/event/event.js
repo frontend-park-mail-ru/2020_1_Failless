@@ -1,4 +1,6 @@
-export {determineClass, changeActionText, toggleActionText};
+import {staticTags} from 'Eventum/utils/static-data';
+
+export {determineClass, prepareEventForRender, changeActionText, toggleActionText};
 
 function determineClass(event) {
     if (event.limit === 2) {
@@ -11,6 +13,26 @@ function determineClass(event) {
         event.big = true;
         event.class = 'big';
     }
+}
+
+/**
+ * Fill all necessary fields for render
+ * @param event {{
+ *     tags: Array<number>|null,
+ *     date: string,
+ * }}
+ * @param type {string}
+ */
+function prepareEventForRender(event, type) {
+    if (event.tags) {
+        event.tags = event.tags.map((tag) => {
+            let newTag = staticTags[tag - 1];
+            newTag.activeClass = 'tag__container_active';
+            return newTag;});
+    }
+    event[type] = true;
+    event.class = type; // basically Object.defineProperty
+    event.date = new Date(event.date).toLocaleString();
 }
 
 function changeActionText(textElement, color, message) {
