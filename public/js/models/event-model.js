@@ -110,7 +110,7 @@ export default class EventModel extends Model {
     }
 
     /**
-     *
+     * Send small event to backend
      * @param body {{
      *      uid: Number,
      *      title: string,
@@ -134,22 +134,21 @@ export default class EventModel extends Model {
     }
 
     /**
-     * Send event to backend
+     * Send mid event to backend
      * @param body {{
-     *      uid: Number,
-     *      title: string,
-     *      description: string|null,
-     *      type: number|null,
-     *      private: bool|null,
-     *      tag_id: Number,
-     *      limit: Number,
-     *      date: string|null,
-     *      photos: string|null,
+     *      uid:            Number,
+     *      title:          string,
+     *      description:    string          |null,
+     *      tags:           Array<Number>   |null,
+     *      date:           string          |null,
+     *      photos:         string          |null,
+     *      limit:          Number,
+     *      public:         bool,
      * }}
      * @return {Promise<unknown>}
      */
-    static createEvent(body) {
-        return NetworkModule.fetchPost({path: '/events/new', body: body}).then((response) => {
+    static createMidEvent(body) {
+        return NetworkModule.fetchPost({path: '/events/mid', body: body}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }

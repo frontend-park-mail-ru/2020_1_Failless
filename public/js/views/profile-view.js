@@ -227,10 +227,10 @@ export default class ProfileView extends MyView {
         let eventComponent;
 
         if (type === 'small') {
-            eventComponent = new SmallEventComponent(event);
+            eventComponent = new SmallEventComponent(event, true);
             this.vDOM.mainColumn.personalEvents.events.small_events.push(eventComponent);
         } else if (type === 'mid') {
-            eventComponent = new MidEventComponent(event);
+            eventComponent = new MidEventComponent(event, true);
             this.vDOM.mainColumn.personalEvents.events.mid_events.push(eventComponent);
         } else {
             console.log('sorry not implemented for type', type);
@@ -274,12 +274,12 @@ export default class ProfileView extends MyView {
             personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
         } else {
             events.small_events.forEach((smallEvent) => {
-                let smallEventComponent = new SmallEventComponent(smallEvent);
+                let smallEventComponent = new SmallEventComponent(smallEvent, true);
                 this.vDOM.mainColumn.personalEvents.events.small_events.push(smallEventComponent);
                 smallEventComponent.renderAsElement(personalEvents, 'beforeend');
             });
             events.mid_events.forEach((midEvent) => {
-                let midEventComponent = new MidEventComponent(midEvent);
+                let midEventComponent = new MidEventComponent(midEvent, true);
                 this.vDOM.mainColumn.personalEvents.events.mid_events.push(midEventComponent);
                 midEventComponent.renderAsElement(personalEvents, 'beforeend');
             });

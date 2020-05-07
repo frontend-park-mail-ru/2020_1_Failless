@@ -21,6 +21,10 @@
     word-break: break-word;
   }
 
+  & label {
+    display: block;
+  }
+
   &_active {
     margin-top: 0 !important;
     margin-right: 0 !important;
@@ -141,6 +145,19 @@
   &__slider {
     & .slider__container {
       flex-flow: column;
+    }
+  }
+
+  &__public {
+    transform: scale(1);
+    height: auto;
+    opacity: 1;
+    @include transition(0.3s, ease-in-out);
+
+    &_hidden {
+      transform: scale(0);
+      height: 0;
+      opacity: 0;
     }
   }
 

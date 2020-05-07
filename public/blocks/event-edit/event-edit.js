@@ -17,12 +17,33 @@ export default class EventEdit extends Component {
         super();
         this.images = [];
         this.cssClass = 'event-edit';
-        this.fields = ['photos', 'title', 'about', 'tags', 'time', 'slider', 'photo-helper'];
+        this.fields = ['photos', 'title', 'about', 'tags', 'time', 'slider', 'photo-helper', 'public'];
         this.element = node;
         this.template = EventEditTemplate;
         this.#setMinValueForDateTimeInput();
         this.#setInitialMargins();
+        this.didRender();
         window.addEventListener('resize', this.#setInitialMargins.bind(this));
+    }
+
+    didRender() {
+        super.didRender();
+        this.sliderDiv.querySelector('select').addEventListener('change', (event) => {this.#showMidEventFields(event.target)});
+    }
+
+    /**
+     * Some fields for mid event are hidden
+     * So we show them as soon as user chooses limit > 2
+     * @param selectElement {HTMLSelectElement}
+     */
+    #showMidEventFields(selectElement) {
+        if (selectElement.value === '2') {
+            if (!this.publicCheckbox.classList.contains('event-edit__public_hidden')) {
+                this.publicCheckbox.classList.add('event-edit__public_hidden');
+            }
+        } else {
+            this.publicCheckbox.classList.remove('event-edit__public_hidden');
+        }
     }
 
     /**
@@ -72,20 +93,22 @@ export default class EventEdit extends Component {
      *     tags: Array<{Number}>,
      *     time: string?,
      *     limit: Number,
+     *     public: boolean,
      * }}
      */
     retrieveData() {
         let data = {};
 
         data.photos = this.images;
-        data.title = this.vDOM['title'].value;
-        data.about = this.vDOM['about'].value;
+        data.title = this.titleTextArea.value;
+        data.about = this.aboutTextArea.value;
         data.tags = [];
         this.tagsDiv.querySelectorAll('.tag__container').forEach((tag) => {
             data.tags.push(+tag.firstElementChild.getAttribute('data-id'));
         });
-        data.time = this.vDOM['time'].value;
-        data.limit = +this.vDOM['slider'].querySelector('select').value;
+        data.time = this.timeInput.value;
+        data.limit = +this.sliderDiv.querySelector('select').value;
+        data.public = this.publicCheckbox.querySelector('input').checked;
 
         return data;
     }
@@ -114,10 +137,12 @@ export default class EventEdit extends Component {
             oldImages.forEach(oldImage => oldImage.remove());
             this.photoHelperDiv.style.display = 'flex';
         }
-        this.vDOM['title'].value = '';
-        this.vDOM['about'].value = '';
+        this.titleTextArea.value = '';
+        this.aboutTextArea.value = '';
         this.addTags(null);
-        this.vDOM['time'].value = '';
+        this.timeInput.value = '';
+        this.sliderDiv.querySelector('select').value = '2';
+        this.publicCheckbox.classList.add('event-edit__public_hidden');
     }
 
     /***********************************************
@@ -203,5 +228,9 @@ export default class EventEdit extends Component {
 
     get sliderDiv() {
         return this.vDOM['slider'];
+    }
+
+    get publicCheckbox() {
+        return this.vDOM['public'];
     }
 }

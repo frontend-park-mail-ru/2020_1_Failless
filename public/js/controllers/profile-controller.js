@@ -219,11 +219,12 @@ export default class ProfileController extends Controller {
 
         // Submit form to backend
         let request = {
-            title: data.title,
-            description: data.about === '' ? null : data.about,
-            limit: data.limit,
-            date: data.time === '' ? null : new Date(data.time).toISOString(),
-            photos: data.photos,
+            title:          data.title,
+            description:    data.about === '' ? null : data.about,
+            limit:          data.limit,
+            date:           data.time === '' ? null : new Date(data.time).toISOString(),
+            photos:         data.photos,
+            public:         data.public,
         };
 
         UserModel.getProfile().then(profile => {
@@ -240,16 +241,12 @@ export default class ProfileController extends Controller {
                 request.tag_id = data.tags[0];
                 request.private = true;
                 request.type = null;
-                EventModel.createEvent(request).then(
-                    (response) => {
-                        // Render results
-                        console.log(response);
-                        this.view.renderNewEvent(data);
-                    },
-                    (error) => {
-                        console.log(error);
-                    }
-                );
+                Promise.all([
+                    EventModel.createMidEvent(request),
+                    this.view.renderNewEventLoading(),
+                ]).then(responses => {
+                    this.view.renderNewEvent(responses[0], 'mid', responses[1]);
+                }).catch(console.error);
             }
             eventEditComp.hide();
         });

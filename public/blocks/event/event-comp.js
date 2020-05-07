@@ -6,6 +6,7 @@ import {showLoading} from 'Eventum/utils/basic';
 
 export default class EventComp extends Component {
     fields = ['photos'];
+    cssClass = 'event';
 
     /**
      *
@@ -13,10 +14,11 @@ export default class EventComp extends Component {
      */
     type = null;
 
-    constructor(data) {
+    constructor(data, own) {
         super();
         this.template = EventTemplate;
         this.data = data;
+        this.data.own = own;
     }
 
     beforeRender() {
@@ -63,7 +65,11 @@ export default class EventComp extends Component {
         }
         this.data[this.type] = true;
         this.data.class = this.type; // basically Object.defineProperty
-        this.data.date = new Date(this.data.date).toLocaleString();
+        if (new Date(this.data.date).getUTCFullYear() === 1) {
+            this.data.date = null;
+        } else {
+            this.data.date = new Date(this.data.date).toLocaleString();
+        }
     }
 
     /***********************************************
