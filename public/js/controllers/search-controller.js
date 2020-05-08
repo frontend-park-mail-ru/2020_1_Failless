@@ -35,8 +35,11 @@ export default class SearchController extends Controller {
         UserModel.getProfile().finally(
             (profile) => { // User authorized
                 EventModel.getSearchEvents({uid: profile ? profile.uid : null, page: 1, limit: 10})
-                    .then((events) => {this.view.renderResults(events);})
-                    .catch((error) => {this.view.showSearchError(error);});
+                    .then((events) => {
+                        this.view.renderResults(events);
+                    }).catch((error) => {
+                        this.view.showSearchError(error);
+                    });
             }
         );
         this.initHandlers([
@@ -81,7 +84,8 @@ export default class SearchController extends Controller {
                         page: this.pageDownloaded,
                         limit: 30,
                         query: payload
-                    });})
+                    });
+                })
                 .then(
                     (events) => {
                         if (!events) {
@@ -93,7 +97,9 @@ export default class SearchController extends Controller {
                             this.view.renderResults(events);
                         }
                     },
-                    (error) => {this.view.showSearchError(error);});
+                    (error) => {
+                        this.view.showSearchError(error);
+                    });
         }
     };
 

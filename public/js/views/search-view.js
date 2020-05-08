@@ -53,7 +53,7 @@ export default class SearchView extends View {
         this.showError(this.resultsAreaDiv, error, 'warning', null);
     };
 
-    renderResults(events) {
+    renderResults(data) {
         const resultsArea = this.resultsAreaDiv;
         if (resultsArea.firstElementChild.classList.contains('error') || resultsArea.firstElementChild.classList.contains('spinner')) {
             makeEmpty(resultsArea);
@@ -70,6 +70,17 @@ export default class SearchView extends View {
                 midEventComponent.renderAsElement(this.vDOM.results.grid.element, 'beforeend');
             });
         }
+        // makeEmpty(resultsArea);
+        // if (data && data.mid_events !== null) {
+        //     console.log('events is');
+        //     console.log(data);
+        //     data.mid_events.forEach((event) => {
+        //         determineClass(event);
+        //         event.date = new Date(event.date).toLocaleString();
+        //     });
+        // }
+        // const events = data.mid_events;
+        // resultsArea.insertAdjacentHTML('afterbegin', searchGridTemplate({events}));
     }
 
     renderNotFound() {
