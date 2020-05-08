@@ -22,12 +22,12 @@ export default class EventModel extends Model {
      * @param {{limit: Number, page: Number}} eventsRequest - request with query, limits and page
      * @return {Promise} promise to get user data
      */
-    static getEvents(eventsRequest) {
+    static getSearchEvents(eventsRequest) {
         let errors = this.invalidEventRequest(eventsRequest);
         if (errors.length !== 0) {
             throw new Error(...errors);
         }
-        return NetworkModule.fetchPost({path: '/events/search', body: eventsRequest}).then(
+        return NetworkModule.fetchPost({path: '/events', body: eventsRequest}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
@@ -223,8 +223,22 @@ export default class EventModel extends Model {
      * @param {Number} eid
      * @param {String} type - mid/big event
      */
-    static followEvent(uid, eid, type) {
-        return NetworkModule.fetchPost({path: `/event/${eid}/follow`, body: {uid: Number(uid), eid: Number(eid), type: type}}).then(
+    static joinMidEvent(uid, eid) {
+        return NetworkModule.fetchPost({path: `/events/mid/${eid}/member`, body: {uid: Number(uid), eid: Number(eid)}}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
+    static visitBigEvent(uid, eid) {
+        throw new Error('not implemented');
+        return NetworkModule.fetchPost({path: `/`, body: {uid: Number(uid), eid: Number(eid)}}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');

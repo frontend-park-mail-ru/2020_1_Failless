@@ -2,10 +2,9 @@
 
 import View from 'Eventum/core/view';
 import searchTemplate from 'Components/big-search/template.hbs';
-import searchGridTemplate from 'Blocks/search-grid/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
-import {determineClass} from 'Blocks/event/event';
-import {prettifyDateTime} from 'Blocks/chat-list-item/chat-list-item';
+import MidEventComponent from 'Blocks/event/mid-event-comp';
+// import BigEventComponent from 'Blocks/event/big-event-comp';
 
 /**
  * @class create SearchView class
@@ -19,20 +18,26 @@ export default class SearchView extends View {
     constructor(parent) {
         super(parent);
         this.parent = parent;
-        this.resultsArea = null;
+
+        this.vDOM = {
+            header: {
+                comp: null,
+                element: null,
+            },
+            results: {
+                comp: null,
+                element: null,
+                error: null,
+                grid: {
+                    element: null,
+                    events: [],
+                }
+            }
+        };
     }
 
     destructor() {
         this.resultsArea = null;
-    }
-
-    /**
-     * Check if elements are set and return div of results area
-     * @return {Element}
-     */
-    get resultsAreaDiv() {
-        this.#setDOMElements();
-        return this.resultsArea;
     }
 
     /**
@@ -43,12 +48,6 @@ export default class SearchView extends View {
         this.#setDOMElements();
     }
 
-    #setDOMElements = () => {
-        while (!this.resultsArea) {
-            this.resultsArea = document.querySelector('.big-search__results');
-        }
-    };
-
     showSearchError = (error) => {
         console.error(error);
         this.showError(this.resultsAreaDiv, error, 'warning', null);
@@ -56,19 +55,55 @@ export default class SearchView extends View {
 
     renderResults(events) {
         const resultsArea = this.resultsAreaDiv;
-        makeEmpty(resultsArea);
-        if (events) {
-            events.forEach((event) => {
-                determineClass(event.Event);
-                event.Event.date = new Date(event.Event.date).toLocaleString();
+        if (resultsArea.firstElementChild.classList.contains('error') || resultsArea.firstElementChild.classList.contains('spinner')) {
+            makeEmpty(resultsArea);
+            let grid = document.createElement('div');
+            grid.classList.add('big-search__grid');
+            this.vDOM.results.grid.element = resultsArea.insertAdjacentElement('afterbegin', grid);
+            console.log(this.vDOM.results);
+        }
+        if (events && events.mid_events.length > 0) {
+            events.mid_events.forEach((midEvent) => {
+                // Create components
+                let midEventComponent = new MidEventComponent(midEvent, false);
+                this.vDOM.results.grid.events.push(midEventComponent);
+                midEventComponent.renderAsElement(this.vDOM.results.grid.element, 'beforeend');
             });
         }
-        resultsArea.insertAdjacentHTML('afterbegin', searchGridTemplate({events}));
     }
 
     renderNotFound() {
         const resultsArea = this.resultsAreaDiv;
         makeEmpty(resultsArea);
         this.showError(resultsArea, 'Ничего не нашлось ', 'sad', null).then();
+    }
+
+    #setDOMElements = () => {
+        while (!this.vDOM.results.element) {
+            this.vDOM.results.element = document.querySelector('.big-search__results');
+        }
+        while (!this.vDOM.header.element) {
+            this.vDOM.header.element = document.querySelector('.big-search__header');
+        }
+    };
+
+    /***********************************************
+                 Additional get functions
+     ***********************************************/
+
+    /**
+     * @return {Element}
+     */
+    get headerDiv() {
+        this.#setDOMElements();
+        return this.vDOM.header.element;
+    }
+
+    /**
+     * @return {Element}
+     */
+    get resultsAreaDiv() {
+        this.#setDOMElements();
+        return this.vDOM.results.element;
     }
 }

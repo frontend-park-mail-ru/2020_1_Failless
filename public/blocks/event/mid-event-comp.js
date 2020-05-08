@@ -7,4 +7,9 @@ export default class MidEvent extends EventComp {
         super(data, own);
         this.type = 'mid';
     }
+
+    incrementMembers() {
+        this.data.member_amount++;
+        this.amountSpan.innerText = `${this.data.member_amount}/${this.data.limit}`;
+    }
 }

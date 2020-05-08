@@ -34,7 +34,7 @@ export default class SearchController extends Controller {
         this.view.render();
         UserModel.getProfile().finally(
             (profile) => { // User authorized
-                EventModel.getEvents({uid: profile ? profile.uid : null, page: 1, limit: 10})
+                EventModel.getSearchEvents({uid: profile ? profile.uid : null, page: 1, limit: 10})
                     .then((events) => {this.view.renderResults(events);})
                     .catch((error) => {this.view.showSearchError(error);});
             }
@@ -76,10 +76,10 @@ export default class SearchController extends Controller {
             let payload = document.querySelector('#searchInput').value; // TODO: fix this.uid
             UserModel.getProfile()
                 .then((profile) => {
-                    return EventModel.getEvents({
+                    return EventModel.getSearchEvents({
                         uid: profile.uid,
                         page: this.pageDownloaded,
-                        limit: 10,
+                        limit: 30,
                         query: payload
                     });})
                 .then(
@@ -104,28 +104,41 @@ export default class SearchController extends Controller {
             return;
         }
 
+        const eid = event.target.getAttribute('data-eid');
+        let eventComponent = this.view.vDOM.results.grid.events.find((event) => {return event.data.eid === Number(eid);});
+
         UserModel.getProfile().then(
             (profile) => {
                 if (!profile) {
                     // TODO: Show registration modal window
                     return;
                 }
-                EventModel.followEvent(
-                    profile.uid,
-                    event.target.getAttribute('data-eid'),
-                    event.target.previousElementSibling.classList.contains('event__circle_mid') ? 'mid-event' : 'big-event')
-                    .then(
+                if (event.target.previousElementSibling.classList.contains('event__circle_mid')) {
+                    EventModel.joinMidEvent(profile.uid, eid).then(
                         (response) => {
                             changeActionText(event.target, 'green', 'Вы идёте');
+                            eventComponent.incrementMembers();
                         },
                         (error) => {
+                            console.error(error);
                             changeActionText(event.target, 'red', 'Ошибка');
-                            console.log(error);
                         }
                     );
+                } else if (event.target.previousElementSibling.classList.contains('event__circle_big')) {
+                    EventModel.visitBigEvent(profile.uid, event.target.getAttribute('data-eid')).then(
+                        (response) => changeActionText(event.target, 'green', 'Вы идёте'),
+                        (error) => {
+                            console.error(error);
+                            changeActionText(event.target, 'red', 'Ошибка');
+                        }
+                    );
+                } else {
+                    console.log('wat, how you got here?');
+                    return;
+                }
             },
             (error) => {
-                console.log(error);
+                console.error(error);
             }
         );
     };

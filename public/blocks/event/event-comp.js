@@ -5,7 +5,7 @@ import settings from 'Settings/config';
 import {showLoading} from 'Eventum/utils/basic';
 
 export default class EventComp extends Component {
-    fields = ['photos'];
+    fields = ['photos', 'amount'];
     cssClass = 'event';
 
     /**
@@ -78,5 +78,10 @@ export default class EventComp extends Component {
 
     get photosDiv() {
         return this.vDOM['photos'];
+    }
+
+    // Mid and big events only
+    get amountSpan() {
+        return this.vDOM['amount'];
     }
 }
