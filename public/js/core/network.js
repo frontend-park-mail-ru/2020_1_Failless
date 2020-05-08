@@ -82,4 +82,31 @@ export default class NetworkModule {
             body: JSON.stringify(body)
         });
     };
+
+    /**
+     * @param {string} path Path to send the query to
+     * @param {Object} body Body of the query (will be serialized as json)
+     * @param api {string}
+     * @return {Promise} Promise for the HTTP request
+     */
+    static fetchDelete = ({
+        path = '/',
+        body = null,
+        api = settings.api,
+    } = {}) => {
+        if (path.includes('undefined')) {
+            throw new Error('Invalid path, boy');
+        }
+        const token = getCookie('csrf');
+        return fetch(settings.url + ':' + settings.port + api + path, {
+            method: 'DELETE',
+            mode: 'cors',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'X-CSRF-Token': token
+            },
+            body: JSON.stringify(body)
+        });
+    };
 }

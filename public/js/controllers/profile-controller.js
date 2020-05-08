@@ -198,11 +198,20 @@ export default class ProfileController extends Controller {
     #unfollowEvent = (event) => {
         UserModel.getProfile().then(
             (profile) => {
-                let type = event.target.previousElementSibling.classList.contains('event__circle_mid') ? 'mid-event' : 'big-event';
-                EventModel.unfollowEvent(profile.uid, event.target.getAttribute('data-eid'), type)
-                    .then((response) => {this.view.removeSubscriptionByLink(event.target);});
+                let circle = event.target.previousElementSibling;
+                let eid = event.target.getAttribute('data-eid');
+                if (circle.classList.contains('event__circle_mid')) {
+                    EventModel.leaveMidEvent(profile.uid, eid)
+                        .then((response) => this.view.removeSubscriptionByLink(event.target));
+                } else if (circle.classList.contains('event__circle_big')) {
+                    EventModel.leaveBigEvent(profile.uid, eid)
+                        .then((response) => this.view.removeSubscriptionByLink(event.target));
+                } else {
+                    console.error(`class of circle - ${circle.classList} - does not match any of the following: event__circle_mid, event__circle_big`)
+                }
+
             },
-            error => console.log(error)
+            error => console.error(error)
         );
 
     };

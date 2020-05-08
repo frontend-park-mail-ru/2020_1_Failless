@@ -254,10 +254,9 @@ export default class EventModel extends Model {
      *
      * @param {Number} uid
      * @param {Number} eid
-     * @param type
      */
-    static unfollowEvent(uid, eid, type) {
-        return NetworkModule.fetchPost({path: `/event/${eid}/unfollow`, body: {uid: Number(uid), eid: Number(eid), type: type}}).then(
+    static leaveMidEvent(uid, eid) {
+        return NetworkModule.fetchDelete({path: `/events/mid/${eid}/member`, body: {uid: Number(uid), eid: Number(eid)}}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
