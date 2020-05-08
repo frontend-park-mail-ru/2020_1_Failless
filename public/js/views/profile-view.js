@@ -38,6 +38,10 @@ export default class ProfileView extends MyView {
                 subscriptions: {
                     comp: null,
                     element: null,
+                    events: {
+                        mid_events: [],
+                        small_events: [],
+                    },
                 },
                 personalEvents: {
                     comp: null,
@@ -294,20 +298,32 @@ export default class ProfileView extends MyView {
     /**
      * This function depends on non-empty chats
      * so check it somewhere outside
-     * @param subscriptions[{event}]
+     * @param subscriptions {{
+     *     mid_events: Array<{
+     *          eid: Number,
+     *          title: string,
+     *          description: string|null,
+     *          tags: Array<Number>|null,
+     *          date: string|null,
+     *          photos: Array<string>|null,
+     *          limit: Number,
+     *          member_amount: Number,
+     *          public: boolean,
+     *      }>
+     * }}
      * @return {Promise<void>}
      */
     async renderSubscriptions(subscriptions) {
-        if (!subscriptions) {
+        if (!subscriptions || subscriptions.mid_events.length === 0 /*&& subscriptions.big_events.length === 0*/) {
             this.renderEmptySubscriptions();
             return;
         }
         const subsArea = this.subscriptionsDiv;
         makeEmpty(subsArea);
-        subscriptions.forEach((sub) => {
-            determineClass(sub);
-            sub.followed = true;
-            subsArea.insertAdjacentHTML('beforeend', eventCardTemplate(sub));
+        subscriptions.mid_events.forEach((midEvent) => {
+            let midEventComponent = new MidEventComponent(midEvent, false);
+            this.vDOM.mainColumn.subscriptions.events.mid_events.push(midEventComponent);
+            midEventComponent.renderAsElement(subsArea, 'beforeend');
         });
     }
 
