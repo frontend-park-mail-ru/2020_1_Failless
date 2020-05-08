@@ -22,7 +22,7 @@ export default class ProfileController extends Controller {
 
     /**
      * construct object of ProfileController class
-     * @param {HTMLElement} parent
+     * @param parent {HTMLElement}
      */
     constructor(parent) {
         super(parent);
@@ -192,9 +192,6 @@ export default class ProfileController extends Controller {
         }
     };
 
-    /**
-     *
-     */
     #unfollowEvent = (event) => {
         UserModel.getProfile().then(
             (profile) => {

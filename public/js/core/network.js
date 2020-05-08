@@ -1,5 +1,7 @@
-import settings from 'Settings/config.js';
-import getCookie from 'Eventum/utils/csrf.js';
+'use strict';
+
+import settings from 'Settings/config';
+import getCookie from 'Eventum/utils/csrf';
 
 /**
  * The class implements methods for calling communicating with the server API
@@ -7,19 +9,18 @@ import getCookie from 'Eventum/utils/csrf.js';
 export default class NetworkModule {
 
     /**
-     * @param {string} path Path to send the query to
+     * @param path {string} Path to send the query to
      * @param api
      * @return {Promise} Promise for the HTTP request
      */
     static fetchGet = ({
         path = '/',
-        api = null,
+        api = settings.api,
     } = {}) => {
         if (path.includes('undefined')) {
             throw new Error('Invalid path, boy');
         }
         const token = getCookie('csrf');
-        api = api === null ? settings.api : api;
         return fetch(settings.url + ':' + settings.port + api + path, {
             method: 'GET',
             credentials: 'include',
@@ -30,21 +31,20 @@ export default class NetworkModule {
     };
 
     /**
-     * @param {string} path Path to send the query to
-     * @param {Object} body Body of the query (will be serialized as json)
-     * @param {String} api
+     * @param path {string} Path to send the query to
+     * @param body {Object} Body of the query (will be serialized as json)
+     * @param api {String}
      * @return {Promise} Promise for the HTTP request
      */
     static fetchPost = ({
         path = '/',
         body = null,
-        api = null,
+        api = settings.api,
     } = {}) => {
         if (path.includes('undefined')) {
             throw new Error('Invalid path, boy');
         }
         const token = getCookie('csrf');
-        api = api === null ? settings.api : api;
         return fetch(settings.url + ':' + settings.port + api + path, {
             method: 'POST',
             mode: 'cors',
@@ -58,14 +58,15 @@ export default class NetworkModule {
     };
 
     /**
-     * @param {string} path Path to send the query to
-     * @param {Object} body Body of the query (will be serialized as json)
+     * @param path {string} Path to send the query to
+     * @param body {Object} Body of the query (will be serialized as json)
+     * @param api {String}
      * @return {Promise} Promise for the HTTP request
      */
     static fetchPut = ({
         path = '/',
         body = null,
-        api = null,
+        api = settings.api,
     } = {}) => {
         if (path.includes('undefined')) {
             throw new Error('Invalid path, boy');
@@ -84,10 +85,10 @@ export default class NetworkModule {
     };
 
     /**
-     * @param {string} path Path to send the query to
-     * @param {Object} body Body of the query (will be serialized as json)
+     * @param path {string} Path to send the query to
+     * @param body {Object} Body of the query (will be serialized as json)
      * @param api {string}
-     * @return {Promise} Promise for the HTTP request
+     * @return Promise {Promise} for the HTTP request
      */
     static fetchDelete = ({
         path = '/',

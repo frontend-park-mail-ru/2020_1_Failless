@@ -1,5 +1,5 @@
-import settings from 'Settings/config.js';
-import router from 'Eventum/core/router.js';
+import settings from 'Settings/config';
+import router from 'Eventum/core/router';
 
 function Event(photos, title, place, description) {
     this.photos = photos;

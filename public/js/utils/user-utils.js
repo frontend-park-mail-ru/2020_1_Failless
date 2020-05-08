@@ -1,7 +1,7 @@
 'use strict';
 
-import UserModel from 'Eventum/models/user-model.js';
-import router from 'Eventum/core/router.js';
+import UserModel from 'Eventum/models/user-model';
+import router from 'Eventum/core/router';
 
 /**
  * Handle click on login event

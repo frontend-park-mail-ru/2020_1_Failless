@@ -1,7 +1,7 @@
 'use strict';
 
 import NetworkModule from 'Eventum/core/network';
-import settings from 'Settings/config.js';
+import settings from 'Settings/config';
 import Model from 'Eventum/core/model';
 
 /**
@@ -112,12 +112,12 @@ export default class EventModel extends Model {
     /**
      * Send small event to backend
      * @param body {{
-     *      uid: Number,
-     *      title: string,
-     *      description: string|null,
-     *      tags: Array<{Number}>|null,
-     *      date: string|null,
-     *      photos: Array<{string}>|null,
+     *      uid:            Number,
+     *      title:          string,
+     *      description:    string          |null,
+     *      tags:           Array<Number>   |null,
+     *      date:           string          |null,
+     *      photos:         Array<string>   |null,
      * }}
      * @return {Promise<unknown>}
      */
@@ -157,24 +157,6 @@ export default class EventModel extends Model {
         (error) => {
             throw new Error(error);
         });
-    }
-
-    static getEventFollowers(eid) {
-        if (!eid) {
-            return new Promise(((resolve, reject) => {
-                reject(new Error('Invalid event id'));
-            }));
-        }
-        return NetworkModule.fetchGet({path: `/events/${eid}/follow`}).then(
-            (response) => {
-                if (response.status > 499) {
-                    throw new Error('Server error');
-                }
-                return response.json();
-            },
-            (error) => {
-                throw new Error(error);
-            });
     }
 
     /**
@@ -221,7 +203,6 @@ export default class EventModel extends Model {
      * Subscribe user (uid) to this event (eid)
      * @param {Number} uid
      * @param {Number} eid
-     * @param {String} type - mid/big event
      */
     static joinMidEvent(uid, eid) {
         return NetworkModule.fetchPost({path: `/events/mid/${eid}/member`, body: {uid: Number(uid), eid: Number(eid)}}).then(
@@ -236,22 +217,8 @@ export default class EventModel extends Model {
             });
     }
 
-    static visitBigEvent(uid, eid) {
-        throw new Error('not implemented');
-        return NetworkModule.fetchPost({path: `/`, body: {uid: Number(uid), eid: Number(eid)}}).then(
-            (response) => {
-                if (response.status > 499) {
-                    throw new Error('Server error');
-                }
-                return response.json();
-            },
-            (error) => {
-                throw new Error(error);
-            });
-    }
-
     /**
-     *
+     * Send request to leave mid event
      * @param {Number} uid
      * @param {Number} eid
      */
