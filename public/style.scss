@@ -22,7 +22,6 @@
 @import "blocks/event/event";
 @import "blocks/event-edit/event-edit";
 @import "blocks/feed-center-users/feed-center-users";
-@import "blocks/feed-right/feed-right";
 @import "blocks/header/header";
 @import "blocks/icon/icon";
 @import "blocks/input/input";
@@ -174,4 +173,8 @@ h3 {
 
 #gray__icon {
   fill: $re--color-light-gray;
+}
+
+.hidden {
+  display: none;
 }

@@ -8,8 +8,9 @@ import settings from 'Settings/config.js';
 import SliderManager from 'Blocks/slider/set-slider.js';
 import {MAX_AGE, MIN_AGE, staticTags} from 'Eventum/utils/static-data.js';
 import {highlightTag} from 'Eventum/utils/tag-logic.js';
-import {fullProfileCheck} from 'Eventum/utils/user-utils.js';
+import {profileCheck} from 'Eventum/utils/user-utils.js';
 import {showMessageWithRedirect} from 'Eventum/utils/render.js';
+import FeedModel from 'Eventum/models/feed-model';
 
 /**
  * @class FeedController
@@ -22,16 +23,10 @@ export default class FeedController extends Controller {
      */
     constructor(parent) {
         super(parent);
-        this.dataList = []; // {item, followers}
-        this.tagList = []; // заглушка
-        this.currentPage = 1;
-        this.currentItem = 0;
-        this.view = new FeedView(parent, staticTags);
-        this.uid = null;
+        this.view = new FeedView(parent);
         this.sliderManager = new SliderManager();
-        this.userMessages = [];
         this.defaultFeedRequest = {
-            uid: this.uid,
+            uid: null,
             page: 1,
             limit: settings.pageLimit,
             query: '',
@@ -42,6 +37,8 @@ export default class FeedController extends Controller {
             men: true,
             women: true,
         };
+        this.model = FeedModel.instance;
+        UserModel.getProfile().then(user => this.defaultFeedRequest.uid = user.uid)
     }
 
     destructor() {
@@ -54,24 +51,20 @@ export default class FeedController extends Controller {
      */
     action() {
         super.action();
-        this.view.render(this.tagList);
+        this.view.render();
         UserModel.getProfile().then((user) => {
-            // Check if user has filled profile
-            this.userMessages = fullProfileCheck(user);
-            this.uid = user.uid;
-            this.defaultFeedRequest.uid = this.uid;
-            this.defaultFeedRequest.tags = user.tags;
+            console.log(user);
+            this.model.userMessages = profileCheck(user);
+            this.model.feedRequest.uid = user.uid;
+            if (user.tags) {
+                this.model.feedRequest.tags = user.tags.map(tag => tag.tag_id);
+            }
+            this.#initFilters(user.tags);
 
             // Fetch content to show
-            this.#initDataList(this.defaultFeedRequest).then(
-                (data) => {
-                    this.#updateAll();
-                },
-                (error) => {
-                    console.error(error);
-                    this.view.showError(error);
-                });
-            this.#initFilters();
+            this.#initDataList(this.model.feedRequest)
+                .then(data => this.#updateView(),)
+                .catch(error => this.view.showFeedError(error));
             this.initHandlers([
                 {
                     attr: 'highlightTag',
@@ -104,8 +97,19 @@ export default class FeedController extends Controller {
 
     /**
      *  Initialize filters with user preferences
+     *  TODO: get previous settings
      */
-    async #initFilters() {
+    async #initFilters(userTags) {
+        // Set tags active equal to user's own tags
+        if (userTags) {
+            this.model.tags.forEach(tag => {
+                if (userTags.includes(tag.name)) {
+                    tag.active_class = 'tag__container__active';
+                }
+            });
+            this.view.updateTags();
+        }
+
         // Set two sliders and connect each other
         let sliders = document.querySelectorAll('.slider');
         this.sliderManager.setSliders(
@@ -134,8 +138,8 @@ export default class FeedController extends Controller {
     #applyFilters = (event) => {
         event.preventDefault();
 
-        if (this.userMessages.length !== 0) {
-            showMessageWithRedirect(this.userMessages, 'Profile');
+        if (this.model.userMessages.length !== 0) {
+            showMessageWithRedirect(this.model.userMessages, 'Profile');
             return;
         }
 
@@ -147,7 +151,6 @@ export default class FeedController extends Controller {
             women: true,
             minAge: MIN_AGE,
             maxAge: MAX_AGE,
-            limit: 10,
         };
 
         // Get keywords (TODO: add more separators)
@@ -189,7 +192,7 @@ export default class FeedController extends Controller {
 
         this.#initDataList(request).then(
             (data) => {
-                this.#updateAll();
+                this.#updateView();
             },
             (error) => {
                 console.error(error);
@@ -216,7 +219,7 @@ export default class FeedController extends Controller {
         // Get id-s
         const vote = {
             uid: this.uid,
-            id: this.dataList[this.currentItem].item.uid,
+            id: this.userList[this.currentUserNum].item.uid,
             value: isLike ? 1 : -1,
         };
 
@@ -230,22 +233,22 @@ export default class FeedController extends Controller {
             });
 
         // Show next item
-        ++this.currentItem;
-        if (this.currentItem < settings.pageLimit) {
-            if (this.dataList.length <= this.currentItem) { // empty list
+        ++this.currentUserNum;
+        if (this.currentUserNum < settings.pageLimit) {
+            if (this.userList.length <= this.currentUserNum) { // empty list
                 this.view.updateCenter(null);
             } else { // not empty list
-                this.#updateAll();
+                this.#updateView();
             }
         } else {
             // Go get next items
-            this.currentItem = 0;
+            this.currentUserNum = 0;
             ++this.currentPage;
-            this.dataList.length = 0;
+            this.userList.length = 0;
             this.defaultFeedRequest.page = this.currentPage;
             this.#initDataList(this.defaultFeedRequest).then(
                 (data) => {
-                    this.#updateAll();
+                    this.#updateView();
                 },
                 (error) => {
                     console.error(error);
@@ -255,32 +258,21 @@ export default class FeedController extends Controller {
     };
 
     /**
-     * Get either events or users list to show in feed
+     * Get users list to show in feed
      * @return {Promise<T>}
      */
     #initDataList = (request) => {
-        console.log(request);
         return EventModel.getFeedUsers(request).then(
             (users) => {
+                console.log(users);
                 if (users) {
-                    console.log(users);
                     users.forEach((user) => {
-                        this.dataList.push(
-                            {
-                                item: user,
-                                followers: {
-                                    personalEvents: user.events,
-                                    subscriptions: user.subscriptions,
-                                },
-                            });
+                        this.model.userList.push(user);
                     });
-                    return this.dataList[0];
-                } else {
-                    return null;
                 }
+                return users;
             },
             (error) => {
-                console.error(error);
                 throw new Error(error);
             });
     };
@@ -289,20 +281,8 @@ export default class FeedController extends Controller {
      * Render both columns
      * Show rendering icon if loading
      */
-    #updateAll() {
-        // Show none
-        if (!this.dataList[this.currentItem]) {
-            this.view.updateCenter(null);
-            this.view.updateRight(null);
-            return;
-        }
-
-        // Render center column
-        this.view.updateCenter(this.dataList[this.currentItem].item);
-        this.#setUpVoteButtons();
-
-        // Render right column
-        this.view.showLoadingRight();
-        this.view.updateRight(this.dataList[this.currentItem].followers);
+    #updateView() {
+        this.view.updateUser()
+            .then(this.#setUpVoteButtons());
     }
 }

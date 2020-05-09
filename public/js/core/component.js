@@ -103,6 +103,11 @@ export default class Component {
         this.didRender();
     }
 
+    /**
+     * Renders component inside given HTMLElement
+     * @param bodyElement
+     * @return {Promise<void>}
+     */
     async renderIn(bodyElement) {
         this.beforeRender();
 
@@ -116,4 +121,31 @@ export default class Component {
      * Do stuff after render
      */
     didRender() {}
+
+    /**
+     * TODO: add removeEventHandlers here
+     */
+    beforeRemove() {
+        this.element.style.transform = 'scale(0)';
+    }
+
+    /**
+     *
+     * @param mode {'smooth' | null}
+     */
+    removeComponent(mode) {
+        this.beforeRemove();
+
+        if (mode === 'smooth') {
+            setTimeout(() => {
+                this.element.remove();
+                this.afterRemove();
+            }, 300);
+        } else {
+            this.element.remove();
+            this.afterRemove();
+        }
+    }
+
+    afterRemove() {}
 }

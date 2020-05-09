@@ -6,7 +6,6 @@ import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
 import loadingTemplate from 'Blocks/loading/template.hbs';
-import eventCardTemplate from 'Blocks/event/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {determineClass} from 'Blocks/event/event';
@@ -274,7 +273,7 @@ export default class ProfileView extends MyView {
     async renderEvents(events) {
         const personalEvents = this.personalEventsDiv;
         makeEmpty(personalEvents);
-        if (!events || (events.mid_events.length === 0 && events.small_events.length === 0)) {
+        if (!events || (!events.mid_events || events.mid_events.length === 0) && (!events.small_events || events.small_events.length === 0)) {
             personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
         } else {
             events.small_events.forEach((smallEvent) => {
@@ -314,7 +313,12 @@ export default class ProfileView extends MyView {
      * @return {Promise<void>}
      */
     async renderSubscriptions(subscriptions) {
-        if (!subscriptions || subscriptions.mid_events.length === 0 /*&& subscriptions.big_events.length === 0*/) {
+        if (!subscriptions
+            ||
+            (!subscriptions.mid_events || subscriptions.mid_events.length === 0)
+                &&
+            (!subscriptions.big_events || subscriptions.big_events.length === 0))
+        {
             this.renderEmptySubscriptions();
             return;
         }
