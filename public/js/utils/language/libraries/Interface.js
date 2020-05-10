@@ -23,8 +23,15 @@ const FiltersTextsInterface = {
     TAGS_HEADER: '',
     KEYWORDS_HEADER: '',
     KEYWORDS_PLACEHOLDER: '',
-    OTHERS_HEADER: '',
     MEMBER_AMOUNT: '',
+};
+
+const FeedTextsInterface = {
+    DISLIKE: '',
+    LIKE: '',
+    SKIP: '',
+    PERSONAL_EVENTS_HEADER: '',
+    SUBSCRIPTIONS_HEADER: '',
 };
 
 const Library = {
@@ -32,6 +39,7 @@ const Library = {
     Event: EventTextsInterface,
     Profile: ProfileTextsInterface,
     Filters: FiltersTextsInterface,
+    Feed: FeedTextsInterface,
 };
 
 export default Library;

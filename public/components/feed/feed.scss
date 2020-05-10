@@ -2,32 +2,36 @@
 
 .feed {
   position: absolute;
-  top: (10px + $header-height);
+  top: 55px;
   bottom: 10px;
   width: 100%;
   display: flex;
-  flex: 1 1 100%;
 
   &__header {
     display: none;
   }
 
-  &__separator {
-    width: 8px;
+  &__main {
+    min-width: 0;
+    display: flex;
+    flex: 1;
+    background: white;
+    border-radius: $re--border-radius;
+    margin-left: 2%;
+    box-shadow: 0 0 20px -9px rgba(0, 0, 0, 0.5);
   }
 
   &__column {
-    width: 258px;
-    flex: 1 1 auto;
-    background-color: $color-white;
-    border-radius: $re--border-radius;
     padding: $re--medium-padding $re--medium-padding 0;
     overflow: auto;
-    box-shadow: 0 0 20px -9px rgba(0, 0, 0, 0.5);
 
     &_main {
-      flex: 1 2 auto;
-      width: 620px;
+      flex-grow: 0;
+      border-right: 1px solid $re--color-light-gray;
+    }
+
+    &_events {
+      flex: 0 0 30%;
     }
   }
 
@@ -40,6 +44,27 @@
       width: 100%;
       resize: none;
     }
+  }
+
+  &__main-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: sticky;
+    bottom: 0;
+    padding: 15px 0;
+    margin-top: 15px;
+    background: white;
+    box-shadow: 0px -18px 12px -21px #00000030;
+  }
+
+  &-right__title {
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+    font-size: 12px;
+    color: $color-black;
+    margin-bottom: 12px;
   }
 
   /* Customize the label (the container) */

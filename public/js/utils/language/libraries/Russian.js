@@ -23,8 +23,15 @@ const FiltersTextsRussian = {
     TAGS_HEADER: 'Выберите теги',
     KEYWORDS_HEADER: 'Ключевые слова',
     KEYWORDS_PLACEHOLDER: 'Бар Люди как люди',
-    OTHERS_HEADER: 'Другие фильтры',
     MEMBER_AMOUNT: 'Кол-во участников',
+};
+
+const FeedTextsRussian = {
+    DISLIKE: 'Дизлайк',
+    LIKE: 'Лайк',
+    SKIP: 'Пропустить',
+    PERSONAL_EVENTS_HEADER: 'Куда зовёт пойти',
+    SUBSCRIPTIONS_HEADER: 'Куда сам идёт',
 };
 
 const RussianLibrary = {
@@ -32,6 +39,7 @@ const RussianLibrary = {
     Event: EventTextsRussian,
     Profile: ProfileTextsRussian,
     Filters: FiltersTextsRussian,
+    Feed: FeedTextsRussian,
 };
 
 export default RussianLibrary;

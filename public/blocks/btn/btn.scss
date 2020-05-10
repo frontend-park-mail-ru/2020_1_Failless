@@ -104,6 +104,12 @@
     @include swipe_btn($color-red, 24px);
   }
 
+  &__skip {
+    @include swipe_btn($re--color-middle-gray, 12px);
+    flex: 0;
+    margin: 0 $re--medium-padding;
+  }
+
   &__white {
     min-width: 96px;
     width: fit-content;

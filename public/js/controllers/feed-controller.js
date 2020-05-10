@@ -61,8 +61,8 @@ export default class FeedController extends Controller {
             }
 
             // Fetch content to show
-            this.#initDataList(this.model.feedRequest)
-                .then(data => this.#updateView(),)
+            this.#initDataList()
+                .then(data => this.view.updateUser())
                 .catch(error => this.view.showFeedError(error));
             this.initHandlers([
                 {
@@ -90,7 +90,13 @@ export default class FeedController extends Controller {
                         {type: 'click', handler: () => {document.querySelector('.filters').classList.remove('filters_active');}},
                     ]
                 },
-                {   // TODO: do this
+                {
+                    attr: 'handleVote',
+                    events: [
+                        {type: 'click', handler: this.#voteHandler},
+                    ]
+                },
+                {
                     attr: 'showAction',
                     events: [
                         {type: 'mouseover', handler: (event) => {
@@ -175,13 +181,6 @@ export default class FeedController extends Controller {
         );
     };
 
-    #setUpVoteButtons() {
-        this.addEventHandler(
-            document.querySelector('.feed-center__action-buttons'),
-            'click',
-            this.#voteHandler);
-    }
-
     /**
      *
      * @param event
@@ -219,7 +218,7 @@ export default class FeedController extends Controller {
         UserModel.getProfile()
             .then(user => request.uid = user.uid)
             .then(() => this.#initDataList(request))
-            .then(() => this.#updateView())
+            .then(() => this.view.updateUser())
             .catch(error => this.view.showFeedError(error));
     };
 
@@ -232,50 +231,42 @@ export default class FeedController extends Controller {
             return;
         }
 
-        if (this.userMessages.length !== 0) {
-            showMessageWithRedirect(this.userMessages, 'Profile');
+        if (this.model.userMessages.length !== 0) {
+            showMessageWithRedirect(this.model.userMessages, 'Profile');
+            return;
+        }
+
+        if (event.target.matches('.re_btn__skip')) {
+            showMessageWithRedirect('Оформите платную подписку, чтобы получить возможность пропускать пользователей', 'Profile');
             return;
         }
 
         const isLike = event.target.matches('.re_btn__approve');
         // Get id-s
         const vote = {
-            uid: this.uid,
-            id: this.userList[this.currentUserNum].item.uid,
+            uid: undefined,
+            id: this.model.currentUser.uid,
             value: isLike ? 1 : -1,
         };
 
-        // Send request with vote
-        EventModel.userVote(vote, isLike).then(
-            (response) => {
-                console.log(response);
-            },
-            (onerror) => {
-                console.error(onerror);
-            });
+        UserModel.getProfile()
+            .then(user => vote.uid = user.uid)
+            .then(() => EventModel.userVote(vote))
+            .catch((error) => this.view.showFeedError(error));
 
         // Show next item
-        ++this.currentUserNum;
-        if (this.currentUserNum < settings.pageLimit) {
-            if (this.userList.length <= this.currentUserNum) { // empty list
-                this.view.updateCenter(null);
-            } else { // not empty list
-                this.#updateView();
-            }
+        ++this.model.currentUserNumber;
+        if (this.model.currentUserNumber < settings.pageLimit) {
+            this.view.updateUser();
         } else {
             // Go get next items
-            this.currentUserNum = 0;
-            ++this.currentPage;
-            this.userList.length = 0;
-            this.defaultFeedRequest.page = this.currentPage;
-            this.#initDataList(this.defaultFeedRequest).then(
-                (data) => {
-                    this.#updateView();
-                },
-                (error) => {
-                    console.error(error);
-                    this.view.showError(error);
-                });
+            this.model.currentUserNumber = 0;
+            ++this.model.currentPageNumber;
+            this.model.userList.length = 0;
+            this.model.feedRequest.page = this.model.currentPageNumber;
+            this.#initDataList()
+                .then(data => this.view.updateUser())
+                .catch(error => this.view.showFeedError(error));
         }
     };
 
@@ -283,7 +274,7 @@ export default class FeedController extends Controller {
      * Get users list to show in feed
      * @return {Promise<T>}
      */
-    #initDataList = (request) => {
+    #initDataList = (request = this.model.feedRequest) => {
         return EventModel.getFeedUsers(request).then(
             (users) => {
                 if (users) {
@@ -294,13 +285,4 @@ export default class FeedController extends Controller {
                 throw new Error(error);
             });
     };
-
-    /**
-     * Render both columns
-     * Show rendering icon if loading
-     */
-    #updateView() {
-        this.view.updateUser()
-            .then(this.#setUpVoteButtons());
-    }
 }

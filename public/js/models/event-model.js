@@ -64,12 +64,11 @@ export default class EventModel extends Model {
     /**
      * Get event data from server
      * @param {{uid: number, id: number, value: number}} vote - request with query, limits and page
-     * @param {boolean} isLike - is this request for like
      * @return {Promise} promise to get user data
      */
-    static userVote(vote, isLike) {
+    static userVote(vote) {
         let url = '/users/';
-        url += isLike ? 'like' : 'dislike';
+        url += vote.value === 1 ? 'like' : 'dislike';
         return NetworkModule.fetchPut({
             api: settings.api,
             path: url,

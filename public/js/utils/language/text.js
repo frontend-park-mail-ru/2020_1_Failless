@@ -38,6 +38,11 @@ export default class TextConstants {
     static get FILTERS__TAGS_HEADER() {return localLibrary.Filters.TAGS_HEADER;}
     static get FILTERS__KEYWORDS_HEADER() {return localLibrary.Filters.KEYWORDS_HEADER;}
     static get FILTERS__KEYWORDS_PLACEHOLDER() {return localLibrary.Filters.KEYWORDS_PLACEHOLDER;}
-    static get FILTERS__OTHERS_HEADER() {return localLibrary.Filters.OTHERS_HEADER;}
     static get FILTERS__MEMBER_AMOUNT() {return localLibrary.Filters.MEMBER_AMOUNT;}
+
+    static get FEED__DISLIKE() {return localLibrary.Feed.DISLIKE;}
+    static get FEED__LIKE() {return localLibrary.Feed.LIKE;}
+    static get FEED__PERSONAL_EVENTS_HEADER() {return localLibrary.Feed.PERSONAL_EVENTS_HEADER;}
+    static get FEED__SUBSCRIPTIONS_HEADER() {return localLibrary.Feed.SUBSCRIPTIONS_HEADER;}
+    static get FEED__SKIP() {return localLibrary.Feed.SKIP;}
 }

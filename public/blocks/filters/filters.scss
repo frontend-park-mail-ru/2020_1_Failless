@@ -1,6 +1,12 @@
 @import "../../modules/variables";
 
 .filters {
+  flex: 0 0 20%;
+  padding: 15px 15px 0;
+  overflow: auto;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 0 20px -9px rgba(0, 0, 0, 0.5);
   @include transition(0.3s, ease-in-out);
 
   @media only screen and (max-width: $breakpoint-phone) {

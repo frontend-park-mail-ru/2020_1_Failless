@@ -43,6 +43,9 @@ export default class FeedView extends View {
             filters: null,
             centerColumn: {
                 node: null,
+                footer: {
+                    node: null,
+                }
             },
             eventsColumn: {
                 node: null,
@@ -68,7 +71,13 @@ export default class FeedView extends View {
      * Render initial template
      */
     render() {
-        this.parent.innerHTML += feedTemplate();
+        this.parent.innerHTML += feedTemplate({
+            DISLIKE: TextConstants.FEED__DISLIKE,
+            SKIP: TextConstants.FEED__SKIP,
+            LIKE: TextConstants.FEED__LIKE,
+            PERSONAL_EVENTS_HEADER: TextConstants.FEED__PERSONAL_EVENTS_HEADER,
+            SUBSCRIPTIONS_HEADER: TextConstants.FEED__SUBSCRIPTIONS_HEADER,
+        });
         this.vDOM.filters = new Filters({
             tags: this.model.tags,
             TAGS_HEADER: TextConstants.FILTERS__TAGS_HEADER,
@@ -83,7 +92,7 @@ export default class FeedView extends View {
             LOCATION: TextConstants.BASIC__LOCATION,
             FIND: TextConstants.BASIC__FIND,
         });
-        this.vDOM.filters.renderIn(this.parent.querySelector('.feed__column.filters'));
+        this.vDOM.filters.renderIn(this.parent.querySelector('.filters'));
         this.#setvDOM();
     }
 
@@ -96,9 +105,10 @@ export default class FeedView extends View {
         let subscriptionsArea = this.subscriptionsBodyDiv;
 
         if (userToShow) {
+            this.#showUI();
             userToShow.photos = `${settings.aws}/users/${userToShow.photos[0]}`;
 
-            this.centerColumnDiv.innerHTML = feedCenterUsersTemplate({...userToShow});
+            this.centerColumnBodyDiv.innerHTML = feedCenterUsersTemplate({...userToShow});
             if (userToShow.own_events && (userToShow.own_events.small_events || userToShow.own_events.mid_events)) {
                 if (userToShow.own_events.small_events) {
                     userToShow.own_events.small_events.forEach(smallEvent => {
@@ -134,8 +144,8 @@ export default class FeedView extends View {
     }
 
     async #showEmpty() {
-        await this.#toggleHeadersInEventsColumn();
-        await this.showError(this.centerColumnDiv, 'Больше никого не нашлось<br>Упростите критерии поиска и попытайте удачу снова<br>Если и это не помогло - полистайте эвенты в поиске и<br>возвращайтесь в ленту попозже', 'sad', null);
+        await this.#hideUI();
+        await this.showError(this.centerColumnBodyDiv, 'Больше никого не нашлось<br>Упростите критерии поиска и попытайте удачу снова<br>Если и это не помогло - полистайте эвенты в поиске и<br>возвращайтесь в ленту попозже', 'sad', null);
     }
 
     /**
@@ -165,7 +175,7 @@ export default class FeedView extends View {
 
         this.#clearColumns();
 
-        this.showError(this.centerColumnDiv, error, icons.get('warning'), null);
+        this.showError(this.centerColumnBodyDiv, error, icons.get('warning'), null);
     }
 
     #setvDOM() {
@@ -173,7 +183,10 @@ export default class FeedView extends View {
             this.vDOM.filters.element = document.querySelector('.filters');
         }
         while (!this.vDOM.centerColumn.node) {
-            this.vDOM.centerColumn.node = document.querySelector('.feed__column.feed__column_main');
+            this.vDOM.centerColumn.node = document.querySelector('.feed__main-body');
+        }
+        while (!this.vDOM.centerColumn.footer.node) {
+            this.vDOM.centerColumn.footer.node = document.querySelector('.feed__main-footer');
         }
         while (!this.vDOM.eventsColumn.node) {
             this.vDOM.eventsColumn.node = document.querySelector('.feed__column.feed__column_events');
@@ -193,7 +206,7 @@ export default class FeedView extends View {
     }
 
     #clearColumns() {
-        makeEmpty(this.centerColumnDiv);
+        makeEmpty(this.centerColumnBodyDiv);
         this.#clearPersonalEvents();
         this.#clearSubscriptions();
     }
@@ -214,21 +227,6 @@ export default class FeedView extends View {
         makeEmpty(this.subscriptionsBodyDiv);
     }
 
-
-    async #toggleHeadersInEventsColumn() {
-        if (!this.personalEventsDiv.classList.contains('hidden')) {
-            this.personalEventsDiv.classList.add('hidden');
-        }
-        if (!this.subscriptionsDiv.classList.contains('hidden')) {
-            this.subscriptionsDiv.classList.add('hidden');
-        }
-    }
-
-    async #showHeadersInEventsColumn() {
-        this.personalEventsDiv.classList.remove('hidden');
-        this.subscriptionsDiv.classList.remove('hidden');
-    }
-
     async #showEmptyPersonalEvents() {
         this.#clearPersonalEvents();
         this.showError(this.personalEventsBodyDiv, 'Никуда не зовёт', null, null);
@@ -237,6 +235,24 @@ export default class FeedView extends View {
     async #showEmptySubscriptions() {
         this.#clearSubscriptions();
         this.showError(this.subscriptionsBodyDiv, 'Никуда не идёт', null, null);
+    }
+
+    async #hideUI() {
+        this.centerColumnFooterDiv.classList.add('hidden');
+        this.personalEventsDiv.classList.add('hidden');
+        this.subscriptionsDiv.classList.add('hidden');
+    }
+
+    async #showUI() {
+        if (this.centerColumnFooterDiv.classList.contains('hidden')) {
+            this.centerColumnFooterDiv.classList.remove('hidden');
+        }
+        if (this.personalEventsDiv.classList.contains('hidden')) {
+            this.personalEventsDiv.classList.remove('hidden');
+        }
+        if (this.subscriptionsDiv.classList.contains('hidden')) {
+            this.subscriptionsDiv.classList.remove('hidden');
+        }
     }
 
     /**
@@ -261,8 +277,12 @@ export default class FeedView extends View {
         return this.vDOM.filters;
     }
 
-    get centerColumnDiv() {
+    get centerColumnBodyDiv() {
         return this.vDOM.centerColumn.node;
+    }
+
+    get centerColumnFooterDiv() {
+        return this.vDOM.centerColumn.footer.node;
     }
 
     get eventsColumnDiv() {
