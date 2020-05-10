@@ -9,6 +9,7 @@ import settings from 'Settings/config';
 import {icons} from 'Eventum/utils/static-data';
 import SmallEvent from 'Blocks/event/small-event-comp';
 import MidEvent from 'Blocks/event/mid-event-comp';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class create SearchView class
@@ -71,6 +72,17 @@ export default class FeedView extends View {
     render() {
         this.parent.innerHTML += feedTemplate({
             tags: this.model.tags,
+            TAGS_HEADER: TextConstants.FILTERS__TAGS_HEADER,
+            KEYWORDS_HEADER: TextConstants.FILTERS__KEYWORDS_HEADER,
+            KEYWORDS_PLACEHOLDER: TextConstants.FILTERS__KEYWORDS_PLACEHOLDER,
+            GENDER: TextConstants.BASIC__GENDER,
+            MEN: TextConstants.BASIC__MEN,
+            WOMEN: TextConstants.BASIC__WOMEN,
+            AGE: TextConstants.BASIC__AGE,
+            FROM: TextConstants.BASIC__FROM,
+            TO: TextConstants.BASIC__TO,
+            LOCATION: TextConstants.BASIC__LOCATION,
+            FIND: TextConstants.BASIC__FIND,
         });
         this.#setvDOM();
     }
@@ -154,7 +166,7 @@ export default class FeedView extends View {
 
     #setvDOM() {
         while (!this.vDOM.filtersColumn.node) {
-            this.vDOM.filtersColumn.node = document.querySelector('.feed__column.feed__filters');
+            this.vDOM.filtersColumn.node = document.querySelector('.filters');
             this.vDOM.filtersColumn.tags = Array.prototype.slice.call(this.vDOM.filtersColumn.node.querySelectorAll('.tag__container'));
         }
         while (!this.vDOM.centerColumn.node) {

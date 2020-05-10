@@ -1,7 +1,7 @@
 'use strict';
 
 import EventComp from 'Blocks/event/event-comp';
-import TextConstants from 'Eventum/utils/text';
+import TextConstants from 'Eventum/utils/language/text';
 
 export default class MidEvent extends EventComp {
     visited = false;
@@ -32,10 +32,10 @@ export default class MidEvent extends EventComp {
         this.visited = visited;
         if (visited) {
             this.incrementMembers();
-            this.changeLink('green', TextConstants.EVENT_VISITED);
+            this.changeLink('green', TextConstants.EVENT__VISITED);
         } else {
             this.decrementMembers();
-            this.changeLink('black', TextConstants.EVENT_UNVISITED);
+            this.changeLink('black', TextConstants.EVENT__UNVISITED);
         }
     }
 }

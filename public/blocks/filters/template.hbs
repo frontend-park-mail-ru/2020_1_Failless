@@ -1,0 +1,78 @@
+<div class="feed__header">
+    <svg class="filters__filter-icon" data-bind-event="toggleFiltersActive" viewBox="-4 0 393 393.99" xmlns="http://www.w3.org/2000/svg"><path d="M368.313 0H17.05A16.5 16.5 0 002.344 8.96a16.732 16.732 0 001.3 17.415l128.688 181.281c.043.063.09.121.133.184a36.769 36.769 0 017.219 21.816v147.797a16.429 16.429 0 0016.433 16.535c2.227 0 4.426-.445 6.48-1.297l72.313-27.574c6.48-1.976 10.781-8.09 10.781-15.453V229.656a36.774 36.774 0 017.215-21.816c.043-.063.09-.121.133-.184L381.723 26.367a16.717 16.717 0 001.3-17.406A16.502 16.502 0 00368.313 0zM236.78 195.992a56.931 56.931 0 00-11.097 33.664v117.578l-66 25.164V229.656a56.909 56.909 0 00-11.102-33.664L23.648 20h338.07zm0 0"/></svg>
+</div>
+<div class="filters feed__column">
+    <svg class="filters__exit-icon" data-bind-event="removeFiltersActive" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
+        <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285 3.905 3.905 9.024 5.857 14.143 5.857 5.119 0 10.237-1.952 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+    </svg>
+    <form action="submit" id="form" data-bind-event="applyFilters">
+        <section class="filters__section" data-bind-event="highlightTag">
+            <div class="filters__header">{{ TAGS_HEADER }}</div>
+            <div class="filters__tags">
+            {{#each tags}}
+                {{> $Blocks/tag/template }}
+            {{/each}}
+            </div>
+        </section>
+        <section class="filters__section">
+            <div class="filters__header">{{ KEYWORDS_HEADER }}</div>
+            <input class="input input__auth font__size_small-xx" name="search_text" placeholder="{{ KEYWORDS_PLACEHOLDER }}">
+        </section>
+        <section class="filters__section">
+            <div class="filters__header">{{ GENDER }}</div>
+            <label class="feed__checkbox-label">{{ MEN }}
+                <input type="checkbox" checked="checked">
+                <span class="feed__checkbox-checkmark"></span>
+            </label>
+            <label class="feed__checkbox-label">{{ WOMEN }}
+                <input type="checkbox" checked="checked">
+                <span class="feed__checkbox-checkmark"></span>
+            </label>
+        </section>
+        <section class="filters__section">
+            <div class="filters__header">{{ AGE }}</div>
+            <!--TODO: Slider BLOCK-->
+            <div class="slider__container">
+                <label class="slider__title">{{ FROM }}</label>
+                <div class="slider">
+                    <input type="range" min="18" max="100" value="18" step="1" name="slider_min">
+                    <span class="slider__value" slider_value="18"></span>
+                </div>
+            </div>
+            <!--TODO: Slider BLOCK-->
+            <div class="slider__container">
+                <label class="slider__title">{{ TO }}</label>
+                <div class="slider">
+                    <input type="range" min="18" max="100" value="18" step="1" name="slider_max">
+                    <span class="slider__value" slider_value="25"></span>
+                </div>
+            </div>
+        </section>
+        {{#if MEMBER_AMOUNT}}
+        <section class="filters__section">
+            <div class="filters__header">{{ MEMBER_AMOUNT }}</div>
+            <div class="slider__container">
+                <div class="slider">
+                    <div class="slider__maxmin">
+                        <div>3</div>
+                        <div>15</div>
+                    </div>
+                    <input type="range" min="2" max="15" value="5" step="1">
+                    <span class="slider__value" slider_value="5"></span>
+                </div>
+            </div>
+        </section>
+        {{/if}}
+        <section class="filters__section">
+            <div class="filters__header">{{ LOCATION }}</div>
+                <img class="filters__map" src="https://eventum.s3.eu-north-1.amazonaws.com/app/map.jpg" alt="map here">
+        </section>
+
+        <!-- TODO: add hider for footer shadow -->
+
+        <div class="filters__footer" data-bind-event="removeFiltersActive">
+            {{> $Blocks/button-comp/template style="re_btn re_btn__filled" text=FIND}}
+        </div>
+
+    </form>
+</div>

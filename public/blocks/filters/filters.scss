@@ -1,0 +1,61 @@
+@import "../../modules/variables";
+
+.filters {
+  &__header {
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+    font-size: 12px;
+    color: #191919;
+    margin-bottom: 12px;
+  }
+
+  &__section {
+    margin-bottom: 15px;
+    padding-bottom: 23px;
+    border-bottom: 1px solid #F1F1F1;
+  }
+
+  &__tags {
+    max-height: 45vh;
+    overflow-y: auto;
+    padding-bottom: 0;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    box-shadow: inset 0px -18px 12px -21px #00000030;
+
+    -ms-overflow-style: unset;  /* IE 10+ */
+    scrollbar-width: unset; /* Firefox */
+
+    &::-webkit-scrollbar {
+      width: auto;
+    }
+  }
+
+   &__filter-icon {
+     display: block;
+     width: 20px;
+   }
+
+   &__exit-icon {
+     width: 20px;
+     display: none;
+   }
+
+   &__map {
+    width: 100%;
+    height: auto;
+   }
+
+   &__footer {
+     position: sticky;
+     bottom: 0;
+     padding: 15px 0;
+     background: $color-white;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     box-shadow: 0px -18px 12px -21px #00000030;
+   }
+}

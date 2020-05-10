@@ -13,7 +13,7 @@ import {showMessageWithRedirect} from 'Eventum/utils/render.js';
 import FeedModel from 'Eventum/models/feed-model';
 import {toggleActionText} from 'Blocks/event/event';
 import Router from 'Eventum/core/router';
-import TextConstants from 'Eventum/utils/text';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class FeedController
@@ -99,7 +99,7 @@ export default class FeedController extends Controller {
                     events: [
                         {type: 'mouseover', handler: (event) => {
                             if (event.target.matches('.event__link.font__color_green')) {
-                                toggleActionText(event.target, TextConstants.EVENT_LEAVE);
+                                toggleActionText(event.target, TextConstants.EVENT__LEAVE);
                             }}},
                         {type: 'click', handler: (event) => {
                             if (event.target.matches('.event__link.font__color_red')) {
@@ -111,7 +111,7 @@ export default class FeedController extends Controller {
                             }}},
                         {type: 'mouseout', handler: (event) => {
                             if (event.target.matches('.event__link.font__color_red')) {
-                                toggleActionText(event.target, TextConstants.EVENT_VISITED);
+                                toggleActionText(event.target, TextConstants.EVENT__VISITED);
                             }}},
                     ]
                 },
