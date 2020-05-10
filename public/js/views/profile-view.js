@@ -42,14 +42,6 @@ export default class ProfileView extends MyView {
             mainColumn: {
                 comp: null,
                 element: null,
-                subscriptions: {
-                    comp: null,
-                    element: null,
-                    events: {
-                        mid_events: [],
-                        small_events: [],
-                    },
-                },
                 personalEvents: {
                     comp: null,
                     element: null,
@@ -57,6 +49,14 @@ export default class ProfileView extends MyView {
                     events: {
                         mid_events: [],
                         small_events: [],
+                    },
+                },
+                subscriptions: {
+                    comp: null,
+                    element: null,
+                    events: {
+                        mid_events: [],
+                        big_events: [],
                     },
                 },
             },
@@ -344,18 +344,31 @@ export default class ProfileView extends MyView {
     }
 
     /**
-     * Remove event from subscriptions
-     * @param {{HTMLLinkElement}} link
-     * @return {Promise<void>}
+     * Finds index of element in
+     * @param eid {Number}
+     * @return {{index: Number, source: Object}}
      */
-    async removeSubscriptionByLink(link) {
-        let eventToRemove = link.closest('.event');
-        eventToRemove.style.cssText = 'transform: scale(0);';
-        setTimeout(() => {
-            eventToRemove.remove();
-            if (this.subscriptionsDiv.childElementCount === 0) {
-                this.renderEmptySubscriptions();
-            }
-        }, 300);
+    findEventComponentIndex(eid) {
+        let index = -1;
+        let sources = [this.personalEvents.small_events, this.personalEvents.mid_events, this.subscriptions.mid_events];
+
+        let source = sources.find((source) => {
+            index = source.findIndex((event) => {return event.data.eid === eid});
+            return index > 0;
+        });
+
+        return {index: index, source: source};
+    }
+
+    /***********************************************
+                 Additional get functions
+     ***********************************************/
+
+    get personalEvents() {
+        return this.vDOM.mainColumn.personalEvents.events;
+    }
+
+    get subscriptions() {
+        return this.vDOM.mainColumn.subscriptions.events;
     }
 }

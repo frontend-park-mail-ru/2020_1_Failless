@@ -164,7 +164,7 @@ export default class ProfileController extends Controller {
                                     }}},
                                 {type: 'click', handler: (event) => {
                                     if (event.target.matches('.event__link.font__color_red')) {
-                                        this.#unfollowEvent(event);
+                                        this.#unfollowEvent(event.target);
                                     } else if (event.target.matches('button.error__button')) {
                                         Router.redirectForward('/search');
                                     }}},
@@ -192,21 +192,31 @@ export default class ProfileController extends Controller {
         }
     };
 
-    #unfollowEvent = (event) => {
+    #unfollowEvent = (linkElement) => {
         UserModel.getProfile().then(
             (profile) => {
-                let circle = event.target.previousElementSibling;
-                let eid = event.target.getAttribute('data-eid');
-                if (circle.classList.contains('event__circle_mid')) {
-                    EventModel.leaveMidEvent(profile.uid, eid)
-                        .then((response) => this.view.removeSubscriptionByLink(event.target));
-                } else if (circle.classList.contains('event__circle_big')) {
-                    EventModel.leaveBigEvent(profile.uid, eid)
-                        .then((response) => this.view.removeSubscriptionByLink(event.target));
-                } else {
-                    console.error(`class of circle - ${circle.classList} - does not match any of the following: event__circle_mid, event__circle_big`)
+
+                let eid = linkElement.getAttribute('data-eid');
+
+                let eventIndexAndSource = this.view.findEventComponentIndex(Number(eid));
+
+                if (eventIndexAndSource.index === -1) {
+                    console.error('No component was found');
+                    // TODO: do sth
+                    return;
                 }
 
+                let eventComponent = eventIndexAndSource.source[eventIndexAndSource.index];
+
+                if (eventComponent.type === 'mid') {
+                    EventModel.leaveMidEvent(profile.uid, eid)
+                        .then((response) => {
+                            eventComponent.removeComponent('smooth');
+                            eventIndexAndSource.source = eventIndexAndSource.source.splice(eventIndexAndSource.index, 1);
+                        });
+                } else {
+                    console.log('we dont support that type yet');
+                }
             },
             error => console.error(error)
         );
