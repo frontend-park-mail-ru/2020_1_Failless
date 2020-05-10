@@ -1,6 +1,6 @@
 import Component from 'Eventum/core/component';
 import EventTemplate from 'Blocks/event/template.hbs';
-import {staticTags} from 'Eventum/utils/static-data';
+import {STATIC_TAGS} from 'Eventum/utils/static-data';
 import settings from 'Settings/config';
 import {showLoading} from 'Eventum/utils/basic';
 
@@ -59,7 +59,7 @@ export default class EventComp extends Component {
     prepareEventForRender() {
         if (this.data.tags) {
             this.data.tags = this.data.tags.map((tag) => {
-                let newTag = staticTags[tag - 1];
+                let newTag = {...STATIC_TAGS[tag - 1]};
                 newTag.activeClass = 'tag__container_active';
                 return newTag;});
         }

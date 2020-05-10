@@ -21,7 +21,7 @@ const events = [
         'Выставка Ван-Гога. Обещают привезти главный экспонат')
 ];
 
-const staticTags = [
+const STATIC_TAGS = [
     {name: 'хочувБАР',      tag_id: 1},
     {name: 'хочувКИНО',     tag_id: 2},
     {name: 'хочувТЕАТР',    tag_id: 3},
@@ -117,4 +117,4 @@ const images = new Map([
     ],
 ]);
 
-export {Event, events, staticTags, MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT, redirects, icons, images};
+export {Event, events, STATIC_TAGS, MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT, redirects, icons, images};

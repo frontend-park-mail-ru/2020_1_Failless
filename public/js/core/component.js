@@ -120,7 +120,9 @@ export default class Component {
     /**
      * Do stuff after render
      */
-    didRender() {}
+    didRender() {
+        this.setvDOM();
+    }
 
     /**
      * TODO: add removeEventHandlers here

@@ -1,7 +1,7 @@
 <div class="slider__container">
     {{#if label}}<label class="slider__title">{{ label }}</label>{{/if}}
     <div class="slider">
-        <input type="range" min="{{ min }}" max="{{ max }}" value="{{ value }}" step="{{ step }}" name="{{ name }}">
+        <input class="{{ class }}" type="range" min="{{ min }}" max="{{ max }}" value="{{ value }}" step="{{ step }}" name="{{ name }}">
         <span class="slider__value" slider_value="{{ value }}"></span>
     </div>
 </div>

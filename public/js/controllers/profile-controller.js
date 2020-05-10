@@ -4,7 +4,7 @@ import ProfileView from 'Eventum/views/profile-view';
 import UserModel from 'Eventum/models/user-model';
 import ProfileEditView from 'Eventum/views/profile-edit-view';
 import ModalView from 'Eventum/views/modal-view';
-import {staticTags} from 'Eventum/utils/static-data';
+import {STATIC_TAGS} from 'Eventum/utils/static-data';
 import {highlightTag} from 'Eventum/utils/tag-logic';
 import {logoutRedirect} from 'Eventum/utils/user-utils';
 import EventModel from 'Eventum/models/event-model';
@@ -35,7 +35,7 @@ export default class ProfileController extends Controller {
             this.localTags = [...tags];
         }).catch((onerror) => {
             console.error(onerror);
-            this.localTags = [...staticTags];
+            this.localTags = [...STATIC_TAGS];
         });
     }
 
@@ -386,7 +386,7 @@ export default class ProfileController extends Controller {
     #showModalTags = (event) => {
         event.preventDefault();
         this.editView = new ModalView(document.body);
-        let tags = staticTags.map((tag) => {tag.editable = true; tag.activeClass = ''; return tag;});
+        let tags = STATIC_TAGS.map((tag) => {tag.editable = true; tag.activeClass = ''; return tag;});
         console.log(tags);
         this.editView.render({
             title: 'Ваши теги',

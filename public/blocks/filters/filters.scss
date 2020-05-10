@@ -24,6 +24,7 @@
     flex-flow: column;
     align-items: center;
     box-shadow: inset 0px -18px 12px -21px #00000030;
+    @include transition(0.3s, ease-in-out);
 
     -ms-overflow-style: unset;  /* IE 10+ */
     scrollbar-width: unset; /* Firefox */

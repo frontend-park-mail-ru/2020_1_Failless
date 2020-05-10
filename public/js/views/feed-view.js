@@ -10,6 +10,7 @@ import {icons} from 'Eventum/utils/static-data';
 import SmallEvent from 'Blocks/event/small-event-comp';
 import MidEvent from 'Blocks/event/mid-event-comp';
 import TextConstants from 'Eventum/utils/language/text';
+import Filters from 'Blocks/filters/filters-comp';
 
 /**
  * @class create SearchView class
@@ -39,10 +40,7 @@ export default class FeedView extends View {
      */
     #emptyvDOM() {
         this.vDOM = {
-            filtersColumn: {
-                node: null,
-                tags: [],
-            },
+            filters: null,
             centerColumn: {
                 node: null,
             },
@@ -70,7 +68,8 @@ export default class FeedView extends View {
      * Render initial template
      */
     render() {
-        this.parent.innerHTML += feedTemplate({
+        this.parent.innerHTML += feedTemplate();
+        this.vDOM.filters = new Filters({
             tags: this.model.tags,
             TAGS_HEADER: TextConstants.FILTERS__TAGS_HEADER,
             KEYWORDS_HEADER: TextConstants.FILTERS__KEYWORDS_HEADER,
@@ -84,6 +83,7 @@ export default class FeedView extends View {
             LOCATION: TextConstants.BASIC__LOCATION,
             FIND: TextConstants.BASIC__FIND,
         });
+        this.vDOM.filters.renderIn(this.parent.querySelector('.feed__column.filters'));
         this.#setvDOM();
     }
 
@@ -142,14 +142,18 @@ export default class FeedView extends View {
      * Provided tags are rendered in the order
      * of them appearing in this.model.tags
      * highlight some of them
+     * TODO: fix it
      */
-    updateTags() {
-        this.vDOM.filtersColumn.tags.reduce((order, tagNode, index) => {
-            if (this.model.tags[index].active_class) {
-                tagNode.classList.add(this.model.tags[index].active_class);
-                tagNode.style.order = (order++).toString();
+    async updateTags() {
+        let modelTags = this.model.tags;
+        let tagNodes = this.vDOM.filters.tags;
+
+        for (let iii = 0; iii < tagNodes.length; iii++) {
+            if (modelTags[iii].activeClass) {
+                tagNodes[iii].classList.add(modelTags[iii].activeClass);
+                tagNodes[iii].style.order = '-1';
             }
-        }, 0);
+        }
     }
 
     /**
@@ -165,9 +169,8 @@ export default class FeedView extends View {
     }
 
     #setvDOM() {
-        while (!this.vDOM.filtersColumn.node) {
-            this.vDOM.filtersColumn.node = document.querySelector('.filters');
-            this.vDOM.filtersColumn.tags = Array.prototype.slice.call(this.vDOM.filtersColumn.node.querySelectorAll('.tag__container'));
+        while (!this.vDOM.filters.element) {
+            this.vDOM.filters.element = document.querySelector('.filters');
         }
         while (!this.vDOM.centerColumn.node) {
             this.vDOM.centerColumn.node = document.querySelector('.feed__column.feed__column_main');
@@ -254,8 +257,8 @@ export default class FeedView extends View {
                  Additional get functions
      ***********************************************/
 
-    get filtersDiv() {
-        return this.vDOM.filtersColumn.node;
+    get filterComp() {
+        return this.vDOM.filters;
     }
 
     get centerColumnDiv() {

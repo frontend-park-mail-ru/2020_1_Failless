@@ -19,7 +19,7 @@
     justify-content: left;
     align-items: baseline;
     transform-style: preserve-3d;
-    cursor: pointer;
+    @include transition(0.3s, ease-in-out);
 
     &_active {
       opacity: 1;

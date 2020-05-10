@@ -2,7 +2,7 @@
 
 import Model from 'Eventum/core/model';
 import settings from 'Settings/config';
-import {staticTags, MIN_AGE, MAX_AGE} from 'Eventum/utils/static-data';
+import {STATIC_TAGS, MIN_AGE, MAX_AGE} from 'Eventum/utils/static-data';
 
 let feedModelSymbol = Symbol('Model for feed');
 let feedModelEnforcer = Symbol('The only object that can create FeedModel');
@@ -15,7 +15,7 @@ export default class FeedModel extends Model {
         }
 
         this.userList = [];
-        this.tagList = [...staticTags];
+        this.tagList = [...STATIC_TAGS];
         this.feedRequest = {
             uid: null,
             page: 1,
@@ -45,6 +45,10 @@ export default class FeedModel extends Model {
 
     get tags() {
         return this.tagList;
+    }
+
+    set tags(newTags) {
+        this.tagList = [...newTags];
     }
 
     get currentUser() {

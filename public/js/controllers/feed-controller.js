@@ -1,15 +1,14 @@
 'use strict';
 
-import EventModel from 'Eventum/models/event-model.js';
-import UserModel from 'Eventum/models/user-model.js';
-import Controller from 'Eventum/core/controller.js';
-import FeedView from 'Eventum/views/feed-view.js';
-import settings from 'Settings/config.js';
-import SliderManager from 'Blocks/slider/set-slider.js';
-import {MAX_AGE, MIN_AGE, staticTags} from 'Eventum/utils/static-data.js';
-import {highlightTag} from 'Eventum/utils/tag-logic.js';
-import {profileCheck} from 'Eventum/utils/user-utils.js';
-import {showMessageWithRedirect} from 'Eventum/utils/render.js';
+import EventModel from 'Eventum/models/event-model';
+import UserModel from 'Eventum/models/user-model';
+import Controller from 'Eventum/core/controller';
+import FeedView from 'Eventum/views/feed-view';
+import settings from 'Settings/config';
+import {MAX_AGE, MIN_AGE} from 'Eventum/utils/static-data';
+import {highlightTag} from 'Eventum/utils/tag-logic';
+import {profileCheck} from 'Eventum/utils/user-utils';
+import {showMessageWithRedirect} from 'Eventum/utils/render';
 import FeedModel from 'Eventum/models/feed-model';
 import {toggleActionText} from 'Blocks/event/event';
 import Router from 'Eventum/core/router';
@@ -27,7 +26,6 @@ export default class FeedController extends Controller {
     constructor(parent) {
         super(parent);
         this.view = new FeedView(parent);
-        this.sliderManager = new SliderManager();
         this.defaultFeedRequest = {
             uid: null,
             page: 1,
@@ -41,7 +39,6 @@ export default class FeedController extends Controller {
             women: true,
         };
         this.model = FeedModel.instance;
-        UserModel.getProfile().then(user => this.defaultFeedRequest.uid = user.uid)
     }
 
     destructor() {
@@ -61,8 +58,8 @@ export default class FeedController extends Controller {
             this.model.feedRequest.uid = user.uid;
             if (user.tags) {
                 this.model.feedRequest.tags = user.tags.map(tag => tag.tag_id);
+                this.#initTags(user.tags);
             }
-            this.#initFilters(user.tags);
 
             // Fetch content to show
             this.#initDataList(this.model.feedRequest)
@@ -119,6 +116,18 @@ export default class FeedController extends Controller {
         });
     }
 
+    /**
+     * Set tags active equal to user's own tags
+     * @param userTags
+     * @return {Promise<void>}
+     */
+    async #initTags(userTags) {
+        userTags.forEach(userTag => {
+            this.model.tags[userTag.tag_id - 1].activeClass = 'tag__container_active';
+        });
+        await this.view.updateTags();
+    }
+
     #followEvent = (linkElement) => {
         UserModel.getProfile().then(
             (profile) => {
@@ -167,28 +176,6 @@ export default class FeedController extends Controller {
         );
     };
 
-    /**
-     *  Initialize filters with user preferences
-     *  TODO: get previous settings
-     */
-    async #initFilters(userTags) {
-        // Set tags active equal to user's own tags
-        if (userTags) {
-            this.model.tags.forEach(tag => {
-                if (userTags.includes(tag.name)) {
-                    tag.active_class = 'tag__container__active';
-                }
-            });
-            this.view.updateTags();
-        }
-
-        // Set two sliders and connect each other
-        let sliders = document.querySelectorAll('.slider');
-        this.sliderManager.setSliders(
-            {slider1: sliders[0], initialValue1: 18},
-            {slider2: sliders[1], initialValue2: 25});
-    }
-
     #setUpVoteButtons() {
         this.addEventHandler(
             document.querySelector('.feed-center__action-buttons'),
@@ -231,14 +218,15 @@ export default class FeedController extends Controller {
         }
 
         // Get active tags
-        form.querySelectorAll('.tag__container.tag__container_active').forEach((tag) => {
-            filters.tags.push(+tag.firstElementChild.getAttribute('data-id'));
-        });
-
-        let otherFilters = form.querySelector('.feed__other-options');
+        let activeTags = form.querySelectorAll('.tag__container.tag__container_active');
+        if (activeTags) {
+            activeTags.forEach((tag) => {
+                filters.tags.push(+tag.firstElementChild.getAttribute('data-id'));
+            });
+        }
 
         // Get genders
-        let genderInputs = otherFilters.querySelectorAll('.feed__checkbox-label input');
+        let genderInputs = form.querySelectorAll('.feed__checkbox-label input');
         if (genderInputs.length === 2) {
             filters.men = genderInputs[0].checked;
             filters.women = genderInputs[1].checked;
