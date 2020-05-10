@@ -1,6 +1,21 @@
 @import "../../modules/variables";
 
 .filters {
+  @include transition(0.3s, ease-in-out);
+
+  @media only screen and (max-width: $breakpoint-phone) {
+    position: fixed;
+    top: 75px;
+    bottom: 0px;
+    overflow: auto;
+    left: 0px;
+    transform: translateX(-100%);
+
+    &_active {
+      transform: translateX(0);
+    }
+  }
+
   &__header {
     width: 100%;
     text-align: left;
@@ -37,12 +52,24 @@
    &__filter-icon {
      display: block;
      width: 20px;
+
+     @media only screen and (max-width: $breakpoint-phone) {
+       display: block;
+       margin: 5px 20px;
+     }
    }
 
    &__exit-icon {
      width: 20px;
      display: none;
-   }
+
+     @media only screen and (max-width: $breakpoint-phone) {
+       display: block;
+       position: absolute;
+       top: 12px;
+       right: 10px;
+     }
+    }
 
    &__map {
     width: 100%;

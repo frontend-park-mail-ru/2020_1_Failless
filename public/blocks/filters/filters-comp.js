@@ -10,7 +10,7 @@ export default class Filters extends Component {
         this.cssClass = 'filters';
         this.template = FiltersTemplate;
         this.data = data;
-        this.fields = ['tags', 'keywords', 'men-checkbox', 'women-checkbox'];
+        this.fields = ['tags', 'keywords', 'men-checkbox', 'women-checkbox', 'slider-min', 'slider-max'];
         this.doubleSliderManager = null;
     }
 
@@ -18,6 +18,27 @@ export default class Filters extends Component {
         super.didRender();
         this.tags = Array.prototype.slice.call(this.tagsDiv.querySelectorAll('.tag__container'));
         this.initSliders();
+    }
+
+    getFilters() {
+        let options = {
+            tags: [],
+            keyWords: this.keywordsInput.value.split(' '),
+            men: this.menCheckbox.checked,
+            women: this.womenCheckbox.checked,
+            minAge: Number(this.minSlider.getAttribute('slider_value')),
+            maxAge: Number(this.maxSlider.getAttribute('slider_value')),
+        };
+
+        // Get active tags
+        let activeTags = this.tagsDiv.querySelectorAll('.tag__container.tag__container_active');
+        if (activeTags) {
+            activeTags.forEach((tag) => {
+                options.tags.push(+tag.firstElementChild.getAttribute('data-id'));
+            });
+        }
+
+        return options;
     }
 
     async initSliders() {
@@ -49,7 +70,11 @@ export default class Filters extends Component {
         return this.vDOM['women-checkbox'];
     }
 
-    get sliderAge() {
-        return this.vDOM['slider-age'];
+    get minSlider() {
+        return this.vDOM['slider-min'];
+    }
+
+    get maxSlider() {
+        return this.vDOM['slider-max'];
     }
 }

@@ -131,31 +131,5 @@
     &__column {
       width: 100%;
     }
-
-    &__filters {
-      position: fixed;
-      top: 75px;
-      bottom: 0px;
-    overflow: auto;
-      left: 0px;
-      @include transition(0.3s, ease-in-out);
-      transform: translateX(-100%);
-
-      &_active {
-        transform: translateX(0);
-      }
-
-      &__filter-icon {
-        display: block;
-        margin: 5px 20px;
-      }
-
-      &__exit-icon {
-        display: block;
-        position: absolute;
-        top: 12px;
-        right: 10px;
-      }
-    }
   }
 }

@@ -28,8 +28,8 @@
         </section>
         <section class="filters__section">
             <div class="filters__header">{{ AGE }}</div>
-            {{> $Blocks/slider/template class="filters__slider-age" label=FROM min=18 max=100 value=18 step=1 name="slider_min"}}
-            {{> $Blocks/slider/template class="filters__slider-age" label=TO min=18 max=100 value=25 step=1 name="slider_max"}}
+            {{> $Blocks/slider/template class="filters__slider-min" label=FROM min=18 max=100 value=18 step=1 name="slider_min"}}
+            {{> $Blocks/slider/template class="filters__slider-max" label=TO min=18 max=100 value=25 step=1 name="slider_max"}}
         </section>
         {{#if MEMBER_AMOUNT}}
         <section class="filters__section">

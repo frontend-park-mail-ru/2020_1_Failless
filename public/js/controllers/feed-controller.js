@@ -53,7 +53,6 @@ export default class FeedController extends Controller {
         super.action();
         this.view.render();
         UserModel.getProfile().then((user) => {
-            console.log(user);
             this.model.userMessages = profileCheck(user);
             this.model.feedRequest.uid = user.uid;
             if (user.tags) {
@@ -81,14 +80,14 @@ export default class FeedController extends Controller {
                 {
                     attr: 'toggleFiltersActive',
                     events: [
-                        {type: 'click', handler: () => {document.querySelector('.feed__filters').classList.toggle('feed__filters_active');}},
+                        {type: 'click', handler: () => {document.querySelector('.filters').classList.toggle('filters_active');}},
                     ]
                 },
                 {
                     attr: 'removeFiltersActive',
                     many: true,
                     events: [
-                        {type: 'click', handler: () => {document.querySelector('.feed__filters').classList.remove('feed__filters_active');}},
+                        {type: 'click', handler: () => {document.querySelector('.filters').classList.remove('filters_active');}},
                     ]
                 },
                 {   // TODO: do this
@@ -202,46 +201,13 @@ export default class FeedController extends Controller {
             return;
         }
 
-        const form = document.getElementById('form');
-        let filters = {
-            tags: [],
-            keyWords: [],
-            men: true,
-            women: true,
-            minAge: MIN_AGE,
-            maxAge: MAX_AGE,
-        };
-
-        // Get keywords (TODO: add more separators)
-        if (form.search_text.value.split(' ')[0]) {
-            filters.keyWords = form.search_text.value.split(' ');
-        }
-
-        // Get active tags
-        let activeTags = form.querySelectorAll('.tag__container.tag__container_active');
-        if (activeTags) {
-            activeTags.forEach((tag) => {
-                filters.tags.push(+tag.firstElementChild.getAttribute('data-id'));
-            });
-        }
-
-        // Get genders
-        let genderInputs = form.querySelectorAll('.feed__checkbox-label input');
-        if (genderInputs.length === 2) {
-            filters.men = genderInputs[0].checked;
-            filters.women = genderInputs[1].checked;
-        }
-
-        // Get ages
-        let ageSliderSpans = otherFilters.querySelectorAll('.slider__value');
-        filters.minAge = Number(ageSliderSpans[0].getAttribute('slider_value'));
-        filters.maxAge = Number(ageSliderSpans[1].getAttribute('slider_value'));
+        let filters = this.view.filterComp.getFilters();
 
         let request = {
-            uid: this.uid,
-            page: this.currentPage,
+            uid: null,
+            page: this.model.currentPageNumber,
             limit: 10,
-            query: String(...filters.keyWords),
+            query: filters.keyWords ? String(...filters.keyWords) : null,
             tags: filters.tags,
             Location: null,
             minAge: filters.minAge,
@@ -250,15 +216,11 @@ export default class FeedController extends Controller {
             women: filters.women,
         };
 
-        this.#initDataList(request).then(
-            (data) => {
-                this.#updateView();
-            },
-            (error) => {
-                console.error(error);
-                this.view.showError(error);
-            }
-        );
+        UserModel.getProfile()
+            .then(user => request.uid = user.uid)
+            .then(() => this.#initDataList(request))
+            .then(() => this.#updateView())
+            .catch(error => this.view.showFeedError(error));
     };
 
     /**
@@ -324,13 +286,9 @@ export default class FeedController extends Controller {
     #initDataList = (request) => {
         return EventModel.getFeedUsers(request).then(
             (users) => {
-                console.log(users);
                 if (users) {
-                    users.forEach((user) => {
-                        this.model.userList.push(user);
-                    });
+                    this.model.userList = users;
                 }
-                return users;
             },
             (error) => {
                 throw new Error(error);
