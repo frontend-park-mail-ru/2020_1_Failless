@@ -26,6 +26,14 @@ export default class ProfileView extends MyView {
         super(parent);
         this.parent = parent;
 
+        this.#emptyvDOM();
+    }
+
+    destructor() {
+        this.#emptyvDOM();
+    }
+
+    #emptyvDOM() {
         this.vDOM = {
             leftColumn: {
                 comp: null,
@@ -51,24 +59,6 @@ export default class ProfileView extends MyView {
                         small_events: [],
                     },
                 },
-            },
-        };
-    }
-
-    destructor() {
-        this.subscriptions = null;
-        this.personalEvents = null;
-
-        this.vDOM = {
-            leftColumn: {
-                comp: null,
-                element: null,
-            },
-            mainColumn: {
-                comp: null,
-                element: null,
-                subscriptions: null,
-                personalEvents: null,
             },
         };
     }

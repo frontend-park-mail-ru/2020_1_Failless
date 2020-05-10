@@ -224,6 +224,20 @@ export default class FeedView extends View {
         this.showError(this.subscriptionsBodyDiv, 'Никуда не идёт', null, null);
     }
 
+    /**
+     *
+     * @param eid {Number}
+     * @return {T}
+     */
+    findEventComponent(eid) {
+        let tempEvent = this.vDOM.eventsColumn.personalEvents.body.events.find((event) => {return event.data.eid === eid});
+        if (tempEvent) {
+            return tempEvent;
+        } else {
+            return this.vDOM.eventsColumn.subscriptions.body.events.find((event) => {return event.data.eid === eid});
+        }
+    }
+
     /***********************************************
                  Additional get functions
      ***********************************************/

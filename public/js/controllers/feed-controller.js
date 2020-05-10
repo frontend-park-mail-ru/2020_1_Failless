@@ -11,6 +11,9 @@ import {highlightTag} from 'Eventum/utils/tag-logic.js';
 import {profileCheck} from 'Eventum/utils/user-utils.js';
 import {showMessageWithRedirect} from 'Eventum/utils/render.js';
 import FeedModel from 'Eventum/models/feed-model';
+import {toggleActionText} from 'Blocks/event/event';
+import Router from 'Eventum/core/router';
+import TextConstants from 'Eventum/utils/text';
 
 /**
  * @class FeedController
@@ -91,9 +94,78 @@ export default class FeedController extends Controller {
                         {type: 'click', handler: () => {document.querySelector('.feed__filters').classList.remove('feed__filters_active');}},
                     ]
                 },
+                {   // TODO: do this
+                    attr: 'showAction',
+                    events: [
+                        {type: 'mouseover', handler: (event) => {
+                            if (event.target.matches('.event__link.font__color_green')) {
+                                toggleActionText(event.target, TextConstants.EVENT_LEAVE);
+                            }}},
+                        {type: 'click', handler: (event) => {
+                            if (event.target.matches('.event__link.font__color_red')) {
+                                this.#unfollowEvent(event.target);
+                            } else if (event.target.matches('.event__link.font__color_black')) {
+                                this.#followEvent(event.target);
+                            } else if (event.target.matches('button.error__button')) {
+                                Router.redirectForward('/search');
+                            }}},
+                        {type: 'mouseout', handler: (event) => {
+                            if (event.target.matches('.event__link.font__color_red')) {
+                                toggleActionText(event.target, TextConstants.EVENT_VISITED);
+                            }}},
+                    ]
+                },
             ]);
         });
     }
+
+    #followEvent = (linkElement) => {
+        UserModel.getProfile().then(
+            (profile) => {
+                let eid = linkElement.getAttribute('data-eid');
+                let eventComponent = this.view.findEventComponent(Number(eid));
+
+                if (!eventComponent) {
+                    console.error('No component was found');
+                    // TODO: do sth
+                    return;
+                }
+
+                if (eventComponent.type === 'mid') {
+                    return EventModel.joinMidEvent(profile.uid, eid)
+                        .then((response) => eventComponent.state = true);
+                } else {
+                    console.log('we dont support that type yet');
+                }
+
+            },
+            error => console.error(error)
+        );
+    };
+
+    #unfollowEvent = (linkElement) => {
+        UserModel.getProfile().then(
+            (profile) => {
+                let eid = linkElement.getAttribute('data-eid');
+                let eventComponent = this.view.findEventComponent(Number(eid));
+
+                if (!eventComponent) {
+                    console.error('No component was found');
+                    // TODO: do sth
+                    return;
+                }
+
+                if (eventComponent.type === 'mid') {
+                    EventModel.leaveMidEvent(profile.uid, eid)
+                        .then((response) => eventComponent.state = false);
+                } else {
+                    console.log('we dont support that type yet');
+                }
+
+            },
+            error => console.error(error)
+        );
+    };
 
     /**
      *  Initialize filters with user preferences

@@ -5,7 +5,7 @@ import settings from 'Settings/config';
 import {showLoading} from 'Eventum/utils/basic';
 
 export default class EventComp extends Component {
-    fields = ['photos', 'amount'];
+    fields = ['photos', 'amount', 'link'];
     cssClass = 'event';
 
     /**
@@ -72,6 +72,13 @@ export default class EventComp extends Component {
         }
     }
 
+    changeLink(color, message) {
+        let link = this.linkA;
+        link.className = 'event__link';
+        link.classList.add(`font__color_${color}`);
+        link.innerText = message;
+    }
+
     /***********************************************
                  Additional get functions
      ***********************************************/
@@ -83,5 +90,9 @@ export default class EventComp extends Component {
     // Mid and big events only
     get amountSpan() {
         return this.vDOM['amount'];
+    }
+
+    get linkA() {
+        return this.vDOM['link'];
     }
 }

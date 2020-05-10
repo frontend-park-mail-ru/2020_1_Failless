@@ -159,17 +159,17 @@ export default class ProfileController extends Controller {
                             attr: 'showAction',
                             events: [
                                 {type: 'mouseover', handler: (event) => {
-                                    if (event.target.matches('.event__link')) {
+                                    if (event.target.matches('.event__link.font__color_green')) {
                                         toggleActionText(event.target, 'Не идти');
                                     }}},
                                 {type: 'click', handler: (event) => {
-                                    if (event.target.matches('.event__link')) {
+                                    if (event.target.matches('.event__link.font__color_red')) {
                                         this.#unfollowEvent(event);
                                     } else if (event.target.matches('button.error__button')) {
                                         Router.redirectForward('/search');
                                     }}},
                                 {type: 'mouseout', handler: (event) => {
-                                    if (event.target.matches('.event__link')) {
+                                    if (event.target.matches('.event__link.font__color_red')) {
                                         toggleActionText(event.target, 'Вы идёте');
                                     }}},
                             ]
@@ -210,7 +210,6 @@ export default class ProfileController extends Controller {
             },
             error => console.error(error)
         );
-
     };
 
     #submitNewEvent = (event) => {
