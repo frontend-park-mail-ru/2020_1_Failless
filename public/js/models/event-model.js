@@ -1,7 +1,7 @@
 'use strict';
 
 import NetworkModule from 'Eventum/core/network';
-import settings from 'Settings/config.js';
+import settings from 'Settings/config';
 import Model from 'Eventum/core/model';
 
 /**
@@ -22,12 +22,12 @@ export default class EventModel extends Model {
      * @param {{limit: Number, page: Number}} eventsRequest - request with query, limits and page
      * @return {Promise} promise to get user data
      */
-    static getEvents(eventsRequest) {
+    static getSearchEvents(eventsRequest) {
         let errors = this.invalidEventRequest(eventsRequest);
         if (errors.length !== 0) {
             throw new Error(...errors);
         }
-        return NetworkModule.fetchPost({path: '/events/search', body: eventsRequest}).then(
+        return NetworkModule.fetchPost({path: '/events', body: eventsRequest}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
@@ -64,12 +64,11 @@ export default class EventModel extends Model {
     /**
      * Get event data from server
      * @param {{uid: number, id: number, value: number}} vote - request with query, limits and page
-     * @param {boolean} isLike - is this request for like
      * @return {Promise} promise to get user data
      */
-    static userVote(vote, isLike) {
+    static userVote(vote) {
         let url = '/users/';
-        url += isLike ? 'like' : 'dislike';
+        url += vote.value === 1 ? 'like' : 'dislike';
         return NetworkModule.fetchPut({
             api: settings.api,
             path: url,
@@ -110,19 +109,19 @@ export default class EventModel extends Model {
     }
 
     /**
-     *
+     * Send small event to backend
      * @param body {{
-     *      uid: Number,
-     *      title: string,
-     *      description: string|null,
-     *      tags: Array<{Number}>|null,
-     *      date: string|null,
-     *      photos: Array<{string}>|null,
+     *      uid:            Number,
+     *      title:          string,
+     *      description:    string          |null,
+     *      tags:           Array<Number>   |null,
+     *      date:           string          |null,
+     *      photos:         Array<string>   |null,
      * }}
      * @return {Promise<unknown>}
      */
     static createSmallEvent(body) {
-        return NetworkModule.fetchPost({path: '/event/small', body: body}).then((response) => {
+        return NetworkModule.fetchPost({path: '/events/small', body: body, api: settings.api}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
@@ -134,22 +133,21 @@ export default class EventModel extends Model {
     }
 
     /**
-     * Send event to backend
+     * Send mid event to backend
      * @param body {{
-     *      uid: Number,
-     *      title: string,
-     *      description: string|null,
-     *      type: number|null,
-     *      private: bool|null,
-     *      tag_id: Number,
-     *      limit: Number,
-     *      date: string|null,
-     *      photos: string|null,
+     *      uid:            Number,
+     *      title:          string,
+     *      description:    string          |null,
+     *      tags:           Array<Number>   |null,
+     *      date:           string          |null,
+     *      photos:         string          |null,
+     *      limit:          Number,
+     *      public:         bool,
      * }}
      * @return {Promise<unknown>}
      */
-    static createEvent(body) {
-        return NetworkModule.fetchPost({path: '/event/new', body: body}).then((response) => {
+    static createMidEvent(body) {
+        return NetworkModule.fetchPost({path: '/events/mid', body: body}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
@@ -160,29 +158,16 @@ export default class EventModel extends Model {
         });
     }
 
-    static getEventFollowers(eid) {
-        if (!eid) {
-            return new Promise(((resolve, reject) => {
-                reject(new Error('Invalid event id'));
-            }));
-        }
-        return NetworkModule.fetchGet({path: `/event/${eid}/follow`}).then(
-            (response) => {
-                if (response.status > 499) {
-                    throw new Error('Server error');
-                }
-                return response.json();
-            },
-            (error) => {
-                throw new Error(error);
-            });
-    }
-
-    static getUserEvents(uid) {
+    /**
+     * Retrieve all user personal events
+     * small as well as mid
+     * @param uid
+     */
+    static getUserOwnEvents(uid) {
         if (!uid) {
             throw new Error('Invalid profile id');
         }
-        return NetworkModule.fetchGet({path: '/event/small', api: settings.api}).then(
+        return NetworkModule.fetchGet({path: `/profile/${uid}/own-events`, api: settings.api}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
@@ -217,10 +202,9 @@ export default class EventModel extends Model {
      * Subscribe user (uid) to this event (eid)
      * @param {Number} uid
      * @param {Number} eid
-     * @param {String} type - mid/big event
      */
-    static followEvent(uid, eid, type) {
-        return NetworkModule.fetchPost({path: `/event/${eid}/follow`, body: {uid: Number(uid), eid: Number(eid), type: type}}).then(
+    static joinMidEvent(uid, eid) {
+        return NetworkModule.fetchPost({path: `/events/mid/${eid}/member`, body: {uid: Number(uid), eid: Number(eid)}}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
@@ -233,13 +217,12 @@ export default class EventModel extends Model {
     }
 
     /**
-     *
+     * Send request to leave mid event
      * @param {Number} uid
      * @param {Number} eid
-     * @param type
      */
-    static unfollowEvent(uid, eid, type) {
-        return NetworkModule.fetchPost({path: `/event/${eid}/unfollow`, body: {uid: Number(uid), eid: Number(eid), type: type}}).then(
+    static leaveMidEvent(uid, eid) {
+        return NetworkModule.fetchDelete({path: `/events/mid/${eid}/member`, body: {uid: Number(uid), eid: Number(eid)}}).then(
             (response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');

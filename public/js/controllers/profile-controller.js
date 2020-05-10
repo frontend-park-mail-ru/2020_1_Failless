@@ -4,7 +4,7 @@ import ProfileView from 'Eventum/views/profile-view';
 import UserModel from 'Eventum/models/user-model';
 import ProfileEditView from 'Eventum/views/profile-edit-view';
 import ModalView from 'Eventum/views/modal-view';
-import {staticTags} from 'Eventum/utils/static-data';
+import {STATIC_TAGS} from 'Eventum/utils/static-data';
 import {highlightTag} from 'Eventum/utils/tag-logic';
 import {logoutRedirect} from 'Eventum/utils/user-utils';
 import EventModel from 'Eventum/models/event-model';
@@ -22,7 +22,7 @@ export default class ProfileController extends Controller {
 
     /**
      * construct object of ProfileController class
-     * @param {HTMLElement} parent
+     * @param parent {HTMLElement}
      */
     constructor(parent) {
         super(parent);
@@ -35,7 +35,7 @@ export default class ProfileController extends Controller {
             this.localTags = [...tags];
         }).catch((onerror) => {
             console.error(onerror);
-            this.localTags = [...staticTags];
+            this.localTags = [...STATIC_TAGS];
         });
     }
 
@@ -59,7 +59,7 @@ export default class ProfileController extends Controller {
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
                     this.view.render(profile);
-                    EventModel.getUserEvents(profile.uid).then(
+                    EventModel.getUserOwnEvents(profile.uid).then(
                         (events) => {this.view.renderEvents(events);},
                         (error) => {this.view.renderEventsError(error);}
                     );
@@ -142,7 +142,7 @@ export default class ProfileController extends Controller {
                         {
                             attr: 'previewImagesForEvent',
                             events: [
-                                {type: 'change', handler: () => {this.view.eventEditComp.previewImages();}}
+                                {type: 'change', handler: this.#previewImagesForEvent}
                             ]
                         },
                         {
@@ -159,17 +159,17 @@ export default class ProfileController extends Controller {
                             attr: 'showAction',
                             events: [
                                 {type: 'mouseover', handler: (event) => {
-                                    if (event.target.matches('.event__link')) {
+                                    if (event.target.matches('.event__link.font__color_green')) {
                                         toggleActionText(event.target, 'Не идти');
                                     }}},
                                 {type: 'click', handler: (event) => {
-                                    if (event.target.matches('.event__link')) {
-                                        this.#unfollowEvent(event);
+                                    if (event.target.matches('.event__link.font__color_red')) {
+                                        this.#unfollowEvent(event.target);
                                     } else if (event.target.matches('button.error__button')) {
                                         Router.redirectForward('/search');
                                     }}},
                                 {type: 'mouseout', handler: (event) => {
-                                    if (event.target.matches('.event__link')) {
+                                    if (event.target.matches('.event__link.font__color_red')) {
                                         toggleActionText(event.target, 'Вы идёте');
                                     }}},
                             ]
@@ -184,19 +184,42 @@ export default class ProfileController extends Controller {
             });
     }
 
-    /**
-     *
-     */
-    #unfollowEvent = (event) => {
+    #previewImagesForEvent = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            let FR = new FileReader();
+            FR.addEventListener('load', this.view.eventEditComp.previewImages());
+            FR.readAsDataURL(event.target.files[0]);
+        }
+    };
+
+    #unfollowEvent = (linkElement) => {
         UserModel.getProfile().then(
             (profile) => {
-                let type = event.target.previousElementSibling.classList.contains('event__circle_mid') ? 'mid-event' : 'big-event';
-                EventModel.unfollowEvent(profile.uid, event.target.getAttribute('data-eid'), type)
-                    .then((response) => {this.view.removeSubscriptionByLink(event.target);});
-            },
-            error => console.log(error)
-        );
 
+                let eid = linkElement.getAttribute('data-eid');
+
+                let eventIndexAndSource = this.view.findEventComponentIndex(Number(eid));
+
+                if (eventIndexAndSource.index === -1) {
+                    console.error('No component was found');
+                    // TODO: do sth
+                    return;
+                }
+
+                let eventComponent = eventIndexAndSource.source[eventIndexAndSource.index];
+
+                if (eventComponent.type === 'mid') {
+                    EventModel.leaveMidEvent(profile.uid, eid)
+                        .then((response) => {
+                            eventComponent.removeComponent('smooth');
+                            eventIndexAndSource.source = eventIndexAndSource.source.splice(eventIndexAndSource.index, 1);
+                        });
+                } else {
+                    console.log('we dont support that type yet');
+                }
+            },
+            error => console.error(error)
+        );
     };
 
     #submitNewEvent = (event) => {
@@ -211,42 +234,34 @@ export default class ProfileController extends Controller {
 
         // Submit form to backend
         let request = {
-            title: data.title,
-            description: data.about === '' ? null : data.about,
-            limit: data.limit,
-            date: data.time === '' ? null : new Date(data.time).toISOString(),
-            photos: data.photos,
+            title:          data.title,
+            description:    data.about === '' ? null : data.about,
+            limit:          data.limit,
+            date:           data.time === '' ? null : new Date(data.time).toISOString(),
+            photos:         data.photos,
+            public:         data.public,
         };
 
-        // TODO: Show loading
         UserModel.getProfile().then(profile => {
             request.uid = +profile.uid;
             if (data.limit === 2) {
                 request.tags = data.tags;
-
-                EventModel.createSmallEvent(request).then(
-                    (response) => {
-                        // Render results
-                        this.view.renderNewEvent(response, 'small');
-                    },
-                    (error) => {
-                        console.log(error);
-                    }
-                );
+                Promise.all([
+                    EventModel.createSmallEvent(request),
+                    this.view.renderNewEventLoading(),
+                ]).then(responses => {
+                    this.view.renderNewEvent(responses[0], 'small', responses[1]);
+                }).catch(console.error);
             } else {
                 request.tag_id = data.tags[0];
                 request.private = true;
                 request.type = null;
-                EventModel.createEvent(request).then(
-                    (response) => {
-                        // Render results
-                        console.log(response);
-                        this.view.renderNewEvent(data);
-                    },
-                    (error) => {
-                        console.log(error);
-                    }
-                );
+                Promise.all([
+                    EventModel.createMidEvent(request),
+                    this.view.renderNewEventLoading(),
+                ]).then(responses => {
+                    this.view.renderNewEvent(responses[0], 'mid', responses[1]);
+                }).catch(console.error);
             }
             eventEditComp.hide();
         });
@@ -371,7 +386,7 @@ export default class ProfileController extends Controller {
     #showModalTags = (event) => {
         event.preventDefault();
         this.editView = new ModalView(document.body);
-        let tags = staticTags.map((tag) => {tag.editable = true; tag.activeClass = ''; return tag;});
+        let tags = STATIC_TAGS.map((tag) => {tag.editable = true; tag.activeClass = ''; return tag;});
         console.log(tags);
         this.editView.render({
             title: 'Ваши теги',

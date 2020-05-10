@@ -9,13 +9,13 @@
         <textarea class="event-edit__title" placeholder="Название" data-bind-event="resizeTextArea" rows="1"></textarea>
         <textarea class="event-edit__about" placeholder="Описание" data-bind-event="resizeTextArea" rows="1"></textarea>
         <hr class="event__separator">
-        <p class="event-edit__header event-edit__header_small">#Теги</p>
+        <label class="event-edit__header event-edit__header_small">#Теги</label>
         <div class="event-edit__tags" data-bind-event="showModalTags">
             <svg fill="url(#gradient-svg)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 0C114.833 0 0 114.833 0 256s114.833 256 256 256 256-114.853 256-256S397.167 0 256 0zm0 472.341c-119.275 0-216.341-97.046-216.341-216.341S136.725 39.659 256 39.659 472.341 136.705 472.341 256 375.295 472.341 256 472.341z"/><path d="M355.148 234.386H275.83v-79.318c0-10.946-8.864-19.83-19.83-19.83s-19.83 8.884-19.83 19.83v79.318h-79.318c-10.966 0-19.83 8.884-19.83 19.83s8.864 19.83 19.83 19.83h79.318v79.318c0 10.946 8.864 19.83 19.83 19.83s19.83-8.884 19.83-19.83v-79.318h79.318c10.966 0 19.83-8.884 19.83-19.83s-8.864-19.83-19.83-19.83z"/></svg>
         </div>
-        <p class="event-edit__header event-edit__header_small">Время</p>
+        <label class="event-edit__header event-edit__header_small">Время</label>
         <input class="event-edit__time" type="datetime-local" min="2017-06-01T08:30" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"/>
-        <p class="event-edit__header event-edit__header_small">Кол-во участников</p>
+        <label class="event-edit__header event-edit__header_small" for="limit">Кол-во участников</label>
         <div class="event-edit__slider">
             <select name="limit" id="limit">
                 {{#each select_options}}
@@ -24,6 +24,11 @@
             </select>
 <!--                {{> $Blocks/slider/template label="Кол-во человек" min="2" max="15" step="1" name="amount" value="2"}}-->
             <p class="event-edit__helper">При количестве участников = 2, эвент считается приватным и отображается только в ленте</p>
+        </div>
+        <div class="event-edit__public event-edit__public_hidden">
+            <label class="event-edit__header event-edit__header_small" for="public">Показывать участников?</label>
+            <input type="checkbox" name="public" id="public" value="public" checked>
+            <p class="event-edit__helper">Участники мероприятия будут видны в карточке эвента при поиске</p>
         </div>
         <div class="event-edit__buttons">
             <div class="section__header">

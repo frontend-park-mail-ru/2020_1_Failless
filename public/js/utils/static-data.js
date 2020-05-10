@@ -1,5 +1,5 @@
-import settings from 'Settings/config.js';
-import router from 'Eventum/core/router.js';
+import settings from 'Settings/config';
+import router from 'Eventum/core/router';
 
 function Event(photos, title, place, description) {
     this.photos = photos;
@@ -21,7 +21,7 @@ const events = [
         'Выставка Ван-Гога. Обещают привезти главный экспонат')
 ];
 
-const staticTags = [
+const STATIC_TAGS = [
     {name: 'хочувБАР',      tag_id: 1},
     {name: 'хочувКИНО',     tag_id: 2},
     {name: 'хочувТЕАТР',    tag_id: 3},
@@ -117,4 +117,4 @@ const images = new Map([
     ],
 ]);
 
-export {Event, events, staticTags, MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT, redirects, icons, images};
+export {Event, events, STATIC_TAGS, MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT, redirects, icons, images};

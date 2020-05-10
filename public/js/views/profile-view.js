@@ -5,14 +5,13 @@ import MyView from 'Eventum/views/my-view';
 import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
-import eventCardTemplate from 'Blocks/event/template.hbs';
+import loadingTemplate from 'Blocks/loading/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {determineClass} from 'Blocks/event/event';
 import EventEdit from 'Blocks/event-edit/event-edit';
-import {staticTags} from 'Eventum/utils/static-data';
-import {extendActiveTag} from 'Blocks/tag/tag';
-import {prettifyDateTime} from 'Blocks/chat-list-item/chat-list-item';
+import MidEventComponent from 'Blocks/event/mid-event-comp';
+import SmallEventComponent from 'Blocks/event/small-event-comp';
 
 /**
  * @class create ProfileView class
@@ -27,6 +26,14 @@ export default class ProfileView extends MyView {
         super(parent);
         this.parent = parent;
 
+        this.#emptyvDOM();
+    }
+
+    destructor() {
+        this.#emptyvDOM();
+    }
+
+    #emptyvDOM() {
         this.vDOM = {
             leftColumn: {
                 comp: null,
@@ -35,33 +42,23 @@ export default class ProfileView extends MyView {
             mainColumn: {
                 comp: null,
                 element: null,
-                subscriptions: {
-                    comp: null,
-                    element: null,
-                },
                 personalEvents: {
                     comp: null,
                     element: null,
                     event_edit: null, // component itself
+                    events: {
+                        mid_events: [],
+                        small_events: [],
+                    },
                 },
-            },
-        };
-    }
-
-    destructor() {
-        this.subscriptions = null;
-        this.personalEvents = null;
-
-        this.vDOM = {
-            leftColumn: {
-                comp: null,
-                element: null,
-            },
-            mainColumn: {
-                comp: null,
-                element: null,
-                subscriptions: null,
-                personalEvents: null,
+                subscriptions: {
+                    comp: null,
+                    element: null,
+                    events: {
+                        mid_events: [],
+                        big_events: [],
+                    },
+                },
             },
         };
     }
@@ -190,72 +187,137 @@ export default class ProfileView extends MyView {
         }
     }
 
-    async renderNewEvent(event, type) {
+    /**
+     * Show loading of new event
+     *
+     * 1) Create div with empty event
+     * 2) Insert loading inside this div
+     * 3) this.renderNewEvent() will look for this div to replace insides
+     *
+     * @return {Promise<void>}
+     */
+    async renderNewEventLoading() {
+        // Remove helper message if exists (case when you create your first event)
         let helper = this.personalEventsDiv.querySelector('span.font.font_bold.font__size_small.font__color_lg');
         if (helper) {
             helper.remove();
         }
-        if (event.tags) {event.tags = event.tags.map(tag => extendActiveTag(tag));}
-        event.class = type;
-        event[type] = true;
-        event.date = new Date(event.date).toLocaleString();
-        this.eventEditComp.element.insertAdjacentHTML('afterend', eventCardTemplate(event));
+
+        let emptyEvent = document.createElement('div');
+        emptyEvent.classList.add('event');
+        emptyEvent.insertAdjacentHTML('afterbegin', loadingTemplate());
+        return this.eventEditComp.element.insertAdjacentElement('afterend', emptyEvent);
     }
 
     /**
      *
-     * @param events {{
-     *     eid: Number,
-     *     uid: Number,
-     *     title: string,
-     *     description: string|null,
-     *     tags: Array<{Number}>,
-     *     date: string
-     * }}
+     * @param event
+     * @param type {'big', 'mid', 'small'}
+     * @param bodyElement {HTMLElement}
+     * @return {Promise<void>}
+     */
+    async renderNewEvent(event, type, bodyElement) {
+        let eventComponent;
+
+        if (type === 'small') {
+            eventComponent = new SmallEventComponent(event, true);
+            this.vDOM.mainColumn.personalEvents.events.small_events.push(eventComponent);
+        } else if (type === 'mid') {
+            eventComponent = new MidEventComponent(event, true);
+            this.vDOM.mainColumn.personalEvents.events.mid_events.push(eventComponent);
+        } else {
+            console.log('sorry not implemented for type', type);
+            return;
+        }
+
+        makeEmpty(bodyElement);
+        await eventComponent.renderIn(bodyElement);
+    }
+
+    /**
+     *
+     * @param events {
+     *      mid_events: Array<{
+     *          eid: Number,
+     *          uid: Number,    (admin_id)
+     *          title: string,
+     *          description: string|null,
+     *          tags: Array<Number>|null,
+     *          date: string|null,
+     *          photos: Array<string>|null,
+     *          limit: Number,
+     *          member_amount: Number,
+     *          public: boolean,
+     *      }>,
+     *      small_events: Array<{
+     *          eid: Number,
+     *          uid: Number,
+     *          title: string,
+     *          description: string|null,
+     *          tags: Array<Number>|null,
+     *          date: string|null,
+     *          photos: Array<string>|null,
+     *      }>}
      * @return {Promise<void>}
      */
     async renderEvents(events) {
         const personalEvents = this.personalEventsDiv;
         makeEmpty(personalEvents);
-        if (!events || events.length === 0) {
+        if (!events || (!events.mid_events || events.mid_events.length === 0) && (!events.small_events || events.small_events.length === 0)) {
             personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
         } else {
-            events.forEach((event) => {
-                determineClass(event);
-                if (event.tags) {
-                    event.tags = event.tags.map((tag) => {
-                        let newTag = staticTags[tag - 1];
-                        newTag.activeClass = 'tag__container_active';
-                        return newTag;});
-                }
-                event.small = true;
-                event.date = new Date(event.date).toLocaleString();
-                personalEvents.insertAdjacentHTML('beforeend', eventCardTemplate(event));
+            events.small_events.forEach((smallEvent) => {
+                let smallEventComponent = new SmallEventComponent(smallEvent, true);
+                this.vDOM.mainColumn.personalEvents.events.small_events.push(smallEventComponent);
+                smallEventComponent.renderAsElement(personalEvents, 'beforeend');
+            });
+            events.mid_events.forEach((midEvent) => {
+                let midEventComponent = new MidEventComponent(midEvent, true);
+                this.vDOM.mainColumn.personalEvents.events.mid_events.push(midEventComponent);
+                midEventComponent.renderAsElement(personalEvents, 'beforeend');
             });
         }
     }
 
-    async renderEventsError() {
+    async renderEventsError(error) {
+        console.error(error);
         this.showError(this.subscriptionsDiv, 'Error in subscriptions', 'warning', null);
     }
 
     /**
      * This function depends on non-empty chats
      * so check it somewhere outside
-     * @param subscriptions[{event}]
+     * @param subscriptions {{
+     *     mid_events: Array<{
+     *          eid: Number,
+     *          title: string,
+     *          description: string|null,
+     *          tags: Array<Number>|null,
+     *          date: string|null,
+     *          photos: Array<string>|null,
+     *          limit: Number,
+     *          member_amount: Number,
+     *          public: boolean,
+     *      }>
+     * }}
      * @return {Promise<void>}
      */
     async renderSubscriptions(subscriptions) {
-        if (!subscriptions) {
+        if (!subscriptions
+            ||
+            (!subscriptions.mid_events || subscriptions.mid_events.length === 0)
+                &&
+            (!subscriptions.big_events || subscriptions.big_events.length === 0))
+        {
             this.renderEmptySubscriptions();
             return;
         }
         const subsArea = this.subscriptionsDiv;
         makeEmpty(subsArea);
-        subscriptions.forEach((sub) => {
-            determineClass(sub);
-            sub.followed = true;
-            subsArea.insertAdjacentHTML('beforeend', eventCardTemplate(sub));
+        subscriptions.mid_events.forEach((midEvent) => {
+            let midEventComponent = new MidEventComponent(midEvent, false);
+            this.vDOM.mainColumn.subscriptions.events.mid_events.push(midEventComponent);
+            midEventComponent.renderAsElement(subsArea, 'beforeend');
         });
     }
 
@@ -276,23 +338,37 @@ export default class ProfileView extends MyView {
      * Show error in subscription div
      * @return {Promise<void>}
      */
-    async renderSubscriptionsError() {
+    async renderSubscriptionsError(error) {
+        console.error(error);
         this.showError(this.subscriptionsDiv, 'Error in subscriptions', 'warning', null);
     }
 
     /**
-     * Remove event from subscriptions
-     * @param {{HTMLLinkElement}} link
-     * @return {Promise<void>}
+     * Finds index of element in
+     * @param eid {Number}
+     * @return {{index: Number, source: Object}}
      */
-    async removeSubscriptionByLink(link) {
-        let eventToRemove = link.closest('.event');
-        eventToRemove.style.cssText = 'transform: scale(0);';
-        setTimeout(() => {
-            eventToRemove.remove();
-            if (this.subscriptionsDiv.childElementCount === 0) {
-                this.renderEmptySubscriptions();
-            }
-        }, 300);
+    findEventComponentIndex(eid) {
+        let index = -1;
+        let sources = [this.personalEvents.small_events, this.personalEvents.mid_events, this.subscriptions.mid_events];
+
+        let source = sources.find((source) => {
+            index = source.findIndex((event) => {return event.data.eid === eid});
+            return index > 0;
+        });
+
+        return {index: index, source: source};
+    }
+
+    /***********************************************
+                 Additional get functions
+     ***********************************************/
+
+    get personalEvents() {
+        return this.vDOM.mainColumn.personalEvents.events;
+    }
+
+    get subscriptions() {
+        return this.vDOM.mainColumn.subscriptions.events;
     }
 }

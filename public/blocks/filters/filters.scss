@@ -1,0 +1,95 @@
+@import "../../modules/variables";
+
+.filters {
+  flex: 0 0 20%;
+  padding: 15px 15px 0;
+  overflow: auto;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 0 20px -9px rgba(0, 0, 0, 0.5);
+  @include transition(0.3s, ease-in-out);
+
+  @media only screen and (max-width: $breakpoint-phone) {
+    position: fixed;
+    top: 75px;
+    bottom: 0px;
+    overflow: auto;
+    left: 0px;
+    transform: translateX(-100%);
+
+    &_active {
+      transform: translateX(0);
+    }
+  }
+
+  &__header {
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+    font-size: 12px;
+    color: #191919;
+    margin-bottom: 12px;
+  }
+
+  &__section {
+    margin-bottom: 15px;
+    padding-bottom: 23px;
+    border-bottom: 1px solid #F1F1F1;
+  }
+
+  &__tags {
+    max-height: 45vh;
+    overflow-y: auto;
+    padding-bottom: 0;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    box-shadow: inset 0px -18px 12px -21px #00000030;
+    @include transition(0.3s, ease-in-out);
+
+    -ms-overflow-style: unset;  /* IE 10+ */
+    scrollbar-width: unset; /* Firefox */
+
+    &::-webkit-scrollbar {
+      width: auto;
+    }
+  }
+
+   &__filter-icon {
+     display: block;
+     width: 20px;
+
+     @media only screen and (max-width: $breakpoint-phone) {
+       display: block;
+       margin: 5px 20px;
+     }
+   }
+
+   &__exit-icon {
+     width: 20px;
+     display: none;
+
+     @media only screen and (max-width: $breakpoint-phone) {
+       display: block;
+       position: absolute;
+       top: 12px;
+       right: 10px;
+     }
+    }
+
+   &__map {
+    width: 100%;
+    height: auto;
+   }
+
+   &__footer {
+     position: sticky;
+     bottom: 0;
+     padding: 15px 0;
+     background: $color-white;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     box-shadow: 0px -18px 12px -21px #00000030;
+   }
+}

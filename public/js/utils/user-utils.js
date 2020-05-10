@@ -1,7 +1,7 @@
 'use strict';
 
-import UserModel from 'Eventum/models/user-model.js';
-import router from 'Eventum/core/router.js';
+import UserModel from 'Eventum/models/user-model';
+import router from 'Eventum/core/router';
 
 /**
  * Handle click on login event
@@ -19,7 +19,7 @@ const logoutRedirect = (event) => {
     });
 };
 
-function fullProfileCheck(user) {
+function profileCheck(user) {
     let message = [];
     if (user.about.length === 0) {
         message.push('Добавьте описание');
@@ -30,4 +30,4 @@ function fullProfileCheck(user) {
     return message;
 }
 
-export {logoutRedirect, fullProfileCheck};
+export {logoutRedirect, profileCheck};

@@ -1,0 +1,61 @@
+{{# without_parent}}{{else}}<div class="feed__column filters">{{/without_parent}}
+    <svg class="filters__exit-icon" data-bind-event="removeFiltersActive" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
+        <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285 3.905 3.905 9.024 5.857 14.143 5.857 5.119 0 10.237-1.952 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+    </svg>
+    <form action="submit" id="form" data-bind-event="applyFilters">
+        <section class="filters__section" data-bind-event="highlightTag">
+            <div class="filters__header">{{ TAGS_HEADER }}</div>
+            <div class="filters__tags">
+            {{#each tags}}
+                {{> $Blocks/tag/template }}
+            {{/each}}
+            </div>
+        </section>
+        <section class="filters__section">
+            <div class="filters__header">{{ KEYWORDS_HEADER }}</div>
+            <input class="filters__keywords input input__auth font__size_small-xx" name="search_text" placeholder="{{ KEYWORDS_PLACEHOLDER }}">
+        </section>
+        <section class="filters__section">
+            <div class="filters__header">{{ GENDER }}</div>
+            <label class="feed__checkbox-label">{{ MEN }}
+                <input class="filters__men-checkbox" type="checkbox" checked="checked">
+                <span class="feed__checkbox-checkmark"></span>
+            </label>
+            <label class="feed__checkbox-label">{{ WOMEN }}
+                <input class="filters__women-checkbox" type="checkbox" checked="checked">
+                <span class="feed__checkbox-checkmark"></span>
+            </label>
+        </section>
+        <section class="filters__section">
+            <div class="filters__header">{{ AGE }}</div>
+            {{> $Blocks/slider/template class="filters__slider-min" label=FROM min=18 max=100 value=18 step=1 name="slider_min"}}
+            {{> $Blocks/slider/template class="filters__slider-max" label=TO min=18 max=100 value=25 step=1 name="slider_max"}}
+        </section>
+        {{#if MEMBER_AMOUNT}}
+        <section class="filters__section">
+            <div class="filters__header">{{ MEMBER_AMOUNT }}</div>
+            <div class="slider__container">
+                <div class="slider">
+                    <div class="slider__maxmin">
+                        <div>3</div>
+                        <div>15</div>
+                    </div>
+                    <input type="range" min="2" max="15" value="5" step="1">
+                    <span class="slider__value" slider_value="5"></span>
+                </div>
+            </div>
+        </section>
+        {{/if}}
+        <section class="filters__section">
+            <div class="filters__header">{{ LOCATION }}</div>
+                <img class="filters__map" src="https://eventum.s3.eu-north-1.amazonaws.com/app/map.jpg" alt="map here">
+        </section>
+
+        <!-- TODO: add hider for footer shadow -->
+
+        <div class="filters__footer" data-bind-event="removeFiltersActive">
+            {{> $Blocks/button-comp/template style="re_btn re_btn__filled" text=FIND}}
+        </div>
+
+    </form>
+{{# without_parent}}{{else}}</div>{{/without_parent}}

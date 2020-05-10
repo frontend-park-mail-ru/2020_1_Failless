@@ -8,20 +8,6 @@ import {makeEmpty} from 'Eventum/utils/basic';
 import {icons} from 'Eventum/utils/static-data';
 
 export default class EventEdit extends Component {
-    /**
-     * Node itself
-     * @type {HTMLElement}
-     */
-    node = null;
-    template = null;
-
-    /**
-     *
-     * @type {Object<HTMLElement>}
-     */
-    vDOM = Object;
-
-    fields = ['photos', 'title', 'about', 'tags', 'time', 'slider', 'photo-helper'];
 
     /**
      * Create Button component
@@ -29,20 +15,35 @@ export default class EventEdit extends Component {
      */
     constructor(node) {
         super();
+        this.images = [];
+        this.cssClass = 'event-edit';
+        this.fields = ['photos', 'title', 'about', 'tags', 'time', 'slider', 'photo-helper', 'public'];
         this.element = node;
         this.template = EventEditTemplate;
         this.#setMinValueForDateTimeInput();
         this.#setInitialMargins();
+        this.didRender();
         window.addEventListener('resize', this.#setInitialMargins.bind(this));
     }
 
-    get element() {
-        return this.node;
+    didRender() {
+        super.didRender();
+        this.sliderDiv.querySelector('select').addEventListener('change', (event) => {this.#showMidEventFields(event.target)});
     }
 
-    set element(node) {
-        this.node = node;
-        this.#setvDOM();
+    /**
+     * Some fields for mid event are hidden
+     * So we show them as soon as user chooses limit > 2
+     * @param selectElement {HTMLSelectElement}
+     */
+    #showMidEventFields(selectElement) {
+        if (selectElement.value === '2') {
+            if (!this.publicCheckbox.classList.contains('event-edit__public_hidden')) {
+                this.publicCheckbox.classList.add('event-edit__public_hidden');
+            }
+        } else {
+            this.publicCheckbox.classList.remove('event-edit__public_hidden');
+        }
     }
 
     /**
@@ -56,15 +57,6 @@ export default class EventEdit extends Component {
     #setInitialMargins() {
         this.element.style.marginTop = '-' + this.element.offsetHeight.toString() + 'px';
         this.element.style.marginRight = '-' + this.element.offsetWidth.toString() + 'px';
-    }
-
-    /**
-     * Thanks to BEM it's so easy
-     */
-    #setvDOM() {
-        this.fields.forEach((field) => {
-            this.vDOM[field] = this.element.querySelector(`.event-edit__${field}`)
-        });
     }
 
     show() {
@@ -101,23 +93,22 @@ export default class EventEdit extends Component {
      *     tags: Array<{Number}>,
      *     time: string?,
      *     limit: Number,
+     *     public: boolean,
      * }}
      */
     retrieveData() {
         let data = {};
 
-        data.photos = this.#getImages();
-        data.title = this.vDOM['title'].value;
-        data.about = this.vDOM['about'].value;
+        data.photos = this.images;
+        data.title = this.titleTextArea.value;
+        data.about = this.aboutTextArea.value;
         data.tags = [];
         this.tagsDiv.querySelectorAll('.tag__container').forEach((tag) => {
             data.tags.push(+tag.firstElementChild.getAttribute('data-id'));
         });
-        data.time = this.vDOM['time'].value;
-        data.limit = +this.vDOM['slider'].querySelector('select').value;
-
-        console.log(data);
-        data.photos = null;
+        data.time = this.timeInput.value;
+        data.limit = +this.sliderDiv.querySelector('select').value;
+        data.public = this.publicCheckbox.querySelector('input').checked;
 
         return data;
     }
@@ -146,22 +137,17 @@ export default class EventEdit extends Component {
             oldImages.forEach(oldImage => oldImage.remove());
             this.photoHelperDiv.style.display = 'flex';
         }
-        this.vDOM['title'].value = '';
-        this.vDOM['about'].value = '';
+        this.titleTextArea.value = '';
+        this.aboutTextArea.value = '';
         this.addTags(null);
-        this.vDOM['time'].value = '';
+        this.timeInput.value = '';
+        this.sliderDiv.querySelector('select').value = '2';
+        this.publicCheckbox.classList.add('event-edit__public_hidden');
     }
 
     /***********************************************
                     Image upload part
      ***********************************************/
-    #getImages() {
-        let images = [];
-
-        // TODO: get images
-
-        return images;
-    }
 
     /**
      * Render uploaded images with remove button
@@ -184,8 +170,10 @@ export default class EventEdit extends Component {
         // Get height of the parent element
         // Set all next images with this height and width: auto;
         let height = 0;
+        this.images = [];
         const initReader = new FileReader();
         initReader.addEventListener('load', (event) => {
+            this.images.push({img: event.target.result.split(';')[1].split(',')[1]});
             this.photosDiv.insertAdjacentHTML('beforeend', imageEditTemplate({src: event.target.result}));
             const firstImage = this.photosDiv.querySelector('img');
             firstImage.onload = () => {
@@ -194,6 +182,7 @@ export default class EventEdit extends Component {
                 for (let iii = 1; iii < files.length; iii++) {
                     const reader = new FileReader();
                     reader.addEventListener('load', (event) => {
+                        this.images.push({img: event.target.result.split(';')[1].split(',')[1]});
                         this.photosDiv.insertAdjacentHTML('beforeend', imageEditTemplate({src: event.target.result, style: `height: ${height}px; width: auto;`}));
                     });
                     reader.readAsDataURL(files[iii]);
@@ -239,5 +228,9 @@ export default class EventEdit extends Component {
 
     get sliderDiv() {
         return this.vDOM['slider'];
+    }
+
+    get publicCheckbox() {
+        return this.vDOM['public'];
     }
 }

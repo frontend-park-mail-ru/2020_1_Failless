@@ -19,6 +19,7 @@
   }
 
   &__message {
+    text-align: center;
     color: $re--color-middle-gray;
     transition: opacity 0.3s ease-in-out;
     opacity: 1;
