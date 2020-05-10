@@ -1,11 +1,11 @@
 import Component from 'Eventum/core/component';
 import EventTemplate from 'Blocks/event/template.hbs';
-import {staticTags} from 'Eventum/utils/static-data';
+import {STATIC_TAGS} from 'Eventum/utils/static-data';
 import settings from 'Settings/config';
 import {showLoading} from 'Eventum/utils/basic';
 
 export default class EventComp extends Component {
-    fields = ['photos', 'amount'];
+    fields = ['photos', 'amount', 'link'];
     cssClass = 'event';
 
     /**
@@ -59,7 +59,7 @@ export default class EventComp extends Component {
     prepareEventForRender() {
         if (this.data.tags) {
             this.data.tags = this.data.tags.map((tag) => {
-                let newTag = staticTags[tag - 1];
+                let newTag = {...STATIC_TAGS[tag - 1]};
                 newTag.activeClass = 'tag__container_active';
                 return newTag;});
         }
@@ -70,6 +70,13 @@ export default class EventComp extends Component {
         } else {
             this.data.date = new Date(this.data.date).toLocaleString();
         }
+    }
+
+    changeLink(color, message) {
+        let link = this.linkA;
+        link.className = 'event__link';
+        link.classList.add(`font__color_${color}`);
+        link.innerText = message;
     }
 
     /***********************************************
@@ -83,5 +90,9 @@ export default class EventComp extends Component {
     // Mid and big events only
     get amountSpan() {
         return this.vDOM['amount'];
+    }
+
+    get linkA() {
+        return this.vDOM['link'];
     }
 }

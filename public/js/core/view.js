@@ -10,6 +10,7 @@ import {icons} from 'Eventum/utils/static-data';
  * Base view class
  */
 export default class View {
+    vDOM = {};
 
     /**
      * Create view

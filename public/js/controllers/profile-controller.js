@@ -4,7 +4,7 @@ import ProfileView from 'Eventum/views/profile-view';
 import UserModel from 'Eventum/models/user-model';
 import ProfileEditView from 'Eventum/views/profile-edit-view';
 import ModalView from 'Eventum/views/modal-view';
-import {staticTags} from 'Eventum/utils/static-data';
+import {STATIC_TAGS} from 'Eventum/utils/static-data';
 import {highlightTag} from 'Eventum/utils/tag-logic';
 import {logoutRedirect} from 'Eventum/utils/user-utils';
 import EventModel from 'Eventum/models/event-model';
@@ -35,7 +35,7 @@ export default class ProfileController extends Controller {
             this.localTags = [...tags];
         }).catch((onerror) => {
             console.error(onerror);
-            this.localTags = [...staticTags];
+            this.localTags = [...STATIC_TAGS];
         });
     }
 
@@ -159,17 +159,17 @@ export default class ProfileController extends Controller {
                             attr: 'showAction',
                             events: [
                                 {type: 'mouseover', handler: (event) => {
-                                    if (event.target.matches('.event__link')) {
+                                    if (event.target.matches('.event__link.font__color_green')) {
                                         toggleActionText(event.target, 'Не идти');
                                     }}},
                                 {type: 'click', handler: (event) => {
-                                    if (event.target.matches('.event__link')) {
-                                        this.#unfollowEvent(event);
+                                    if (event.target.matches('.event__link.font__color_red')) {
+                                        this.#unfollowEvent(event.target);
                                     } else if (event.target.matches('button.error__button')) {
                                         Router.redirectForward('/search');
                                     }}},
                                 {type: 'mouseout', handler: (event) => {
-                                    if (event.target.matches('.event__link')) {
+                                    if (event.target.matches('.event__link.font__color_red')) {
                                         toggleActionText(event.target, 'Вы идёте');
                                     }}},
                             ]
@@ -192,25 +192,34 @@ export default class ProfileController extends Controller {
         }
     };
 
-    #unfollowEvent = (event) => {
+    #unfollowEvent = (linkElement) => {
         UserModel.getProfile().then(
             (profile) => {
-                let circle = event.target.previousElementSibling;
-                let eid = event.target.getAttribute('data-eid');
-                if (circle.classList.contains('event__circle_mid')) {
-                    EventModel.leaveMidEvent(profile.uid, eid)
-                        .then((response) => this.view.removeSubscriptionByLink(event.target));
-                } else if (circle.classList.contains('event__circle_big')) {
-                    EventModel.leaveBigEvent(profile.uid, eid)
-                        .then((response) => this.view.removeSubscriptionByLink(event.target));
-                } else {
-                    console.error(`class of circle - ${circle.classList} - does not match any of the following: event__circle_mid, event__circle_big`)
+
+                let eid = linkElement.getAttribute('data-eid');
+
+                let eventIndexAndSource = this.view.findEventComponentIndex(Number(eid));
+
+                if (eventIndexAndSource.index === -1) {
+                    console.error('No component was found');
+                    // TODO: do sth
+                    return;
                 }
 
+                let eventComponent = eventIndexAndSource.source[eventIndexAndSource.index];
+
+                if (eventComponent.type === 'mid') {
+                    EventModel.leaveMidEvent(profile.uid, eid)
+                        .then((response) => {
+                            eventComponent.removeComponent('smooth');
+                            eventIndexAndSource.source = eventIndexAndSource.source.splice(eventIndexAndSource.index, 1);
+                        });
+                } else {
+                    console.log('we dont support that type yet');
+                }
             },
             error => console.error(error)
         );
-
     };
 
     #submitNewEvent = (event) => {
@@ -377,7 +386,7 @@ export default class ProfileController extends Controller {
     #showModalTags = (event) => {
         event.preventDefault();
         this.editView = new ModalView(document.body);
-        let tags = staticTags.map((tag) => {tag.editable = true; tag.activeClass = ''; return tag;});
+        let tags = STATIC_TAGS.map((tag) => {tag.editable = true; tag.activeClass = ''; return tag;});
         console.log(tags);
         this.editView.render({
             title: 'Ваши теги',

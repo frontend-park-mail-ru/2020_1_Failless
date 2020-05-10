@@ -6,7 +6,6 @@ import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
 import loadingTemplate from 'Blocks/loading/template.hbs';
-import eventCardTemplate from 'Blocks/event/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {determineClass} from 'Blocks/event/event';
@@ -27,6 +26,14 @@ export default class ProfileView extends MyView {
         super(parent);
         this.parent = parent;
 
+        this.#emptyvDOM();
+    }
+
+    destructor() {
+        this.#emptyvDOM();
+    }
+
+    #emptyvDOM() {
         this.vDOM = {
             leftColumn: {
                 comp: null,
@@ -35,14 +42,6 @@ export default class ProfileView extends MyView {
             mainColumn: {
                 comp: null,
                 element: null,
-                subscriptions: {
-                    comp: null,
-                    element: null,
-                    events: {
-                        mid_events: [],
-                        small_events: [],
-                    },
-                },
                 personalEvents: {
                     comp: null,
                     element: null,
@@ -52,24 +51,14 @@ export default class ProfileView extends MyView {
                         small_events: [],
                     },
                 },
-            },
-        };
-    }
-
-    destructor() {
-        this.subscriptions = null;
-        this.personalEvents = null;
-
-        this.vDOM = {
-            leftColumn: {
-                comp: null,
-                element: null,
-            },
-            mainColumn: {
-                comp: null,
-                element: null,
-                subscriptions: null,
-                personalEvents: null,
+                subscriptions: {
+                    comp: null,
+                    element: null,
+                    events: {
+                        mid_events: [],
+                        big_events: [],
+                    },
+                },
             },
         };
     }
@@ -274,7 +263,7 @@ export default class ProfileView extends MyView {
     async renderEvents(events) {
         const personalEvents = this.personalEventsDiv;
         makeEmpty(personalEvents);
-        if (!events || (events.mid_events.length === 0 && events.small_events.length === 0)) {
+        if (!events || (!events.mid_events || events.mid_events.length === 0) && (!events.small_events || events.small_events.length === 0)) {
             personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
         } else {
             events.small_events.forEach((smallEvent) => {
@@ -314,7 +303,12 @@ export default class ProfileView extends MyView {
      * @return {Promise<void>}
      */
     async renderSubscriptions(subscriptions) {
-        if (!subscriptions || subscriptions.mid_events.length === 0 /*&& subscriptions.big_events.length === 0*/) {
+        if (!subscriptions
+            ||
+            (!subscriptions.mid_events || subscriptions.mid_events.length === 0)
+                &&
+            (!subscriptions.big_events || subscriptions.big_events.length === 0))
+        {
             this.renderEmptySubscriptions();
             return;
         }
@@ -350,18 +344,31 @@ export default class ProfileView extends MyView {
     }
 
     /**
-     * Remove event from subscriptions
-     * @param {{HTMLLinkElement}} link
-     * @return {Promise<void>}
+     * Finds index of element in
+     * @param eid {Number}
+     * @return {{index: Number, source: Object}}
      */
-    async removeSubscriptionByLink(link) {
-        let eventToRemove = link.closest('.event');
-        eventToRemove.style.cssText = 'transform: scale(0);';
-        setTimeout(() => {
-            eventToRemove.remove();
-            if (this.subscriptionsDiv.childElementCount === 0) {
-                this.renderEmptySubscriptions();
-            }
-        }, 300);
+    findEventComponentIndex(eid) {
+        let index = -1;
+        let sources = [this.personalEvents.small_events, this.personalEvents.mid_events, this.subscriptions.mid_events];
+
+        let source = sources.find((source) => {
+            index = source.findIndex((event) => {return event.data.eid === eid});
+            return index > 0;
+        });
+
+        return {index: index, source: source};
+    }
+
+    /***********************************************
+                 Additional get functions
+     ***********************************************/
+
+    get personalEvents() {
+        return this.vDOM.mainColumn.personalEvents.events;
+    }
+
+    get subscriptions() {
+        return this.vDOM.mainColumn.subscriptions.events;
     }
 }

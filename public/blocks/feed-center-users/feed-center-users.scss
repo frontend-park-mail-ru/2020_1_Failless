@@ -5,6 +5,8 @@
     width: 100%;
     height: auto;
     margin-bottom: $re--big-padding;
+    max-height: 50vh;
+    object-fit: contain;
   }
 
   &__profile {

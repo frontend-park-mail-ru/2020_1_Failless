@@ -60,6 +60,8 @@ export default class Router {
     };
 
     static redirectForward(href) {
+        window.stop();
+
         window.history.pushState({}, '', href);
         window.history.pushState({}, '', href);
         window.history.back();

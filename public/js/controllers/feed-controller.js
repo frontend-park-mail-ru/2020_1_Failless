@@ -1,15 +1,18 @@
 'use strict';
 
-import EventModel from 'Eventum/models/event-model.js';
-import UserModel from 'Eventum/models/user-model.js';
-import Controller from 'Eventum/core/controller.js';
-import FeedView from 'Eventum/views/feed-view.js';
-import settings from 'Settings/config.js';
-import SliderManager from 'Blocks/slider/set-slider.js';
-import {MAX_AGE, MIN_AGE, staticTags} from 'Eventum/utils/static-data.js';
-import {highlightTag} from 'Eventum/utils/tag-logic.js';
-import {fullProfileCheck} from 'Eventum/utils/user-utils.js';
-import {showMessageWithRedirect} from 'Eventum/utils/render.js';
+import EventModel from 'Eventum/models/event-model';
+import UserModel from 'Eventum/models/user-model';
+import Controller from 'Eventum/core/controller';
+import FeedView from 'Eventum/views/feed-view';
+import settings from 'Settings/config';
+import {MAX_AGE, MIN_AGE} from 'Eventum/utils/static-data';
+import {highlightTag} from 'Eventum/utils/tag-logic';
+import {profileCheck} from 'Eventum/utils/user-utils';
+import {showMessageWithRedirect} from 'Eventum/utils/render';
+import FeedModel from 'Eventum/models/feed-model';
+import {toggleActionText} from 'Blocks/event/event';
+import Router from 'Eventum/core/router';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class FeedController
@@ -22,16 +25,9 @@ export default class FeedController extends Controller {
      */
     constructor(parent) {
         super(parent);
-        this.dataList = []; // {item, followers}
-        this.tagList = []; // заглушка
-        this.currentPage = 1;
-        this.currentItem = 0;
-        this.view = new FeedView(parent, staticTags);
-        this.uid = null;
-        this.sliderManager = new SliderManager();
-        this.userMessages = [];
+        this.view = new FeedView(parent);
         this.defaultFeedRequest = {
-            uid: this.uid,
+            uid: null,
             page: 1,
             limit: settings.pageLimit,
             query: '',
@@ -42,6 +38,7 @@ export default class FeedController extends Controller {
             men: true,
             women: true,
         };
+        this.model = FeedModel.instance;
     }
 
     destructor() {
@@ -54,24 +51,19 @@ export default class FeedController extends Controller {
      */
     action() {
         super.action();
-        this.view.render(this.tagList);
+        this.view.render();
         UserModel.getProfile().then((user) => {
-            // Check if user has filled profile
-            this.userMessages = fullProfileCheck(user);
-            this.uid = user.uid;
-            this.defaultFeedRequest.uid = this.uid;
-            this.defaultFeedRequest.tags = user.tags;
+            this.model.userMessages = profileCheck(user);
+            this.model.feedRequest.uid = user.uid;
+            if (user.tags) {
+                this.model.feedRequest.tags = user.tags.map(tag => tag.tag_id);
+                this.#initTags(user.tags);
+            }
 
             // Fetch content to show
-            this.#initDataList(this.defaultFeedRequest).then(
-                (data) => {
-                    this.#updateAll();
-                },
-                (error) => {
-                    console.error(error);
-                    this.view.showError(error);
-                });
-            this.#initFilters();
+            this.#initDataList()
+                .then(data => this.view.updateUser())
+                .catch(error => this.view.showFeedError(error));
             this.initHandlers([
                 {
                     attr: 'highlightTag',
@@ -88,14 +80,41 @@ export default class FeedController extends Controller {
                 {
                     attr: 'toggleFiltersActive',
                     events: [
-                        {type: 'click', handler: () => {document.querySelector('.feed__filters').classList.toggle('feed__filters_active');}},
+                        {type: 'click', handler: () => {document.querySelector('.filters').classList.toggle('filters_active');}},
                     ]
                 },
                 {
                     attr: 'removeFiltersActive',
                     many: true,
                     events: [
-                        {type: 'click', handler: () => {document.querySelector('.feed__filters').classList.remove('feed__filters_active');}},
+                        {type: 'click', handler: () => {document.querySelector('.filters').classList.remove('filters_active');}},
+                    ]
+                },
+                {
+                    attr: 'handleVote',
+                    events: [
+                        {type: 'click', handler: this.#voteHandler},
+                    ]
+                },
+                {
+                    attr: 'showAction',
+                    events: [
+                        {type: 'mouseover', handler: (event) => {
+                            if (event.target.matches('.event__link.font__color_green')) {
+                                toggleActionText(event.target, TextConstants.EVENT__LEAVE);
+                            }}},
+                        {type: 'click', handler: (event) => {
+                            if (event.target.matches('.event__link.font__color_red')) {
+                                this.#unfollowEvent(event.target);
+                            } else if (event.target.matches('.event__link.font__color_black')) {
+                                this.#followEvent(event.target);
+                            } else if (event.target.matches('button.error__button')) {
+                                Router.redirectForward('/search');
+                            }}},
+                        {type: 'mouseout', handler: (event) => {
+                            if (event.target.matches('.event__link.font__color_red')) {
+                                toggleActionText(event.target, TextConstants.EVENT__VISITED);
+                            }}},
                     ]
                 },
             ]);
@@ -103,22 +122,64 @@ export default class FeedController extends Controller {
     }
 
     /**
-     *  Initialize filters with user preferences
+     * Set tags active equal to user's own tags
+     * @param userTags
+     * @return {Promise<void>}
      */
-    async #initFilters() {
-        // Set two sliders and connect each other
-        let sliders = document.querySelectorAll('.slider');
-        this.sliderManager.setSliders(
-            {slider1: sliders[0], initialValue1: 18},
-            {slider2: sliders[1], initialValue2: 25});
+    async #initTags(userTags) {
+        userTags.forEach(userTag => {
+            this.model.tags[userTag.tag_id - 1].activeClass = 'tag__container_active';
+        });
+        await this.view.updateTags();
     }
 
-    #setUpVoteButtons() {
-        this.addEventHandler(
-            document.querySelector('.feed-center__action-buttons'),
-            'click',
-            this.#voteHandler);
-    }
+    #followEvent = (linkElement) => {
+        UserModel.getProfile().then(
+            (profile) => {
+                let eid = linkElement.getAttribute('data-eid');
+                let eventComponent = this.view.findEventComponent(Number(eid));
+
+                if (!eventComponent) {
+                    console.error('No component was found');
+                    // TODO: do sth
+                    return;
+                }
+
+                if (eventComponent.type === 'mid') {
+                    return EventModel.joinMidEvent(profile.uid, eid)
+                        .then((response) => eventComponent.state = true);
+                } else {
+                    console.log('we dont support that type yet');
+                }
+
+            },
+            error => console.error(error)
+        );
+    };
+
+    #unfollowEvent = (linkElement) => {
+        UserModel.getProfile().then(
+            (profile) => {
+                let eid = linkElement.getAttribute('data-eid');
+                let eventComponent = this.view.findEventComponent(Number(eid));
+
+                if (!eventComponent) {
+                    console.error('No component was found');
+                    // TODO: do sth
+                    return;
+                }
+
+                if (eventComponent.type === 'mid') {
+                    EventModel.leaveMidEvent(profile.uid, eid)
+                        .then((response) => eventComponent.state = false);
+                } else {
+                    console.log('we dont support that type yet');
+                }
+
+            },
+            error => console.error(error)
+        );
+    };
 
     /**
      *
@@ -134,51 +195,18 @@ export default class FeedController extends Controller {
     #applyFilters = (event) => {
         event.preventDefault();
 
-        if (this.userMessages.length !== 0) {
-            showMessageWithRedirect(this.userMessages, 'Profile');
+        if (this.model.userMessages.length !== 0) {
+            showMessageWithRedirect(this.model.userMessages, 'Profile');
             return;
         }
 
-        const form = document.getElementById('form');
-        let filters = {
-            tags: [],
-            keyWords: [],
-            men: true,
-            women: true,
-            minAge: MIN_AGE,
-            maxAge: MAX_AGE,
-            limit: 10,
-        };
-
-        // Get keywords (TODO: add more separators)
-        if (form.search_text.value.split(' ')[0]) {
-            filters.keyWords = form.search_text.value.split(' ');
-        }
-
-        // Get active tags
-        form.querySelectorAll('.tag__container.tag__container_active').forEach((tag) => {
-            filters.tags.push(+tag.firstElementChild.getAttribute('data-id'));
-        });
-
-        let otherFilters = form.querySelector('.feed__other-options');
-
-        // Get genders
-        let genderInputs = otherFilters.querySelectorAll('.feed__checkbox-label input');
-        if (genderInputs.length === 2) {
-            filters.men = genderInputs[0].checked;
-            filters.women = genderInputs[1].checked;
-        }
-
-        // Get ages
-        let ageSliderSpans = otherFilters.querySelectorAll('.slider__value');
-        filters.minAge = Number(ageSliderSpans[0].getAttribute('slider_value'));
-        filters.maxAge = Number(ageSliderSpans[1].getAttribute('slider_value'));
+        let filters = this.view.filterComp.getFilters();
 
         let request = {
-            uid: this.uid,
-            page: this.currentPage,
+            uid: null,
+            page: this.model.currentPageNumber,
             limit: 10,
-            query: String(...filters.keyWords),
+            query: filters.keyWords ? String(...filters.keyWords) : null,
             tags: filters.tags,
             Location: null,
             minAge: filters.minAge,
@@ -187,15 +215,11 @@ export default class FeedController extends Controller {
             women: filters.women,
         };
 
-        this.#initDataList(request).then(
-            (data) => {
-                this.#updateAll();
-            },
-            (error) => {
-                console.error(error);
-                this.view.showError(error);
-            }
-        );
+        UserModel.getProfile()
+            .then(user => request.uid = user.uid)
+            .then(() => this.#initDataList(request))
+            .then(() => this.view.updateUser())
+            .catch(error => this.view.showFeedError(error));
     };
 
     /**
@@ -207,102 +231,58 @@ export default class FeedController extends Controller {
             return;
         }
 
-        if (this.userMessages.length !== 0) {
-            showMessageWithRedirect(this.userMessages, 'Profile');
+        if (this.model.userMessages.length !== 0) {
+            showMessageWithRedirect(this.model.userMessages, 'Profile');
+            return;
+        }
+
+        if (event.target.matches('.re_btn__skip')) {
+            showMessageWithRedirect('Оформите платную подписку, чтобы получить возможность пропускать пользователей', 'Profile');
             return;
         }
 
         const isLike = event.target.matches('.re_btn__approve');
         // Get id-s
         const vote = {
-            uid: this.uid,
-            id: this.dataList[this.currentItem].item.uid,
+            uid: undefined,
+            id: this.model.currentUser.uid,
             value: isLike ? 1 : -1,
         };
 
-        // Send request with vote
-        EventModel.userVote(vote, isLike).then(
-            (response) => {
-                console.log(response);
-            },
-            (onerror) => {
-                console.error(onerror);
-            });
+        UserModel.getProfile()
+            .then(user => vote.uid = user.uid)
+            .then(() => EventModel.userVote(vote))
+            .catch((error) => this.view.showFeedError(error));
 
         // Show next item
-        ++this.currentItem;
-        if (this.currentItem < settings.pageLimit) {
-            if (this.dataList.length <= this.currentItem) { // empty list
-                this.view.updateCenter(null);
-            } else { // not empty list
-                this.#updateAll();
-            }
+        ++this.model.currentUserNumber;
+        if (this.model.currentUserNumber < settings.pageLimit) {
+            this.view.updateUser();
         } else {
             // Go get next items
-            this.currentItem = 0;
-            ++this.currentPage;
-            this.dataList.length = 0;
-            this.defaultFeedRequest.page = this.currentPage;
-            this.#initDataList(this.defaultFeedRequest).then(
-                (data) => {
-                    this.#updateAll();
-                },
-                (error) => {
-                    console.error(error);
-                    this.view.showError(error);
-                });
+            this.model.currentUserNumber = 0;
+            ++this.model.currentPageNumber;
+            this.model.userList.length = 0;
+            this.model.feedRequest.page = this.model.currentPageNumber;
+            this.#initDataList()
+                .then(data => this.view.updateUser())
+                .catch(error => this.view.showFeedError(error));
         }
     };
 
     /**
-     * Get either events or users list to show in feed
+     * Get users list to show in feed
      * @return {Promise<T>}
      */
-    #initDataList = (request) => {
-        console.log(request);
+    #initDataList = (request = this.model.feedRequest) => {
         return EventModel.getFeedUsers(request).then(
             (users) => {
                 if (users) {
-                    console.log(users);
-                    users.forEach((user) => {
-                        this.dataList.push(
-                            {
-                                item: user,
-                                followers: {
-                                    personalEvents: user.events,
-                                    subscriptions: user.subscriptions,
-                                },
-                            });
-                    });
-                    return this.dataList[0];
-                } else {
-                    return null;
+                    this.model.userList = users;
                 }
             },
             (error) => {
-                console.error(error);
                 throw new Error(error);
             });
     };
-
-    /**
-     * Render both columns
-     * Show rendering icon if loading
-     */
-    #updateAll() {
-        // Show none
-        if (!this.dataList[this.currentItem]) {
-            this.view.updateCenter(null);
-            this.view.updateRight(null);
-            return;
-        }
-
-        // Render center column
-        this.view.updateCenter(this.dataList[this.currentItem].item);
-        this.#setUpVoteButtons();
-
-        // Render right column
-        this.view.showLoadingRight();
-        this.view.updateRight(this.dataList[this.currentItem].followers);
-    }
 }
