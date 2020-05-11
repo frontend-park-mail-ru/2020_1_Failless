@@ -6,7 +6,7 @@ import feedCenterUsersTemplate from 'Blocks/feed-center-users/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import FeedModel from 'Eventum/models/feed-model';
 import settings from 'Settings/config';
-import {icons} from 'Eventum/utils/static-data';
+import {icons, STATIC_TAGS} from 'Eventum/utils/static-data';
 import SmallEvent from 'Blocks/event/small-event-comp';
 import MidEvent from 'Blocks/event/mid-event-comp';
 import TextConstants from 'Eventum/utils/language/text';
@@ -72,9 +72,8 @@ export default class FeedView extends View {
      */
     render() {
         this.parent.innerHTML += feedTemplate({
-            DISLIKE: TextConstants.FEED__DISLIKE,
-            SKIP: TextConstants.FEED__SKIP,
-            LIKE: TextConstants.FEED__LIKE,
+            like_icon: icons.get('thumb-up'),
+            skip_icon: icons.get('stack-overflow'),
             PERSONAL_EVENTS_HEADER: TextConstants.FEED__PERSONAL_EVENTS_HEADER,
             SUBSCRIPTIONS_HEADER: TextConstants.FEED__SUBSCRIPTIONS_HEADER,
         });
@@ -103,10 +102,19 @@ export default class FeedView extends View {
         let userToShow = this.model.currentUser;
         let personalEventsArea = this.personalEventsBodyDiv;
         let subscriptionsArea = this.subscriptionsBodyDiv;
+        console.log(userToShow);
 
         if (userToShow) {
             this.#showUI();
             userToShow.photos = `${settings.aws}/users/${userToShow.photos[0]}`;
+            // TODO: move it to separate function
+            userToShow.tags = userToShow.tags.map((tag) => {
+                let newTag = {...STATIC_TAGS[tag - 1]};
+                newTag.activeClass = 'tag__container_active';
+                return newTag;});
+
+            userToShow.own_events = null;
+            userToShow.subscriptions = null;
 
             this.centerColumnBodyDiv.innerHTML = feedCenterUsersTemplate({...userToShow});
             if (userToShow.own_events && (userToShow.own_events.small_events || userToShow.own_events.mid_events)) {
@@ -136,7 +144,7 @@ export default class FeedView extends View {
                     });
                 }
             } else {
-                this.#showEmptySubscriptions();
+                this.#hideSubscriptions();
             }
         } else {
             this.#showEmpty();
@@ -240,7 +248,7 @@ export default class FeedView extends View {
     async #hideUI() {
         this.centerColumnFooterDiv.classList.add('hidden');
         this.personalEventsDiv.classList.add('hidden');
-        this.subscriptionsDiv.classList.add('hidden');
+        await this.#hideSubscriptions();
     }
 
     async #showUI() {
@@ -250,6 +258,16 @@ export default class FeedView extends View {
         if (this.personalEventsDiv.classList.contains('hidden')) {
             this.personalEventsDiv.classList.remove('hidden');
         }
+        await this.#showSubscriptions();
+    }
+
+    async #hideSubscriptions() {
+        if (!this.subscriptionsDiv.classList.contains('hidden')) {
+            this.subscriptionsDiv.classList.add('hidden');
+        }
+    }
+
+    async #showSubscriptions() {
         if (this.subscriptionsDiv.classList.contains('hidden')) {
             this.subscriptionsDiv.classList.remove('hidden');
         }

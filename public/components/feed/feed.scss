@@ -7,8 +7,25 @@
   width: 100%;
   display: flex;
 
+  @media only screen and (max-width: $breakpoint-phone) {
+    position: relative;
+    margin-top: 25px;
+  }
+
   &__header {
     display: none;
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      display: block;
+      width: 100%;
+      background: white;
+      height: 30px;
+      z-index: 100;
+      border-bottom: 1px solid #f1f1f1;
+
+      position: fixed;
+      top: 45px;
+    }
   }
 
   &__main {
@@ -19,11 +36,45 @@
     border-radius: $re--border-radius;
     margin-left: 2%;
     box-shadow: 0 0 20px -9px rgba(0, 0, 0, 0.5);
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      flex-flow: column;
+      border-radius: 0;
+      margin-left: 0;
+      box-shadow: unset;
+      margin-bottom: 50px;
+    }
+
+    &-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      padding: 8px 0;
+      margin-top: 15px;
+      background: white;
+      box-shadow: 0px -18px 12px -21px #00000030;
+
+      @media only screen and (max-width: $breakpoint-phone) {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+      }
+    }
   }
 
   &__column {
     padding: $re--medium-padding $re--medium-padding 0;
     overflow: auto;
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      overflow: unset;
+      max-height: fit-content;
+    }
 
     &_main {
       flex-grow: 0;
@@ -32,6 +83,11 @@
 
     &_events {
       flex: 0 0 30%;
+
+      @media only screen and (max-width: $breakpoint-phone) {
+        margin-top: 15px;
+        border-top: 1px solid #f1f1f1;
+      }
     }
   }
 
@@ -46,18 +102,6 @@
     }
   }
 
-  &__main-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    position: sticky;
-    bottom: 0;
-    padding: 15px 0;
-    margin-top: 15px;
-    background: white;
-    box-shadow: 0px -18px 12px -21px #00000030;
-  }
-
   &-right__title {
     width: 100%;
     text-align: left;
@@ -65,6 +109,36 @@
     font-size: 12px;
     color: $color-black;
     margin-bottom: 12px;
+  }
+
+  &__button {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      width: 40px;
+      height: 40px;
+    }
+
+    & svg {
+      fill: $color-white;
+    }
+
+    &-approve {
+      background: $color-red;
+    }
+
+    &-reject {
+      background: $color-blue;
+      transform: rotate(180deg);
+    }
+
+    &-skip {
+      background: $color-purple;
+    }
   }
 
   /* Customize the label (the container) */
@@ -140,19 +214,6 @@
 
 @media only screen and (max-width: $breakpoint-phone) {
   .feed {
-    position: relative;
-    flex-flow: column;
-    margin-top: -10px;
-
-    &__header {
-      display: block;
-      width: 100%;
-      background: white;
-      height: 30px;
-      z-index: 1;
-      border-bottom: 1px solid #f1f1f1;
-    }
-
     &__column {
       width: 100%;
     }

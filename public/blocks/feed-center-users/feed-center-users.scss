@@ -11,15 +11,19 @@
 
   &__profile {
     display: flex;
-    flex-flow: row;
-    justify-content: flex-start;
-    align-items: flex-start;
+    flex-flow: column;
+
+    & h1 {
+      margin-bottom: 12px;
+    }
   }
 
   &__tags {
     display: flex;
-    align-items: flex-end;
-    flex-flow: column;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-bottom: 8px;
   }
 
   &__about {
