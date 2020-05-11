@@ -41,21 +41,33 @@ export default class Controller {
      * Create action and render header
      */
     action() {
-        UserModel.getLogin().then((user) => {
-            createHeader(this.parent, Object.prototype.hasOwnProperty.call(user, 'uid'));
-        }).catch((onerror) => {
-            createHeader(this.parent, false);
-            console.log('No internet connection', onerror);
-        }).then(() => {
-            this.addEventHandler(
-                document.getElementsByClassName('header__manage')[0],
-                'click',
-                this.#controlBtnPressed);
-            this.addEventHandler(
-                document.getElementsByClassName('header__logo gradient-text')[0],
-                'click',
-                this.#homeRedirect);
-        });
+        UserModel.getLogin()
+            .then((user) => createHeader(this.parent, Object.prototype.hasOwnProperty.call(user, 'uid')))
+            .catch((onerror) => {
+                createHeader(this.parent, false);
+                console.log('No internet connection', onerror);})
+            .then(() =>
+                this.initHandlers([
+                    {
+                        attr: 'headerItemPressed',
+                        events: [
+                            {type: 'click', handler: this.#controlBtnPressed},
+                        ]
+                    },
+                    {
+                        attr: 'homeRedirect',
+                        events: [
+                            {type: 'click', handler: () => {router.redirectForward('/');}},
+                        ]
+                    },
+                    {
+                        attr: 'searchRedirect',
+                        events: [
+                            {type: 'click', handler: () => {router.redirectForward('/search');}},
+                        ]
+                    },
+                ])
+            );
     }
 
     /**
@@ -114,22 +126,6 @@ export default class Controller {
         }
 
         router.redirectForward(href);
-    };
-
-
-    /**
-     * Handle click on home event
-     * @param {Event} event
-     */
-    #homeRedirect = (event) => {
-        event.preventDefault();
-
-        router.redirectForward('/');
-    };
-
-    #setActiveLink = () => {
-        // TODO: remove all active links
-        //  Add active link on chosen index (look in my-controller.js)
     };
 
     /*
