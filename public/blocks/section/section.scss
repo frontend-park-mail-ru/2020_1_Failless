@@ -2,8 +2,10 @@
 
 .section {
   width: 100%;
+
   &__header {
     width: 100%;
+    max-width: 240px;
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -42,6 +42,9 @@ export default class ProfileView extends MyView {
             mainColumn: {
                 comp: null,
                 element: null,
+                photoColumns: {
+                    element: null,
+                },
                 personalEvents: {
                     comp: null,
                     element: null,
@@ -163,7 +166,6 @@ export default class ProfileView extends MyView {
         document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
             'beforeend', profileMainTemplate({
                 title: 'Профиль',
-                url: `${settings.aws}/users`,
                 profile: profile,
                 add_event_button: addEventButton.data,
                 select_options: Array(14).fill(undefined, undefined, undefined).map((_, idx) => 2 + idx),
@@ -184,6 +186,9 @@ export default class ProfileView extends MyView {
         }
         while (!this.vDOM.mainColumn.personalEvents.event_edit.element) {
             this.vDOM.mainColumn.personalEvents.event_edit.element = document.querySelector('.event-edit');
+        }
+        while (!this.vDOM.mainColumn.photoColumns.element) {
+            this.vDOM.mainColumn.photoColumns.element = this.mainColumnDiv.querySelector('.photo-columns');
         }
     }
 
@@ -363,6 +368,10 @@ export default class ProfileView extends MyView {
     /***********************************************
                  Additional get functions
      ***********************************************/
+
+    get photosColumn() {
+        return this.vDOM.mainColumn.photoColumns.element;
+    }
 
     get personalEvents() {
         return this.vDOM.mainColumn.personalEvents.events;
