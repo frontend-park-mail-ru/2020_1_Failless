@@ -6,14 +6,14 @@
   align-items: center;
   text-align: center;
 
-  &__attetion {
+  &__attention {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7);
-    z-index: 10;
+    z-index: 1;
   }
 
   @media only screen and (max-width: $breakpoint-phone) {
@@ -23,7 +23,8 @@
 
   &__header {
     margin: $re--big-padding 0;
-    z-index: $z-index-subheader;
+    //z-index: $z-index-subheader; // todo: check it
+    z-index: 5;
     display: flex;
     justify-content: center;
     height: 45px;

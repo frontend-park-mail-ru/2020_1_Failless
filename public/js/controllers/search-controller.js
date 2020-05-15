@@ -113,7 +113,9 @@ export default class SearchController extends Controller {
         }
 
         const eid = event.target.getAttribute('data-eid');
-        let eventComponent = this.view.vDOM.results.grid.events.find((event) => {return event.data.eid === Number(eid);});
+        let eventComponent = this.view.vDOM.results.grid.events.find((event) => {
+            return event.data.eid === Number(eid);
+        });
 
         UserModel.getProfile().then(
             (profile) => {
@@ -152,8 +154,12 @@ export default class SearchController extends Controller {
     };
 
     #inputQuery = (event) => {
-        console.log('CLICK');
         this.view.renderQueryPanel();
-        event.target;
-    }
+        event.target.removeEventListener('click', this.#inputQuery);
+        this.view.vDOM.attention.addEventListener('click', () => {
+            this.view.vDOM.attention.parentNode.removeChild(this.view.vDOM.attention);
+            this.view.vDOM.attention = null;
+            this.view.vDOM.header.input.addEventListener('click', this.#inputQuery);
+        });
+    };
 }

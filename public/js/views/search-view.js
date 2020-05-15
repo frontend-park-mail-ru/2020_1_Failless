@@ -24,6 +24,7 @@ export default class SearchView extends View {
                 comp: null,
                 element: null,
                 offers: null,
+                input: null,
             },
             attention: null,
             results: {
@@ -127,8 +128,9 @@ export default class SearchView extends View {
     }
 
     renderQueryPanel() {
+        this.vDOM.header.input = document.querySelector('#searchInput');
         this.vDOM.attention = document.createElement('div');
         this.vDOM.attention.className = 'big-search__attention';
-        this.vDOM.header.element.insertAdjacentElement('beforeend', this.vDOM.attention);
+        this.vDOM.header.element.insertAdjacentElement('afterend', this.vDOM.attention);
     }
 }
