@@ -102,7 +102,6 @@ export default class FeedView extends View {
         let userToShow = this.model.currentUser;
         let personalEventsArea = this.personalEventsBodyDiv;
         let subscriptionsArea = this.subscriptionsBodyDiv;
-        console.log(userToShow);
 
         if (userToShow) {
             this.#showUI();
@@ -112,9 +111,6 @@ export default class FeedView extends View {
                 let newTag = {...STATIC_TAGS[tag - 1]};
                 newTag.activeClass = 'tag__container_active';
                 return newTag;});
-
-            userToShow.own_events = null;
-            userToShow.subscriptions = null;
 
             this.centerColumnBodyDiv.innerHTML = feedCenterUsersTemplate({...userToShow});
             if (userToShow.own_events && (userToShow.own_events.small_events || userToShow.own_events.mid_events)) {
