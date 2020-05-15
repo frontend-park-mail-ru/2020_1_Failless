@@ -7,6 +7,7 @@ const BasicTextsInterface = {
     LOCATION: '',
     FIND: '',
     AGE: '',
+    DISMISS: '',
 };
 
 const EventTextsInterface = {

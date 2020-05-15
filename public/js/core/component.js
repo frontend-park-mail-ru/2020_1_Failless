@@ -149,5 +149,7 @@ export default class Component {
         }
     }
 
-    afterRemove() {}
+    afterRemove() {
+        this.element = null;
+    }
 }

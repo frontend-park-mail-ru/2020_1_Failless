@@ -16,6 +16,7 @@ import Controller from 'Eventum/core/controller';
 import {CircleRedirect} from 'Blocks/circle/circle';
 import {toggleActionText} from 'Blocks/event/event';
 import settings from 'Settings/config';
+import Snackbar from 'Blocks/snackbar/snackbar';
 
 /**
  * @class ProfileController
