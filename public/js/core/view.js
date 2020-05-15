@@ -53,7 +53,7 @@ export default class View {
     async showError(element, message, icon, button) {
         makeEmpty(element);
         element.insertAdjacentHTML('beforeend', errorTemplate({
-            icon:   icons.get(icon),
+            icon: icons.get(icon),
             message: message,
             button: button,
         }));
@@ -72,7 +72,9 @@ export default class View {
     async showGlobalLoading() {
         document.body.insertAdjacentHTML('beforeend', loadingTemplate({global: 'global'}));
         this.globalLoader = document.body.querySelector('.spinner_global');
-        setTimeout(()=>{this.globalLoader.classList.remove('spinner_appear');},200);
+        setTimeout(() => {
+            this.globalLoader.classList.remove('spinner_appear');
+        }, 200);
     }
 
     async removeGlobalLoading() {

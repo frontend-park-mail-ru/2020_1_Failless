@@ -45,8 +45,10 @@ export default class SearchController extends Controller {
         this.initHandlers([
             {
                 attr: 'sendRequestOnEnter',
+                many: true,
                 events: [
                     {type: 'keydown', handler: this.#completeRequest},
+                    {type: 'click', handler: this.#inputQuery},
                 ]
             },
             {
@@ -148,4 +150,10 @@ export default class SearchController extends Controller {
             }
         );
     };
+
+    #inputQuery = (event) => {
+        console.log('CLICK');
+        this.view.renderQueryPanel();
+        event.target;
+    }
 }

@@ -23,7 +23,9 @@ export default class SearchView extends View {
             header: {
                 comp: null,
                 element: null,
+                offers: null,
             },
+            attention: null,
             results: {
                 comp: null,
                 element: null,
@@ -62,13 +64,19 @@ export default class SearchView extends View {
             this.vDOM.results.grid.element = resultsArea.insertAdjacentElement('afterbegin', grid);
             console.log(this.vDOM.results);
         }
-        if (events && events.mid_events.length > 0) {
-            events.mid_events.forEach((midEvent) => {
-                // Create components
-                let midEventComponent = new MidEventComponent(midEvent, false);
+        if (data && data.mid_events !== null) {
+            data.mid_events.forEach((event) => {
+                event.date = new Date(event.date).toLocaleString();
+                let midEventComponent = new MidEventComponent(event, false);
                 this.vDOM.results.grid.events.push(midEventComponent);
                 midEventComponent.renderAsElement(this.vDOM.results.grid.element, 'beforeend');
             });
+            // events.mid_events.forEach((midEvent) => {
+            //     // Create components
+            //     let midEventComponent = new MidEventComponent(midEvent, false);
+            //     this.vDOM.results.grid.events.push(midEventComponent);
+            //     midEventComponent.renderAsElement(this.vDOM.results.grid.element, 'beforeend');
+            // });
         }
         // makeEmpty(resultsArea);
         // if (data && data.mid_events !== null) {
@@ -116,5 +124,11 @@ export default class SearchView extends View {
     get resultsAreaDiv() {
         this.#setDOMElements();
         return this.vDOM.results.element;
+    }
+
+    renderQueryPanel() {
+        this.vDOM.attention = document.createElement('div');
+        this.vDOM.attention.className = 'big-search__attention';
+        this.vDOM.header.element.insertAdjacentElement('beforeend', this.vDOM.attention);
     }
 }

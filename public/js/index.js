@@ -8,7 +8,8 @@ import SearchController from 'Eventum/controllers/search-controller.js';
 import ProfileController from 'Eventum/controllers/profile-controller.js';
 import ChatController from 'Eventum/controllers/chat-controller.js';
 import Router from 'Eventum/core/router.js';
-import 'Static/css/style.css';
+// import 'Static/css/style.css';
+import 'Public/style.scss';
 import TextConstants from 'Eventum/utils/language/text';
 
 const application = document.getElementById('application');

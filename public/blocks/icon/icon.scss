@@ -1,7 +1,7 @@
 @import "../../modules/variables";
 
-$icons-path: "../icons/";
-$images-path: "../images/";
+$icons-path: "static/icons/";
+$images-path: "static/images/";
 
 $search-icon: $icons-path + "search.svg";
 $eventum-icon: $images-path + "logo.png";
