@@ -162,12 +162,6 @@ h3 {
   }
 }
 
-.gradient-text {
-    background: $re--gradient;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
 .full-height {
   height: 100%;
 }
@@ -178,4 +172,46 @@ h3 {
 
 .hidden {
   display: none;
+}
+
+.gradient-text {
+    background: $re--gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-border {
+  --borderWidth: 1px;
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--borderWidth));
+    left: calc(-1 * var(--borderWidth));
+    height: calc(100% + var(--borderWidth) * 2);
+    width: calc(100% + var(--borderWidth) * 2);
+    background: $re--gradient;
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  &_animated {
+    &:after {
+      animation: animatedgradient 3s ease alternate infinite;
+      background-size: 300% 300%;
+    }
+  }
+}
+
+@keyframes animatedgradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }

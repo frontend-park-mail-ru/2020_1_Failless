@@ -118,17 +118,24 @@
     outline: none;
     cursor: pointer;
     padding: 13px;
-    border: 1px solid #f1f1f1;
-    box-shadow: 2px 2px 4px #f1f1f1;
+    border: none;
 
-    //@media only screen and (max-width: $breakpoint-phone) {
-    //  width: 40px;
-    //  height: 40px;
-    //}
+    &.gradient-border {
+      box-shadow: 3px 3px 5px $re--color-light-gray;
+      &:after {
+        background: $color-white;
+      }
+    }
 
     &-approve {
       & svg {
         fill: $color-red;
+      }
+
+      &:hover {
+        &.gradient-border:after {
+          background: $gradient-red;
+        }
       }
     }
 
@@ -137,6 +144,12 @@
       & svg {
         transform: rotate(180deg);
         fill: $color-blue;
+      }
+
+      &:hover {
+        &.gradient-border:after {
+          background: $gradient-blue;
+        }
       }
     }
 
@@ -147,6 +160,12 @@
       padding: 9px;
       & svg {
         fill: $color-purple;
+      }
+
+      &:hover {
+        &.gradient-border:after {
+          background: $gradient-purple;
+        }
       }
     }
   }
