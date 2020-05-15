@@ -63,7 +63,6 @@ export default class SearchView extends View {
             let grid = document.createElement('div');
             grid.classList.add('big-search__grid');
             this.vDOM.results.grid.element = resultsArea.insertAdjacentElement('afterbegin', grid);
-            console.log(this.vDOM.results);
         }
         if (data && data.mid_events !== null) {
             data.mid_events.forEach((event) => {

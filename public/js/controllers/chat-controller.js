@@ -10,6 +10,7 @@ import {toggleChatOnMobile} from 'Blocks/chat/chat';
 import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item';
 import {detectMobile} from 'Eventum/utils/basic';
 import {CircleRedirect} from 'Blocks/circle/circle';
+import NotificationController from 'Eventum/controllers/notification-controller';
 
 /**
  * @class ChatController
@@ -227,6 +228,16 @@ export default class ChatController extends Controller {
 
         // Check where to insert the message
         let message = JSON.parse(event.data);
+        let name = '';
+        this.ChatModel.chats.some((chat) => {
+            if (chat.chat_id === message.chat_id) {
+                name = chat.name;
+            }
+        });
+        const notification = `Новое сообщение от: ${name} "${message.message}"`;
+        if (this.uid !== message.uid) {
+            NotificationController.notify(notification);
+        }
         if (activeChat && message.chat_id === activeChat.chat_id) {
             this.view.renderMessage({
                 body: message.message,
@@ -236,5 +247,5 @@ export default class ChatController extends Controller {
         } else {
             this.view.updateLastMessage(message).then();
         }
-    }
+    };
 }
