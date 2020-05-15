@@ -175,9 +175,14 @@ h3 {
 }
 
 .gradient-text {
-    background: $re--gradient;
+    background: $extended-gradient;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+  &_animated {
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+  }
 }
 
 .gradient-border {

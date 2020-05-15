@@ -25,6 +25,14 @@ $re--gradient: linear-gradient(
                   $color-blue 0%,
                   $color-purple 50%,
                   $color-red 100%);
+$extended-gradient: linear-gradient(
+                135deg,
+                $color-also-blue,
+                $color-blue,
+                $color-also-purple,
+                $color-purple,
+                $color-also-red,
+                $color-red);
 $re--gradient-left: linear-gradient(
                   135deg,
                   $color-blue 0%,
