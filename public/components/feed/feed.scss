@@ -48,14 +48,12 @@
     &-footer {
       display: flex;
       align-items: center;
-      justify-content: space-around;
+      justify-content: center;
       position: sticky;
       bottom: 0;
       left: 0;
-      padding: 8px 0;
-      margin-top: 15px;
-      background: white;
-      box-shadow: 0px -18px 12px -21px #00000030;
+      padding: 5px 0 13px;
+      background: linear-gradient(to top, $color-white, transparent 75%);
 
       @media only screen and (max-width: $breakpoint-phone) {
         position: fixed;
@@ -73,6 +71,7 @@
 
     @media only screen and (max-width: $breakpoint-phone) {
       overflow: unset;
+      width: 100%;
       max-height: fit-content;
     }
 
@@ -115,29 +114,40 @@
     width: 55px;
     height: 55px;
     border-radius: 50%;
+    background: $color-white;
     outline: none;
     cursor: pointer;
+    padding: 13px;
+    border: 1px solid #f1f1f1;
+    box-shadow: 2px 2px 4px #f1f1f1;
 
-    @media only screen and (max-width: $breakpoint-phone) {
-      width: 40px;
-      height: 40px;
-    }
-
-    & svg {
-      fill: $color-white;
-    }
+    //@media only screen and (max-width: $breakpoint-phone) {
+    //  width: 40px;
+    //  height: 40px;
+    //}
 
     &-approve {
-      background: $color-red;
+      & svg {
+        fill: $color-red;
+      }
     }
 
     &-reject {
-      background: $color-blue;
-      transform: rotate(180deg);
+      padding-top: 14px;
+      & svg {
+        transform: rotate(180deg);
+        fill: $color-blue;
+      }
     }
 
     &-skip {
-      background: $color-purple;
+      width: 44px;
+      height: 44px;
+      margin: 0 10px;
+      padding: 9px;
+      & svg {
+        fill: $color-purple;
+      }
     }
   }
 
@@ -208,14 +218,6 @@
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
       }
-    }
-  }
-}
-
-@media only screen and (max-width: $breakpoint-phone) {
-  .feed {
-    &__column {
-      width: 100%;
     }
   }
 }
