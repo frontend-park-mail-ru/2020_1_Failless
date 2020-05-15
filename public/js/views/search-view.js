@@ -37,7 +37,7 @@ export default class SearchView extends View {
     }
 
     destructor() {
-        this.resultsArea = null;
+        this.vDOM.results.element = null;
     }
 
     /**
