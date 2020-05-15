@@ -227,7 +227,7 @@ export default class FeedController extends Controller {
      * @param event
      */
     #voteHandler = (event) => {
-        if (!event.target.matches('button')) {
+        if (event.target.matches('div')) {
             return;
         }
 
@@ -236,12 +236,12 @@ export default class FeedController extends Controller {
             return;
         }
 
-        if (event.target.matches('.re_btn__skip')) {
+        if (event.target.closest('button').matches('.feed__button.feed__button-skip')) {
             showMessageWithRedirect('Оформите платную подписку, чтобы получить возможность пропускать пользователей', 'Profile');
             return;
         }
 
-        const isLike = event.target.matches('.re_btn__approve');
+        const isLike = event.target.closest('button').matches('.feed__button.feed__button-approve');
         // Get id-s
         const vote = {
             uid: undefined,

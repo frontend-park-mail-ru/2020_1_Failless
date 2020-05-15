@@ -12,10 +12,13 @@
   @media only screen and (max-width: $breakpoint-phone) {
     position: fixed;
     top: 75px;
-    bottom: 0px;
+    bottom: 0;
+    width: 100%;
+    left: 0;
     overflow: auto;
-    left: 0px;
+    box-shadow: unset;
     transform: translateX(-100%);
+    z-index: 10;
 
     &_active {
       transform: translateX(0);
@@ -46,13 +49,6 @@
     align-items: center;
     box-shadow: inset 0px -18px 12px -21px #00000030;
     @include transition(0.3s, ease-in-out);
-
-    -ms-overflow-style: unset;  /* IE 10+ */
-    scrollbar-width: unset; /* Firefox */
-
-    &::-webkit-scrollbar {
-      width: auto;
-    }
   }
 
    &__filter-icon {

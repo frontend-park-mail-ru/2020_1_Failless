@@ -10,7 +10,6 @@
   color: $color-white;
   font-weight: 700;
   background: $re--gradient;
-  transform: translateZ(-1px);
 
   &__container {
     width: fit-content;
@@ -18,7 +17,6 @@
     display: flex;
     justify-content: left;
     align-items: baseline;
-    transform-style: preserve-3d;
     @include transition(0.3s, ease-in-out);
 
     &_active {

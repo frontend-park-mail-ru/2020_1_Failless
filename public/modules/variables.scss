@@ -1,6 +1,9 @@
 $color-red: #F64F59;
+$color-also-red: #F64F36;
 $color-purple: #C471ED;
+$color-also-purple: #986CED;
 $color-blue: #12C2E9;
+$color-also-blue: #16E9E7;
 $color-black: #191919;
 $color-white: white;
 $color-light-blue: #12C2E9;
@@ -22,6 +25,14 @@ $re--gradient: linear-gradient(
                   $color-blue 0%,
                   $color-purple 50%,
                   $color-red 100%);
+$extended-gradient: linear-gradient(
+                135deg,
+                $color-also-blue,
+                $color-blue,
+                $color-also-purple,
+                $color-purple,
+                $color-also-red,
+                $color-red);
 $re--gradient-left: linear-gradient(
                   135deg,
                   $color-blue 0%,
@@ -30,6 +41,18 @@ $re--gradient-right: linear-gradient(
                   135deg,
                   $color-purple 0%,
                   $color-red 100%);
+$gradient-red: linear-gradient(
+                135deg,
+                $color-red,
+                $color-also-red);
+$gradient-purple: linear-gradient(
+                135deg,
+                $color-purple,
+                $color-also-purple);
+$gradient-blue: linear-gradient(
+                135deg,
+                $color-blue,
+                $color-also-blue);
 $re--huge-padding: 69px;
 $re--large-padding: 46px;
 $re--big-padding: 23px;

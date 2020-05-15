@@ -2,15 +2,14 @@
     <img class="feed-center__photos" src="{{ photos }}" alt="{{ photos }}">
     <!--TODO: image options-footer here-->
     <div class="feed-center__profile">
-        <div>
-            <h1>{{ name }}{{#if age}},  {{ age }}{{/if}}</h1>
-            <div class="feed-center__about">{{ about }}</div>
-        </div>
+        <h1>{{ name }}{{#if age}},  {{ age }}{{/if}}</h1>
+        {{#if tags}}
         <div class="feed-center__tags">
-            {{#each tags as |tag|}}
+            {{#each tags}}
                 {{> $Blocks/tag/template activeClass="tag__container_active"}}
-                <div class="tag tag_size_middle">{{ name }}</div>
             {{/each}}
         </div>
+        {{/if}}
+        <div class="feed-center__about">{{ about }}</div>
     </div>
 </div>

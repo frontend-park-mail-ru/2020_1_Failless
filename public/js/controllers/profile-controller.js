@@ -9,11 +9,13 @@ import {highlightTag} from 'Eventum/utils/tag-logic';
 import {logoutRedirect} from 'Eventum/utils/user-utils';
 import EventModel from 'Eventum/models/event-model';
 import editTemplate from 'Blocks/edit-field/template.hbs';
+import imageEditTemplate from 'Blocks/image-edit/template.hbs';
 import {makeEmpty, resizeTextArea} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
 import Controller from 'Eventum/core/controller';
 import {CircleRedirect} from 'Blocks/circle/circle';
 import {toggleActionText} from 'Blocks/event/event';
+import settings from 'Settings/config';
 
 /**
  * @class ProfileController
@@ -31,6 +33,7 @@ export default class ProfileController extends Controller {
         this.image = '';
         this.user = null;
         this.activeModalWindow = null;
+        this.images = [];
         EventModel.getTagList().then((tags) => {
             this.localTags = [...tags];
         }).catch((onerror) => {
@@ -58,6 +61,17 @@ export default class ProfileController extends Controller {
                     return;
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
+                    // Prepare profile photos
+                    if (profile.photos) {
+                        profile.photos = profile.photos.map(photo => {
+                            return {
+                                src: `${settings.aws}/users/${photo.path}`,
+                                alt: photo.path,
+                                data_photo_id: this.images.push({img: photo.path, state: 'old'}),
+                            };
+                        });
+                    }
+
                     this.view.render(profile);
                     EventModel.getUserOwnEvents(profile.uid).then(
                         (events) => {this.view.renderEvents(events);},
@@ -128,6 +142,12 @@ export default class ProfileController extends Controller {
                             ]
                         },
                         {
+                            attr: 'removeUserImage',
+                            events: [
+                                {type: 'click', handler: this.#removeUserImage},
+                            ]
+                        },
+                        {
                             attr: 'addNewEventOnClick',
                             events: [
                                 {type: 'click', handler: this.#submitNewEvent}
@@ -183,6 +203,10 @@ export default class ProfileController extends Controller {
                 console.error(onerror);
             });
     }
+
+    /***********************************************
+                         Events
+     ***********************************************/
 
     #previewImagesForEvent = (event) => {
         if (event.target.files && event.target.files[0]) {
@@ -267,6 +291,10 @@ export default class ProfileController extends Controller {
         });
     };
 
+    /***********************************************
+                      User photos
+     ***********************************************/
+
     #handleFile = (event) => {
         if (event.target.files && event.target.files[0]) {
             let FR = new FileReader();
@@ -281,47 +309,37 @@ export default class ProfileController extends Controller {
      */
     #handleSelectImg = (event) => {
         event.preventDefault();
-        console.log(event.target);
-        this.image = event.target.result;
-        const photoColumn = document.querySelector('.photo-columns');
-        const newImage = document.createElement('IMG');
-        newImage.src = event.target.result;
-        newImage.className = 'photo';
-        photoColumn.insertAdjacentElement('afterbegin', newImage);
-        const submit = this.#drawButtons('Подтвердить', '2px', true);
-        const discard = this.#drawButtons('Отменить', '2px');
 
-        const text = document.getElementsByClassName('font font_bold font__size_middle font__color_lg')[0];
-        if (text !== undefined) {
-            text.hidden = true;
+        const files = this.view.mainColumnDiv.querySelector('input#photoUpload').files;
+        if (!files || files.length === 0) {
+            console.log('empty files');
+            return;
         }
 
-        newImage.insertAdjacentElement('afterend', discard);
-        newImage.insertAdjacentElement('afterend', submit);
-        discard.addEventListener('click', (event) => {
-            event.preventDefault();
-            newImage.remove();
-            submit.remove();
-            submit.removeEventListener('click', this.#photoUploadHandler);
-            discard.remove();
-        });
+        for (let iii = 0; iii < files.length; iii++) {
+            const FR = new FileReader();
 
-        submit.addEventListener('click', this.#photoUploadHandler.bind(this)); // this bind is really necessary
+            FR.addEventListener('load', (event) => {
+                const dataPhotoId = this.images.push({state: 'new', img: event.target.result.split(';')[1].split(',')[1]});
+                this.view.photosColumn.insertAdjacentHTML('beforeend', imageEditTemplate({
+                    data_photo_id: dataPhotoId,
+                    src: event.target.result,
+                }));
+            });
+
+            FR.readAsDataURL(files[iii]);
+        }
     };
 
-    /**
-     * Get image buttons objects
-     * @param {string} title - buttons title
-     * @param {string} margin - margin
-     * @param {boolean} first - is this button first and need 18px margin-left
-     * @returns {HTMLElement} - generated button
-     */
-    #drawButtons = (title, margin, first = false) => {
-        const button = document.createElement('BUTTON');
-        button.className = 're_btn re_btn__outline drawButtonIdentifier';
-        button.innerText = title;
-        button.style.margin = first ? `0 ${margin} 0 18px` : margin;
-        return button;
+    #removeUserImage = (event) => {
+        if (event.target.classList.contains('image-edit__close-icon')
+            ||
+            event.target.classList.contains('image-edit__close-icon_inner'))
+        {
+            let imageEditDiv = event.target.closest('.image-edit');
+            this.images[Number(imageEditDiv.getAttribute('data-photo-id')) - 1].img = null;
+            imageEditDiv.remove();
+        }
     };
 
     /**
@@ -344,7 +362,12 @@ export default class ProfileController extends Controller {
             tags: selectedTags,
             about: textInput.value, // TODO: check if it's safe
             social: this.user.links,
+            photos: this.images.some(image => image.state === 'old' ? !image.img : image.img)
+                ? this.images.map(image => {if (image.img) {return image.img;}})
+                : null,
         };
+
+        console.log(userProfile);
 
         this.removeErrorMessage(event);
 
@@ -358,24 +381,6 @@ export default class ProfileController extends Controller {
                 }
             })
             .catch(reason => console.log('ERROR', reason));
-    };
-
-    /**
-     * Upload event photo to server
-     * @param {Event} event
-     */
-    #photoUploadHandler = (event) => {
-        const userPhoto = this.image.split(';')[1].split(',')[1];
-        const userProfile = {
-            uid: this.user.uid,
-            uploaded: {img: userPhoto},
-        };
-        document.getElementsByClassName('drawButtonIdentifier')[1].remove();
-        document.getElementsByClassName('drawButtonIdentifier')[0].remove();
-        UserModel.putImage(userProfile)
-            .then(response => {
-                document.querySelector('.photo').src = this.image;
-            }).catch(reason => console.error(reason));
     };
 
     // TODO: move it to view
@@ -521,6 +526,10 @@ export default class ProfileController extends Controller {
             elemContainer.remove();
         }
     };
+
+    /***********************************************
+                    Profile settings
+     ***********************************************/
 
     /**
      * Create profile settings popup
