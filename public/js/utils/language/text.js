@@ -47,4 +47,14 @@ export default class TextConstants {
     static get FEED__SKIP() {return localLibrary.Feed.SKIP;}
 
     static get PROFILE__SUCCESSFUL_SAVE() {return localLibrary.Profile.SUCCESSFUL_SAVE;}
+
+    static get LANDING__SMALL_EVENT_TITLE() {return localLibrary.Landing.SMALL_EVENT_TITLE;}
+    static get LANDING__MID_EVENT_TITLE() {return localLibrary.Landing.MID_EVENT_TITLE;}
+    static get LANDING__BIG_EVENT_TITLE() {return localLibrary.Landing.BIG_EVENT_TITLE;}
+    static get LANDING__SMALL_EVENT_DESCRIPTION() {return localLibrary.Landing.SMALL_EVENT_DESCRIPTION;}
+    static get LANDING__MID_EVENT_DESCRIPTION() {return localLibrary.Landing.MID_EVENT_DESCRIPTION;}
+    static get LANDING__BIG_EVENT_DESCRIPTION() {return localLibrary.Landing.BIG_EVENT_DESCRIPTION;}
+    static get LANDING__SMALL_EVENT_PHOTO() {return localLibrary.Landing.SMALL_EVENT_PHOTO;}
+    static get LANDING__MID_EVENT_PHOTO() {return localLibrary.Landing.MID_EVENT_PHOTO;}
+    static get LANDING__BIG_EVENT_PHOTO() {return localLibrary.Landing.BIG_EVENT_PHOTO;}
 }

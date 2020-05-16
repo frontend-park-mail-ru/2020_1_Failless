@@ -1,7 +1,8 @@
 'use strict';
 
-import View from 'Eventum/core/view.js';
+import View from 'Eventum/core/view';
 import landingTemplate from 'Components/landing/template.hbs';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class create LandingView class
@@ -27,6 +28,26 @@ export default class LandingView extends View {
     render(isAuth = false) {
         const landing = landingTemplate({
             auth: isAuth,
+            events: [
+                {
+                    type: 'small',
+                    title: TextConstants.LANDING__SMALL_EVENT_TITLE,
+                    description: TextConstants.LANDING__SMALL_EVENT_DESCRIPTION,
+                    photo: TextConstants.LANDING__SMALL_EVENT_PHOTO,
+                },
+                {
+                    type: 'mid',
+                    title: TextConstants.LANDING__MID_EVENT_TITLE,
+                    description: TextConstants.LANDING__MID_EVENT_DESCRIPTION,
+                    photo: TextConstants.LANDING__MID_EVENT_PHOTO,
+                },
+                {
+                    type: 'big',
+                    title: TextConstants.LANDING__BIG_EVENT_TITLE,
+                    description: TextConstants.LANDING__BIG_EVENT_DESCRIPTION,
+                    photo: TextConstants.LANDING__BIG_EVENT_PHOTO,
+                },
+            ],
             creators: [
                 {
                     name: 'Андрей',
@@ -40,8 +61,7 @@ export default class LandingView extends View {
                 },
                 {
                     name: 'Егор',
-                    // eslint-disable-next-line no-irregular-whitespace
-                    about: `Нарисовал всё <br>Вообще всё, <br>что красиво и не красиво`,
+                    about: 'Нарисовал всё <br>Вообще всё, <br>что красиво и не красиво',
                     avatar: 'https://eventum.s3.eu-north-1.amazonaws.com/app/creators/Egor.jpg',
                     links: {
                         github: 'https://github.com/EgorBedov',
@@ -51,8 +71,7 @@ export default class LandingView extends View {
                 },
                 {
                     name: 'Сергей',
-                    // eslint-disable-next-line no-irregular-whitespace
-                    about: `Человек слова &laquoПринял!&raquo<br> Исправит всё,<br>что работает и не работает`,
+                    about: 'Человек слова &laquoПринял!&raquo<br> Исправит всё,<br>что работает и не работает',
                     avatar: 'https://eventum.s3.eu-north-1.amazonaws.com/app/creators/Sergey.jpeg',
                     links: {
                         github: 'https://github.com/almashell',

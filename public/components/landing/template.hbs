@@ -54,6 +54,24 @@
             </div>
         </div>
     </section>
+    <section class="landing__screen landing__screen_events font__color_w">
+        <div class="landing__title_second">Мероприятия</div>
+        <div class="container">
+            {{#each events}}
+            <div class="landing__{{ type }}-event">
+                <div class="landing__event-info">
+                    <div class="landing__event-title">{{ title }}</div>
+                    <div class="landing__event-description">
+                        {{ description }}
+                    </div>
+                </div>
+                <div class="landing__event-photo">
+                    <img src="{{ photo }}" alt="">
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </section>
     <footer class="landing__screen landing__screen_footer">
         <div class="container">
             <div class="landing__footer__body">

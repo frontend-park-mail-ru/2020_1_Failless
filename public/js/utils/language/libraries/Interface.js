@@ -35,12 +35,25 @@ const FeedTextsInterface = {
     SUBSCRIPTIONS_HEADER: '',
 };
 
+const LandingTextsInterface = {
+    SMALL_EVENT_TITLE: '',
+    SMALL_EVENT_DESCRIPTION: '',
+    SMALL_EVENT_PHOTO: '',
+    MID_EVENT_TITLE: '',
+    MID_EVENT_DESCRIPTION: '',
+    MID_EVENT_PHOTO: '',
+    BIG_EVENT_TITLE: '',
+    BIG_EVENT_DESCRIPTION: '',
+    BIG_EVENT_PHOTO: '',
+};
+
 const Library = {
     Basic: BasicTextsInterface,
     Event: EventTextsInterface,
     Profile: ProfileTextsInterface,
     Filters: FiltersTextsInterface,
     Feed: FeedTextsInterface,
+    Landing: LandingTextsInterface,
 };
 
 export default Library;
