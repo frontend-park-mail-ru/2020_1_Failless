@@ -37,23 +37,6 @@
             </div>
         </div>
     </section>
-    <section class="landing__screen landing__screen_creators font__color_w">
-        <div class="landing__title_second">Кто создал EVENTUM?</div>
-        <div class="container">
-            <div class="landing__creators__row">
-                {{#each creators}}
-                    {{> $Blocks/creator-card/template }}
-                    <div class="separator separator_vertical separator_white_blue"></div>
-                {{/each}}
-            </div>
-            <div class="landing__creators__row">
-                {{#each mentors}}
-                    {{> $Blocks/creator-card/template }}
-                    <div class="separator separator_vertical separator_white_blue"></div>
-                {{/each}}
-            </div>
-        </div>
-    </section>
     <section class="landing__screen landing__screen_events font__color_w">
         <div class="landing__title_second">Мероприятия</div>
         <div class="container">
@@ -70,6 +53,23 @@
                 </div>
             </div>
             {{/each}}
+        </div>
+    </section>
+    <section class="landing__screen landing__screen_creators font__color_w">
+        <div class="landing__title_second">Кто создал EVENTUM?</div>
+        <div class="container">
+            <div class="landing__creators__row">
+                {{#each creators}}
+                    {{> $Blocks/creator-card/template }}
+                    <div class="separator separator_vertical separator_white_blue"></div>
+                {{/each}}
+            </div>
+            <div class="landing__creators__row">
+                {{#each mentors}}
+                    {{> $Blocks/creator-card/template }}
+                    <div class="separator separator_vertical separator_white_blue"></div>
+                {{/each}}
+            </div>
         </div>
     </section>
     <footer class="landing__screen landing__screen_footer">
