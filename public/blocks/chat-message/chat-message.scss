@@ -25,15 +25,15 @@ $message-radius: 18px;
   &_right {
     align-self: flex-end;
     background: $re--gradient-right;
-    border-top-right-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
   }
 
   &_left {
     align-self: flex-start;
     background: $re--gradient-left;
-    border-top-left-radius: $border-radius;
-    border-bottom-left-radius: $border-radius;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
   }
 
   &_first_left {

@@ -1,0 +1,52 @@
+@import "../../modules/variables";
+
+.snackbar {
+  position: fixed;
+  right: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: $re--border-radius;
+  width: fit-content;
+  height: fit-content;
+  min-width: 200px;
+  max-width: 25%;
+  min-height: 50px;
+  max-height: 100px;
+  padding: 4px 15px;
+  background: #2E2E2E;
+  z-index: $z-index-snackbar;
+  transform: translateY(0);
+  @include transition(0.3s, ease-in-out);
+
+  &_top {
+    top: 0;
+    margin-top: $re--big-padding;
+
+    &.snackbar_hidden {
+      transform: translateY(-200%);
+    }
+  }
+
+  &_bottom {
+    bottom: 0;
+    margin-bottom: $re--big-padding;
+
+    &.snackbar_hidden {
+      transform: translateY(200%);
+    }
+  }
+
+  &__body {
+    color: $color-white;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  &__button {
+    color: $color-blue;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 8px;
+  }
+}

@@ -18,7 +18,7 @@
     overflow: auto;
     box-shadow: unset;
     transform: translateX(-100%);
-    z-index: 10;
+    z-index: $z-index-mobile-screen;
 
     &_active {
       transform: translateX(0);

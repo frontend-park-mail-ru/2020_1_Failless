@@ -7,6 +7,7 @@ const BasicTextsInterface = {
     LOCATION: '',
     FIND: '',
     AGE: '',
+    DISMISS: '',
 };
 
 const EventTextsInterface = {
@@ -16,7 +17,7 @@ const EventTextsInterface = {
 };
 
 const ProfileTextsInterface = {
-
+    SUCCESSFUL_SAVE: '',
 };
 
 const FiltersTextsInterface = {
