@@ -17,6 +17,7 @@ import {CircleRedirect} from 'Blocks/circle/circle';
 import {toggleActionText} from 'Blocks/event/event';
 import settings from 'Settings/config';
 import Snackbar from 'Blocks/snackbar/snackbar';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class ProfileController
@@ -240,6 +241,7 @@ export default class ProfileController extends Controller {
                             eventIndexAndSource.source = eventIndexAndSource.source.splice(eventIndexAndSource.index, 1);
                         });
                 } else {
+                    Snackbar.instance.addMessage('we dont support that type yet');
                     console.log('we dont support that type yet');
                 }
             },
@@ -368,17 +370,15 @@ export default class ProfileController extends Controller {
                 : null,
         };
 
-        console.log(userProfile);
-
         this.removeErrorMessage(event);
 
         // Send request
         UserModel.putProfile(userProfile)
             .then(response => {
                 if (Object.prototype.hasOwnProperty.call(response, 'message')) {
-                    this.view.addErrorMessage(document.getElementsByClassName('re_btn re_btn__filled')[0], [response.message]);
+                    return this.view.addErrorMessage(document.getElementsByClassName('re_btn re_btn__filled')[0], [response.message]);
                 } else {
-                    console.log('ok', response);
+                    return Snackbar.instance.addMessage(TextConstants.PROFILE__SUCCESSFUL_SAVE);
                 }
             })
             .catch(reason => console.log('ERROR', reason));
@@ -393,7 +393,6 @@ export default class ProfileController extends Controller {
         event.preventDefault();
         this.editView = new ModalView(document.body);
         let tags = STATIC_TAGS.map((tag) => {tag.editable = true; tag.activeClass = ''; return tag;});
-        console.log(tags);
         this.editView.render({
             title: 'Ваши теги',
             tags: tags,
@@ -444,7 +443,6 @@ export default class ProfileController extends Controller {
 
         // Rendering active tags in modal view
         if (activeTags && activeTags.length > 0) {
-            console.log(activeTags);
             let activeTagIds = [];
             activeTags.forEach((activeTag) => {activeTagIds.push(+activeTag.firstElementChild.getAttribute('data-id'));});
             this.activeModalWindow.querySelectorAll('.tag__container').forEach((tag) => {

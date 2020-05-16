@@ -17,7 +17,7 @@ const EventTextsInterface = {
 };
 
 const ProfileTextsInterface = {
-
+    SUCCESSFUL_SAVE: '',
 };
 
 const FiltersTextsInterface = {

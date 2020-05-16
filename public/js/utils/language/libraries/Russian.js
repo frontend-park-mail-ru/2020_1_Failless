@@ -16,7 +16,7 @@ const EventTextsRussian = {
 };
 
 const ProfileTextsRussian = {
-
+    SUCCESSFUL_SAVE: 'Информация сохранена',
 };
 
 const FiltersTextsRussian = {

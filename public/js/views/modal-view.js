@@ -1,6 +1,6 @@
 'use strict';
 
-import View from 'Eventum/core/view.js';
+import View from 'Eventum/core/view';
 import modalTemplate from 'Blocks/modal-window/template.hbs';
 
 /**
