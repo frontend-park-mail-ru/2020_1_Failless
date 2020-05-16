@@ -57,7 +57,6 @@ export default class Snackbar extends Component {
     }
 
     #hideSelf(index) {
-        console.log(index, this.index);
         if (this.state === 'hidden' || index !== this.index) {
             return;
         }
