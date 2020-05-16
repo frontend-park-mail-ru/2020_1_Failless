@@ -12,11 +12,6 @@ $color-light-gray: #b6bebf;
 $color-gray: rgba(31, 63, 81, 0.6);
 $color-green: #10e718;
 
-$event-width: 236px;
-$padding-event: 12px;
-$border-radius: 2px;
-
-
 $re--color-light-gray: #F1F1F1;
 $re--color-middle-gray: #D5D5D5;
 $re--color-gray: #999999;
@@ -66,6 +61,12 @@ $breakpoint-phone: 480px;
 $breakpoint-tablet: 768px;
 $breakpoint-desktop: 1024px;
 $breakpoint-1000: 1000px;
+
+$z-index-modal: 1000;
+$z-index-snackbar: 900;
+$z-index-header: 800;
+$z-index-subheader: 700;
+$z-index-mobile-screen: 300;
 
 $header-height: 45px;
 

@@ -1,5 +1,6 @@
 import Component from 'Eventum/core/component';
 import SnackbarTemplate from 'Blocks/snackbar/template.hbs';
+import {detectMobile} from 'Eventum/utils/basic';
 
 let snackbarSymbol = Symbol('snackbar component');
 let snackbarEnforcer = Symbol('The only object that can create SnackBar');
@@ -20,6 +21,7 @@ export default class Snackbar extends Component {
         this.template = SnackbarTemplate;
         this.messages = [];
         this.cssClass = 'snackbar';
+        this.index = 0;
     }
 
     static get instance() {
@@ -41,22 +43,25 @@ export default class Snackbar extends Component {
 
     async #showSelf() {
         this.state = 'active';
-        console.log(this.messages);
         this.data.body_message = this.messages.shift();
+        this.data.position = detectMobile() ? 'top' : 'bottom';
         await this.render(document.body, 'beforeend');
         this.element = document.querySelector(`.${this.cssClass}`);
         this.element.addEventListener('click', this.#clickHandler);
+        this.element.style.marginRight = `-${(this.element.offsetWidth / 2)}px`;
         setTimeout(() => {
-            this.element.style.marginRight = `-${(this.element.offsetWidth / 2)}px`;
             this.element.classList.remove(`${this.cssClass}_hidden`)
         }, 300);
-        setTimeout(() => {this.#hideSelf();}, 5000);
+        let index = this.index;
+        setTimeout(() => {this.#hideSelf(index);}, 5000);
     }
 
-    #hideSelf() {
-        if (this.state === 'hidden') {
+    #hideSelf(index) {
+        console.log(index, this.index);
+        if (this.state === 'hidden' || index !== this.index) {
             return;
         }
+        this.index++;
         this.element.classList.add(`${this.cssClass}_hidden`);
         this.element.removeEventListener('click', this.#clickHandler);
         setTimeout(() => {
@@ -71,7 +76,7 @@ export default class Snackbar extends Component {
 
     #clickHandler = (event) => {
         if (event.target.matches(`.${this.cssClass}__button`)) {
-            this.#hideSelf();
+            this.#hideSelf(this.index);
         }
-    }
+    };
 }

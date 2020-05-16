@@ -10,7 +10,7 @@ $header-icon-width: 20px;
   display: flex;
   justify-content: center;
   flex: 0 0 auto; // grow shrink basis
-  z-index: 1000;
+  z-index: $z-index-header;
   position: fixed;
   top: 0;
   box-shadow: 0 0 10px rgba(0,0,0, 0.12);
@@ -24,7 +24,7 @@ $header-icon-width: 20px;
   }
   &__manage {
     display: flex;
-    z-index: 2;
+    z-index: $z-index-header;
   }
 
   &__logo {
@@ -96,7 +96,7 @@ $header-icon-width: 20px;
   &__icon {
     display: none;
     width: $header-icon-width;
-    z-index: 1;
+    z-index: $z-index-header;
   }
 
   &__scroll {
@@ -132,7 +132,7 @@ $header-icon-width: 20px;
         width: $header-height;
         height: $header-height;
         position: absolute;
-        z-index: 3;
+        z-index: $z-index-header;
         top: 0;
         right: 11px;
         padding: 0;
