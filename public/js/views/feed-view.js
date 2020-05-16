@@ -107,10 +107,12 @@ export default class FeedView extends View {
             this.#showUI();
             userToShow.photos = `${settings.aws}/users/${userToShow.photos[0]}`;
             // TODO: move it to separate function
-            userToShow.tags = userToShow.tags.map((tag) => {
-                let newTag = {...STATIC_TAGS[tag - 1]};
-                newTag.activeClass = 'tag__container_active';
-                return newTag;});
+            if (userToShow.tags) {
+                userToShow.tags = userToShow.tags.map((tag) => {
+                    let newTag = {...STATIC_TAGS[tag - 1]};
+                    newTag.activeClass = 'tag__container_active';
+                    return newTag;});
+            }
 
             this.centerColumnBodyDiv.innerHTML = feedCenterUsersTemplate({...userToShow});
             if (userToShow.own_events && (userToShow.own_events.small_events || userToShow.own_events.mid_events)) {
