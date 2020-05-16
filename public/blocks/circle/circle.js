@@ -1,4 +1,5 @@
 import Router from 'Eventum/core/router';
+import Snackbar from 'Blocks/snackbar/snackbar';
 
 export {CircleRedirect};
 
@@ -16,5 +17,10 @@ function CircleRedirect(event) {
     } else {
         return;
     }
-    Router.redirectForward(circle.getAttribute('data-circle-href'));
+    let href = circle.getAttribute('data-circle-href');
+    if (href === '/my/mail') {
+        Snackbar.instance.addMessage('Not implemented yet');
+    } else {
+        Router.redirectForward(href);
+    }
 }
