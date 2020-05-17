@@ -72,6 +72,9 @@ export default class SearchController extends Controller {
      */
     #completeRequest = (event) => {
         if (event.code === 'Enter' || event.type === 'click') {
+            if (this.view.vDOM.attention) {
+                this.#removeQueryInput();
+            }
             event.preventDefault();
             const msg = document.querySelector('.big-search__message');
             if (msg) {
@@ -124,27 +127,24 @@ export default class SearchController extends Controller {
                     return;
                 }
                 if (event.target.previousElementSibling.classList.contains('event__circle_mid')) {
-                    EventModel.joinMidEvent(profile.uid, eid).then(
-                        (response) => {
+                    EventModel.joinMidEvent(profile.uid, eid)
+                        .then((response) => {
                             changeActionText(event.target, 'green', 'Вы идёте');
                             eventComponent.incrementMembers();
                         },
                         (error) => {
                             console.error(error);
                             changeActionText(event.target, 'red', 'Ошибка');
-                        }
-                    );
+                        });
                 } else if (event.target.previousElementSibling.classList.contains('event__circle_big')) {
-                    EventModel.visitBigEvent(profile.uid, event.target.getAttribute('data-eid')).then(
-                        (response) => changeActionText(event.target, 'green', 'Вы идёте'),
-                        (error) => {
-                            console.error(error);
-                            changeActionText(event.target, 'red', 'Ошибка');
-                        }
-                    );
+                    EventModel.visitBigEvent(profile.uid, event.target.getAttribute('data-eid'))
+                        .then((response) => changeActionText(event.target, 'green', 'Вы идёте'),
+                            (error) => {
+                                console.error(error);
+                                changeActionText(event.target, 'red', 'Ошибка');
+                            });
                 } else {
                     console.log('wat, how you got here?');
-                    return;
                 }
             },
             (error) => {
@@ -154,12 +154,33 @@ export default class SearchController extends Controller {
     };
 
     #inputQuery = (event) => {
-        this.view.renderQueryPanel();
+        const attention = this.view.renderQueryPanel();
         event.target.removeEventListener('click', this.#inputQuery);
-        this.view.vDOM.attention.addEventListener('click', () => {
-            this.view.vDOM.attention.parentNode.removeChild(this.view.vDOM.attention);
-            this.view.vDOM.attention = null;
-            this.view.vDOM.header.input.addEventListener('click', this.#inputQuery);
-        });
+        attention.addEventListener('click', this.#removeAfterClick);
+        document.addEventListener('keydown', this.#removeAfterEscape);
+    };
+
+    #removeQueryInput = (event = null) => {
+        const input = this.view.destroyQueryPanel();
+        input.addEventListener('click', this.#inputQuery);
+        if (event) {
+            event.currentTarget.removeEventListener('click', this.#removeAfterClick);
+            document.removeEventListener('keydown', this.#removeAfterEscape);
+        }
+    };
+
+    #removeAfterEscape = (event) => {
+        if (event.key === 'Escape') {
+            this.#removeQueryInput(event);
+        } else if (event.key === 'Enter') {
+            this.#removeQueryInput(event);
+            this.#completeRequest(event);
+        }
+    };
+
+    #removeAfterClick = (event) => {
+        if (event.target.className === 'big-search__attention') {
+            this.#removeQueryInput(event);
+        }
     };
 }

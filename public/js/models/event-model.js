@@ -40,6 +40,24 @@ export default class EventModel extends Model {
     }
 
     /**
+     * Get Math
+     * @param {{limit: Number, page: Number}} eventsRequest - request with query, limits and page
+     * @return {Promise} promise to get user data
+     */
+    static getMatch() {
+        return NetworkModule.fetchGet({path: '/match'}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
+    /**
      * Get event data from server
      * @param {{query: string, page: number}} feedRequest - request with filters
      * @return {Promise} promise to get user data
