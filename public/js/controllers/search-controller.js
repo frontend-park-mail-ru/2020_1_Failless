@@ -90,21 +90,19 @@ export default class SearchController extends Controller {
                         limit: 30,
                         query: payload
                     });
-                })
-                .then(
-                    (events) => {
-                        if (!events) {
-                            this.view.renderNotFound();
-                        } else if (Object.prototype.hasOwnProperty.call(events, 'message')) {
-                            this.view.addErrorMessage(document.querySelector('.big-search__icon'), [events.message]);
-                        } else {
-                            ++this.pageDownloaded;
-                            this.view.renderResults(events);
-                        }
-                    },
-                    (error) => {
-                        this.view.showSearchError(error);
-                    });
+                }).then((events) => {
+                    if (!events || !events.mid_events) {
+                        this.view.renderNotFound();
+                    } else if (Object.prototype.hasOwnProperty.call(events, 'message')) {
+                        this.view.addErrorMessage(document.querySelector('.big-search__icon'), [events.message]);
+                    } else {
+                        ++this.pageDownloaded;
+                        this.view.renderResults(events);
+                    }
+                },
+                (error) => {
+                    this.view.showSearchError(error);
+                });
         }
     };
 
