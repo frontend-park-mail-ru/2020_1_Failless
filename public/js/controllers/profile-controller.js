@@ -366,7 +366,14 @@ export default class ProfileController extends Controller {
             about: textInput.value, // TODO: check if it's safe
             social: this.user.links,
             photos: this.images.some(image => image.state === 'old' ? !image.img : image.img)
-                ? this.images.map(image => {if (image.img) {return image.img;}})
+                ? this.images.map(image => {
+                    if (image.img) {
+                        return {
+                            img: image.state === 'old' ? '' : image.img,
+                            path: image.state === 'old' ? image.img : '',
+                        };
+                    }
+                })
                 : null,
         };
 

@@ -150,6 +150,6 @@ export default class Component {
     }
 
     afterRemove() {
-        this.element = null;
+        this.node = null;
     }
 }
