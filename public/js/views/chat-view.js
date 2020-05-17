@@ -233,7 +233,6 @@ export default class ChatView extends MyView {
         }
         messages.forEach((message) => {
             this.renderMessage(message)
-            // chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}))
         });
         scrollChatDown(chatBody);
     }

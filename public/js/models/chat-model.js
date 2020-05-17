@@ -103,6 +103,21 @@ export default class ChatModel extends Model {
             .catch(error => {throw new Error(error);});
     }
 
+    /**
+     * Fetch names and avatars for users in chat
+     * @param chatID {number}
+     * @return {Promise<void>}
+     */
+    async #fetchUsersForGroupChat(chatID) {
+        return NetworkModule.fetchGet({path: `/${chatID}/users`, api: settings.chat})
+            .then(response => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();})
+            .catch(error => {throw new Error(error);});
+    }
+
     /***********************************************
                  Additional get functions
      ***********************************************/
@@ -145,7 +160,20 @@ export default class ChatModel extends Model {
                     newChat.avatar = `${settings.aws}/users/${newChat.avatar}`;
                 }
             }
+            if (chat.user_count !== 2) {
+                chat.loaded = false;
+                chat.users = Array(chat.user_count).fill({uid: 0, avatar: 'default.png', name: 'No name'});
+            }
             this.chatMap.set(chat.chat_id, newChat);
+            if (chat.user_count !== 2) {
+                this.#fillUsersForGroupChat(chat.chat_id);
+            }
+            // TODO: save all users and then choose which to fetch
         });
+    }
+
+    async #fillUsersForGroupChat(chatID) {
+        await this.#fetchUsersForGroupChat(chatID)
+            .then(users => this.chatMap.get(chatID).users = users)
     }
 }

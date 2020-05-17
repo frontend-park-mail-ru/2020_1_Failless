@@ -220,6 +220,7 @@ export default class ChatController extends Controller {
             UserModel.getProfile()
                 .then(profile => {
                     this.view.updateLastMessage(message, profile.uid === message.uid);
+                    console.log(message);
                     this.view.renderMessage({
                         body: message.message,
                         side: profile.uid === message.uid ? 'right' : 'left',
