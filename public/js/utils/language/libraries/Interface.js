@@ -8,6 +8,13 @@ const BasicTextsInterface = {
     FIND: '',
     AGE: '',
     DISMISS: '',
+    ADD: '',
+    PHOTOS: '',
+    NO_PHOTOS: '',
+    EVENTS: '',
+    YOUR_EVENTS: '',
+    YOU_VISIT: '',
+    SOCIAL_NETWORKS: '',
 };
 
 const EventTextsInterface = {
@@ -18,6 +25,10 @@ const EventTextsInterface = {
 
 const ProfileTextsInterface = {
     SUCCESSFUL_SAVE: '',
+    NO_TAGS: '',
+    YOUR_EVENTS: '',
+    YOU_VISIT: '',
+    YOUR_TAGS: '',
 };
 
 const FiltersTextsInterface = {

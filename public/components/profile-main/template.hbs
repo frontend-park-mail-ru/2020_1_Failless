@@ -2,9 +2,9 @@
     <div class="profile-main__photos">
         <div class="section">
             <div class="section__header section__header_2">
-                <h2>Фото</h2>
+                <h2>{{ PHOTOS }}</h2>
                 <div class="link-uploader">
-                    <label for="photoUpload">Добавить</label>
+                    <label for="photoUpload">{{ ADD }}</label>
                     <input id="photoUpload" type="file" data-bind-event="photoUpload" multiple/>
                 </div>
             </div>
@@ -16,7 +16,7 @@
 <!--                    <img class="photo-columns__photo" src="{{../url}}/{{ photo.path }}" alt="{{ photo.path }}">-->
                 {{/each}}
             {{else}}
-                <span class="font font_bold font__size_middle font__color_lg">Фотографий нет</span>
+                <span class="font font_bold font__size_middle font__color_lg">{{ NO_PHOTOS }}</span>
             {{/if}}
         </div>
     </div>
@@ -24,13 +24,13 @@
     <div class="profile-main__events">
         <div class="section">
             <div class="section__header section__header_2">
-                <h2>Эвенты</h2>
+                <h2>{{ EVENTS }}</h2>
             </div>
         </div>
         <div class="section">
             <div class="section__header section__header_3">
-                <h3>Ваши эвенты</h3>
-                <span data-bind-event="showAddEvent">Добавить</span>
+                <h3>{{ YOUR_EVENTS }}</h3>
+                <span data-bind-event="showAddEvent">{{ ADD }}</span>
             </div>
         </div>
         <div class="profile-main__group">
@@ -45,7 +45,7 @@
         </div>
         <div class="section">
             <div class="section__header section__header_3">
-                <h3>Ваши подписки</h3>
+                <h3>{{ YOU_VISIT }}</h3>
             </div>
         </div>
         <div class="profile-main__group profile-main__subscriptions" data-bind-event="showAction">

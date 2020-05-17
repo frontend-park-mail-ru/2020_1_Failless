@@ -12,6 +12,7 @@ import {determineClass} from 'Blocks/event/event';
 import EventEdit from 'Blocks/event-edit/event-edit';
 import MidEventComponent from 'Blocks/event/mid-event-comp';
 import SmallEventComponent from 'Blocks/event/small-event-comp';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class create ProfileView class
@@ -161,6 +162,10 @@ export default class ProfileView extends MyView {
                 button_logout: logoutButton.data,
                 save_button: saveButton.data,
                 settings_button: settingsButton.data,
+                ADD: TextConstants.BASIC__ADD,
+                NO_TAGS: TextConstants.PROFILE__NO_TAGS,
+                YOUR_TAGS: TextConstants.PROFILE__YOUR_TAGS,
+                SOCIAL_NETWORKS: TextConstants.BASIC__SOCIAL_NETWORKS,
             })
         );
         document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
@@ -169,6 +174,12 @@ export default class ProfileView extends MyView {
                 profile: profile,
                 add_event_button: addEventButton.data,
                 select_options: Array(14).fill(undefined, undefined, undefined).map((_, idx) => 2 + idx),
+                ADD: TextConstants.BASIC__ADD,
+                PHOTOS: TextConstants.BASIC__PHOTOS,
+                EVENTS: TextConstants.BASIC__EVENTS,
+                NO_PHOTOS: TextConstants.BASIC__NO_PHOTOS,
+                YOU_VISIT: TextConstants.PROFILE__YOU_VISIT,
+                YOUR_EVENTS: TextConstants.PROFILE__YOUR_EVENTS,
             })
         );
 
