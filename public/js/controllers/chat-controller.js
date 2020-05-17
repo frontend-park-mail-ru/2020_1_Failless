@@ -216,17 +216,18 @@ export default class ChatController extends Controller {
 
         // Check where to insert the message
         let message = JSON.parse(event.data);
-        if (activeChatId && message.chat_id === activeChatId) {
-            UserModel.getProfile()
-                .then(profile => {
-                    this.view.updateLastMessage(message, profile.uid === message.uid);
+        UserModel.getProfile()
+            .then(profile => {
+                this.view.updateLastMessage(message, profile.uid === message.uid);
+                if (activeChatId && message.chat_id === activeChatId) {
                     console.log(message);
                     this.view.renderMessage({
+                        avatar: profile.uid === message.uid ? null : this.ChatModel.chats.get(message.chat_id).users.get(message.uid).avatar,
                         body: message.message,
                         side: profile.uid === message.uid ? 'right' : 'left',
                         new: true,
-                    });})
-                .catch(console.error);
-        }
+                    });
+                }})
+            .catch(console.error);
     }
 }

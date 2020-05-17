@@ -162,7 +162,7 @@ export default class ChatModel extends Model {
             }
             if (chat.user_count !== 2) {
                 chat.loaded = false;
-                chat.users = Array(chat.user_count).fill({uid: 0, avatar: 'default.png', name: 'No name'});
+                chat.users = new Map();
             }
             this.chatMap.set(chat.chat_id, newChat);
             if (chat.user_count !== 2) {
@@ -174,6 +174,17 @@ export default class ChatModel extends Model {
 
     async #fillUsersForGroupChat(chatID) {
         await this.#fetchUsersForGroupChat(chatID)
-            .then(users => this.chatMap.get(chatID).users = users)
+            .then(users => {
+                if (users) {
+                    let chat = this.chatMap.get(chatID);
+                    users.forEach(user => {
+                        chat.users.set(user.uid, {...user})
+                    });
+                    chat.loaded = true;
+                } else {
+                    console.error('error with users')
+                }
+            })
+            .catch(console.error);
     }
 }
