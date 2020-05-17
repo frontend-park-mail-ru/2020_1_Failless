@@ -10,7 +10,7 @@ import {logoutRedirect} from 'Eventum/utils/user-utils';
 import EventModel from 'Eventum/models/event-model';
 import editTemplate from 'Blocks/edit-field/template.hbs';
 import imageEditTemplate from 'Blocks/image-edit/template.hbs';
-import {makeEmpty, resizeTextArea} from 'Eventum/utils/basic';
+import {resizeTextArea} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
 import Controller from 'Eventum/core/controller';
 import {CircleRedirect} from 'Blocks/circle/circle';
@@ -106,6 +106,12 @@ export default class ProfileController extends Controller {
                             ]
                         },
                         {
+                            attr: 'saveAbout',
+                            events: [
+                                {type: 'blur', handler: this.#saveAbout}
+                            ]
+                        },
+                        {
                             attr: 'showSettings',
                             events: [
                                 {type: 'click', handler: this.#profileSettings},
@@ -121,7 +127,7 @@ export default class ProfileController extends Controller {
                         {
                             attr: 'removeTags',
                             events: [
-                                {type: 'click', handler: this.#removeTag},
+                                {type: 'click', handler: this.#removeTags},
                             ]
                         },
                         {
@@ -205,6 +211,59 @@ export default class ProfileController extends Controller {
                 console.error(onerror);
             });
     }
+
+    /***********************************************
+                        Meta info
+     ***********************************************/
+
+    #saveAbout = (event) => {
+        // TODO: check if it's save
+        UserModel.putAbout(event.target.value)
+            .catch(Snackbar.instance.addMessage);
+    };
+
+    #removeTags = (event) => {
+        let tagButton = event.target.closest('.tag__button');
+        if (!tagButton) {
+            return;
+        }
+        const tags = this.view.tagsDiv.querySelectorAll('.tag');
+        let tagContainer = event.target.closest('.tag__container');
+        const tagToRemove = Number(tagContainer.firstElementChild.getAttribute('data-id'));
+        let selectedTags = [];
+        tags.forEach((tag) => {
+            let tagToPush = Number(tag.getAttribute('data-id'));
+            if (tagToPush !== tagToRemove) {
+                selectedTags.push(tagToPush);
+            }
+        });
+        tagContainer.style.transform = 'scale(0)';
+        setTimeout(() => {
+            tagContainer.remove();
+            if (this.view.tagsDiv.childElementCount === 0) {
+                this.view.renderEmptyTags();
+            }
+        }, 300);
+        UserModel.putTags(selectedTags)
+            .catch(Snackbar.instance.addMessage);
+    };
+
+    #submitTagsHandler = (event) => {
+        event.preventDefault();
+        let activeTags = this.activeModalWindow.querySelectorAll('.tag__container.tag__container_active');
+        let activeTagIDs = [];
+        if (activeTags) {
+            activeTags.forEach(tag => {
+                activeTagIDs.push(+tag.firstElementChild.getAttribute('data-id'));
+            });
+        }
+        Promise.all([
+            this.view.renderTags(activeTagIDs),
+            UserModel.putTags(activeTagIDs),
+        ]).catch(console.error);
+        this.editView.clear();
+        this.editView = null;
+    };
 
     /***********************************************
                          Events
@@ -318,6 +377,14 @@ export default class ProfileController extends Controller {
             console.log('empty files');
             return;
         }
+
+        // Show modal window
+        // this.editView = new ModalView(document.body);
+        // this.editView.render();
+        // Display images in it with remove button
+        // And save button
+        // On save - render all of them in photoColumnDiv
+        // And avatar
 
         for (let iii = 0; iii < files.length; iii++) {
             const FR = new FileReader();
@@ -464,73 +531,6 @@ export default class ProfileController extends Controller {
             '.modal__footer').querySelector(
             '.re_btn.re_btn__outline').addEventListener(
             'click', submitHandler, false);
-    };
-
-    #submitTagsHandler = (event) => {
-        event.preventDefault();
-
-        let tagsField = document.body.querySelector('.profile-left__tags');
-        let prevLength = tagsField.length;
-
-        makeEmpty(tagsField);
-
-        let allTags = this.activeModalWindow.querySelectorAll('.tag__container');
-        this.localTags = [];
-        let length = 0;
-        allTags.forEach((tag) => {
-            let tempTag = {
-                name: tag.firstElementChild.innerText,
-                tag_id: tag.firstElementChild.getAttribute('data-id'),
-                editable: true,
-            };
-            if (tag.classList.contains('tag__container_active')) {
-                tempTag.activeClass = 'tag__container_active';
-                tagsField.appendChild(tag);
-                length++;
-            }
-            this.localTags.push(tempTag);
-        });
-
-        if (length === 0) {
-            let emptyMessageText = (prevLength !== 0)
-                ? 'Вы удалили все теги'
-                : 'У вас пока нет ни одного тэга';
-            // TODO: replace with HBS block
-            let emptyMessage = document.createElement('div');
-            emptyMessage.classList.add('center');
-            let message = document.createElement('span');
-            message.classList.add('font', 'font_bold', 'font__size_small', 'font__color_lg');
-            message.innerText = emptyMessageText;
-            emptyMessage.appendChild(message);
-            tagsField.appendChild(emptyMessage);
-        }
-
-        this.editView.clear();
-        this.editView = null;
-    };
-
-    #removeTag = (event) => {
-        let elem = event.target;
-        let elemContainer = elem.closest('.tag__container');
-        if (elemContainer && elemContainer.classList.contains('tag__container')) {
-            delete this.localTags.find((tag) => {
-                return (tag.title === elemContainer.firstElementChild.innerText);
-            }).activeClass;
-
-            // Check if it was the last tag
-            if (elemContainer.parentElement.childElementCount === 1) {
-                // TODO: replace with HBS block
-                let emptyMessage = document.createElement('div');
-                emptyMessage.classList.add('center');
-                let message = document.createElement('span');
-                message.classList.add('font', 'font_bold', 'font__size_small', 'font__color_lg');
-                message.innerText = 'Вы удалили все теги';
-                emptyMessage.appendChild(message);
-                elemContainer.parentElement.appendChild(emptyMessage);
-            }
-
-            elemContainer.remove();
-        }
     };
 
     /***********************************************

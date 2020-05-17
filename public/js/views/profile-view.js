@@ -7,12 +7,14 @@ import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
 import loadingTemplate from 'Blocks/loading/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
+import tagTemplate from 'Blocks/tag/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {determineClass} from 'Blocks/event/event';
 import EventEdit from 'Blocks/event-edit/event-edit';
 import MidEventComponent from 'Blocks/event/mid-event-comp';
 import SmallEventComponent from 'Blocks/event/small-event-comp';
 import TextConstants from 'Eventum/utils/language/text';
+import {STATIC_TAGS} from 'Eventum/utils/static-data';
 
 /**
  * @class create ProfileView class
@@ -37,8 +39,10 @@ export default class ProfileView extends MyView {
     #emptyvDOM() {
         this.vDOM = {
             leftColumn: {
-                comp: null,
                 element: null,
+                tagsDiv: {
+                    element: null,
+                },
             },
             mainColumn: {
                 comp: null,
@@ -67,21 +71,6 @@ export default class ProfileView extends MyView {
         };
     }
 
-    get subscriptionsDiv() {
-        this.setDOMProfileElements();
-        return this.vDOM.mainColumn.subscriptions.element;
-    }
-
-    get personalEventsDiv() {
-        this.setDOMProfileElements();
-        return this.vDOM.mainColumn.personalEvents.element;
-    }
-
-    get eventEditComp() {
-        this.setDOMProfileElements();
-        return this.vDOM.mainColumn.personalEvents.event_edit;
-    }
-
     /**
      * Render template
      * @param {
@@ -97,10 +86,7 @@ export default class ProfileView extends MyView {
      *      avatar: string,
      *      photos: string,
      *      email: string,
-     *      tags: {
-     *          title: string,
-     *          id: string,
-     *      }
+     *      tags: Array<Number>,
      *  } } profile -  user profile from server
      */
     render(profile) {
@@ -113,17 +99,6 @@ export default class ProfileView extends MyView {
         // let allowEdit = true;
         if (!profile.avatar.path) {
             profile.avatar.path = 'default.png';
-        }
-
-        if ('tags' in profile) {
-            if (!profile.tags) {
-                profile.tags = [];
-            } else {
-                profile.tags.forEach((tag) => {
-                    tag.activeClass = 'tag__container_active';
-                    tag.editable = true;
-                });
-            }
         }
 
         // Create components
@@ -186,9 +161,14 @@ export default class ProfileView extends MyView {
         this.vDOM.mainColumn.personalEvents.event_edit = new EventEdit(
             document.querySelector('.event-edit')
         );
+        this.setDOMProfileElements();
+        this.renderTags(profile.tags);
     }
 
     setDOMProfileElements() {
+        while (!this.vDOM.leftColumn.tagsDiv.element) {
+            this.vDOM.leftColumn.tagsDiv.element = document.querySelector('.profile-left__tags');
+        }
         while (!this.vDOM.mainColumn.subscriptions.element) {
             this.vDOM.mainColumn.subscriptions.element = document.querySelector('.profile-main__subscriptions');
         }
@@ -376,9 +356,48 @@ export default class ProfileView extends MyView {
         return {index: index, source: source};
     }
 
+    /**
+     *
+     * @param tagIDs {Array<Number>}
+     * @return {Promise<void>}
+     */
+    async renderTags(tagIDs) {
+        makeEmpty(this.tagsDiv);
+        if (tagIDs) {
+            tagIDs.forEach((tag) => {
+                let newTag = {...STATIC_TAGS[tag - 1]};
+                newTag.activeClass = 'tag__container_active';
+                newTag.editable = true;
+                this.tagsDiv.insertAdjacentHTML('beforeend', tagTemplate({...newTag}));
+            });
+        } else {
+            await this.renderEmptyTags();
+        }
+    }
+
+    async renderEmptyTags() {
+        this.showError(this.tagsDiv, TextConstants.PROFILE__NO_TAGS, null, null);
+    }
+
     /***********************************************
                  Additional get functions
      ***********************************************/
+
+    get tagsDiv() {
+        return this.vDOM.leftColumn.tagsDiv.element;
+    }
+
+    get subscriptionsDiv() {
+        return this.vDOM.mainColumn.subscriptions.element;
+    }
+
+    get personalEventsDiv() {
+        return this.vDOM.mainColumn.personalEvents.element;
+    }
+
+    get eventEditComp() {
+        return this.vDOM.mainColumn.personalEvents.event_edit;
+    }
 
     get photosColumn() {
         return this.vDOM.mainColumn.photoColumns.element;

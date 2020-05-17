@@ -129,6 +129,36 @@ export default class UserModel extends Model {
     }
 
     /**
+     * Save user's description
+     * @param about {string}
+     */
+    static putAbout(about) {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/meta/about`, body: {about: about}})
+            .then(response => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
+            .catch(error => {throw new Error(error);});
+    }
+
+    /**
+     * Save user's description
+     * @param tags {Array<Number>}
+     */
+    static putTags(tags) {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/meta/tags`, body: {tags: tags}})
+            .then(response => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
+            .catch(error => {throw new Error(error);});
+    }
+
+    /**
      * Send user image data to server
      * @return {Promise} promise to set new user data
      */
@@ -166,6 +196,7 @@ export default class UserModel extends Model {
                         }
                         return response.json().then((profile) => {
                             this.profile = profile;
+                            console.log(profile);
                             return profile;
                         });
                     },

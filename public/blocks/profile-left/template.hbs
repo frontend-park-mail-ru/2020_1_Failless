@@ -7,7 +7,7 @@
             </div>
             <div class="profile-left__options-field">
                 <h3>О себе</h3>
-                {{> $Blocks/textarea/template body=profile.about rows=10 name='about' placeholder='Расскажите о себе и своих увлечениях'}}
+                {{> $Blocks/textarea/template body=profile.about rows=10 name='about' placeholder='Расскажите о себе и своих увлечениях' data_bind_event='saveAbout'}}
             </div>
             <div class="profile-left__options-field">
                 <div class="profile-left__header">
@@ -18,17 +18,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="profile-left__tags" data-bind-event="removeTags">
-                    {{#if profile.tags}}
-                        {{#each profile.tags as |tag|}}
-                            {{> $Blocks/tag/template }}
-                        {{/each}}
-                    {{else}}
-                        <div class="profile-left__center">
-                            <span class="font font_bold font__size_small font__color_lg">{{ NO_TAGS }}</span>
-                        </div>
-                    {{/if}}
-                </div>
+                <div class="profile-left__tags" data-bind-event="removeTags"></div>
             </div>
             <div class="profile-left__options-field">
                 <div class="profile-left__header">
