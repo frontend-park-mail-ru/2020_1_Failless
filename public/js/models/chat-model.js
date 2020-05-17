@@ -4,6 +4,7 @@ import NetworkModule from 'Eventum/core/network';
 import Model from 'Eventum/core/model';
 import UserModel from 'Eventum/models/user-model';
 import settings from 'Settings/config';
+import {images} from 'Eventum/utils/static-data';
 
 let chatModelSymbol = Symbol('Model for chats');
 let chatModelEnforcer = Symbol('The only object that can create ChatModel');
@@ -131,6 +132,19 @@ export default class ChatModel extends Model {
         chats.forEach(chat => {
             let newChat = {...chat};
             newChat.active = false;
+            if (!newChat.avatar) {
+                if (newChat.user_count !== 2) {
+                    newChat.avatar = images.get('event-default');
+                } else {
+                    newChat.avatar = images.get('user-default');
+                }
+            } else {
+                if (newChat.user_count !== 2) {
+                    newChat.avatar = `${settings.aws}/events/${newChat.avatar}`;
+                } else {
+                    newChat.avatar = `${settings.aws}/users/${newChat.avatar}`;
+                }
+            }
             this.chatMap.set(chat.chat_id, newChat);
         });
     }

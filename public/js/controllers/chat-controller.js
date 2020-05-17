@@ -32,7 +32,6 @@ export default class ChatController extends Controller {
         this.view.render();
         UserModel.getLogin()
             .then(user => {
-                console.log(user);
                 if (user) {
                     this.ChatModel.getChats({uid: user.uid, limit: 10, page: 0})
                         .then(chats => {
@@ -51,13 +50,8 @@ export default class ChatController extends Controller {
                             } else {
                                 this.ChatModel.establishConnection(user.uid, this.receiveMessage)
                                     .then(response => {
-                                        console.log(response);
                                         this.ChatModel.chats = chats;
-                                        // после загрузки все чаты неактивны
-                                        // this.ChatModel.chats.forEach((val) => {
-                                        //     Object.assign(val, {active: false});
-                                        // });
-                                        this.view.renderChatList().then();
+                                        this.view.renderChatList();
                                     });
                             }
                         },
@@ -197,7 +191,6 @@ export default class ChatController extends Controller {
         // Send message via WebSocket
         let chat_id = -1;
         // Ищем активный чат
-        console.log(this.ChatModel.chats);
         this.ChatModel.chats.forEach((chat) => {
             if (chat.active === true) {
                 chat_id = chat.chat_id;
@@ -206,7 +199,7 @@ export default class ChatController extends Controller {
 
         UserModel.getProfile()
             .then(profile => this.ChatModel.sendMessage({uid: profile.uid, message: message, chat_id: chat_id}))
-            .catch(console.log);
+            .catch(console.error);
         textarea.value = '';
         resizeTextArea.call(textarea);
     };
@@ -232,7 +225,7 @@ export default class ChatController extends Controller {
                         side: profile.uid === message.uid ? 'right' : 'left',
                         new: true,
                     });})
-                .catch(console.log);
+                .catch(console.error);
         }
     }
 }

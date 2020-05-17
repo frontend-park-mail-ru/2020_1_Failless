@@ -121,7 +121,11 @@ const icons = new Map([
 const images = new Map([
     [
         'user-default',
-        'https://eventum.s3.eu-north-1.amazonaws.com/users/default.png',
+        `${settings.aws}/users/default.png`,
+    ],
+    [
+        'event-default',
+        `${settings.aws}/events/default.png`
     ],
 ]);
 

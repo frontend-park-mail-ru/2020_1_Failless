@@ -7,7 +7,6 @@ import chatTemplate from 'Blocks/chat/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import MyView from 'Eventum/views/my-view';
 import {icons} from 'Eventum/utils/static-data';
-import {images} from 'Eventum/utils/static-data';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {scrollChatDown} from 'Blocks/chat/chat';
 import {showMessage} from 'Blocks/chat-message/chat-message';
@@ -174,9 +173,6 @@ export default class ChatView extends MyView {
         const chatBody = this.chatListBody;
         makeEmpty(chatBody);
         ChatModel.instance.chats.forEach((chat) => {
-            if (!chat.avatar) {
-                chat.avatar = images.get('user-default');
-            }
             chat.new = !!chat.unseen;
             chat.last_msg = chat.last_msg.substring(5); // backend sends last message with a 5 useless chars
             chat.last_date = prettifyDateTime(chat.last_date);
@@ -281,7 +277,6 @@ export default class ChatView extends MyView {
     async updateLastMessage(message, self) {
         // Find chat list item with chat_id
         let chatToUpdate = this.chatListBodyDiv.querySelector(`.chat-list-item[data-cid="${message.chat_id}"]`);
-        console.log(chatToUpdate);
 
         // Set it as unread
         if (!self) {
