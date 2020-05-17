@@ -7,6 +7,7 @@ const BasicTextsRussian = {
     LOCATION: 'Местоположение',
     FIND: 'Найти',
     AGE: 'Возраст',
+    YOU: 'Вы'
 };
 
 const EventTextsRussian = {

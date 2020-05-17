@@ -30,6 +30,7 @@ export default class TextConstants {
     static get BASIC__TO() {return localLibrary.Basic.TO;}
     static get BASIC__LOCATION() {return localLibrary.Basic.LOCATION;}
     static get BASIC__FIND() {return localLibrary.Basic.FIND;}
+    static get BASIC__YOU() {return localLibrary.Basic.YOU;}
 
     static get EVENT__VISITED() {return localLibrary.Event.VISITED;}
     static get EVENT__UNVISITED() {return localLibrary.Event.UNVISITED;}

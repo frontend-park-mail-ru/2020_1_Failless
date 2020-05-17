@@ -8,6 +8,7 @@ const BasicTextsInterface = {
     FIND: '',
     AGE: '',
     DISMISS: '',
+    YOU: '',
 };
 
 const EventTextsInterface = {

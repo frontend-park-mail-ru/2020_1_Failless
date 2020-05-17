@@ -18,9 +18,8 @@ export default class ChatController extends Controller {
     constructor(parent) {
         super(parent);
         this.view = new ChatView(parent);
-        this.uid = null;
         this.chat_id = null;
-        this.ChatModel = null;
+        this.ChatModel = ChatModel.instance;
     }
 
     destructor() {
@@ -31,13 +30,12 @@ export default class ChatController extends Controller {
     action() {
         super.action();
         this.view.render();
-        UserModel.getProfile().then(
-            (profile) => {
-                if (profile) {
-                    this.uid = profile.uid;
-                    this.ChatModel = new ChatModel();
-                    ChatModel.getChats({uid: this.uid, limit: 10, page: 0}).then(
-                        (chats) => {
+        UserModel.getLogin()
+            .then(user => {
+                console.log(user);
+                if (user) {
+                    this.ChatModel.getChats({uid: user.uid, limit: 10, page: 0})
+                        .then(chats => {
                             console.log(chats);
                             if (!chats || chats.length === 0) {
                                 const errorArea = detectMobile() ? this.view.chatListBodyDiv : this.view.chatBodyDiv;
@@ -51,17 +49,16 @@ export default class ChatController extends Controller {
                             } else if (Object.prototype.hasOwnProperty.call(chats, 'message')) {
                                 this.view.showLeftError(chats.message);
                             } else {
-                                this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then(
-                                    (response) => {
+                                this.ChatModel.establishConnection(user.uid, this.receiveMessage)
+                                    .then(response => {
                                         console.log(response);
                                         this.ChatModel.chats = chats;
                                         // после загрузки все чаты неактивны
-                                        this.ChatModel.chats.forEach((val) => {
-                                            Object.assign(val, {active: false});
-                                        });
-                                        this.view.renderChatList(chats).then();
-                                    }
-                                );
+                                        // this.ChatModel.chats.forEach((val) => {
+                                        //     Object.assign(val, {active: false});
+                                        // });
+                                        this.view.renderChatList().then();
+                                    });
                             }
                         },
                         (error) => {
@@ -72,12 +69,8 @@ export default class ChatController extends Controller {
                         });
                 } else {
                     this.view.showCenterError('No profile?!').then();
-                }
-            },
-            (error) => {
-                this.view.showCenterError(error).then();
-            }
-        );
+                }})
+            .catch(error => this.view.showCenterError(error).then());
 
         this.view.setDOMChatElements(); // do it once instead of calling getters and checking there
         this.initHandlers([
@@ -148,13 +141,13 @@ export default class ChatController extends Controller {
             chatListItem.getAttribute('data-cid'),
             chatListItem.querySelector('.chat-list-item__title').innerText);
         // Но один из чатов становится активным, а другой неактивыным
-        this.ChatModel.chats.forEach((val) => {
-            if (val.chat_id === Number(chatListItem.getAttribute('data-cid'))){
-                val.active = true;
+        this.ChatModel.chats.forEach((chat, chatId) => {
+            if (chatId === Number(chatListItem.getAttribute('data-cid'))){
+                chat.active = true;
                 return;
             }
-            if (val.active) {
-                val.active = false;
+            if (chat.active) {
+                chat.active = false;
             }
         });
     };
@@ -170,25 +163,21 @@ export default class ChatController extends Controller {
         // async Get latest messages
         this.view.renderChatLoading(name).then();
         toggleChatOnMobile.call(this.view.mainColumnDiv);
-
-        if (!this.uid) {
-            this.view.showCenterError('No profile').then();
-            return;
-        }
-        ChatModel.getLastMessages(this.uid, chatId, 30).then(
-            (messages) => {
+        let id = 0;
+        UserModel.getProfile()
+            .then(profile => {
+                id = profile.uid;
+                return this.ChatModel.getLastMessages(profile.uid, chatId, 30);})
+            .then((messages) => {
                 this.view.activateChatUI(name).then();
                 // Append necessary fields
                 messages.forEach((message) => {
-                    message.side = message.uid === this.uid ? 'right' : 'left';
+                    message.side = message.uid === id ? 'right' : 'left';
                     message.new = false;
                     message.body = message.message;
                 });
-                this.view.renderLastMessages(messages.reverse());
-            },
-            (error) => {
-                this.view.showCenterError(error).then();
-            });
+                this.view.renderLastMessages(messages.reverse());})
+            .catch(error => this.view.showCenterError(error));
     };
 
     /***********************************************
@@ -208,33 +197,42 @@ export default class ChatController extends Controller {
         // Send message via WebSocket
         let chat_id = -1;
         // Ищем активный чат
-        this.ChatModel.chats.forEach((val) => {
-            if (val.active === true) {
-                chat_id = val.chat_id;
+        console.log(this.ChatModel.chats);
+        this.ChatModel.chats.forEach((chat) => {
+            if (chat.active === true) {
+                chat_id = chat.chat_id;
             }
         });
 
-        (async () => {this.ChatModel.socket.send(JSON.stringify({uid: this.uid, message: message, chat_id: chat_id}));})();
+        UserModel.getProfile()
+            .then(profile => this.ChatModel.sendMessage({uid: profile.uid, message: message, chat_id: chat_id}))
+            .catch(console.log);
         textarea.value = '';
         resizeTextArea.call(textarea);
     };
 
     receiveMessage = (event) => {
         // Find active chat
-        let activeChat = this.ChatModel.chats.find((chat) => {
-            return chat.active;
-        });
+        let activeChatId = 0;
+        for (let [chatId, chat] of this.ChatModel.chats) {
+            if (chat.active) {
+                activeChatId = chatId;
+                break;
+            }
+        }
 
         // Check where to insert the message
         let message = JSON.parse(event.data);
-        if (activeChat && message.chat_id === activeChat.chat_id) {
-            this.view.renderMessage({
-                body: message.message,
-                side: this.uid === message.uid ? 'right' : 'left',
-                new: true,
-            });
-        } else {
-            this.view.updateLastMessage(message).then();
+        if (activeChatId && message.chat_id === activeChatId) {
+            UserModel.getProfile()
+                .then(profile => {
+                    this.view.updateLastMessage(message, profile.uid === message.uid);
+                    this.view.renderMessage({
+                        body: message.message,
+                        side: profile.uid === message.uid ? 'right' : 'left',
+                        new: true,
+                    });})
+                .catch(console.log);
         }
     }
 }

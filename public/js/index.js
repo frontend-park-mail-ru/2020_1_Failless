@@ -24,11 +24,13 @@ const application = document.getElementById('application');
 //     });
 // }
 
-if (window.navigator.language === 'ru-RU') {
-    TextConstants.translateToRussian();
-} else {
-    TextConstants.translateToEnglish();
-}
+TextConstants.translateToRussian();
+
+// if (window.navigator.language === 'ru-RU') {
+//     TextConstants.translateToRussian();
+// } else {
+//     TextConstants.translateToEnglish();
+// }
 
 const router = new Router();
 router.addRoute('/',            new LandingController(application));
