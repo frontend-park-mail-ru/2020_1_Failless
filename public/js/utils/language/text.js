@@ -22,6 +22,14 @@ export default class TextConstants {
         localLibrary = RussianLibrary;
     }
 
+    static translateToEnglish() {
+        if (TextConstants.currentLanguage === LANGUAGES.ENGLISH) {
+            return;
+        }
+        TextConstants.currentLanguage = LANGUAGES.RUSSIAN;
+        localLibrary = RussianLibrary;
+    }
+
     static get BASIC__GENDER() {return localLibrary.Basic.GENDER;}
     static get BASIC__MEN() {return localLibrary.Basic.MEN;}
     static get BASIC__WOMEN() {return localLibrary.Basic.WOMEN;}

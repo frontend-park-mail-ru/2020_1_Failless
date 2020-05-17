@@ -18,6 +18,8 @@ import {toggleActionText} from 'Blocks/event/event';
 import settings from 'Settings/config';
 import Snackbar from 'Blocks/snackbar/snackbar';
 import TextConstants from 'Eventum/utils/language/text';
+import MatchModel from 'Eventum/models/match-model';
+import NotificationController from 'Eventum/controllers/notification-controller';
 
 /**
  * @class ProfileController
@@ -31,6 +33,7 @@ export default class ProfileController extends Controller {
     constructor(parent) {
         super(parent);
         this.view = new ProfileView(parent);
+        this.MatchModel = null;
         this.editView = null;
         this.image = '';
         this.user = null;
@@ -74,16 +77,32 @@ export default class ProfileController extends Controller {
                         });
                     }
 
+                    this.MatchModel = new MatchModel();
+                    this.MatchModel.establishConnection(profile.uid, this.receiveMessage).then(
+                        (response) => {
+                            console.log(response);
+                        }
+                    );
                     this.view.render(profile);
                     EventModel.getUserOwnEvents(profile.uid).then(
-                        (events) => {this.view.renderEvents(events);},
-                        (error) => {this.view.renderEventsError(error);}
+                        (events) => {
+                            this.view.renderEvents(events);
+                        },
+                        (error) => {
+                            this.view.renderEventsError(error);
+                        }
                     );
                     EventModel.getUserSubscriptions(profile.uid).then(
-                        (subscriptions) => {this.view.renderSubscriptions(subscriptions);},
-                        (error) => {this.view.renderSubscriptionsError(error);}
+                        (subscriptions) => {
+                            this.view.renderSubscriptions(subscriptions);
+                        },
+                        (error) => {
+                            this.view.renderSubscriptionsError(error);
+                        }
                     );
-                    (async () => {this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');})();
+                    (async () => {
+                        this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');
+                    })();
                     this.user = profile;
 
                     this.initHandlers([
@@ -127,7 +146,11 @@ export default class ProfileController extends Controller {
                         {
                             attr: 'showAddEvent',
                             events: [
-                                {type: 'click', handler: () => {this.view.eventEditComp.show();}},
+                                {
+                                    type: 'click', handler: () => {
+                                        this.view.eventEditComp.show();
+                                    }
+                                },
                             ]
                         },
                         {
@@ -158,7 +181,11 @@ export default class ProfileController extends Controller {
                         {
                             attr: 'cancelNewEvent',
                             events: [
-                                {type: 'click', handler: () => {this.view.eventEditComp.hide();}}
+                                {
+                                    type: 'click', handler: () => {
+                                        this.view.eventEditComp.hide();
+                                    }
+                                }
                             ]
                         },
                         {
@@ -170,30 +197,41 @@ export default class ProfileController extends Controller {
                         {
                             attr: 'removePreviewImage',
                             events: [
-                                {type: 'click', handler: (event) => {
-                                    if (event.target.matches('.image-edit__close-icon_inner')) {
-                                        this.view.eventEditComp.removePreviewImage(event.target);
+                                {
+                                    type: 'click', handler: (event) => {
+                                        if (event.target.matches('.image-edit__close-icon_inner')) {
+                                            this.view.eventEditComp.removePreviewImage(event.target);
+                                        }
                                     }
-                                }},
+                                },
                             ]
                         },
                         {
                             attr: 'showAction',
                             events: [
-                                {type: 'mouseover', handler: (event) => {
-                                    if (event.target.matches('.event__link.font__color_green')) {
-                                        toggleActionText(event.target, 'Не идти');
-                                    }}},
-                                {type: 'click', handler: (event) => {
-                                    if (event.target.matches('.event__link.font__color_red')) {
-                                        this.#unfollowEvent(event.target);
-                                    } else if (event.target.matches('button.error__button')) {
-                                        Router.redirectForward('/search');
-                                    }}},
-                                {type: 'mouseout', handler: (event) => {
-                                    if (event.target.matches('.event__link.font__color_red')) {
-                                        toggleActionText(event.target, 'Вы идёте');
-                                    }}},
+                                {
+                                    type: 'mouseover', handler: (event) => {
+                                        if (event.target.matches('.event__link.font__color_green')) {
+                                            toggleActionText(event.target, 'Не идти');
+                                        }
+                                    }
+                                },
+                                {
+                                    type: 'click', handler: (event) => {
+                                        if (event.target.matches('.event__link.font__color_red')) {
+                                            this.#unfollowEvent(event.target);
+                                        } else if (event.target.matches('button.error__button')) {
+                                            Router.redirectForward('/search');
+                                        }
+                                    }
+                                },
+                                {
+                                    type: 'mouseout', handler: (event) => {
+                                        if (event.target.matches('.event__link.font__color_red')) {
+                                            toggleActionText(event.target, 'Вы идёте');
+                                        }
+                                    }
+                                },
                             ]
                         },
                     ]);
@@ -207,7 +245,7 @@ export default class ProfileController extends Controller {
     }
 
     /***********************************************
-                         Events
+     Events
      ***********************************************/
 
     #previewImagesForEvent = (event) => {
@@ -261,12 +299,12 @@ export default class ProfileController extends Controller {
 
         // Submit form to backend
         let request = {
-            title:          data.title,
-            description:    data.about === '' ? null : data.about,
-            limit:          data.limit,
-            date:           data.time === '' ? null : new Date(data.time).toISOString(),
-            photos:         data.photos,
-            public:         data.public,
+            title: data.title,
+            description: data.about === '' ? null : data.about,
+            limit: data.limit,
+            date: data.time === '' ? null : new Date(data.time).toISOString(),
+            photos: data.photos,
+            public: data.public,
         };
 
         UserModel.getProfile().then(profile => {
@@ -295,7 +333,7 @@ export default class ProfileController extends Controller {
     };
 
     /***********************************************
-                      User photos
+     User photos
      ***********************************************/
 
     #handleFile = (event) => {
@@ -323,7 +361,10 @@ export default class ProfileController extends Controller {
             const FR = new FileReader();
 
             FR.addEventListener('load', (event) => {
-                const dataPhotoId = this.images.push({state: 'new', img: event.target.result.split(';')[1].split(',')[1]});
+                const dataPhotoId = this.images.push({
+                    state: 'new',
+                    img: event.target.result.split(';')[1].split(',')[1]
+                });
                 this.view.photosColumn.insertAdjacentHTML('beforeend', imageEditTemplate({
                     data_photo_id: dataPhotoId,
                     src: event.target.result,
@@ -337,8 +378,7 @@ export default class ProfileController extends Controller {
     #removeUserImage = (event) => {
         if (event.target.classList.contains('image-edit__close-icon')
             ||
-            event.target.classList.contains('image-edit__close-icon_inner'))
-        {
+            event.target.classList.contains('image-edit__close-icon_inner')) {
             let imageEditDiv = event.target.closest('.image-edit');
             this.images[Number(imageEditDiv.getAttribute('data-photo-id')) - 1].img = null;
             imageEditDiv.remove();
@@ -366,7 +406,11 @@ export default class ProfileController extends Controller {
             about: textInput.value, // TODO: check if it's safe
             social: this.user.links,
             photos: this.images.some(image => image.state === 'old' ? !image.img : image.img)
-                ? this.images.map(image => {if (image.img) {return image.img;}})
+                ? this.images.map(image => {
+                    if (image.img) {
+                        return image.img;
+                    }
+                })
                 : null,
         };
 
@@ -376,12 +420,12 @@ export default class ProfileController extends Controller {
         UserModel.putProfile(userProfile)
             .then(response => {
                 if (Object.prototype.hasOwnProperty.call(response, 'message')) {
-                    return this.view.addErrorMessage(document.getElementsByClassName('re_btn re_btn__filled')[0], [response.message]);
+                    return this.view.addErrorMessage(
+                        document.getElementsByClassName('re_btn re_btn__filled')[0], [response.message]);
                 } else {
                     return Snackbar.instance.addMessage(TextConstants.PROFILE__SUCCESSFUL_SAVE);
                 }
-            })
-            .catch(reason => console.log('ERROR', reason));
+            }).catch(reason => console.log('ERROR', reason));
     };
 
     // TODO: move it to view
@@ -392,7 +436,12 @@ export default class ProfileController extends Controller {
     #showModalTags = (event) => {
         event.preventDefault();
         this.editView = new ModalView(document.body);
-        let tags = STATIC_TAGS.map((tag) => {tag.editable = true; tag.activeClass = ''; return tag;});
+        let tags = STATIC_TAGS.map((tag) => {
+            tag.editable = true;
+            tag.activeClass = '';
+            return tag;
+        });
+        console.log(tags);
         this.editView.render({
             title: 'Ваши теги',
             tags: tags,
@@ -444,7 +493,9 @@ export default class ProfileController extends Controller {
         // Rendering active tags in modal view
         if (activeTags && activeTags.length > 0) {
             let activeTagIds = [];
-            activeTags.forEach((activeTag) => {activeTagIds.push(+activeTag.firstElementChild.getAttribute('data-id'));});
+            activeTags.forEach((activeTag) => {
+                activeTagIds.push(+activeTag.firstElementChild.getAttribute('data-id'));
+            });
             this.activeModalWindow.querySelectorAll('.tag__container').forEach((tag) => {
                 if (activeTagIds.includes(+tag.firstElementChild.getAttribute('data-id'))) {
                     tag.classList.add('tag__container_active');
@@ -527,7 +578,7 @@ export default class ProfileController extends Controller {
     };
 
     /***********************************************
-                    Profile settings
+     Profile settings
      ***********************************************/
 
     /**
@@ -562,7 +613,7 @@ export default class ProfileController extends Controller {
     #drawUnfoldedLine = (event) => {
         event.preventDefault();
         console.log(event.target);
-        let template = editTemplate();
+        let template = editTemplate();ploy;
         if (event.target.tagName === 'A') {
             let filed = event.target.parentNode;
             switch (filed.id) {
@@ -594,4 +645,15 @@ export default class ProfileController extends Controller {
             }
         }
     };
+
+    receiveMessage = (event) => {
+        // Check where to insert the message
+        let message = JSON.parse(event.data);
+        console.log(message);
+        const notification = 'У вас новый мэтч!!!';
+        if (this.uid !== message.uid) {
+            NotificationController.notify(notification);
+        }
+    };
+
 }

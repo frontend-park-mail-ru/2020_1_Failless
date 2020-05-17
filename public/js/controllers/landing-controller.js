@@ -1,10 +1,9 @@
 'use strict';
 
-import Controller from 'Eventum/core/controller.js';
-import LandingView from 'Eventum/views/landing-view.js';
+import Controller from 'Eventum/core/controller';
+import LandingView from 'Eventum/views/landing-view';
 import Router from 'Eventum/core/router';
 import UserModel from 'Eventum/models/user-model';
-import router from 'Eventum/core/router';
 
 /**
  * @class LandingController
