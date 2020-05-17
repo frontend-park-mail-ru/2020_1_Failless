@@ -245,7 +245,7 @@ export default class ProfileController extends Controller {
     }
 
     /***********************************************
-                         Events
+     Events
      ***********************************************/
 
     #previewImagesForEvent = (event) => {
@@ -333,7 +333,7 @@ export default class ProfileController extends Controller {
     };
 
     /***********************************************
-                      User photos
+     User photos
      ***********************************************/
 
     #handleFile = (event) => {
@@ -361,7 +361,10 @@ export default class ProfileController extends Controller {
             const FR = new FileReader();
 
             FR.addEventListener('load', (event) => {
-                const dataPhotoId = this.images.push({state: 'new', img: event.target.result.split(';')[1].split(',')[1]});
+                const dataPhotoId = this.images.push({
+                    state: 'new',
+                    img: event.target.result.split(';')[1].split(',')[1]
+                });
                 this.view.photosColumn.insertAdjacentHTML('beforeend', imageEditTemplate({
                     data_photo_id: dataPhotoId,
                     src: event.target.result,
@@ -375,8 +378,7 @@ export default class ProfileController extends Controller {
     #removeUserImage = (event) => {
         if (event.target.classList.contains('image-edit__close-icon')
             ||
-            event.target.classList.contains('image-edit__close-icon_inner'))
-        {
+            event.target.classList.contains('image-edit__close-icon_inner')) {
             let imageEditDiv = event.target.closest('.image-edit');
             this.images[Number(imageEditDiv.getAttribute('data-photo-id')) - 1].img = null;
             imageEditDiv.remove();
@@ -404,7 +406,11 @@ export default class ProfileController extends Controller {
             about: textInput.value, // TODO: check if it's safe
             social: this.user.links,
             photos: this.images.some(image => image.state === 'old' ? !image.img : image.img)
-                ? this.images.map(image => {if (image.img) {return image.img;}})
+                ? this.images.map(image => {
+                    if (image.img) {
+                        return image.img;
+                    }
+                })
                 : null,
         };
 
@@ -414,12 +420,12 @@ export default class ProfileController extends Controller {
         UserModel.putProfile(userProfile)
             .then(response => {
                 if (Object.prototype.hasOwnProperty.call(response, 'message')) {
-                    return this.view.addErrorMessage(document.getElementsByClassName('re_btn re_btn__filled')[0], [response.message]);
+                    return this.view.addErrorMessage(
+                        document.getElementsByClassName('re_btn re_btn__filled')[0], [response.message]);
                 } else {
                     return Snackbar.instance.addMessage(TextConstants.PROFILE__SUCCESSFUL_SAVE);
                 }
-            })
-            .catch(reason => console.log('ERROR', reason));
+            }).catch(reason => console.log('ERROR', reason));
     };
 
     // TODO: move it to view
@@ -572,7 +578,7 @@ export default class ProfileController extends Controller {
     };
 
     /***********************************************
-                    Profile settings
+     Profile settings
      ***********************************************/
 
     /**
@@ -607,7 +613,7 @@ export default class ProfileController extends Controller {
     #drawUnfoldedLine = (event) => {
         event.preventDefault();
         console.log(event.target);
-        let template = editTemplate();
+        let template = editTemplate();ploy;
         if (event.target.tagName === 'A') {
             let filed = event.target.parentNode;
             switch (filed.id) {

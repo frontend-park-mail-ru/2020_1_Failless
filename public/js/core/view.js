@@ -29,7 +29,7 @@ export default class View {
 
     /**
      * Add error message
-     * @param {HTMLElement} element - html element
+     * @param {Element} element - html element
      * @param {string[]} messageValue - array of validation errors
      */
     addErrorMessage(element, messageValue) {
