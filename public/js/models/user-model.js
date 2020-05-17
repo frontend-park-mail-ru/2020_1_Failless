@@ -160,23 +160,27 @@ export default class UserModel extends Model {
 
     /**
      * Send user image data to server
+     * @param images {Array<{
+     *     img: string | null,
+     *     path: string | null,
+     * }>}
      * @return {Promise} promise to set new user data
      */
-    static putImage(imageData) {
-        return NetworkModule.fetchPut({
-            path: `/profile/${this.user.uid}/upload`,
-            api: settings.api,
-            body: imageData
-        }).then(
-            (response) => {
+    static putPhotos(images) {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/meta/photos`, body: images})
+            .then(response => {
                 if (response.status > 499) {
                     throw new Error('Server error');
                 }
-                return response.json();
-            },
-            (error) => {
-                throw new Error(error);
-            });
+                return response.json()
+                    .then(photos => {
+                        if (photos.message) {
+                            throw new Error(photos.message);
+                        } else {
+                            return photos;
+                        }
+                    });})
+            .catch(error => {throw new Error(error);});
     }
 
     /**

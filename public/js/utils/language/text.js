@@ -35,6 +35,7 @@ export default class TextConstants {
     static get BASIC__NO_PHOTOS() {return localLibrary.Basic.NO_PHOTOS;}
     static get BASIC__EVENTS() {return localLibrary.Basic.EVENTS;}
     static get BASIC__SOCIAL_NETWORKS() {return localLibrary.Basic.SOCIAL_NETWORKS;}
+    static get BASIC__SAVE() {return localLibrary.Basic.SAVE;}
 
     static get EVENT__VISITED() {return localLibrary.Event.VISITED;}
     static get EVENT__UNVISITED() {return localLibrary.Event.UNVISITED;}
@@ -56,4 +57,5 @@ export default class TextConstants {
     static get PROFILE__YOU_VISIT() {return localLibrary.Profile.YOU_VISIT;}
     static get PROFILE__YOUR_TAGS() {return localLibrary.Profile.YOUR_TAGS;}
     static get PROFILE__NO_TAGS() {return localLibrary.Profile.NO_TAGS;}
+    static get PROFILE__YOUR_PHOTOS() {return localLibrary.Profile.YOUR_PHOTOS;}
 }

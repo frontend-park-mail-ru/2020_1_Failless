@@ -12,6 +12,7 @@ const BasicTextsRussian = {
     NO_PHOTOS: 'Фотографий нет',
     EVENTS: 'Мероприятия',
     SOCIAL_NETWORKS: 'Социальные сети',
+    SAVE: 'Сохранить',
 };
 
 const EventTextsRussian = {
@@ -26,6 +27,7 @@ const ProfileTextsRussian = {
     YOUR_EVENTS: 'Ваши мероприятия',
     YOU_VISIT: 'Вы идёте',
     YOUR_TAGS: 'Ваши теги',
+    YOUR_PHOTOS: 'Ваши фото',
 };
 
 const FiltersTextsRussian = {

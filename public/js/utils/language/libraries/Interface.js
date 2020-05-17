@@ -15,6 +15,7 @@ const BasicTextsInterface = {
     YOUR_EVENTS: '',
     YOU_VISIT: '',
     SOCIAL_NETWORKS: '',
+    SAVE: '',
 };
 
 const EventTextsInterface = {
@@ -29,6 +30,7 @@ const ProfileTextsInterface = {
     YOUR_EVENTS: '',
     YOU_VISIT: '',
     YOUR_TAGS: '',
+    YOUR_PHOTOS: '',
 };
 
 const FiltersTextsInterface = {

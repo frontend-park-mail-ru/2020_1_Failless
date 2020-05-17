@@ -5,6 +5,7 @@ import MyView from 'Eventum/views/my-view';
 import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
+import imageEditTemplate from 'Blocks/image-edit/template.hbs';
 import loadingTemplate from 'Blocks/loading/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import tagTemplate from 'Blocks/tag/template.hbs';
@@ -43,6 +44,9 @@ export default class ProfileView extends MyView {
                 tagsDiv: {
                     element: null,
                 },
+                avatarDiv: {
+                    element: null,
+                }
             },
             mainColumn: {
                 comp: null,
@@ -166,6 +170,9 @@ export default class ProfileView extends MyView {
     }
 
     setDOMProfileElements() {
+        while (!this.vDOM.leftColumn.avatarDiv.element) {
+            this.vDOM.leftColumn.avatarDiv.element = document.querySelector('.profile-left__avatar');
+        }
         while (!this.vDOM.leftColumn.tagsDiv.element) {
             this.vDOM.leftColumn.tagsDiv.element = document.querySelector('.profile-left__tags');
         }
@@ -379,9 +386,32 @@ export default class ProfileView extends MyView {
         this.showError(this.tagsDiv, TextConstants.PROFILE__NO_TAGS, null, null);
     }
 
+    async renderPhotos(photos) {
+        console.log(photos);
+        makeEmpty(this.photosColumn);
+        if (photos) {
+            photos.forEach(photo => {
+                this.photosColumn.insertAdjacentHTML('beforeend', imageEditTemplate({
+                    src: `${settings.aws}/users/${photo.path}`,
+                }))
+            });
+            this.avatarDiv.querySelector('img').src = `${settings.aws}/users/${photos[0].path}`
+        } else {
+            await this.renderEmptyPhotos();
+        }
+    }
+
+    async renderEmptyPhotos() {
+        this.showError(this.photosColumn, TextConstants.BASIC__NO_PHOTOS, null, null);
+    }
+
     /***********************************************
                  Additional get functions
      ***********************************************/
+
+    get avatarDiv() {
+        return this.vDOM.leftColumn.avatarDiv.element;
+    }
 
     get tagsDiv() {
         return this.vDOM.leftColumn.tagsDiv.element;

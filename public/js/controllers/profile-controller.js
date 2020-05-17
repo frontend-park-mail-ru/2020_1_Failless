@@ -18,6 +18,7 @@ import {toggleActionText} from 'Blocks/event/event';
 import settings from 'Settings/config';
 import Snackbar from 'Blocks/snackbar/snackbar';
 import TextConstants from 'Eventum/utils/language/text';
+import NetworkModule from 'Eventum/core/network';
 
 /**
  * @class ProfileController
@@ -265,6 +266,30 @@ export default class ProfileController extends Controller {
         this.editView = null;
     };
 
+    async #uploadImages() {
+        // Get all images
+        let images = this.activeModalWindow.querySelectorAll('.image-edit');
+        let requestImages = [];
+        if (images) {
+            images.forEach(image => {
+                let src = image.querySelector('img').src;
+                if (src.startsWith('https://')) {
+                    requestImages.push({img: '', path: src.slice((`${settings.aws}/users/`).toString().length)});
+                } else {
+                    requestImages.push({img: src.split(';')[1].split(',')[1], path: ''});
+                }
+            });
+        }
+        console.log(requestImages);
+
+        Promise.all([
+            UserModel.putPhotos(requestImages),
+            this.view.showLoading(this.view.photosColumn),
+        ]).then(responses => {
+            this.view.renderPhotos(responses[0]);
+        }).catch(Snackbar.instance.addMessage);
+    };
+
     /***********************************************
                          Events
      ***********************************************/
@@ -379,20 +404,62 @@ export default class ProfileController extends Controller {
         }
 
         // Show modal window
-        // this.editView = new ModalView(document.body);
-        // this.editView.render();
-        // Display images in it with remove button
-        // And save button
-        // On save - render all of them in photoColumnDiv
-        // And avatar
+        this.editView = new ModalView(document.body);
+        this.editView.render({
+            title: TextConstants.PROFILE__YOUR_PHOTOS,
+            last_buttons: [{title: TextConstants.BASIC__SAVE}]
+        });
 
+        let modalBG = document.body.querySelector('.modal__bg');
+        this.activeModalWindow = modalBG.firstElementChild;
+        const body = this.activeModalWindow.querySelector('.modal__body');
+
+        // Render old images
+        let oldPhotos = this.view.photosColumn.querySelectorAll('.image-edit');
+        if (oldPhotos) {
+            oldPhotos.forEach(photoElement => {
+                body.insertAdjacentElement('beforeend', photoElement);
+            });
+        }
+
+        // Adding event handlers
+        modalBG.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        modalBG.addEventListener('scroll', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+
+        body.addEventListener(
+            'click', this.#removePreviewImage, false);
+        this.activeModalWindow.querySelector('.modal__header-icon').addEventListener(
+            'click', (event) => {
+                event.preventDefault();
+                // Render old photos back
+                if (oldPhotos) {
+                    oldPhotos.forEach(photoElement => {
+                        this.view.photosColumn.insertAdjacentElement('beforeend', photoElement);
+                    });
+                }
+                this.editView.clear();
+                this.editView = null;
+            });
+        this.activeModalWindow.querySelector('[data-bind-event="modalWindowAction"]').addEventListener(
+            'click', () => {
+                this.#uploadImages();
+                this.editView.clear();
+                this.editView = null;
+            });
+
+        // Render new images
         for (let iii = 0; iii < files.length; iii++) {
             const FR = new FileReader();
 
             FR.addEventListener('load', (event) => {
-                const dataPhotoId = this.images.push({state: 'new', img: event.target.result.split(';')[1].split(',')[1]});
-                this.view.photosColumn.insertAdjacentHTML('beforeend', imageEditTemplate({
-                    data_photo_id: dataPhotoId,
+                this.images.push(event.target.result.split(';')[1].split(',')[1]);
+                body.insertAdjacentHTML('beforeend', imageEditTemplate({
                     src: event.target.result,
                 }));
             });
@@ -407,7 +474,17 @@ export default class ProfileController extends Controller {
             event.target.classList.contains('image-edit__close-icon_inner'))
         {
             let imageEditDiv = event.target.closest('.image-edit');
-            this.images[Number(imageEditDiv.getAttribute('data-photo-id')) - 1].img = null;
+            imageEditDiv.remove();
+            // TODO: send request
+        }
+    };
+
+    #removePreviewImage = (event) => {
+        if (event.target.classList.contains('image-edit__close-icon')
+            ||
+            event.target.classList.contains('image-edit__close-icon_inner'))
+        {
+            let imageEditDiv = event.target.closest('.image-edit');
             imageEditDiv.remove();
         }
     };
@@ -468,7 +545,7 @@ export default class ProfileController extends Controller {
         this.editView = new ModalView(document.body);
         let tags = STATIC_TAGS.map((tag) => {tag.editable = true; tag.activeClass = ''; return tag;});
         this.editView.render({
-            title: 'Ваши теги',
+            title: TextConstants.PROFILE__YOUR_TAGS,
             tags: tags,
             last_buttons: [{title: 'ОК'}]
         });
@@ -476,6 +553,10 @@ export default class ProfileController extends Controller {
         // Adding event handlers
         let modalBG = document.body.querySelector('.modal__bg');
         modalBG.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        modalBG.addEventListener('scroll', (event) => {
             event.preventDefault();
             event.stopPropagation();
         });
