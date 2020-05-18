@@ -230,11 +230,7 @@ export default class ChatController extends Controller {
      */
     #reestablishConnection = () => {
         if (!this.ChatModel.isWSOpen()) {
-            UserModel.getProfile().then((profile) => {
-                if (profile) {
-                    this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then();
-                }
-            });
+            this.ChatModel.establishConnection(this.uid, this.receiveMessage).then();
         }
     }
 
