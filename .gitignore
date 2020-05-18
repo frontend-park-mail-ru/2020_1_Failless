@@ -7,3 +7,5 @@ bundle.*.js
 .DS_Store
 *.precompiled.js
 public/static/dist
+deploy_rsa.pub
+deploy_rsa

@@ -34,7 +34,7 @@
     "webpack-cli": "^3.3.11"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Warning: no test specified\" && exit 0",
     "build:css": "sass ./public/style.scss:./public/static/css/style.css",
     "build:all": "npm run build:css && npm run build:bundle",
     "build:bundle": "node ./scripts/main.js ./public/static/dist ./public/blocks ./public/components",
