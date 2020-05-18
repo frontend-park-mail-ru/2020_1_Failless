@@ -16,11 +16,18 @@ before_install:
 after_success:
   - npm install
   - npx webpack
+  - eval "$(ssh-agent -s)" #start the ssh agent
+  - cp .travis/deploy_rsa ~/.ssh/deploy_rsa
+  - chmod 600 ~/.ssh/deploy_rsa
+  - ssh-add ~/.ssh/deploy_rsa
+  - git remote add deploy DEPLOY_REPO_URI_GOES_HERE
+  - git push deploy
 git:
   depth: 9999999
 deploy:
 - provider: script
   skip_cleanup: true
   script: ".travis/deploy.sh"
+
   on:
     branch: feature/travis-ci
