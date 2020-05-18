@@ -4,15 +4,12 @@
             <div class="big-search__icon">
                 <span class="icon icon__size_middle icon__search icon_color_gray"></span>
             </div>
-            <input id="searchInput" class="input input__search" type="text" placeholder="Найти мероприятие"
+            <input id="searchInput" class="input big-search__input" data-bind-event="sendRequestOnEnter" type="text" placeholder="Найти мероприятие"
                    name="searchBox" autocomplete="off">
+            <button class="re_btn re_btn__outline big-search__button" data-bind-event="sendRequestOnClick">Найти</button>
         </div>
     </header>
-    <div class="big-search__results">
-        <div class="big-search__grid">
-            {{#each events as |big-event|}}
-               {{> $Blocks/big-event/template }}
-            {{/each}}
-        </div>
+    <div class="big-search__results" data-bind-event="followEvent">
+        {{> $Blocks/loading/template}}
     </div>
 </main>

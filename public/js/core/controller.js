@@ -1,8 +1,9 @@
 'use strict';
 
-import createHeader from 'Eventum/core/header.js';
-import UserModel from 'Eventum/models/user-model.js';
-import logoutRedirect from 'Eventum/utils/logout.js';
+import createHeader from 'Eventum/core/header';
+import UserModel from 'Eventum/models/user-model';
+import {logoutRedirect} from 'Eventum/utils/user-utils';
+import router from 'Eventum/core/router';
 
 /**
  * @class Basic controller class
@@ -36,34 +37,65 @@ export default class Controller {
         this.parent.innerHTML = '';
     }
 
-    animateHeader() {
-        window.addEventListener('scroll', this.stickyHeader.bind(this));
-        console.log(document.querySelector('.header'));
-        console.log(document.getElementsByClassName('header')[0]);
-        console.log(document.getElementsByTagName('header')[0]);
-        this.header = document.querySelector('.header');
-    }
-
     /**
      * Create action and render header
      */
     action() {
-        UserModel.getLogin().then((user) => {
-            if (!Object.prototype.hasOwnProperty.call(user, 'uid')) {
+        UserModel.getLogin()
+            .then((user) => createHeader(this.parent, Object.prototype.hasOwnProperty.call(user, 'uid')))
+            .catch((onerror) => {
                 createHeader(this.parent, false);
+                console.log('No internet connection', onerror);})
+            .then(() =>
+                this.initHandlers([
+                    {
+                        attr: 'headerItemPressed',
+                        events: [
+                            {type: 'click', handler: this.#controlBtnPressed},
+                        ]
+                    },
+                    {
+                        attr: 'homeRedirect',
+                        events: [
+                            {type: 'click', handler: () => {router.redirectForward('/');}},
+                        ]
+                    },
+                    {
+                        attr: 'searchRedirect',
+                        events: [
+                            {type: 'click', handler: () => {router.redirectForward('/search');}},
+                        ]
+                    },
+                ])
+            );
+    }
+
+    /**
+     * Add event handlers
+     *      attr - attribute of HTML element data-bind-event="attr"
+     *      many = true, in case many elements have the same eventHandler
+     *             be careful with type of event
+     *      events - that's pretty self explanatory
+     *
+     * @param eventMap {({attr: string, events: [{handler: function(Event): (undefined), type: string}]}|{attr: string, many: boolean, events: [{handler: function(*): void, type: string}, {handler: function(Event): void, type: string}]})[]}
+     */
+    initHandlers(eventMap) {
+        eventMap.forEach((eMap) => {
+            if (eMap.many) {
+                // TODO: add result of querySelector to view.vDOM
+                const nodes = document.querySelectorAll(`[data-bind-event="${eMap.attr}"]`);
+                nodes.forEach((node) => {
+                    eMap.events.forEach((ev) => {
+                        this.addEventHandler(node, ev.type, ev.handler);
+                    });
+                });
             } else {
-                createHeader(this.parent, true);
+                // TODO: add result of querySelector to view.vDOM
+                const node = document.querySelector(`[data-bind-event="${eMap.attr}"]`);
+                eMap.events.forEach((ev) => {
+                    this.addEventHandler(node, ev.type, ev.handler);
+                });
             }
-        }).catch((onerror) => {
-            createHeader(this.parent, false);
-            console.log('No internet connection');
-        }).then(() => {
-            const managePanel = document.getElementsByClassName('header__manage')[0];
-            this.addEventHandler(managePanel, 'click', this.#controlBtnPressed);
-            // managePanel.addEventListener('click', this.#controlBtnPressed.bind(this));
-            const logo = document.getElementsByClassName('header__logo gradient-text')[0];
-            this.addEventHandler(logo, 'click', this.#homeRedirect);
-            // logo.addEventListener('click', this.#homeRedirect.bind(this));
         });
     }
 
@@ -74,38 +106,26 @@ export default class Controller {
      */
     #controlBtnPressed = (event) => {
         event.preventDefault();
-        if (event.target.tagName === 'A') {
-            let href = event.target.getAttribute('href');
-            if (href === '') {
-                href = '/';
-            }
-
-            if (href === '/logout') {
-                logoutRedirect(event);
-                return;
-            }
-
-            window.history.pushState({}, '', href);
-            window.history.pushState({}, '', href);
-            window.history.back();
+        let link = null;
+        if (event.target.tagName === 'DIV') {
+            link = event.target.querySelector('.header__item__link');
+        } else if (event.target.tagName === 'A') {
+            link = event.target;
+        } else {
+            return;
         }
-    };
 
+        let href = link.getAttribute('href');
+        if (href === '') {
+            href = '/';
+        }
 
-    /**
-     * Handle click on home event
-     * @param {Event} event
-     */
-    #homeRedirect = (event) => {
-        event.preventDefault();
-        window.history.pushState({}, '', '/');
-        window.history.pushState({}, '', '/');
-        window.history.back();
-    };
+        if (href === '/logout') {
+            logoutRedirect(event);
+            return;
+        }
 
-    #setActiveLink = (index) => {
-        // TODO: remove all active links
-        //  Add active link on chosen index (look in my-controller.js)
+        router.redirectForward(href);
     };
 
     /*
@@ -187,9 +207,8 @@ export default class Controller {
 
     /**
      * Create slow header hiding and showing during scroll
-     * @param event
      */
-    stickyHeader = (event) => {
+    stickyHeader = () => {
         this.header = document.querySelector('.header');
         if (!this.header) {
             this.header = document.querySelector('header');
@@ -198,7 +217,7 @@ export default class Controller {
         const currentScroll = window.pageYOffset;
 
         // Reached top
-        if (currentScroll === 0) {
+        if (currentScroll <= 0) {
             this.header.classList.remove(this.scrollUp);
             return;
         }

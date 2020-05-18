@@ -2,8 +2,9 @@
 
 .my {
   width: 100%;
-  height: 88.5vh; // TODO: bullshit
-  margin: (10px + $header-height) 0 10px;
+  position: absolute;
+  top: (10px + $header-height);
+  bottom: 10px;
   border-radius: $re--border-radius;
   background-color: $color-white;
   box-shadow: 20px 20px 60px #cdcdcd,
@@ -11,9 +12,8 @@
   display: flex;
 
   &__left-column {
-    width: 25%;
+    width: 250px;
     max-height: 100%;
-    box-sizing: border-box;
     border-right: 1px solid $re--color-light-gray;
     border-top-left-radius: $re--border-radius;
     border-bottom-left-radius: $re--border-radius;
@@ -26,6 +26,10 @@
     -webkit-border-bottom-left-radius: $re--border-radius;
     -moz-border-radius-topleft: $re--border-radius;
     -moz-border-radius-bottomleft: $re--border-radius;
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      width: 100%;
+    }
   }
 
   &__left-column-header {
@@ -35,14 +39,21 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    background: white;
   }
 
   &__left-column-body {
+    height: 100%;
     padding: $re--medium-padding $re--medium-padding 0;
-    max-height: calc(100% - 88px);
-    //overflow: auto;
     position: relative;
-    min-height: 692px;
+    min-height: 0px;
+
+    &_page {
+      &-chat {
+        padding: 15px 0 0;
+        min-height: 0;
+      }
+    }
   }
 
   &__main-column {
@@ -55,9 +66,53 @@
 
     &-body {
       width: 100%;
-      height: calc(100% - 39px);
+      height: 100%;
       display: flex;
       align-items: flex-start;
     }
+  }
+}
+
+@media only screen and (max-width: $breakpoint-1000) {
+  .my {
+    min-height: calc(100vh - 100px);
+    height: fit-content;
+    position: relative;
+    margin-top: $header-height;
+    border-radius: 0;
+    box-shadow: none;
+    //flex-flow: column;
+    overflow-x: hidden;
+
+    &__left-column {
+      min-height: 100%;
+      height: fit-content;
+    }
+
+    &__left-column-header {
+      height: 55px;
+      z-index: $z-index-subheader;
+      border-top: 1px solid #f1f1f1;
+      position: fixed;
+      width: 100%;
+      top: 45px;
+    }
+
+    &__main-column {
+      width: 100%;
+      padding: 0;
+      border-radius: 0;
+
+      &-body {
+        height: 100%;
+        padding: 0 $re--medium-padding;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .my {
+    flex-flow: column;
   }
 }

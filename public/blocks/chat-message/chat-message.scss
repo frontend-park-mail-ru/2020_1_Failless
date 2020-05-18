@@ -1,0 +1,87 @@
+@import "../../modules/variables";
+
+$message-radius: 18px;
+
+.chat-message {
+  padding: 8px 10px;
+  border-radius: $message-radius;
+  font-size: 14px;
+  font-weight: 300;
+  color: $color-white;
+  line-height: 20px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
+  &_right {
+    background: $re--gradient-right;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+
+  &_left {
+    background: $re--gradient-left;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  &_first_left {
+    border-top-left-radius: $message-radius;
+  }
+
+  &_mid_left {
+    border-bottom-left-radius: $re--border-radius;
+    border-top-left-radius: $re--border-radius;
+  }
+
+  &_last_left {
+    border-bottom-left-radius: $message-radius;
+  }
+
+  &_first_right {
+     border-top-right-radius: $message-radius;
+   }
+
+  &_mid_right {
+    border-bottom-right-radius: $re--border-radius;
+    border-top-right-radius: $re--border-radius;
+  }
+
+  &_last_right {
+    border-bottom-right-radius: $message-radius;
+  }
+
+  &__avatar {
+    width: 23px;
+    height: 23px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 2px;
+  }
+
+  &__container {
+    max-width: 75%;
+    margin: 1px 0;
+    display: flex;
+    align-items: flex-end;
+    @include transition(0.3s, ease-in-out);
+    transform: scale(1);
+
+    &_right {
+     align-self: flex-end;
+    }
+
+    &_left {
+     align-self: flex-start;
+    }
+
+    &_new {
+      transform: scale(0);
+    }
+  }
+}

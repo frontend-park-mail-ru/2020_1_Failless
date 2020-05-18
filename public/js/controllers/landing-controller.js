@@ -1,7 +1,9 @@
 'use strict';
 
-import Controller from 'Eventum/core/controller.js';
-import LandingView from 'Eventum/views/landing-view.js';
+import Controller from 'Eventum/core/controller';
+import LandingView from 'Eventum/views/landing-view';
+import Router from 'Eventum/core/router';
+import UserModel from 'Eventum/models/user-model';
 
 /**
  * @class LandingController
@@ -17,23 +19,45 @@ export default class LandingController extends Controller {
         this.view = new LandingView(parent);
     }
 
+    destructor() {
+        this.view.destructor();
+        super.destructor();
+    }
+
     /**
      * Create action
      */
     action() {
         super.action();
-        this.view.render();
+        UserModel.getLogin().then((user) => {
+            if (!user) {
+                console.error('Server error');
+                console.log(user);
+                return;
+            }
+            if (Object.prototype.hasOwnProperty.call(user, 'uid')) {
+                this.view.render(true);
+            } else {
+                this.view.render();
+            }
+            this.initHandlers([
+                {
+                    attr: 'signup',
+                    many: true,
+                    events: [
+                        {type: 'click', handler: Router.redirectForward.bind(this, '/signup')},
+                    ]
+                },
+                {
+                    attr: 'feed',
+                    many: true,
+                    events: [
+                        {type: 'click', handler: Router.redirectForward.bind(this, '/feed')},
+                    ]
+                },
+            ]);
 
-        document.querySelectorAll('.re_btn__white').forEach((btn) => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-
-                window.history.pushState({}, '', '/signup');
-                window.history.pushState({}, '', '/signup');
-                window.history.back();
-            });
+            this.addEventHandler(window, 'scroll', this.stickyHeader);
         });
-
-        this.addEventHandler(window, 'scroll', this.stickyHeader);
     }
 }

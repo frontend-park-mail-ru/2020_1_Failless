@@ -1,0 +1,63 @@
+@import "../../modules/variables";
+
+/*-------------------------------------------*\
+   Windows 8 spinner
+\*-------------------------------------------*/
+
+.spinner {
+  @extend %center;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+
+  &__icon {
+    width: 60px;
+    height: 60px;
+    margin: 60px;
+    animation: rotate 1.4s infinite ease-in-out, background 1.4s infinite ease-in-out alternate;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+  }
+
+  &__message {
+    text-align: center;
+    color: $re--color-middle-gray;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+  }
+
+  &_global {
+    position: fixed;
+    top: 0;
+    background: radial-gradient(white, transparent);
+  }
+
+  &_appear {
+    opacity: 0;
+    * {
+      opacity: 0;
+    }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-180deg);
+  }
+}
+@keyframes background {
+  0% {
+  background-color: $color-blue;
+  }
+  50% {
+    background-color: $color-red;
+  }
+  100% {
+    background-color: $color-purple;
+  }
+}

@@ -1,0 +1,176 @@
+@import "../../modules/variables";
+
+.event-edit {
+  width: 100%;
+  margin-bottom: $re--medium-padding;
+  background: $color-white;
+  border-radius: $re--border-radius;
+  box-shadow:  3px 3px 10px #e5e5e5,
+             -3px -3px 10px #fdfdfd;
+  @include transition(0.3s, ease-in-out);
+  transform: scale(0);
+  // add margin-top and margin-right dynamically
+
+  & textarea {
+    border-radius: 0;
+    resize: none;
+    outline: none;
+    border: none;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+
+  & label {
+    display: block;
+  }
+
+  &_active {
+    margin-top: 0 !important;
+    margin-right: 0 !important;
+    transform: scale(1);
+  }
+
+  &__photos {
+    width: 100%;
+    overflow-x: auto;
+    display: flex;
+    align-items: center;
+    background: $re--color-light-gray;
+  }
+
+  &__photo-helper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & input {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    & img {
+      object-fit: cover;
+    }
+
+    & svg {
+      width: 50px;
+      margin: 50px;
+    }
+
+    &:hover {
+      & .dark-overlay {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__body {
+    padding: 0 $re--medium-padding;
+    text-align: left;
+  }
+
+  &__title {
+    width: 100%;
+    padding: $re--medium-padding 0 0;
+    color: $color-black;
+    font-size: 12px;
+    font-weight: 700;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+
+
+    &::placeholder {
+      color: $color-black;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  }
+
+  &__about {
+    width: 100%;
+    margin-top: $re--small-padding;
+    font-size: 10px;
+    font-weight: 400;
+    padding: 0;
+
+    &::placeholder {
+      font-size: 10px;
+      font-weight: 400;
+    }
+  }
+
+  &__header {
+    margin: $re--small-padding 0 5px;
+    color: $color-black;
+
+    &_small {
+      font-size: 10px;
+      font-weight: 500;
+    }
+  }
+
+  &__tags {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: wrap;
+    align-items: flex-start;
+
+    & svg {
+      width: 20px;
+      cursor: pointer;
+    }
+  }
+
+  &__time {
+    color: $re--color-middle-gray;
+    font-size: 10px;
+    font-weight: 300;
+
+    &::placeholder {
+      color: $re--color-middle-gray;
+      font-size: 10px;
+      font-weight: 300;
+    }
+  }
+
+  &__slider {
+    & .slider__container {
+      flex-flow: column;
+    }
+  }
+
+  &__public {
+    transform: scale(1);
+    height: auto;
+    opacity: 1;
+    @include transition(0.3s, ease-in-out);
+
+    &_hidden {
+      transform: scale(0);
+      height: 0;
+      opacity: 0;
+    }
+  }
+
+  &__helper {
+    margin: 0;
+    color: $re--color-middle-gray;
+    font-size: 9px;
+  }
+
+  &__buttons {
+    margin: $re--small-padding 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+}

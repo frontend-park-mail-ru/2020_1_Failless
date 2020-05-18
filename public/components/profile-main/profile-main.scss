@@ -2,24 +2,31 @@
 
 .profile-main {
   width: 100%;
-  height: calc(100% - 39px);
+  height: 100%;
   display: flex;
   align-items: flex-start;
 
   &__photos {
     max-height: 100%;
     overflow-y: auto;
+    flex: 1;
 
     @media screen and (orientation: landscape) {
-      min-width: 482px;
+      //min-width: 482px;
     }
   }
 
   &__events {
     max-height: 100%;
     overflow-y: auto;
-    max-width: 20%;
-    min-width: 200px;
+    max-width: 30%;
+    min-width: 240px;
+    //padding-right: 10px;
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      max-width: 100%;
+      width: 100%;
+    }
   }
 
   &__group {
@@ -28,9 +35,32 @@
     justify-content: flex-start;
     align-items: center;
     margin-bottom: $re--big-padding;
+    padding: 0 10px;
   }
 
   &__separator {
     min-width: $re--big-padding;
+  }
+
+  &__personal-events {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: $breakpoint-1000) {
+  .profile-main {
+    flex-flow: column;
+    margin-bottom: $header-height + 10px;
+
+    &__photos {
+      overflow: unset;
+    }
+
+    &__events {
+      max-width: 100%;
+      padding-top: $re--medium-padding;
+      border-top: 1px solid $re--color-light-gray;
+      overflow: unset;
+    }
   }
 }

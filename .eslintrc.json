@@ -5,9 +5,18 @@
     },
     "extends": "eslint:recommended",
 
+    "parser": "babel-eslint",
+
     "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaVersion": 2020,
+        "ecmaFeatures": {
+            "classPrivateMethods": true,
+            "arrowFunctions": true
+        },
+        "babelOptions": {
+            "configFile": "./babel.config.js"
+        }
     },
     "rules": {
         "quotes": [

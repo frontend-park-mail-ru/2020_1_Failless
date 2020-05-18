@@ -1,0 +1,122 @@
+@import "../../modules/variables";
+
+.chat-list-item {
+  width: 100%;
+  border-bottom: 1px solid $re--color-light-gray;
+  display: flex;
+  align-items: center;
+  padding: 15px 15px;
+  cursor: pointer;
+  @include transition(0.1s, ease-in-out);
+
+  &_active {
+    background: $re--color-light-gray;
+  }
+
+  &__avatar {
+    position: relative;
+    height: 45px;
+
+    & img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    &_active {
+      & img {
+        box-shadow:  5px 5px 9px #e0e0e0,
+                   -5px -5px 9px #ffffff;
+      }
+    }
+  }
+
+  &__alert {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    padding-left: 1px;
+    line-height: 16px;
+    font-size: 8px;
+    font-weight: 500;
+    text-align: center;
+    color: $color-white;
+
+    border-radius: 50%;
+    background: $re--gradient;
+    transform: scale(0);
+    @include transition(0.3s, ease-in-out);
+
+    &_unread {
+      transform: scale(1);
+    }
+  }
+
+  &__body {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    margin-left: 14px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 7px;
+  }
+
+  &__title {
+    font-size: 12px;
+    font-weight: 600;
+    color: $color-black;
+    @include transition(0.1s, ease-in-out);
+  }
+
+  &__time {
+    font-size: 10px;
+    font-weight: 300;
+    color: $re--color-middle-gray;
+    @include transition(0.1s, ease-in-out);
+
+    &_active {
+      color: $color-black;
+    }
+
+    &_unread {
+      font-weight: 500;
+      color: $color-black;
+    }
+  }
+
+  &__message {
+    height: 20px;
+    margin: 0;
+    display: -webkit-box;
+    font-size: 10px;
+    line-height: 10px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: $color-black;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+
+    &_unread {
+      font-weight: 600;
+    }
+  }
+
+  &__empty-list {
+    @extend %center;
+  }
+}

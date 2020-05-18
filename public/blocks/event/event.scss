@@ -1,47 +1,124 @@
+@import "../../modules/variables";
+
 .event {
   width: 100%;
-  display: block;
-  align-items: center;
-  text-align: center;
+  break-inside: avoid;
+  margin-bottom: $re--medium-padding;
+  background: $color-white;
+  border-radius: $re--border-radius;
+  box-shadow:  3px 3px 10px #e5e5e5,
+             -3px -3px 10px #fdfdfd;
+  @include transition(0.3s, ease-in-out);
 
-  &__item {
-    width: 84%;
-    margin-bottom: 20px;
-    border-radius: 13px;
-    background-color: white;
+  &__photos {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+
+    & img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__body {
+    padding: 0 $re--medium-padding;
+    text-align: left;
   }
 
   &__title {
-    display: block;
-    font-size: 24px;
-    font-weight: bold;
-    color: black;
-  }
-
-  &__place {
-    display: block;
+    width: 100%;
+    padding: $re--medium-padding 0 0;
+    color: $color-black;
     font-size: 12px;
-    font-weight: bold;
-    color: black;
+    font-weight: 700;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
   }
 
-  &__photos {
-    width: auto;
-    height: 100px;
-    overflow: auto;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+  &__about {
+    margin-top: $re--medium-padding;
+    font-size: 10px;
+    font-weight: 400;
+  }
 
-    &_one {
-      width: auto;
-      max-height: 100%;
-      margin-right: 2px;
+  &__tags {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin-top: $re--medium-padding;
+  }
+
+  &__time {
+    margin-top: $re--medium-padding;
+    color: $re--color-middle-gray;
+    font-size: 10px;
+    font-weight: 300;
+  }
+
+  &__separator {
+    width: 100%;
+    height: 1px;
+    margin: 15px 0 0;
+    border: none;
+    background: $re--color-light-gray;
+  }
+
+  &__footer {
+    padding: $re--small-padding 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__action {
+    display: flex;
+    align-items: baseline;
+  }
+
+  &__circle {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+
+    &_big {
+      background: $color-red;
+    }
+
+    &_mid {
+      background: $color-blue;
+    }
+
+    &_small {
+      background: $color-purple;
     }
   }
-  &__line {
-    width: 84%;
-    margin: 4px auto 4px;
-    border: 0.5px solid #c8c8c8;
+
+  &__link {
+    margin-left: 5px;
+    font-size: 10px;
+    font-weight: 300;
+    text-decoration-line: underline;
+    cursor: pointer;
+  }
+
+  &__visitors {
+    display: flex;
+    flex-flow: row;
+    align-items: flex-end;
+  }
+
+  &__people-icon {
+    width: 14px;
+    margin: 0 5px;
+  }
+
+  &__amount {
+    font-size: 10px;
+    font-weight: 700;
+    color: $color-black;
   }
 }

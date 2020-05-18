@@ -1,6 +1,6 @@
 'use strict';
 
-import View from '../../core/view.js'
+import View from '../../core/view.js';
 
 export default class EventPopupView extends View {
     constructor(parent) {

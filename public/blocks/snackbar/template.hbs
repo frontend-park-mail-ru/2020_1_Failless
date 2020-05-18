@@ -1,0 +1,4 @@
+{{# if without_parent}}{{else}}<div class="snackbar snackbar_hidden snackbar_{{ position }}">{{/if}}
+    <div class="snackbar__body">{{ body_message }}</div>
+    <div class="snackbar__button">OK</div>
+{{# if without_parent}}{{else}}</div>{{/if}}

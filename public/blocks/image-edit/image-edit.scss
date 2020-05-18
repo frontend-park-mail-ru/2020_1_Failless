@@ -1,0 +1,40 @@
+@import "../../modules/variables";
+
+.image-edit {
+  position: relative;
+  height: 100%;
+  border-top-left-radius: $re--border-radius;
+  border-top-right-radius: $re--border-radius;
+
+  &:hover .image-edit__close-icon {
+    opacity: 1;
+  }
+
+  &__close-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 26px;
+    height: 26px;
+    background: rgba(1, 1, 1, 0.8);
+    border-bottom-left-radius: 100%;
+    cursor: pointer;
+    @include transition(0.3s, ease-in-out);
+    opacity: 0;
+
+    & svg {
+      width: 12px;
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      fill: $color-white;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    object-fit: cover;
+    border-top-left-radius: $re--border-radius;
+    border-top-right-radius: $re--border-radius;
+  }
+}

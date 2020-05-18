@@ -1,5 +1,8 @@
-import NetworkModule from 'Eventum/core/network.js';
-import Model from 'Eventum/core/model.js';
+'use strict';
+
+import NetworkModule from 'Eventum/core/network';
+import settings from 'Settings/config';
+import Model from 'Eventum/core/model';
 
 /**
  * @class EventModel
@@ -16,67 +19,78 @@ export default class EventModel extends Model {
 
     /**
      * Get event data from server
-     * @param {{query: string, page: number}} eventsRequest - request with query, limits and page
+     * @param {{limit: Number, page: Number}} eventsRequest - request with query, limits and page
      * @return {Promise} promise to get user data
      */
-    static getEvents(eventsRequest) {
-        return NetworkModule.fetchPost({path: '/events/search', body: eventsRequest}).then((response) => {
-            if (response.status > 499) {
-                throw new Error('Server error');
-            }
-            return response.json();
-        },
-        (error) => {
-            throw new Error(error);
-        });
+    static getSearchEvents(eventsRequest) {
+        let errors = this.invalidEventRequest(eventsRequest);
+        if (errors.length !== 0) {
+            throw new Error(...errors);
+        }
+        return NetworkModule.fetchPost({path: '/events/search', body: eventsRequest}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
+    /**
+     * Get Math
+     * @param {{limit: Number, page: Number}} eventsRequest - request with query, limits and page
+     * @return {Promise} promise to get user data
+     */
+    static getMatch() {
+        return NetworkModule.fetchGet({path: '/match'}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
     }
 
     /**
      * Get event data from server
-     * @param {{query: string, limit: number, page: number}} eventsRequest - request with query, limits and page
+     * @param {{query: string, page: number}} feedRequest - request with filters
      * @return {Promise} promise to get user data
      */
-    static getFeedEvents(eventsRequest) {
-        return NetworkModule.fetchPost({path: '/events/feed', body: eventsRequest}).then((response) => {
-            if (response.status > 499) {
-                throw new Error('Server error');
-            }
-            return response.json();
-        },
-        (error) => {
-            throw new Error(error);
-        });
-    }
-
-    /**
-     * Get event data from server
-     * @param {{query: string, page: number}} eventsRequest - request with query, limits and page
-     * @return {Promise} promise to get user data
-     */
-    static getFeedUsers(eventsRequest) {
-        return NetworkModule.fetchPost({path: '/users/feed', body: eventsRequest}).then((response) => {
-            if (response.status > 499) {
-                throw new Error('Server error');
-            }
-            return response.json();
-        },
-        (error) => {
-            throw new Error(error);
-        });
+    static getFeedUsers(feedRequest) {
+        let errors = this.invalidEventRequest(feedRequest);
+        if (errors.length !== 0) {
+            throw new Error(...errors);
+        }
+        return NetworkModule.fetchPost({path: '/users/feed', body: feedRequest}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
     }
 
     /**
      * Get event data from server
      * @param {{uid: number, id: number, value: number}} vote - request with query, limits and page
-     * @param {boolean} isLike - is this request for like
      * @return {Promise} promise to get user data
      */
-    static userVote(vote, isLike) {
-        let url = `/users/${vote.id}/`;
-        url += isLike ? 'like' : 'dislike';
-        return NetworkModule.fetchPost({
+    static userVote(vote) {
+        let url = '/users/';
+        url += vote.value === 1 ? 'like' : 'dislike';
+        return NetworkModule.fetchPut({
+            api: settings.api,
             path: url,
-            body: vote
+            body: vote,
         }).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
@@ -87,30 +101,6 @@ export default class EventModel extends Model {
             throw new Error(error);
         });
     }
-
-    /**
-     * Get event data from server
-     * @param {{uid: number, id: number, value: number}} vote - request with query, limits and page
-     * @param {boolean} isLike - is this request for like
-     * @return {Promise} promise to get user data
-     */
-    static eventVote(vote, isLike) {
-        let url = `/event/${vote.id}/`;
-        url += isLike ? 'like' : 'dislike';
-        return NetworkModule.fetchPost({
-            path: url,
-            body: vote
-        }).then((response) => {
-            if (response.status > 499) {
-                throw new Error('Server error');
-            }
-            return response.json();
-        },
-        (error) => {
-            throw new Error(error);
-        });
-    }
-
 
     /**
      * Get all tags from server
@@ -118,9 +108,7 @@ export default class EventModel extends Model {
      */
     static getTagList() {
         if (this.tags) {
-            return new Promise((resolve) => {
-                resolve(this.tags);
-            });
+            return this.tags;
         }
         return NetworkModule.fetchGet({path: '/tags/feed'}).then((response) => {
             if (response.status > 499) {
@@ -138,8 +126,20 @@ export default class EventModel extends Model {
         });
     }
 
-    static createEvent(body) {
-        return NetworkModule.fetchPost({path: '/event/new', body: body}).then((response) => {
+    /**
+     * Send small event to backend
+     * @param body {{
+     *      uid:            Number,
+     *      title:          string,
+     *      description:    string          |null,
+     *      tags:           Array<Number>   |null,
+     *      date:           string          |null,
+     *      photos:         Array<string>   |null,
+     * }}
+     * @return {Promise<unknown>}
+     */
+    static createSmallEvent(body) {
+        return NetworkModule.fetchPost({path: '/events/small', body: body, api: settings.api}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
@@ -150,8 +150,22 @@ export default class EventModel extends Model {
         });
     }
 
-    static getEventFollowers(eid) {
-        return NetworkModule.fetchGet({path: `/event/${eid}/follow`}).then((response) => {
+    /**
+     * Send mid event to backend
+     * @param body {{
+     *      uid:            Number,
+     *      title:          string,
+     *      description:    string          |null,
+     *      tags:           Array<Number>   |null,
+     *      date:           string          |null,
+     *      photos:         string          |null,
+     *      limit:          Number,
+     *      public:         bool,
+     * }}
+     * @return {Promise<unknown>}
+     */
+    static createMidEvent(body) {
+        return NetworkModule.fetchPost({path: '/events/mid', body: body}).then((response) => {
             if (response.status > 499) {
                 throw new Error('Server error');
             }
@@ -160,5 +174,150 @@ export default class EventModel extends Model {
         (error) => {
             throw new Error(error);
         });
+    }
+
+    /**
+     * Retrieve all user personal events
+     * small as well as mid
+     * @param uid
+     */
+    static getUserOwnEvents(uid) {
+        if (!uid) {
+            throw new Error('Invalid profile id');
+        }
+        return NetworkModule.fetchGet({path: `/profile/${uid}/own-events`, api: settings.api}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
+    /**
+     * Get events which user liked
+     * @param uid
+     * @return {Promise<unknown>}
+     */
+    static getUserSubscriptions(uid) {
+        return NetworkModule.fetchGet({path: `/profile/${uid}/subscriptions`, api: settings.api}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                console.error(error);
+                throw new Error(error);
+            });
+    }
+
+    /**
+     * Subscribe user (uid) to this event (eid)
+     * @param {Number} uid
+     * @param {Number} eid
+     */
+    static joinMidEvent(uid, eid) {
+        return NetworkModule.fetchPost({path: `/events/mid/${eid}/member`, body: {uid: Number(uid), eid: Number(eid)}}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
+    /**
+     * Send request to leave mid event
+     * @param {Number} uid
+     * @param {Number} eid
+     */
+    static leaveMidEvent(uid, eid) {
+        return NetworkModule.fetchDelete({path: `/events/mid/${eid}/member`, body: {uid: Number(uid), eid: Number(eid)}}).then(
+            (response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            },
+            (error) => {
+                throw new Error(error);
+            });
+    }
+
+    static invalidEventRequest(eventRequest) {
+        let message = [];
+        const mustHaveProperties = [
+            {
+                name: 'page',
+                type: 'number',
+            },
+
+            {
+                name: 'limit',
+                type: 'number',
+            },
+        ];
+        const mayHaveProperties = [
+            {
+                name: 'uid',
+                type: 'number',
+            },
+            {
+                name: 'query',
+                type: 'string',
+            },
+            {
+                name: 'userLimit',
+                type: 'number',
+            },
+            {
+                name: 'tags',
+                type: 'object',
+            },
+            {
+                name: 'location',
+                type: 'string',
+            },
+            {
+                name: 'men',
+                type: 'boolean',
+            },
+            {
+                name: 'women',
+                type: 'boolean',
+            },
+        ];
+
+        mustHaveProperties.every((prop) => {
+            if (Object.prototype.hasOwnProperty.call(eventRequest, prop.name)) {
+                if (typeof eventRequest.page !== prop.type) {
+                    message.push(
+                        `Invalid type of property "${prop.name}"\n` +
+                        `\tExpected ${prop.type}\n` +
+                        `\tActual ${typeof eventRequest.page}\n`);
+                }
+            } else {
+                message.push('No property "' + prop.name + '"\n');
+            }
+        });
+        mayHaveProperties.every((prop) => {
+            if (Object.prototype.hasOwnProperty.call(eventRequest, prop.name)) {
+                if (typeof eventRequest.page !== prop.type) {
+                    message.push(
+                        `Invalid type of property "${prop.name}"\n` +
+                        `\tExpected ${prop.type}\n` +
+                        `\tActual ${typeof eventRequest.page}\n`);
+                }
+            }
+        });
+        return message;
     }
 }

@@ -6,11 +6,12 @@ const CONST_OFFSET = 1;
 export default class SliderManager {
     constructor() {
         this.sliders = [];
+        this.lonelySliders = [];
     }
 
     setSliders({slider1, initialValue1}, {slider2, initialValue2}) {
-        let minSliderIndex = this.#registerSlider(slider1, initialValue1, function(offset, maxOffset) {return offset <= maxOffset;});
-        let maxSliderIndex = this.#registerSlider(slider2, initialValue2, function(offset, maxOffset) {return offset >= maxOffset;});
+        let minSliderIndex = this.#registerSlider(slider1, initialValue1, function(offset, maxOffset) {return offset <= maxOffset;}, true);
+        let maxSliderIndex = this.#registerSlider(slider2, initialValue2, function(offset, maxOffset) {return offset >= maxOffset;}, true);
 
         this.#configureSlider(this.sliders[minSliderIndex], this.#moveSliders, MAX_AGE, MIN_AGE);
         this.#configureSlider(this.sliders[maxSliderIndex], this.#moveSliders, MAX_AGE, MIN_AGE);
@@ -22,14 +23,15 @@ export default class SliderManager {
 
     setSlider(slider, initialValue) {
         this.#configureSlider(
-            this.sliders[this.#registerSlider(slider, initialValue, null)],
+            this.lonelySliders[this.#registerSlider(slider, initialValue, null, false)],
             this.#moveOne,
             MAX_LIMIT,
             MIN_LIMIT);
     }
 
-    #registerSlider(slider, initialValue, offsetFunc) {
-        this.sliders.push({
+    #registerSlider(slider, initialValue, offsetFunc, pair) {
+        let array = pair ? this.sliders : this.lonelySliders;
+        array.push({
             thumbLabel: slider.querySelector('.slider__value'),
             maxmin:     slider.querySelector('.slider__maxmin'),
             input:      slider.querySelector('input'),
@@ -39,7 +41,7 @@ export default class SliderManager {
             maxOffset:  null,
             checkOffset: offsetFunc,
         });
-        return this.sliders.length - 1;
+        return array.length - 1;
     }
 
     // TODO: DRY
@@ -86,11 +88,11 @@ export default class SliderManager {
     }
 
     #moveOne = (activeSlider) => {
-        this.sliders[2].currentValue = activeSlider.value;
-        let offset = CONST_OFFSET + this.sliders[2].step * (this.sliders[2].currentValue - MIN_LIMIT);
-        this.sliders[2].thumbLabel.setAttribute('slider_value', this.sliders[2].currentValue);
-        this.sliders[2].input.value = this.sliders[2].currentValue;
-        this.sliders[2].thumbLabel.style.left = offset.toString() + 'px';
+        this.lonelySliders[0].currentValue = activeSlider.value;
+        let offset = CONST_OFFSET + this.lonelySliders[0].step * (this.lonelySliders[0].currentValue - MIN_LIMIT);
+        this.lonelySliders[0].thumbLabel.setAttribute('slider_value', this.lonelySliders[0].currentValue);
+        this.lonelySliders[0].input.value = this.lonelySliders[0].currentValue;
+        this.lonelySliders[0].thumbLabel.style.left = offset.toString() + 'px';
     };
 
     #configureSlider(slider, movementFunc, max, min) {

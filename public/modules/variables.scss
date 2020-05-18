@@ -1,17 +1,16 @@
 $color-red: #F64F59;
+$color-also-red: #F64F36;
 $color-purple: #C471ED;
+$color-also-purple: #986CED;
 $color-blue: #12C2E9;
+$color-also-blue: #16E9E7;
 $color-black: #191919;
 $color-white: white;
 $color-light-blue: #12C2E9;
 $color-dark-blue: #325e89;
 $color-light-gray: #b6bebf;
 $color-gray: rgba(31, 63, 81, 0.6);
-
-$event-width: 236px;
-$padding-event: 12px;
-$border-radius: 2px;
-
+$color-green: #10e718;
 
 $re--color-light-gray: #F1F1F1;
 $re--color-middle-gray: #D5D5D5;
@@ -21,6 +20,34 @@ $re--gradient: linear-gradient(
                   $color-blue 0%,
                   $color-purple 50%,
                   $color-red 100%);
+$extended-gradient: linear-gradient(
+                135deg,
+                $color-also-blue,
+                $color-blue,
+                $color-also-purple,
+                $color-purple,
+                $color-also-red,
+                $color-red);
+$re--gradient-left: linear-gradient(
+                  135deg,
+                  $color-blue 0%,
+                  $color-purple 100%);
+$re--gradient-right: linear-gradient(
+                  135deg,
+                  $color-purple 0%,
+                  $color-red 100%);
+$gradient-red: linear-gradient(
+                135deg,
+                $color-red,
+                $color-also-red);
+$gradient-purple: linear-gradient(
+                135deg,
+                $color-purple,
+                $color-also-purple);
+$gradient-blue: linear-gradient(
+                135deg,
+                $color-blue,
+                $color-also-blue);
 $re--huge-padding: 69px;
 $re--large-padding: 46px;
 $re--big-padding: 23px;
@@ -33,6 +60,13 @@ $re--border-radius: 4px;
 $breakpoint-phone: 480px;
 $breakpoint-tablet: 768px;
 $breakpoint-desktop: 1024px;
+$breakpoint-1000: 1000px;
+
+$z-index-modal: 1000;
+$z-index-snackbar: 900;
+$z-index-header: 800;
+$z-index-subheader: 700;
+$z-index-mobile-screen: 300;
 
 $header-height: 45px;
 
@@ -47,4 +81,13 @@ $header-height: 45px;
     color: $color-blue;
     font-size: 10px;
     font-weight: 400;
+}
+
+%center {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
 }

@@ -19,6 +19,9 @@ export default class ProfileEditView extends View {
         this.parent = parent;
     }
 
+    destructor() {
+    }
+
     /**
      * Render template
      * @param {JSON} profile -  user profile from server

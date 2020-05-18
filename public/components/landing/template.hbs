@@ -5,7 +5,11 @@
             <div class="landing__photo__title">Мы соединяем людей</div>
             <div class="landing__photo__text">Заводите новые знакомства и посещайте любимые мероприятия вместе</div>
             <div class="landing__photo__btn">
-                <button class="re_btn__white font__size_small font_regular font__color_w">Присоединиться</button>
+                {{#if auth}}
+                    <button class="re_btn__white font__size_small font_regular font__color_w" data-bind-event="feed">Найти компанию</button>
+                {{else}}
+                    <button class="re_btn__white font__size_small font_regular font__color_w" data-bind-event="signup">Присоединиться</button>
+                {{/if}}
             </div>
         </div>
     </section>
@@ -57,7 +61,7 @@
                     <div class="landing__footer__section">
                         <div class="landing__footer__logo gradient-text">EVENTUM</div>
                         <div class="landing__footer__about">Приложение поиска попутчиков на мероприятия.<br>Мы объединяем интересных людей.</div>
-                        <button class="re_btn__white font__size_small font_regular font__color_w">Присоединиться</button>
+                        <button class="re_btn__white font__size_small font_regular font__color_w" data-bind-event="signup">Присоединиться</button>
                     </div>
                 </div>
                 <div class="landing__footer__column">
@@ -84,11 +88,3 @@
         </div>
     </footer>
 </div>
-
-<svg aria-hidden="true" focusable="false" style="width:0;height:0;position:absolute;">
-  <linearGradient id="gradient-svg" x1="0%" y1="0%" x2="100%" y2="100%">
-    <stop offset="0%" stop-color="#12C2E9" />
-    <stop offset="50%" stop-color="#C471ED" />
-    <stop offset="100%" stop-color="#F64F59" />
-  </linearGradient>
-</svg>

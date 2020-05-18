@@ -1,6 +1,6 @@
 'use strict';
 
-import UserModel from 'Eventum/models/user-model.js';
+import UserModel from 'Eventum/models/user-model';
 
 /**
  * @class create Router class
@@ -58,4 +58,18 @@ export default class Router {
         this.currentController = controller;
         this.currentController.action();
     };
+
+    static redirectForward(href) {
+        window.stop();
+
+        window.history.pushState({}, '', href);
+        window.history.pushState({}, '', href);
+        window.history.back();
+
+        // window.location.href = href; // bad
+    }
+
+    static redirectBack() {
+        window.history.back();
+    }
 }

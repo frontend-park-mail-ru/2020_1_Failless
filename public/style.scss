@@ -6,35 +6,59 @@
 @import "components/profile-main/profile-main";
 @import "components/profile-edit/profile-edit";
 
-@import "blocks/creator-card/creator-card";
-@import "blocks/feed-center/feed-center";
-@import "blocks/feed-right/feed-right";
-@import "blocks/options-footer/options-footer";
-@import "blocks/profile-left/profile-left";
+@import "blocks/avatar/avatar";
 @import "blocks/btn/btn";
+@import "blocks/chat/chat";
+@import "blocks/chat-list/chat-list";
+@import "blocks/chat-list-item/chat-list-item";
+@import "blocks/chat-message/chat-message";
+@import "blocks/circle/circle";
+@import "blocks/creator-card/creator-card";
+@import "blocks/dark-overlay/dark-overlay";
+@import "blocks/edit-field/edit-field";
+@import "blocks/error/error";
+@import "blocks/event/event";
+@import "blocks/image-edit/image-edit";
+@import "blocks/event/event";
+@import "blocks/event-edit/event-edit";
+@import "blocks/feed-center-users/feed-center-users";
+@import "blocks/filters/filters";
 @import "blocks/header/header";
 @import "blocks/icon/icon";
-@import "blocks/modal-window/modal-window";
-@import "blocks/screen/screen";
-@import "blocks/tag/tag";
 @import "blocks/input/input";
-@import "blocks/search/search";
-@import "blocks/event/event";
-@import "blocks/big-event/big-event";
-@import "blocks/edit-field/edit-field";
-@import "blocks/slider/slider";
-@import "blocks/section/section";
-@import "blocks/photo-columns/photo-columns";
-@import "blocks/circle/circle";
 @import "blocks/link-uploader/link-uploader";
-@import "blocks/validation-error/validation-error";
+@import "blocks/loading/loading";
 @import "blocks/modal/modal";
+@import "blocks/modal-window/modal-window";
+@import "blocks/photo-columns/photo-columns";
+@import "blocks/profile-left/profile-left";
+@import "blocks/screen/screen";
+@import "blocks/search-grid/search-grid";
+@import "blocks/section/section";
+@import "blocks/slider/slider";
+@import "blocks/snackbar/snackbar";
+@import "blocks/textarea/textarea";
+@import "blocks/tag/tag";
+@import "blocks/validation-error/validation-error";
 
-@import "modules/variables";
 @import "modules/efont";
 @import "modules/images";
+@import "modules/variables";
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic');
+
+* {
+  box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+}
+
+html {
+    -ms-overflow-style: none;  /* IE 10+ */
+    scrollbar-width: none; /* Firefox */
+}
 
 body {
   margin: 0;
@@ -68,21 +92,21 @@ textarea {
 }
 
 .container {
-  width: 1084px;
+  position: relative;
+  width: 1000px;
   box-sizing: border-box;
+  height: 100%;
 }
 
 @media only screen and (max-width: 1000px) {
   .container {
     width: 100%;
-    padding: 0 10px;
   }
 }
 
 @media only screen and (max-width: $breakpoint-phone) {
   .container {
     width: 100%;
-    padding: 0 10px;
   }
 }
 
@@ -139,8 +163,61 @@ h3 {
   }
 }
 
+.full-height {
+  height: 100%;
+}
+
+#gray__icon {
+  fill: $re--color-light-gray;
+}
+
+.hidden {
+  display: none;
+}
+
 .gradient-text {
-    background: $re--gradient;
+    background: $extended-gradient;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+  &_animated {
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+  }
+}
+
+.gradient-border {
+  --borderWidth: 1px;
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--borderWidth));
+    left: calc(-1 * var(--borderWidth));
+    height: calc(100% + var(--borderWidth) * 2);
+    width: calc(100% + var(--borderWidth) * 2);
+    background: $re--gradient;
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  &_animated {
+    &:after {
+      animation: animatedgradient 3s ease alternate infinite;
+      background-size: 300% 300%;
+    }
+  }
+}
+
+@keyframes animatedgradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }

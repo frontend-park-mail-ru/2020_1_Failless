@@ -1,9 +1,10 @@
 'use strict';
 
-import Controller from 'Eventum/core/controller.js';
-import LoginView from 'Eventum/views/login-view.js';
-import UserModel from 'Eventum/models/user-model.js';
-import ValidationModule from 'Eventum/utils/validation.js'
+import Controller from 'Eventum/core/controller';
+import LoginView from 'Eventum/views/login-view';
+import UserModel from 'Eventum/models/user-model';
+import ValidationModule from 'Eventum/utils/validation';
+import router from 'Eventum/core/router';
 
 /**
  * @class LoginController
@@ -20,35 +21,53 @@ export default class LoginController extends Controller {
 
         this.form = null;
         this.inputs = null;
+        this.pending = false;
+    }
+
+    destructor() {
+        this.view.destructor();
+        super.destructor();
     }
 
     action() {
-        super.action();
-        this.view.render();
-        this.#initView();
+        UserModel.getLogin().then((user) => {
+            if (!user) {
+                console.error('Server error');
+                console.log(user);
+                return;
+            }
+            if (Object.prototype.hasOwnProperty.call(user, 'uid')) {
+                router.redirectForward('/');
+                return;
+            }
+            super.action();
+            this.view.render();
+            this.#initView();
+            this.initHandlers([
+                {
+                    attr: 'login',
+                    events: [
+                        {type: 'submit', handler: this.#loginSubmitHandler},
+                    ]
+                },
+                {
+                    attr: 'checkInput',
+                    many: true,
+                    events: [
+                        {type: 'focus', handler: this.removeErrorMessage},
+                        {type: 'blur', handler: this.#checkInputHandler},
+                    ]
+                }
+            ]);
+        });
     }
 
     #initView() {
         let auth = document.body.getElementsByClassName('auth')[0];
         if (auth) {
             this.form = document.getElementById('form');
-            this.addEventHandler(this.form, 'submit', this.#loginSubmitHandler);
-
-            this.inputs = this.form.getElementsByClassName('input input__auth');
-            for (let input of this.inputs) {
-                this.addEventHandler(input, 'focus', this.removeErrorMessage);
-                this.addEventHandler(input, 'blur', this.#checkInputHandler);
-            }
         }
     }
-
-    _showSetEventModal(event) {
-        document.getElementsByClassName('modal__container')[0].style.display = 'flex';
-    };
-
-    _hideSetEventModal(event) {
-        document.getElementsByClassName('modal__container')[0].style.display = 'none';
-    };
 
     /**
      * Get data from input form on sign up page
@@ -82,14 +101,14 @@ export default class LoginController extends Controller {
         const login = this.form[0].value;
 
         switch(true) {
-            case (event.target === form[0] && login.includes('@')):
-                const nameCheck = ValidationModule.validateUserData(login, 'email');
-                this.view.addErrorMessage(this.form[0], nameCheck);
-                break;
-            case (event.target === form[0]):
-                const emailCheck = ValidationModule.validateUserData(login, 'phone');
-                this.view.addErrorMessage(this.form[0], emailCheck);
-                break;
+        case (event.target === form[0] && login.includes('@')):
+            const nameCheck = ValidationModule.validateUserData(login, 'email');
+            this.view.addErrorMessage(this.form[0], nameCheck);
+            break;
+        case (event.target === form[0]):
+            const emailCheck = ValidationModule.validateUserData(login, 'phone');
+            this.view.addErrorMessage(this.form[0], emailCheck);
+            break;
         }
     };
 
@@ -100,22 +119,27 @@ export default class LoginController extends Controller {
     #loginSubmitHandler = (event) => {
         event.preventDefault();
 
+        if (this.pending) {
+            return;
+        }
+
         const body = this.#getFromLogin();
 
         if (!body) {
-            console.log('do nothing');
             return;
         }
+
+        this.pending = true;
+        this.view.showGlobalLoading();
 
         this.removeErrorMessage(event);
 
         UserModel.postLogin(body).then((user) => {
+            this.pending = false;
+            this.view.removeGlobalLoading();
             if (Object.prototype.hasOwnProperty.call(user, 'name')) {
-                window.history.pushState({}, '', '/my/profile');
-                window.history.pushState({}, '', '/my/profile');
-                window.history.back();
+                router.redirectForward('/my/profile');
             } else {
-                console.log(user);
                 this.view.addErrorMessage(this.form, [user.message]);
             }
         });

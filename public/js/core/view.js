@@ -1,11 +1,16 @@
 'use strict';
 
-import errorTemplate from 'Blocks/validation-error/template.hbs';
+import validationErrorTemplate from 'Blocks/validation-error/template.hbs';
+import errorTemplate from 'Blocks/error/template.hbs';
+import loadingTemplate from 'Blocks/loading/template.hbs';
+import {makeEmpty} from 'Eventum/utils/basic';
+import {icons} from 'Eventum/utils/static-data';
 
 /**
  * Base view class
  */
 export default class View {
+    vDOM = {};
 
     /**
      * Create view
@@ -13,6 +18,7 @@ export default class View {
      */
     constructor(parent) {
         this.parent = parent;
+        this.globalLoader = null;
     }
 
     /**
@@ -23,7 +29,7 @@ export default class View {
 
     /**
      * Add error message
-     * @param {HTMLElement} element - html element
+     * @param {Element} element - html element
      * @param {string[]} messageValue - array of validation errors
      */
     addErrorMessage(element, messageValue) {
@@ -32,6 +38,49 @@ export default class View {
         }
 
         element.classList.add('input__auth_incorrect');
-        element.insertAdjacentHTML('beforebegin', errorTemplate({message: messageValue[0]}));
+        element.insertAdjacentHTML('beforebegin', validationErrorTemplate({message: messageValue[0]}));
+    }
+
+    /**
+     * Show Server error inside an element
+     * !use with caution!
+     * @param {Element} element
+     * @param {String} message
+     * @param {String} icon - name of icon as in static-data.js
+     * @param {String} button - title for button
+     * @return {Promise<void>}
+     */
+    async showError(element, message, icon, button) {
+        makeEmpty(element);
+        element.insertAdjacentHTML('beforeend', errorTemplate({
+            icon: icons.get(icon),
+            message: message,
+            button: button,
+        }));
+    }
+
+    /**
+     * Show loading animation inside an element
+     * @param element
+     * @return {Promise<void>}
+     */
+    async showLoading(element) {
+        makeEmpty(element);
+        element.insertAdjacentHTML('beforeend', loadingTemplate());
+    }
+
+    async showGlobalLoading() {
+        document.body.insertAdjacentHTML('beforeend', loadingTemplate({global: 'global'}));
+        this.globalLoader = document.body.querySelector('.spinner_global');
+        setTimeout(() => {
+            if (this.globalLoader) {
+                this.globalLoader.classList.remove('spinner_appear');
+            }
+        }, 200);
+    }
+
+    async removeGlobalLoading() {
+        this.globalLoader.remove();
+        this.globalLoader = null;
     }
 }

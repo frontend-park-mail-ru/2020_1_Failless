@@ -1,9 +1,12 @@
 'use strict';
 
-import Controller from 'Eventum/core/controller.js';
-import SignUpView from 'Eventum/views/signup-view.js';
-import UserModel from 'Eventum/models/user-model.js';
-import ValidationModule from 'Eventum/utils/validation.js'
+import Controller from 'Eventum/core/controller';
+import SignUpView from 'Eventum/views/signup-view';
+import UserModel from 'Eventum/models/user-model';
+import ValidationModule from 'Eventum/utils/validation';
+import Router from 'Eventum/core/router';
+import Snackbar from 'Blocks/snackbar/snackbar';
+import TextConstants from 'Eventum/utils/language/text';
 
 export default class SignUpController extends Controller {
 
@@ -15,15 +18,48 @@ export default class SignUpController extends Controller {
         this.view = new SignUpView(parent);
         this.form = null;
         this.inputs = null;
+        this.pending = false;
+    }
+
+    destructor() {
+        this.view.destructor();
+        super.destructor();
     }
 
     /**
      * Create base business logic of SignUp
      */
     action() {
-        super.action();
-        this.view.render();
-        this.#initView();
+        UserModel.getLogin().then((user) => {
+            if (!user) {
+                console.error('Server error');
+                console.log(user);
+                return;
+            }
+            if (Object.prototype.hasOwnProperty.call(user, 'uid')) {
+                Router.redirectForward('/');
+                return;
+            }
+            super.action();
+            this.view.render();
+            this.#initView();
+            this.initHandlers([
+                {
+                    attr: 'signup',
+                    events: [
+                        {type: 'submit', handler: this.#signUpSubmitHandler},
+                    ]
+                },
+                {
+                    attr: 'checkInput',
+                    many: true,
+                    events: [
+                        {type: 'focus', handler: this.removeErrorMessage},
+                        {type: 'blur', handler: this.#checkInputHandler},
+                    ]
+                }
+            ]);
+        });
     }
 
     /**
@@ -33,16 +69,6 @@ export default class SignUpController extends Controller {
         let auth = document.body.getElementsByClassName('auth')[0];
         if (auth) {
             this.form = document.getElementById('form');
-            this.addEventHandler(this.form, 'submit', this.#signUpSubmitHandler);
-            // this.form.addEventListener('submit', this.#signUpSubmitHandler.bind(this));
-
-            this.inputs = this.form.getElementsByClassName('input input__auth');
-            for (let input of this.inputs) {
-                this.addEventHandler(input, 'focus', this.removeErrorMessage);
-                this.addEventHandler(input, 'blur', this.#checkInputHandler);
-                // input.addEventListener('focus', this.removeErrorMessage.bind(this));
-                // input.addEventListener('blur', this.#checkInputHandler.bind(this));
-            }
         }
     }
 
@@ -67,7 +93,7 @@ export default class SignUpController extends Controller {
         if (repeatPassword !== password) {
             errors_list.push('Пароли не совпадают');
         }
-        
+
         if (errors_list.some(val => val.length !== 0)) {
             return void 0;
         }
@@ -82,24 +108,37 @@ export default class SignUpController extends Controller {
     #signUpSubmitHandler = (event) => {
         event.preventDefault();
 
+        if (this.pending) {
+            return;
+        }
+
         const body = this.#getFromSignUp();
         if (!body) {
             console.log('do nothing');
             return;
         }
-
         this.removeErrorMessage(event);
 
-        UserModel.postSignUp(body).then((response) => {
-            if (Object.prototype.hasOwnProperty.call(response, 'name')) {
-                window.history.pushState({}, '', '/login');
-                window.history.pushState({}, '', '/login');
-                window.history.back();
-            } else {
-                console.log(response);
-                this.view.addErrorMessage(this.form, [response.message]);
-            }
-        }).catch(reason => console.log(reason));
+        this.pending = true;
+        this.view.showGlobalLoading();
+
+        UserModel.postSignUp(body).then(
+            (response) => {
+                this.pending = false;
+                this.view.removeGlobalLoading();
+
+                if (Object.prototype.hasOwnProperty.call(response, 'name')) {
+                    Snackbar.instance.addMessage(TextConstants.AUTH__SUCCESSFUL_SIGNUP);
+                    setTimeout(() => {Router.redirectForward('/login');}, 1000);
+                } else {
+                    this.view.addErrorMessage(this.form, [response.message]);
+                }
+            },
+            (reason) => {
+                console.log(reason);
+                this.pending = false;
+                this.view.removeGlobalLoading();
+            });
     };
 
     /**
@@ -113,7 +152,7 @@ export default class SignUpController extends Controller {
         const password = this.form[3].value;
         const repeatPassword = this.form[4].value;
 
-        switch(true) {
+        switch (true) {
         case (event.target === this.form[0]):
             const nameCheck = ValidationModule.validateUserData(name, 'name');
             this.view.addErrorMessage(this.form[0], nameCheck);
@@ -141,6 +180,25 @@ export default class SignUpController extends Controller {
             }
             this.view.addErrorMessage(this.form[4], repeatPasswordCheck);
             break;
+        }
+    };
+
+    // Method inheritance doesn't work due to arrow functions :c
+    removeErrorMessage = (event) => {
+        event.preventDefault();
+
+        if (event.target === this.form[3]) {
+            this.form[4].classList.remove('input__auth_incorrect');
+            let errorElement = this.form[4].parentNode.getElementsByClassName('validation-error')[0];
+            if (errorElement) {
+                errorElement.remove();
+            }
+        }
+
+        event.target.classList.remove('input__auth_incorrect');
+        let errorElement = event.target.parentNode.getElementsByClassName('validation-error')[0];
+        if (errorElement) {
+            errorElement.remove();
         }
     };
 }

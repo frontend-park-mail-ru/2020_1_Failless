@@ -1,0 +1,21 @@
+<header class="chat__header {{#if active}}chat__header_active{{/if}}">
+    <div class="chat__return-icon" data-bind-event="toggleMobileChat">
+        {{{ return_icon }}}
+    </div>
+    <h2>{{ title }}</h2>
+    <div class="chat__more-icon">
+        {{{ more_icon }}}
+    </div>
+</header>
+<main class="chat__body">
+    {{#with motivator}}
+        {{> $Blocks/error/template }}
+    {{/with}}
+</main>
+<footer class="chat__footer {{#if active}}chat__footer_active{{/if}}">
+<!--    TODO: Add icon fill gradient  svg  -->
+    <svg class="chat__add-icon"></svg>
+    <textarea class="chat__textarea" data-bind-event="messageInput" placeholder="Напишите что-нибудь хорошее" rows="1"></textarea>
+    <button class="chat__button re_btn re_btn__filled" data-bind-event="sendMessageOnClick">Отправить</button>
+    <div class="chat__send-icon" data-bind-event="sendMessageOnClick">{{{ send_icon }}}</div>
+</footer>

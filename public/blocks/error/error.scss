@@ -1,0 +1,19 @@
+@import "../../modules/variables";
+
+.error {
+  @extend %center;
+
+  & svg {
+    max-width: 150px;
+  }
+
+  &__message {
+    padding: 0 $re--small-padding;
+    color: $re--color-middle-gray;
+    text-align: center;
+  }
+
+  &__button {
+    margin-bottom: $re--medium-padding;
+  }
+}

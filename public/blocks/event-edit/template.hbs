@@ -1,0 +1,40 @@
+<div class="event-edit">
+    <div class="event-edit__photos" data-bind-event="removePreviewImage">
+        <div class="event-edit__photo-helper">
+            {{> $Blocks/dark-overlay/template text="Добавить фото" data_bind_event="previewImagesForEvent"}}
+            <svg fill="url(#gradient-svg)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M456 48h-48v-8a24 24 0 00-48 0v8h-80v-8a24 24 0 00-48 0v8h-80v-8a24 24 0 00-48 0v8H56a40.045 40.045 0 00-40 40v368a40.045 40.045 0 0040 40h400a40.045 40.045 0 0040-40V88a40.045 40.045 0 00-40-40zm-80-8a8 8 0 0116 0v48a8 8 0 01-16 0zm-128 0a8 8 0 0116 0v48a8 8 0 01-16 0zm-128 0a8 8 0 0116 0v48a8 8 0 01-16 0zM56 64h48v24a24 24 0 0048 0V64h80v24a24 24 0 0048 0V64h80v24a24 24 0 0048 0V64h48a24.028 24.028 0 0124 24v56H32V88a24.028 24.028 0 0124-24zm400 416H56a24.028 24.028 0 01-24-24V160h448v296a24.028 24.028 0 01-24 24z"/><path d="M440 216h-32a8 8 0 00-8 8v32a8 8 0 008 8h32a8 8 0 008-8v-32a8 8 0 00-8-8zm-8 32h-16v-16h16zM280 376h-32a8 8 0 00-8 8v32a8 8 0 008 8h32a8 8 0 008-8v-32a8 8 0 00-8-8zm-8 32h-16v-16h16zM200 216h-32a8 8 0 00-8 8v32a8 8 0 008 8h32a8 8 0 008-8v-32a8 8 0 00-8-8zm-8 32h-16v-16h16zM120 296H88a8 8 0 00-8 8v32a8 8 0 008 8h32a8 8 0 008-8v-32a8 8 0 00-8-8zm-8 32H96v-16h16zM200 296h-32a8 8 0 00-8 8v32a8 8 0 008 8h32a8 8 0 008-8v-32a8 8 0 00-8-8zm-8 32h-16v-16h16zM120 376H88a8 8 0 00-8 8v32a8 8 0 008 8h32a8 8 0 008-8v-32a8 8 0 00-8-8zm-8 32H96v-16h16zM200 376h-32a8 8 0 00-8 8v32a8 8 0 008 8h32a8 8 0 008-8v-32a8 8 0 00-8-8zm-8 32h-16v-16h16zM369.208 248.983l-40-6.112-17.966-38.271a8 8 0 00-14.484 0L278.8 242.871l-40 6.112a8 8 0 00-4.518 13.5l29.181 29.907-6.9 42.326A8 8 0 00268.316 343L304 323.276 339.684 343a8 8 0 0011.766-8.289l-6.9-42.326 29.181-29.907a8 8 0 00-4.518-13.5zM330.274 284.1a8 8 0 00-2.17 6.875l4.9 30.051-25.136-13.9a8 8 0 00-7.74 0l-25.136 13.9 4.9-30.051a8 8 0 00-2.17-6.875L256.6 262.448l28.833-4.4a8 8 0 006.033-4.509L304 226.828l12.535 26.706a8 8 0 006.033 4.509l28.833 4.4zM440 296h-32a8 8 0 00-8 8v32a8 8 0 008 8h32a8 8 0 008-8v-32a8 8 0 00-8-8zm-8 32h-16v-16h16zM440 376h-32a8 8 0 00-8 8v32a8 8 0 008 8h32a8 8 0 008-8v-32a8 8 0 00-8-8zm-8 32h-16v-16h16zM360 376h-32a8 8 0 00-8 8v32a8 8 0 008 8h32a8 8 0 008-8v-32a8 8 0 00-8-8zm-8 32h-16v-16h16z"/></svg>
+        </div>
+    </div>
+    <div class="event-edit__body">
+        <textarea class="event-edit__title" placeholder="Название" data-bind-event="resizeTextArea" rows="1"></textarea>
+        <textarea class="event-edit__about" placeholder="Описание" data-bind-event="resizeTextArea" rows="1"></textarea>
+        <hr class="event__separator">
+        <label class="event-edit__header event-edit__header_small">#Теги</label>
+        <div class="event-edit__tags" data-bind-event="showModalTags">
+            <svg fill="url(#gradient-svg)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 0C114.833 0 0 114.833 0 256s114.833 256 256 256 256-114.853 256-256S397.167 0 256 0zm0 472.341c-119.275 0-216.341-97.046-216.341-216.341S136.725 39.659 256 39.659 472.341 136.705 472.341 256 375.295 472.341 256 472.341z"/><path d="M355.148 234.386H275.83v-79.318c0-10.946-8.864-19.83-19.83-19.83s-19.83 8.884-19.83 19.83v79.318h-79.318c-10.966 0-19.83 8.884-19.83 19.83s8.864 19.83 19.83 19.83h79.318v79.318c0 10.946 8.864 19.83 19.83 19.83s19.83-8.884 19.83-19.83v-79.318h79.318c10.966 0 19.83-8.884 19.83-19.83s-8.864-19.83-19.83-19.83z"/></svg>
+        </div>
+        <label class="event-edit__header event-edit__header_small">Время</label>
+        <input class="event-edit__time" type="datetime-local" min="2017-06-01T08:30" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"/>
+        <label class="event-edit__header event-edit__header_small" for="limit">Кол-во участников</label>
+        <div class="event-edit__slider">
+            <select name="limit" id="limit">
+                {{#each select_options}}
+                    <option value="{{ this }}">{{ this }}</option>
+                {{/each}}
+            </select>
+<!--                {{> $Blocks/slider/template label="Кол-во человек" min="2" max="15" step="1" name="amount" value="2"}}-->
+            <p class="event-edit__helper">При количестве участников = 2, эвент считается приватным и отображается только в ленте</p>
+        </div>
+        <div class="event-edit__public event-edit__public_hidden">
+            <label class="event-edit__header event-edit__header_small" for="public">Показывать участников?</label>
+            <input type="checkbox" name="public" id="public" value="public" checked>
+            <p class="event-edit__helper">Участники мероприятия будут видны в карточке эвента при поиске</p>
+        </div>
+        <div class="event-edit__buttons">
+            <div class="section__header">
+                <span data-bind-event="cancelNewEvent">Отменить</span>
+            </div>
+            {{> $Blocks/button-comp/template add_event_button }}
+        </div>
+    </div>
+</div>

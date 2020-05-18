@@ -1,0 +1,44 @@
+@import "../../modules/variables";
+
+.feed-center {
+  &__photos {
+    width: 100%;
+    height: auto;
+    margin-bottom: $re--big-padding;
+    max-height: 50vh;
+    object-fit: contain;
+  }
+
+  &__profile {
+    display: flex;
+    flex-flow: column;
+
+    & h1 {
+      margin-bottom: 12px;
+    }
+  }
+
+  &__tags {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-bottom: 8px;
+  }
+
+  &__about {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    color: $color-black;
+  }
+
+  &__action-buttons {
+    width: 100%;
+    height: auto;
+    margin: $re--huge-padding 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}

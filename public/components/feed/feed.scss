@@ -1,37 +1,102 @@
 @import '../../modules/variables';
 
 .feed {
+  position: absolute;
+  top: 55px;
+  bottom: 10px;
   width: 100%;
-  margin: (10px + $header-height) 0 10px;
   display: flex;
-  flex: 1 1 100%;
 
-  &__separator {
-    width: 8px;
+  @media only screen and (max-width: $breakpoint-phone) {
+    position: relative;
+    margin-top: 25px;
   }
 
-  &__column {
-    width: 258px;
-    flex: 1 1 auto;
-    background-color: $color-white;
-    border-radius: $re--border-radius;
-    padding: $re--medium-padding $re--medium-padding 0;
-    max-height: 88.5vh; // TODO: bullshit
-    overflow: auto;
-    box-shadow: 0 0 20px -9px rgba(0, 0, 0, 0.5);
+  &__header {
+    display: none;
 
-    &_main {
-      flex: 1 2 auto;
-      width: 620px;
+    @media only screen and (max-width: $breakpoint-phone) {
+      display: block;
+      width: 100%;
+      background: white;
+      height: 30px;
+      z-index: $z-index-subheader;
+      border-bottom: 1px solid #f1f1f1;
+
+      position: fixed;
+      top: 45px;
     }
   }
 
-  &__other-options {
-    padding: 0 $re--small-padding;
+  &__main {
+    min-width: 0;
+    display: flex;
+    flex: 1;
+    background: white;
+    border-radius: $re--border-radius;
+    margin-left: 2%;
+    box-shadow: 0 0 20px -9px rgba(0, 0, 0, 0.5);
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      flex-flow: column;
+      border-radius: 0;
+      margin-left: 0;
+      box-shadow: unset;
+      margin-bottom: 50px;
+    }
+
+    &-body {
+      display: flex;
+      flex-flow: column;
+      min-height: 100%;
+    }
+
+    &-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      padding: 5px 0 13px;
+      background: linear-gradient(to top, $color-white, transparent 75%);
+
+      @media only screen and (max-width: $breakpoint-phone) {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+      }
+    }
+  }
+
+  &__column {
+    padding: $re--medium-padding $re--medium-padding 0;
+    overflow: auto;
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      overflow: unset;
+      width: 100%;
+      max-height: fit-content;
+    }
+
+    &_main {
+      flex-grow: 1;
+      border-right: 1px solid $re--color-light-gray;
+    }
+
+    &_events {
+      flex: 0 0 30%;
+
+      @media only screen and (max-width: $breakpoint-phone) {
+        margin-top: 15px;
+        border-top: 1px solid #f1f1f1;
+      }
+    }
   }
 
   &__options-field {
-    box-sizing: border-box;
     margin-bottom: $re--medium-padding;
     padding-bottom: $re--big-padding;
     border-bottom: 1px solid $re--color-light-gray;
@@ -39,6 +104,75 @@
     &_textarea {
       width: 100%;
       resize: none;
+    }
+  }
+
+  &-right__title {
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+    font-size: 12px;
+    color: $color-black;
+    margin-bottom: 12px;
+  }
+
+  &__button {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: $color-white;
+    outline: none;
+    cursor: pointer;
+    padding: 13px;
+    border: none;
+
+    &.gradient-border {
+      &:after {
+        background: $color-white;
+        box-shadow: 3px 3px 5px $re--color-light-gray;
+      }
+    }
+
+    &-approve {
+      & svg {
+        fill: $color-red;
+      }
+
+      &:hover {
+        &.gradient-border:after {
+          background: $gradient-red;
+        }
+      }
+    }
+
+    &-reject {
+      padding-top: 14px;
+      & svg {
+        transform: rotate(180deg);
+        fill: $color-blue;
+      }
+
+      &:hover {
+        &.gradient-border:after {
+          background: $gradient-blue;
+        }
+      }
+    }
+
+    &-skip {
+      width: 44px;
+      height: 44px;
+      margin: 0 10px;
+      padding: 9px;
+      & svg {
+        fill: $color-purple;
+      }
+
+      &:hover {
+        &.gradient-border:after {
+          background: $gradient-purple;
+        }
+      }
     }
   }
 
@@ -110,17 +244,5 @@
         transform: rotate(45deg);
       }
     }
-  }
-
-  &__map {
-    width: 100%;
-    height: auto;
-  }
-
-  &__help {
-    font-weight: bold;
-    font-size: 12px;
-    color: $color-black;
-    padding-bottom: $re--small-padding;
   }
 }

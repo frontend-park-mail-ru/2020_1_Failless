@@ -1,43 +1,53 @@
 @import "../../modules/variables";
 
 .profile-left {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+
   &__avatar {
     width: 100px;
     height: 100px;
     margin: ($re--big-padding - $re--medium-padding) auto $re--big-padding;
-    border-radius: 50%;
-    box-shadow: 2px 3px 8px -5px rgba(0, 0, 0, 0.5);
-    object-fit: cover;
-    &_center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-
-  &__center {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+
+    & img {
+      box-shadow: 2px 3px 8px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    & input {
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
   }
 
+  &__exit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: $re--medium-padding;
+  }
 
-  &__scroll {
+  &__body {
+    flex-shrink: 2;
+    flex-grow: 2;
     overflow: auto;
-    // TODO: remove hardcode
-    height: 56.5vh;
   }
 
   &__options-field {
-    box-sizing: border-box;
     margin-bottom: $re--medium-padding;
     padding-bottom: $re--big-padding;
     border-bottom: 1px solid $re--color-light-gray;
+  }
 
-    &_textarea {
-      width: 100%;
-      resize: none;
-    }
+  &__textarea {
+    width: 100%;
+    resize: none;
   }
 
   &__header {
@@ -46,5 +56,55 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: $re--small-padding;
+  }
+
+  &__footer {
+    padding: $re--big-padding 0;
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    box-shadow: 0 -6px 5px -6px rgba(0, 0, 0, 0.12);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    @media only screen and (max-width: $breakpoint-1000) {
+      flex-flow: column-reverse;
+      padding: $re--small-padding 0;
+    }
+  }
+}
+
+@media only screen and (max-width: $breakpoint-1000) {
+  .profile-left {
+    &__footer {
+      flex-flow: column-reverse;
+      padding: $re--small-padding 0;
+
+      & .kek {
+        margin-top: $re--small-padding;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $breakpoint-phone) {
+  .profile-left {
+    &__exit {
+      border-bottom: 1px solid $re--color-light-gray;
+    }
+
+    &__footer {
+      flex-flow: row;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      z-index: $z-index-mobile-screen;
+
+      & .kek {
+        margin-top: 0;
+      }
+    }
   }
 }
