@@ -11,6 +11,8 @@ import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-
 import {detectMobile} from 'Eventum/utils/basic';
 import {CircleRedirect} from 'Blocks/circle/circle';
 import NotificationController from 'Eventum/controllers/notification-controller';
+import Snackbar from 'Blocks/snackbar/snackbar';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class ChatController
@@ -19,9 +21,8 @@ export default class ChatController extends Controller {
     constructor(parent) {
         super(parent);
         this.view = new ChatView(parent);
-        this.uid = null;
         this.chat_id = null;
-        this.ChatModel = null;
+        this.ChatModel = ChatModel.instance;
         this.timerId = null;
     }
 
@@ -34,13 +35,11 @@ export default class ChatController extends Controller {
     action() {
         super.action();
         this.view.render();
-        UserModel.getProfile().then(
-            (profile) => {
-                if (profile) {
-                    this.uid = profile.uid;
-                    this.ChatModel = new ChatModel();
-                    ChatModel.getChats({uid: this.uid, limit: 10, page: 0}).then(
-                        (chats) => {
+        UserModel.getLogin()
+            .then(user => {
+                if (user) {
+                    this.ChatModel.getChats({uid: user.uid, limit: 10, page: 0})
+                        .then(chats => {
                             console.log(chats);
                             if (!chats || chats.length === 0) {
                                 const errorArea = detectMobile() ? this.view.chatListBodyDiv : this.view.chatBodyDiv;
@@ -54,20 +53,15 @@ export default class ChatController extends Controller {
                             } else if (Object.prototype.hasOwnProperty.call(chats, 'message')) {
                                 this.view.showLeftError(chats.message);
                             } else {
-                                this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then(
+                                this.ChatModel.establishConnection(user.uid, this.receiveMessage).then(
                                     (response) => {
                                         console.log(response);
 
                                         this.timerId = setInterval(this.#reestablishConnection, 100);
 
                                         this.ChatModel.chats = chats;
-                                        // после загрузки все чаты неактивны
-                                        this.ChatModel.chats.forEach((val) => {
-                                            Object.assign(val, {active: false});
-                                        });
-                                        this.view.renderChatList(chats).then();
-                                    }
-                                );
+                                        this.view.renderChatList();
+                                    });
                             }
                         },
                         (error) => {
@@ -78,12 +72,8 @@ export default class ChatController extends Controller {
                         });
                 } else {
                     this.view.showCenterError('No profile?!').then();
-                }
-            },
-            (error) => {
-                this.view.showCenterError(error).then();
-            }
-        );
+                }})
+            .catch(error => this.view.showCenterError(error).then());
 
         this.view.setDOMChatElements(); // do it once instead of calling getters and checking there
         this.initHandlers([
@@ -154,13 +144,13 @@ export default class ChatController extends Controller {
             chatListItem.getAttribute('data-cid'),
             chatListItem.querySelector('.chat-list-item__title').innerText);
         // Но один из чатов становится активным, а другой неактивыным
-        this.ChatModel.chats.forEach((val) => {
-            if (val.chat_id === Number(chatListItem.getAttribute('data-cid'))){
-                val.active = true;
+        this.ChatModel.chats.forEach((chat, chatId) => {
+            if (chatId === Number(chatListItem.getAttribute('data-cid'))){
+                chat.active = true;
                 return;
             }
-            if (val.active) {
-                val.active = false;
+            if (chat.active) {
+                chat.active = false;
             }
         });
     };
@@ -176,25 +166,22 @@ export default class ChatController extends Controller {
         // async Get latest messages
         this.view.renderChatLoading(name).then();
         toggleChatOnMobile.call(this.view.mainColumnDiv);
-
-        if (!this.uid) {
-            this.view.showCenterError('No profile').then();
-            return;
-        }
-        ChatModel.getLastMessages(this.uid, chatId, 30).then(
-            (messages) => {
+        let id = 0;
+        UserModel.getProfile()
+            .then(profile => {
+                id = profile.uid;
+                return this.ChatModel.getLastMessages(profile.uid, chatId, 30);})
+            .then((messages) => {
                 this.view.activateChatUI(name).then();
                 // Append necessary fields
                 messages.forEach((message) => {
-                    message.side = message.uid === this.uid ? 'right' : 'left';
+                    message.avatar = message.uid === id ? null : this.ChatModel.chats.get(message.chat_id).users.get(message.uid).avatar;
+                    message.side = message.uid === id ? 'right' : 'left';
                     message.new = false;
                     message.body = message.message;
                 });
-                this.view.renderLastMessages(messages.reverse());
-            },
-            (error) => {
-                this.view.showCenterError(error).then();
-            });
+                this.view.renderLastMessages(messages.reverse());})
+            .catch(error => this.view.showCenterError(error));
     };
 
     /***********************************************
@@ -214,13 +201,15 @@ export default class ChatController extends Controller {
         // Send message via WebSocket
         let chat_id = -1;
         // Ищем активный чат
-        this.ChatModel.chats.forEach((val) => {
-            if (val.active === true) {
-                chat_id = val.chat_id;
+        this.ChatModel.chats.forEach((chat) => {
+            if (chat.active === true) {
+                chat_id = chat.chat_id;
             }
         });
 
-        (async () => {this.ChatModel.socket.send(JSON.stringify({uid: this.uid, message: message, chat_id: chat_id}));})();
+        UserModel.getProfile()
+            .then(profile => this.ChatModel.sendMessage({uid: profile.uid, message: message, chat_id: chat_id}))
+            .catch(console.error);
         textarea.value = '';
         resizeTextArea.call(textarea);
     };
@@ -232,34 +221,36 @@ export default class ChatController extends Controller {
         if (!this.ChatModel.isWSOpen()) {
             this.ChatModel.establishConnection(this.uid, this.receiveMessage).then();
         }
-    }
+    };
 
     receiveMessage = (event) => {
         // Find active chat
-        let activeChat = this.ChatModel.chats.find((chat) => {
-            return chat.active;
-        });
+        let activeChatId = 0;
+        for (let [chatId, chat] of this.ChatModel.chats) {
+            if (chat.active) {
+                activeChatId = chatId;
+                break;
+            }
+        }
 
         // Check where to insert the message
         let message = JSON.parse(event.data);
-        let name = '';
-        this.ChatModel.chats.some((chat) => {
-            if (chat.chat_id === message.chat_id) {
-                name = chat.name;
-            }
-        });
-        const notification = `Новое сообщение от: ${name} "${message.message}"`;
-        if (this.uid !== message.uid) {
-            NotificationController.notify(notification);
-        }
-        if (activeChat && message.chat_id === activeChat.chat_id) {
-            this.view.renderMessage({
-                body: message.message,
-                side: this.uid === message.uid ? 'right' : 'left',
-                new: true,
-            });
-        } else {
-            this.view.updateLastMessage(message).then();
-        }
-    };
+        UserModel.getProfile()
+            .then(profile => {
+                this.view.updateLastMessage(message, profile.uid === message.uid);
+                if (activeChatId && message.chat_id === activeChatId) {
+                    console.log(message);
+                    this.view.renderMessage({
+                        avatar: profile.uid === message.uid ? null : this.ChatModel.chats.get(message.chat_id).users.get(message.uid).avatar,
+                        body: message.message,
+                        side: profile.uid === message.uid ? 'right' : 'left',
+                        new: true,
+                    });
+                } else {
+                    if (message.uid !== profile.uid) {
+                        Snackbar.instance.addMessage(TextConstants.BASIC__NEW_MESSAGE);
+                    }
+                }})
+            .catch(console.error);
+    }
 }

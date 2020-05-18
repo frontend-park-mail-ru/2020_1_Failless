@@ -7,11 +7,12 @@ import chatTemplate from 'Blocks/chat/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
 import MyView from 'Eventum/views/my-view';
 import {icons} from 'Eventum/utils/static-data';
-import {images} from 'Eventum/utils/static-data';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {scrollChatDown} from 'Blocks/chat/chat';
 import {showMessage} from 'Blocks/chat-message/chat-message';
 import {prettifyDateTime, setChatListItemAsUnread} from 'Blocks/chat-list-item/chat-list-item';
+import ChatModel from 'Eventum/models/chat-model';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class create ChatView class
@@ -168,15 +169,12 @@ export default class ChatView extends MyView {
      * }]
      * @return {Promise<void>}
      */
-    async renderChatList(chats) {
+    async renderChatList() {
         const chatBody = this.chatListBody;
         makeEmpty(chatBody);
-        chats.forEach((chat) => {
-            if (!chat.avatar) {
-                chat.avatar = images.get('user-default');
-            }
+        ChatModel.instance.chats.forEach((chat) => {
             chat.new = !!chat.unseen;
-            chat.last_msg = chat.last_msg.substring(5);
+            chat.last_msg = chat.last_msg.substring(5); // backend sends last message with a 5 useless chars
             chat.last_date = prettifyDateTime(chat.last_date);
             chatBody.insertAdjacentHTML('beforeend', chatListItemTemplate({...chat}));
         });
@@ -235,7 +233,6 @@ export default class ChatView extends MyView {
         }
         messages.forEach((message) => {
             this.renderMessage(message)
-            // chatBody.insertAdjacentHTML('beforeend', chatMessageTemplate({...message}))
         });
         scrollChatDown(chatBody);
     }
@@ -249,8 +246,12 @@ export default class ChatView extends MyView {
      */
     renderMessage(message) {
         const chatBody = this.chatBodyDiv;
+
         // Get last message
-        const lastMessage = chatBody.lastElementChild;
+        let lastMessage = chatBody.lastElementChild;
+        if (lastMessage) {
+            lastMessage = lastMessage.lastElementChild;
+        }
         const side = message.side;
         if (lastMessage && lastMessage.classList.contains(`chat-message_${side}`)) {
             if (lastMessage.classList.contains(`chat-message_first_${side}`)) {
@@ -274,16 +275,20 @@ export default class ChatView extends MyView {
      *      message: String
      *      created: String
      * }}
+     * @param self {boolean}
      */
-    async updateLastMessage(message) {
+    async updateLastMessage(message, self) {
         // Find chat list item with chat_id
         let chatToUpdate = this.chatListBodyDiv.querySelector(`.chat-list-item[data-cid="${message.chat_id}"]`);
 
         // Set it as unread
-        setChatListItemAsUnread(chatToUpdate).then();
+        if (!self) {
+            setChatListItemAsUnread(chatToUpdate).then();
+        } else {
+            chatToUpdate.querySelector('.chat-list-item__message').innerText = `${TextConstants.BASIC__YOU}: ${message.message}`;
+        }
 
         // Update message its message
-        chatToUpdate.querySelector('.chat-list-item__time').innerText = message.created;
-        chatToUpdate.querySelector('.chat-list-item__message').innerText = message.message;
+        chatToUpdate.querySelector('.chat-list-item__time').innerText = prettifyDateTime(message.created);
     }
 }

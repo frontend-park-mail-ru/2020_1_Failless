@@ -7,12 +7,14 @@ const BasicTextsRussian = {
     LOCATION: 'Местоположение',
     FIND: 'Найти',
     AGE: 'Возраст',
+    YOU: 'Вы',
     ADD: 'Добавить',
     PHOTOS: 'Фото',
     NO_PHOTOS: 'Фотографий нет',
     EVENTS: 'Мероприятия',
     SOCIAL_NETWORKS: 'Социальные сети',
     SAVE: 'Сохранить',
+    NEW_MESSAGE: 'Вам новое сообщение!',
 };
 
 const EventTextsRussian = {

@@ -8,6 +8,7 @@ const BasicTextsInterface = {
     FIND: '',
     AGE: '',
     DISMISS: '',
+    YOU: '',
     ADD: '',
     PHOTOS: '',
     NO_PHOTOS: '',
@@ -16,6 +17,7 @@ const BasicTextsInterface = {
     YOU_VISIT: '',
     SOCIAL_NETWORKS: '',
     SAVE: '',
+    NEW_MESSAGE: '',
 };
 
 const EventTextsInterface = {
