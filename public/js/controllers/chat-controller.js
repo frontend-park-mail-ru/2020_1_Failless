@@ -175,7 +175,8 @@ export default class ChatController extends Controller {
                 this.view.activateChatUI(name).then();
                 // Append necessary fields
                 messages.forEach((message) => {
-                    message.avatar = message.uid === id ? null : this.ChatModel.chats.get(message.chat_id).users.get(message.uid).avatar;
+                    let chat = this.ChatModel.chats.get(message.chat_id);
+                    message.avatar = (message.uid === id || chat.user_count === 2) ? null : chat.users.get(message.uid).avatar;
                     message.side = message.uid === id ? 'right' : 'left';
                     message.new = false;
                     message.body = message.message;
@@ -239,9 +240,9 @@ export default class ChatController extends Controller {
             .then(profile => {
                 this.view.updateLastMessage(message, profile.uid === message.uid);
                 if (activeChatId && message.chat_id === activeChatId) {
-                    console.log(message);
+                    let chat = this.ChatModel.chats.get(message.chat_id);
                     this.view.renderMessage({
-                        avatar: profile.uid === message.uid ? null : this.ChatModel.chats.get(message.chat_id).users.get(message.uid).avatar,
+                        avatar: (profile.uid === message.uid || chat.user_count === 2) ? null : chat.users.get(message.uid).avatar,
                         body: message.message,
                         side: profile.uid === message.uid ? 'right' : 'left',
                         new: true,

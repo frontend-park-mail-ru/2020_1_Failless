@@ -280,15 +280,17 @@ export default class ChatView extends MyView {
     async updateLastMessage(message, self) {
         // Find chat list item with chat_id
         let chatToUpdate = this.chatListBodyDiv.querySelector(`.chat-list-item[data-cid="${message.chat_id}"]`);
+        let textField = chatToUpdate.querySelector('.chat-list-item__message');
 
         // Set it as unread
         if (!self) {
             setChatListItemAsUnread(chatToUpdate).then();
         } else {
-            chatToUpdate.querySelector('.chat-list-item__message').innerText = `${TextConstants.BASIC__YOU}: ${message.message}`;
+            textField.innerText = `${TextConstants.BASIC__YOU}: ${message.message}`;
         }
 
         // Update message its message
+        textField.innerText = message.message;
         chatToUpdate.querySelector('.chat-list-item__time').innerText = prettifyDateTime(message.created);
     }
 }
