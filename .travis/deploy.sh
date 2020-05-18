@@ -4,5 +4,5 @@ ssh a.prokopenko@163.172.133.90 -v exit
 git config --global push.default simple # we only want to push one branch — master
 # specify the repo on the live server as a remote repo, and name it 'production'
 # <user> here is the separate user you created for deploying
-git remote add production ssh://a.prokopenko@163.172.133.90/home/a.prokopenko/eventum/deploy-front
+git remote add production ssh://a.prokopenko@163.172.133.90/home/a.prokopenko/eventum/deploy
 git push production feature/travis-ci # push our updates
