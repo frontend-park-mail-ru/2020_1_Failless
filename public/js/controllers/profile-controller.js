@@ -692,6 +692,7 @@ export default class ProfileController extends Controller {
 
     receiveMessage = (event) => {
         // Check where to insert the message
+        console.log(event.data);
         let message = JSON.parse(event.data);
         console.log(message);
         if (this.uid !== message.uid) {

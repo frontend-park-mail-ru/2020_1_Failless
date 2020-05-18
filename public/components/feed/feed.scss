@@ -59,7 +59,7 @@
       bottom: 0;
       left: 0;
       padding: 5px 0 13px;
-      background: linear-gradient(to top, $color-white, transparent 75%);
+      background: linear-gradient(to top, white, rgba(255, 255, 255, 0) 75%);
 
       @media only screen and (max-width: $breakpoint-phone) {
         position: fixed;
@@ -135,12 +135,12 @@
 
     &-approve {
       & svg {
-        fill: $color-red;
+        fill: url(#gradient-svg);
       }
 
       &:hover {
         &.gradient-border:after {
-          background: $gradient-red;
+          background: $extended-gradient;
         }
       }
     }
@@ -149,12 +149,12 @@
       padding-top: 14px;
       & svg {
         transform: rotate(180deg);
-        fill: $color-blue;
+        fill: $color-red;
       }
 
       &:hover {
         &.gradient-border:after {
-          background: $gradient-blue;
+          background: $gradient-red;
         }
       }
     }
