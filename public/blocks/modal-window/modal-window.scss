@@ -42,6 +42,14 @@
     max-height: calc(75vh - 62px - 15px - 32px - 2px);
     margin-bottom: $re--medium-padding;
     overflow: auto;
+
+    &_photos {
+      max-width: 25vw;
+
+      @media only screen and (max-width: $breakpoint-phone) {
+        max-width: unset;
+      }
+    }
   }
 
   &__footer {

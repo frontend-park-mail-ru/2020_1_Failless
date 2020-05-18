@@ -8,7 +8,7 @@
                 </svg>
             </div>
         </div>
-        <div class="modal__body">
+        <div class="modal__body {{ additional_class }}">
             {{#each tags as |tag|}}
                 {{> $Blocks/tag/template }}
             {{/each}}

@@ -406,6 +406,7 @@ export default class ProfileController extends Controller {
         // Show modal window
         this.editView = new ModalView(document.body);
         this.editView.render({
+            additional_class: 'modal__body_photos',
             title: TextConstants.PROFILE__YOUR_PHOTOS,
             last_buttons: [{title: TextConstants.BASIC__SAVE}]
         });
