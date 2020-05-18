@@ -122,6 +122,10 @@ export default class ChatModel extends Model {
                  Additional get functions
      ***********************************************/
 
+    /**
+     *
+     * @return {Map<number, Object> | Map<any, any>}
+     */
     get chats() {
         return this.chatMap;
     }
@@ -144,6 +148,9 @@ export default class ChatModel extends Model {
      * }>
      */
     set chats(chats) {
+        if (!chats) {
+            return;
+        }
         chats.forEach(chat => {
             let newChat = {...chat};
             newChat.active = false;
@@ -160,15 +167,16 @@ export default class ChatModel extends Model {
                     newChat.avatar = `${settings.aws}/users/${newChat.avatar}`;
                 }
             }
-            if (chat.user_count !== 2) {
-                chat.loaded = false;
-                chat.users = new Map();
+            if (newChat.user_count !== 2) {
+                newChat.loaded = false;
+                newChat.users = new Map();
             }
             this.chatMap.set(chat.chat_id, newChat);
             if (chat.user_count !== 2) {
-                this.#fillUsersForGroupChat(chat.chat_id);
+                this.#fillUsersForGroupChat(chat.chat_id).then();
+                // TODO: define it as called promise to call it once again in
+                //  Promise.all() on chat opening
             }
-            // TODO: save all users and then choose which to fetch
         });
     }
 
@@ -178,6 +186,11 @@ export default class ChatModel extends Model {
                 if (users) {
                     let chat = this.chatMap.get(chatID);
                     users.forEach(user => {
+                        if (user.photos) {
+                            user.avatar = `${settings.aws}/users/${user.photos[0]}`;
+                        } else {
+                            user.avatar = images.get('user-default');
+                        }
                         chat.users.set(user.uid, {...user})
                     });
                     chat.loaded = true;

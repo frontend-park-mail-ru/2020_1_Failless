@@ -220,7 +220,7 @@ export default class ChatController extends Controller {
             .then(profile => {
                 this.view.updateLastMessage(message, profile.uid === message.uid);
                 if (activeChatId && message.chat_id === activeChatId) {
-                    console.log(message);
+                    console.log(this.ChatModel.chats);
                     this.view.renderMessage({
                         avatar: profile.uid === message.uid ? null : this.ChatModel.chats.get(message.chat_id).users.get(message.uid).avatar,
                         body: message.message,

@@ -245,7 +245,9 @@ export default class ChatView extends MyView {
      *      new: boolean}}
      */
     renderMessage(message) {
+        console.log(message);
         const chatBody = this.chatBodyDiv;
+
         // Get last message
         const lastMessage = chatBody.lastElementChild;
         const side = message.side;
