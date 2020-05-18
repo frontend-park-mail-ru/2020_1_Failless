@@ -18,7 +18,6 @@ import {toggleActionText} from 'Blocks/event/event';
 import settings from 'Settings/config';
 import Snackbar from 'Blocks/snackbar/snackbar';
 import TextConstants from 'Eventum/utils/language/text';
-import NetworkModule from 'Eventum/core/network';
 
 /**
  * @class ProfileController
@@ -96,14 +95,9 @@ export default class ProfileController extends Controller {
                         },
                         {
                             attr: 'photoUpload',
+                            many: true,
                             events: [
-                                {type: 'change', handler: this.#handleFile},
-                            ]
-                        },
-                        {
-                            attr: 'saveMeta',
-                            events: [
-                                {type: 'click', handler: this.#handleInfo},
+                                {type: 'change', handler: this.#handlePreviewImages},
                             ]
                         },
                         {
@@ -382,22 +376,20 @@ export default class ProfileController extends Controller {
                       User photos
      ***********************************************/
 
-    #handleFile = (event) => {
+    #handlePreviewImages = (event) => {
         if (event.target.files && event.target.files[0]) {
             let FR = new FileReader();
-            this.addEventHandler(FR, 'load', this.#handleSelectImg);
+            this.addEventHandler(FR, 'load', () => {this.#previewPhotos(event.target);});
             FR.readAsDataURL(event.target.files[0]);
         }
     };
 
     /**
      * Preview selected image and draw manage buttons
-     * @param {Event} event
+     * @param {HTMLInputElement} input
      */
-    #handleSelectImg = (event) => {
-        event.preventDefault();
-
-        const files = this.view.mainColumnDiv.querySelector('input#photoUpload').files;
+    #previewPhotos = (input) => {
+        const files = input.files;
         if (!files || files.length === 0) {
             console.log('empty files');
             return;
@@ -449,7 +441,7 @@ export default class ProfileController extends Controller {
             });
         this.activeModalWindow.querySelector('[data-bind-event="modalWindowAction"]').addEventListener(
             'click', () => {
-                this.#uploadImages();
+                this.#uploadImages().then();
                 this.editView.clear();
                 this.editView = null;
             });
@@ -504,52 +496,6 @@ export default class ProfileController extends Controller {
             let imageEditDiv = event.target.closest('.image-edit');
             imageEditDiv.remove();
         }
-    };
-
-    /**
-     * Handle meta information such as tags, social and about
-     * @param {Event} event
-     */
-    #handleInfo = (event) => {
-        event.preventDefault();
-
-        // Set options
-        const textInput = document.getElementsByClassName('textarea')[0];
-        const tags = document.querySelectorAll('.tag');
-        let selectedTags = [];
-        tags.forEach((tag) => {
-            selectedTags.push(+tag.getAttribute('data-id'));
-        });
-
-        const userProfile = {
-            uid: this.user.uid,
-            tags: selectedTags,
-            about: textInput.value, // TODO: check if it's safe
-            social: this.user.links,
-            photos: this.images.some(image => image.state === 'old' ? !image.img : image.img)
-                ? this.images.map(image => {
-                    if (image.img) {
-                        return {
-                            img: image.state === 'old' ? '' : image.img,
-                            path: image.state === 'old' ? image.img : '',
-                        };
-                    }
-                })
-                : null,
-        };
-
-        this.removeErrorMessage(event);
-
-        // Send request
-        UserModel.putProfile(userProfile)
-            .then(response => {
-                if (Object.prototype.hasOwnProperty.call(response, 'message')) {
-                    return this.view.addErrorMessage(document.getElementsByClassName('re_btn re_btn__filled')[0], [response.message]);
-                } else {
-                    return Snackbar.instance.addMessage(TextConstants.PROFILE__SUCCESSFUL_SAVE);
-                }
-            })
-            .catch(reason => console.log('ERROR', reason));
     };
 
     // TODO: move it to view

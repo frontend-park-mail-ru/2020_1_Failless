@@ -2,7 +2,8 @@
     <h2>{{ profile.name }}{{#if profile.age}}, {{ profile.age }}{{/if}}</h2>
     <div class="profile-left__body">
         <form action="submit" id="form">
-            <div class="profile-left__avatar">
+            <div class="profile-left__avatar" >
+                <input id="photoUpload" type="file" data-bind-event="photoUpload" multiple/>
                 {{> $Blocks/avatar/template }}
             </div>
             <div class="profile-left__options-field">
@@ -45,12 +46,9 @@
                 {{/if}}
             </div>
             <div class="profile-left__exit">
+                {{> $Blocks/button-comp/template settings_button}}
                 {{> $Blocks/button-comp/template button_logout}}
             </div>
         </form>
-    </div>
-    <div class="profile-left__footer">
-        {{> $Blocks/button-comp/template settings_button}}
-        {{> $Blocks/button-comp/template save_button}}
     </div>
 </div>

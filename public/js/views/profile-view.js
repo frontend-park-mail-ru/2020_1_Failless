@@ -113,13 +113,6 @@ export default class ProfileView extends MyView {
             data_bind: 'logout',
         });
 
-        const saveButton = new Button({
-            style: 're_btn re_btn__filled',
-            state: null,
-            text: 'Сохранить',
-            data_bind: 'saveMeta',
-        });
-
         const settingsButton = new Button({
             style: 're_btn re_btn__outline',
             state: null,
@@ -139,7 +132,6 @@ export default class ProfileView extends MyView {
                 profile: profile,
                 avatar: `${settings.aws}/users/${profile.avatar.path}`,
                 button_logout: logoutButton.data,
-                save_button: saveButton.data,
                 settings_button: settingsButton.data,
                 ADD: TextConstants.BASIC__ADD,
                 NO_TAGS: TextConstants.PROFILE__NO_TAGS,

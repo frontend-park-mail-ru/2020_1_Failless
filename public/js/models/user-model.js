@@ -108,27 +108,6 @@ export default class UserModel extends Model {
     }
 
     /**
-     * Send user profile data to server
-     * @return {Promise} promise to set new user data
-     */
-    static putProfile(profileUserData) {
-        return NetworkModule.fetchPut({
-            path: `/profile/${this.user.uid}/meta`,
-            api: settings.api,
-            body: profileUserData
-        }).then(
-            (response) => {
-                if (response.status > 499) {
-                    throw new Error('Server error');
-                }
-                return response.json();
-            },
-            (error) => {
-                throw new Error(error);
-            });
-    }
-
-    /**
      * Save user's description
      * @param about {string}
      */
