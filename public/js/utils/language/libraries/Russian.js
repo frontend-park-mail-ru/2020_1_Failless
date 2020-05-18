@@ -7,6 +7,12 @@ const BasicTextsRussian = {
     LOCATION: 'Местоположение',
     FIND: 'Найти',
     AGE: 'Возраст',
+    ADD: 'Добавить',
+    PHOTOS: 'Фото',
+    NO_PHOTOS: 'Фотографий нет',
+    EVENTS: 'Мероприятия',
+    SOCIAL_NETWORKS: 'Социальные сети',
+    SAVE: 'Сохранить',
 };
 
 const EventTextsRussian = {
@@ -17,6 +23,11 @@ const EventTextsRussian = {
 
 const ProfileTextsRussian = {
     SUCCESSFUL_SAVE: 'Информация сохранена',
+    NO_TAGS: 'У вас пока нет ни одного тэга',
+    YOUR_EVENTS: 'Ваши мероприятия',
+    YOU_VISIT: 'Вы идёте',
+    YOUR_TAGS: 'Ваши теги',
+    YOUR_PHOTOS: 'Ваши фото',
 };
 
 const FiltersTextsRussian = {

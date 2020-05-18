@@ -108,45 +108,58 @@ export default class UserModel extends Model {
     }
 
     /**
-     * Send user profile data to server
-     * @return {Promise} promise to set new user data
+     * Save user's description
+     * @param about {string}
      */
-    static putProfile(profileUserData) {
-        return NetworkModule.fetchPut({
-            path: `/profile/${this.user.uid}/meta`,
-            api: settings.api,
-            body: profileUserData
-        }).then(
-            (response) => {
+    static putAbout(about) {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/meta/about`, body: {about: about}})
+            .then(response => {
                 if (response.status > 499) {
                     throw new Error('Server error');
                 }
                 return response.json();
-            },
-            (error) => {
-                throw new Error(error);
-            });
+            })
+            .catch(error => {throw new Error(error);});
+    }
+
+    /**
+     * Save user's description
+     * @param tags {Array<Number>}
+     */
+    static putTags(tags) {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/meta/tags`, body: {tags: tags}})
+            .then(response => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
+            .catch(error => {throw new Error(error);});
     }
 
     /**
      * Send user image data to server
+     * @param images {Array<{
+     *     img: string | null,
+     *     path: string | null,
+     * }>}
      * @return {Promise} promise to set new user data
      */
-    static putImage(imageData) {
-        return NetworkModule.fetchPut({
-            path: `/profile/${this.user.uid}/upload`,
-            api: settings.api,
-            body: imageData
-        }).then(
-            (response) => {
+    static putPhotos(images) {
+        return NetworkModule.fetchPut({path: `/profile/${this.user.uid}/meta/photos`, body: images})
+            .then(response => {
                 if (response.status > 499) {
                     throw new Error('Server error');
                 }
-                return response.json();
-            },
-            (error) => {
-                throw new Error(error);
-            });
+                return response.json()
+                    .then(photos => {
+                        if (photos.message) {
+                            throw new Error(photos.message);
+                        } else {
+                            return photos;
+                        }
+                    });})
+            .catch(error => {throw new Error(error);});
     }
 
     /**
@@ -166,6 +179,7 @@ export default class UserModel extends Model {
                         }
                         return response.json().then((profile) => {
                             this.profile = profile;
+                            console.log(profile);
                             return profile;
                         });
                     },

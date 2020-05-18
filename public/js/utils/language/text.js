@@ -38,6 +38,12 @@ export default class TextConstants {
     static get BASIC__TO() {return localLibrary.Basic.TO;}
     static get BASIC__LOCATION() {return localLibrary.Basic.LOCATION;}
     static get BASIC__FIND() {return localLibrary.Basic.FIND;}
+    static get BASIC__ADD() {return localLibrary.Basic.ADD;}
+    static get BASIC__PHOTOS() {return localLibrary.Basic.PHOTOS;}
+    static get BASIC__NO_PHOTOS() {return localLibrary.Basic.NO_PHOTOS;}
+    static get BASIC__EVENTS() {return localLibrary.Basic.EVENTS;}
+    static get BASIC__SOCIAL_NETWORKS() {return localLibrary.Basic.SOCIAL_NETWORKS;}
+    static get BASIC__SAVE() {return localLibrary.Basic.SAVE;}
 
     static get EVENT__VISITED() {return localLibrary.Event.VISITED;}
     static get EVENT__UNVISITED() {return localLibrary.Event.UNVISITED;}
@@ -55,4 +61,9 @@ export default class TextConstants {
     static get FEED__SKIP() {return localLibrary.Feed.SKIP;}
 
     static get PROFILE__SUCCESSFUL_SAVE() {return localLibrary.Profile.SUCCESSFUL_SAVE;}
+    static get PROFILE__YOUR_EVENTS() {return localLibrary.Profile.YOUR_EVENTS;}
+    static get PROFILE__YOU_VISIT() {return localLibrary.Profile.YOU_VISIT;}
+    static get PROFILE__YOUR_TAGS() {return localLibrary.Profile.YOUR_TAGS;}
+    static get PROFILE__NO_TAGS() {return localLibrary.Profile.NO_TAGS;}
+    static get PROFILE__YOUR_PHOTOS() {return localLibrary.Profile.YOUR_PHOTOS;}
 }

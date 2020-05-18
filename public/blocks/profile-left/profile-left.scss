@@ -12,9 +12,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 
     & img {
       box-shadow: 2px 3px 8px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    & input {
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
     }
   }
 
