@@ -381,7 +381,7 @@ export default class ProfileView extends MyView {
     async renderPhotos(photos) {
         console.log(photos);
         makeEmpty(this.photosColumn);
-        if (photos) {
+        if (photos && photos.length > 0) {
             photos.forEach(photo => {
                 this.photosColumn.insertAdjacentHTML('beforeend', imageEditTemplate({
                     src: `${settings.aws}/users/${photo.path}`,
