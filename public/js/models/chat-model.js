@@ -35,6 +35,8 @@ export default class ChatModel extends Model {
         };
     }
 
+    isWSOpen() { return this.socket.readyState === this.socket.OPEN }
+
     /**
      *
      * @param id1 - this user's id

@@ -22,10 +22,12 @@ export default class ChatController extends Controller {
         this.uid = null;
         this.chat_id = null;
         this.ChatModel = null;
+        this.timerId = null;
     }
 
     destructor() {
         this.view.destructor();
+        this.timerId = null;
         super.destructor();
     }
 
@@ -55,6 +57,9 @@ export default class ChatController extends Controller {
                                 this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then(
                                     (response) => {
                                         console.log(response);
+
+                                        this.timerId = setInterval(this.#reestablishConnection, 100);
+
                                         this.ChatModel.chats = chats;
                                         // после загрузки все чаты неактивны
                                         this.ChatModel.chats.forEach((val) => {
@@ -219,6 +224,19 @@ export default class ChatController extends Controller {
         textarea.value = '';
         resizeTextArea.call(textarea);
     };
+
+    /**
+     * Re-establish conn to WS
+     */
+    #reestablishConnection = () => {
+        if (!this.ChatModel.isWSOpen()) {
+            UserModel.getProfile().then((profile) => {
+                if (profile) {
+                    this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then();
+                }
+            });
+        }
+    }
 
     receiveMessage = (event) => {
         // Find active chat
