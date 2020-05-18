@@ -4,13 +4,10 @@
   height: 100%;
   display: flex;
   flex-flow: column;
+  overflow-y: auto;
 
   &__header {
     padding: 0 15px;
-  }
-
-  &__body {
-    height: 100%;
   }
 
   &__footer {
@@ -19,6 +16,7 @@
     position: sticky;
     bottom: 0;
     padding: $re--small-padding;
+    background: $color-white;
     display: flex;
     align-items: center;
     justify-content: flex-start;
