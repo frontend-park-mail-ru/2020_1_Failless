@@ -46,6 +46,7 @@ export default class TextConstants {
     static get BASIC__EVENTS() {return localLibrary.Basic.EVENTS;}
     static get BASIC__SOCIAL_NETWORKS() {return localLibrary.Basic.SOCIAL_NETWORKS;}
     static get BASIC__SAVE() {return localLibrary.Basic.SAVE;}
+    static get BASIC__NEW_MESSAGE() {return localLibrary.Basic.NEW_MESSAGE;}
 
     static get EVENT__VISITED() {return localLibrary.Event.VISITED;}
     static get EVENT__UNVISITED() {return localLibrary.Event.UNVISITED;}

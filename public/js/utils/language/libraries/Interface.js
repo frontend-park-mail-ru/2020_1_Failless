@@ -17,6 +17,7 @@ const BasicTextsInterface = {
     YOU_VISIT: '',
     SOCIAL_NETWORKS: '',
     SAVE: '',
+    NEW_MESSAGE: '',
 };
 
 const EventTextsInterface = {

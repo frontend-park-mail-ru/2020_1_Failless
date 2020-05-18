@@ -17,8 +17,6 @@ $message-radius: 18px;
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-  @include transition(0.3s, ease-in-out);
-  transform: scale(1);
 
   &_right {
     background: $re--gradient-right;
@@ -58,10 +56,6 @@ $message-radius: 18px;
     border-bottom-right-radius: $message-radius;
   }
 
-  &_new {
-    transform: scale(0);
-  }
-
   &__avatar {
     width: 23px;
     height: 23px;
@@ -75,6 +69,8 @@ $message-radius: 18px;
     margin: 1px 0;
     display: flex;
     align-items: flex-end;
+    @include transition(0.3s, ease-in-out);
+    transform: scale(1);
 
     &_right {
      align-self: flex-end;
@@ -82,6 +78,10 @@ $message-radius: 18px;
 
     &_left {
      align-self: flex-start;
+    }
+
+    &_new {
+      transform: scale(0);
     }
   }
 }

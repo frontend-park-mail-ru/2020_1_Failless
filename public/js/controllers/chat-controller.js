@@ -11,6 +11,8 @@ import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-
 import {detectMobile} from 'Eventum/utils/basic';
 import {CircleRedirect} from 'Blocks/circle/circle';
 import NotificationController from 'Eventum/controllers/notification-controller';
+import Snackbar from 'Blocks/snackbar/snackbar';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class ChatController
@@ -51,7 +53,7 @@ export default class ChatController extends Controller {
                             } else if (Object.prototype.hasOwnProperty.call(chats, 'message')) {
                                 this.view.showLeftError(chats.message);
                             } else {
-                                this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then(
+                                this.ChatModel.establishConnection(user.uid, this.receiveMessage).then(
                                     (response) => {
                                         console.log(response);
 
@@ -219,7 +221,7 @@ export default class ChatController extends Controller {
         if (!this.ChatModel.isWSOpen()) {
             this.ChatModel.establishConnection(this.uid, this.receiveMessage).then();
         }
-    }
+    };
 
     receiveMessage = (event) => {
         // Find active chat
@@ -237,13 +239,17 @@ export default class ChatController extends Controller {
             .then(profile => {
                 this.view.updateLastMessage(message, profile.uid === message.uid);
                 if (activeChatId && message.chat_id === activeChatId) {
-                    console.log(this.ChatModel.chats);
+                    console.log(message);
                     this.view.renderMessage({
                         avatar: profile.uid === message.uid ? null : this.ChatModel.chats.get(message.chat_id).users.get(message.uid).avatar,
                         body: message.message,
                         side: profile.uid === message.uid ? 'right' : 'left',
                         new: true,
                     });
+                } else {
+                    if (message.uid !== profile.uid) {
+                        Snackbar.instance.addMessage(TextConstants.BASIC__NEW_MESSAGE);
+                    }
                 }})
             .catch(console.error);
     }

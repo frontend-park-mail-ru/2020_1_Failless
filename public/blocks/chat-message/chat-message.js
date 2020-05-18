@@ -5,5 +5,5 @@ export {showMessage};
  * @param {Element} messageElement
  */
 function showMessage(messageElement) {
-    messageElement.classList.remove('chat-message_new');
+    messageElement.classList.remove('chat-message__container_new');
 }
