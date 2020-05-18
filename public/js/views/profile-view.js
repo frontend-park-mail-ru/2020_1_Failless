@@ -15,7 +15,7 @@ import EventEdit from 'Blocks/event-edit/event-edit';
 import MidEventComponent from 'Blocks/event/mid-event-comp';
 import SmallEventComponent from 'Blocks/event/small-event-comp';
 import TextConstants from 'Eventum/utils/language/text';
-import {STATIC_TAGS} from 'Eventum/utils/static-data';
+import {STATIC_TAGS, images} from 'Eventum/utils/static-data';
 
 /**
  * @class create ProfileView class
@@ -403,6 +403,16 @@ export default class ProfileView extends MyView {
 
     async renderEmptyPhotos() {
         this.showError(this.photosColumn, TextConstants.BASIC__NO_PHOTOS, null, null);
+        this.renderAvatar();
+    }
+
+    async renderAvatar() {
+        const userPhotos = this.photosColumn.querySelectorAll('img');
+        if (userPhotos) {
+            this.avatarDiv.querySelector('img').src = userPhotos[0].src;
+        } else {
+            this.avatarDiv.querySelector('img').src = images.get('user-default');
+        }
     }
 
     /***********************************************

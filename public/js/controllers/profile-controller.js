@@ -474,8 +474,24 @@ export default class ProfileController extends Controller {
             event.target.classList.contains('image-edit__close-icon_inner'))
         {
             let imageEditDiv = event.target.closest('.image-edit');
+            imageEditDiv.style.display = 'none';
+            const images = this.view.photosColumn.querySelectorAll('.image-edit');
+            const requestImages = [];
+            let changeAvatar = false;
+            images.forEach((image, index) => {
+                if (image.style.display !== 'none') {
+                    requestImages.push({img: '', path: image.lastElementChild.src.slice((`${settings.aws}/users/`).toString().length)});
+                } else if (index === 0) {
+                    changeAvatar = true;
+                }
+            });
+            UserModel.putPhotos(requestImages);
             imageEditDiv.remove();
-            // TODO: send request
+            if (images.length === 1) {
+                this.view.renderEmptyPhotos();
+            } else if (changeAvatar) {
+                this.view.renderAvatar();
+            }
         }
     };
 
