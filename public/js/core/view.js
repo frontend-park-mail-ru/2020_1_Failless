@@ -73,7 +73,9 @@ export default class View {
         document.body.insertAdjacentHTML('beforeend', loadingTemplate({global: 'global'}));
         this.globalLoader = document.body.querySelector('.spinner_global');
         setTimeout(() => {
-            this.globalLoader.classList.remove('spinner_appear');
+            if (this.globalLoader) {
+                this.globalLoader.classList.remove('spinner_appear');
+            }
         }, 200);
     }
 

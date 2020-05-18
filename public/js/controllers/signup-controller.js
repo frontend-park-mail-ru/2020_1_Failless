@@ -5,6 +5,8 @@ import SignUpView from 'Eventum/views/signup-view';
 import UserModel from 'Eventum/models/user-model';
 import ValidationModule from 'Eventum/utils/validation';
 import Router from 'Eventum/core/router';
+import Snackbar from 'Blocks/snackbar/snackbar';
+import TextConstants from 'Eventum/utils/language/text';
 
 export default class SignUpController extends Controller {
 
@@ -126,7 +128,8 @@ export default class SignUpController extends Controller {
                 this.view.removeGlobalLoading();
 
                 if (Object.prototype.hasOwnProperty.call(response, 'name')) {
-                    Router.redirectForward('/login');
+                    Snackbar.instance.addMessage(TextConstants.AUTH__SUCCESSFUL_SIGNUP);
+                    setTimeout(() => {Router.redirectForward('/login');}, 1000);
                 } else {
                     this.view.addErrorMessage(this.form, [response.message]);
                 }

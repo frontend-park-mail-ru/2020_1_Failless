@@ -694,10 +694,7 @@ export default class ProfileController extends Controller {
         // Check where to insert the message
         let message = JSON.parse(event.data);
         console.log(message);
-        const notification = 'У вас новый мэтч!!!';
-        if (this.uid !== message.uid) {
-            NotificationController.notify(notification);
-        }
+        Snackbar.instance.addMessage(TextConstants.FEED__NEW_MATCH);
     };
 
 }

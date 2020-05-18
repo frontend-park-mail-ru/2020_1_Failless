@@ -43,6 +43,11 @@ const FeedTextsRussian = {
     SKIP: 'Пропустить',
     PERSONAL_EVENTS_HEADER: 'Куда зовёт пойти',
     SUBSCRIPTIONS_HEADER: 'Куда сам идёт',
+    NEW_MATCH: 'Пользователь ответил взаимностью! Загляните в сообщения!',
+};
+
+const AuthTextsRussian = {
+    SUCCESSFUL_SIGNUP: 'Регистрация прошла успешно',
 };
 
 const RussianLibrary = {
@@ -51,6 +56,7 @@ const RussianLibrary = {
     Profile: ProfileTextsRussian,
     Filters: FiltersTextsRussian,
     Feed: FeedTextsRussian,
+    Auth: AuthTextsRussian,
 };
 
 export default RussianLibrary;

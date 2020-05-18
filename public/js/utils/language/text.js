@@ -26,6 +26,7 @@ export default class TextConstants {
         if (TextConstants.currentLanguage === LANGUAGES.ENGLISH) {
             return;
         }
+        // TODO: make english
         TextConstants.currentLanguage = LANGUAGES.RUSSIAN;
         localLibrary = RussianLibrary;
     }
@@ -59,6 +60,7 @@ export default class TextConstants {
     static get FEED__PERSONAL_EVENTS_HEADER() {return localLibrary.Feed.PERSONAL_EVENTS_HEADER;}
     static get FEED__SUBSCRIPTIONS_HEADER() {return localLibrary.Feed.SUBSCRIPTIONS_HEADER;}
     static get FEED__SKIP() {return localLibrary.Feed.SKIP;}
+    static get FEED__NEW_MATCH() {return localLibrary.Feed.NEW_MATCH;}
 
     static get PROFILE__SUCCESSFUL_SAVE() {return localLibrary.Profile.SUCCESSFUL_SAVE;}
     static get PROFILE__YOUR_EVENTS() {return localLibrary.Profile.YOUR_EVENTS;}
@@ -66,4 +68,7 @@ export default class TextConstants {
     static get PROFILE__YOUR_TAGS() {return localLibrary.Profile.YOUR_TAGS;}
     static get PROFILE__NO_TAGS() {return localLibrary.Profile.NO_TAGS;}
     static get PROFILE__YOUR_PHOTOS() {return localLibrary.Profile.YOUR_PHOTOS;}
+
+    static get AUTH__SUCCESSFUL_SIGNUP() {return localLibrary.Auth.SUCCESSFUL_SIGNUP;}
+
 }

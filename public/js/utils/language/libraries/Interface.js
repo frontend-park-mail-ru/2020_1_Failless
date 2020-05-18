@@ -46,6 +46,11 @@ const FeedTextsInterface = {
     SKIP: '',
     PERSONAL_EVENTS_HEADER: '',
     SUBSCRIPTIONS_HEADER: '',
+    NEW_MATCH: '',
+};
+
+const AuthTextsInterface = {
+    SUCCESSFUL_SIGNUP: '',
 };
 
 const Library = {
@@ -54,6 +59,7 @@ const Library = {
     Profile: ProfileTextsInterface,
     Filters: FiltersTextsInterface,
     Feed: FeedTextsInterface,
+    Auth: AuthTextsInterface,
 };
 
 export default Library;
