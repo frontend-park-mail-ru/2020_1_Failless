@@ -11,7 +11,6 @@ import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-
 import {detectMobile} from 'Eventum/utils/basic';
 import {CircleRedirect} from 'Blocks/circle/circle';
 import NotificationController from 'Eventum/controllers/notification-controller';
-import Snackbar from 'Blocks/snackbar/snackbar';
 import TextConstants from 'Eventum/utils/language/text';
 
 /**
@@ -238,6 +237,9 @@ export default class ChatController extends Controller {
         let message = JSON.parse(event.data);
         UserModel.getProfile()
             .then(profile => {
+                if (message.uid !== profile.uid) {
+                    NotificationController.notify(TextConstants.BASIC__NEW_MESSAGE);
+                }
                 this.view.updateLastMessage(message, profile.uid === message.uid);
                 if (activeChatId && message.chat_id === activeChatId) {
                     let chat = this.ChatModel.chats.get(message.chat_id);
@@ -247,10 +249,6 @@ export default class ChatController extends Controller {
                         side: profile.uid === message.uid ? 'right' : 'left',
                         new: true,
                     });
-                } else {
-                    if (message.uid !== profile.uid) {
-                        Snackbar.instance.addMessage(TextConstants.BASIC__NEW_MESSAGE);
-                    }
                 }})
             .catch(console.error);
     }
