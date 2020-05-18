@@ -400,7 +400,7 @@ export default class ProfileView extends MyView {
 
     async renderAvatar() {
         const userPhotos = this.photosColumn.querySelectorAll('img');
-        if (userPhotos) {
+        if (userPhotos && userPhotos.length > 0) {
             this.avatarDiv.querySelector('img').src = userPhotos[0].src;
         } else {
             this.avatarDiv.querySelector('img').src = images.get('user-default');
