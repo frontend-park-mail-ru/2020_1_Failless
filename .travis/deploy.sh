@@ -7,3 +7,5 @@ git config --global push.default simple # we only want to push one branch — ma
 git remote add production ssh://a.prokopenko@163.172.133.90/home/a.prokopenko/eventum/deploy
 git pull --rebase
 git push production feature/travis-ci # push our updates
+npm install
+npx webpack
