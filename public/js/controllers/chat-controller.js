@@ -166,6 +166,7 @@ export default class ChatController extends Controller {
                 this.view.activateChatUI(name).then();
                 // Append necessary fields
                 messages.forEach((message) => {
+                    message.avatar = message.uid === id ? null : this.ChatModel.chats.get(message.chat_id).users.get(message.uid).avatar;
                     message.side = message.uid === id ? 'right' : 'left';
                     message.new = false;
                     message.body = message.message;

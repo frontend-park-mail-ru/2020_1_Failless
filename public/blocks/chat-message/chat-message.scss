@@ -3,8 +3,6 @@
 $message-radius: 18px;
 
 .chat-message {
-  max-width: 75%;
-  margin: 1px 0;
   padding: 8px 10px;
   border-radius: $message-radius;
   font-size: 14px;
@@ -23,14 +21,12 @@ $message-radius: 18px;
   transform: scale(1);
 
   &_right {
-    align-self: flex-end;
     background: $re--gradient-right;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
   }
 
   &_left {
-    align-self: flex-start;
     background: $re--gradient-left;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
@@ -67,10 +63,25 @@ $message-radius: 18px;
   }
 
   &__avatar {
-    width: 14px;
-    height: 14px;
+    width: 23px;
+    height: 23px;
     object-fit: cover;
     border-radius: 50%;
     margin-right: 2px;
+  }
+
+  &__container {
+    max-width: 75%;
+    margin: 1px 0;
+    display: flex;
+    align-items: flex-end;
+
+    &_right {
+     align-self: flex-end;
+    }
+
+    &_left {
+     align-self: flex-start;
+    }
   }
 }

@@ -124,7 +124,7 @@
     top: $re--large-padding;
     bottom: 0;
     transform: translateX(100%);
-    z-index: $z-index-header;
+    z-index: $z-index-header - 1;
     max-height: none;
 
     &_active {

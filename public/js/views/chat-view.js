@@ -249,7 +249,10 @@ export default class ChatView extends MyView {
         const chatBody = this.chatBodyDiv;
 
         // Get last message
-        const lastMessage = chatBody.lastElementChild;
+        let lastMessage = chatBody.lastElementChild;
+        if (lastMessage) {
+            lastMessage = lastMessage.lastElementChild;
+        }
         const side = message.side;
         if (lastMessage && lastMessage.classList.contains(`chat-message_${side}`)) {
             if (lastMessage.classList.contains(`chat-message_first_${side}`)) {

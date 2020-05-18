@@ -1,1 +1,4 @@
-{{#if avatar}}<img class="chat-message__avatar" src="{{ avatar }}" alt="">{{/if}}<div class="chat-message chat-message_{{ side }} chat-message_last_{{ side }} {{ style }} {{#if new}}chat-message_new{{/if}}">{{ body }}</div>
+<div class="chat-message__container chat-message__container_{{ side }}">
+    {{#if avatar}}<img class="chat-message__avatar" src="{{ avatar }}" alt="">{{/if}}
+    <div class="chat-message chat-message_{{ side }} chat-message_last_{{ side }} {{ style }} {{#if new}}chat-message_new{{/if}}">{{ body }}</div>
+</div>
