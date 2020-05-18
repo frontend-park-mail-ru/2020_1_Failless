@@ -29,7 +29,7 @@ export default class View {
 
     /**
      * Add error message
-     * @param {HTMLElement} element - html element
+     * @param {Element} element - html element
      * @param {string[]} messageValue - array of validation errors
      */
     addErrorMessage(element, messageValue) {
@@ -53,7 +53,7 @@ export default class View {
     async showError(element, message, icon, button) {
         makeEmpty(element);
         element.insertAdjacentHTML('beforeend', errorTemplate({
-            icon:   icons.get(icon),
+            icon: icons.get(icon),
             message: message,
             button: button,
         }));
@@ -72,7 +72,11 @@ export default class View {
     async showGlobalLoading() {
         document.body.insertAdjacentHTML('beforeend', loadingTemplate({global: 'global'}));
         this.globalLoader = document.body.querySelector('.spinner_global');
-        setTimeout(()=>{this.globalLoader.classList.remove('spinner_appear');},200);
+        setTimeout(() => {
+            if (this.globalLoader) {
+                this.globalLoader.classList.remove('spinner_appear');
+            }
+        }, 200);
     }
 
     async removeGlobalLoading() {

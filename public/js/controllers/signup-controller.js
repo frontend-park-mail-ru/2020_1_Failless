@@ -1,10 +1,12 @@
 'use strict';
 
-import Controller from 'Eventum/core/controller.js';
-import SignUpView from 'Eventum/views/signup-view.js';
-import UserModel from 'Eventum/models/user-model.js';
-import ValidationModule from 'Eventum/utils/validation.js';
-import router from 'Eventum/core/router.js';
+import Controller from 'Eventum/core/controller';
+import SignUpView from 'Eventum/views/signup-view';
+import UserModel from 'Eventum/models/user-model';
+import ValidationModule from 'Eventum/utils/validation';
+import Router from 'Eventum/core/router';
+import Snackbar from 'Blocks/snackbar/snackbar';
+import TextConstants from 'Eventum/utils/language/text';
 
 export default class SignUpController extends Controller {
 
@@ -35,7 +37,7 @@ export default class SignUpController extends Controller {
                 return;
             }
             if (Object.prototype.hasOwnProperty.call(user, 'uid')) {
-                router.redirectForward('/');
+                Router.redirectForward('/');
                 return;
             }
             super.action();
@@ -126,7 +128,8 @@ export default class SignUpController extends Controller {
                 this.view.removeGlobalLoading();
 
                 if (Object.prototype.hasOwnProperty.call(response, 'name')) {
-                    router.redirectForward('/login');
+                    Snackbar.instance.addMessage(TextConstants.AUTH__SUCCESSFUL_SIGNUP);
+                    setTimeout(() => {Router.redirectForward('/login');}, 1000);
                 } else {
                     this.view.addErrorMessage(this.form, [response.message]);
                 }

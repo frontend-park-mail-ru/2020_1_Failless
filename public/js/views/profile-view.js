@@ -5,13 +5,17 @@ import MyView from 'Eventum/views/my-view';
 import settings from 'Settings/config';
 import profileLeftTemplate from 'Blocks/profile-left/template.hbs';
 import profileMainTemplate from 'Components/profile-main/template.hbs';
+import imageEditTemplate from 'Blocks/image-edit/template.hbs';
 import loadingTemplate from 'Blocks/loading/template.hbs';
 import errorTemplate from 'Blocks/error/template.hbs';
+import tagTemplate from 'Blocks/tag/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {determineClass} from 'Blocks/event/event';
 import EventEdit from 'Blocks/event-edit/event-edit';
 import MidEventComponent from 'Blocks/event/mid-event-comp';
 import SmallEventComponent from 'Blocks/event/small-event-comp';
+import TextConstants from 'Eventum/utils/language/text';
+import {STATIC_TAGS, images} from 'Eventum/utils/static-data';
 
 /**
  * @class create ProfileView class
@@ -36,8 +40,13 @@ export default class ProfileView extends MyView {
     #emptyvDOM() {
         this.vDOM = {
             leftColumn: {
-                comp: null,
                 element: null,
+                tagsDiv: {
+                    element: null,
+                },
+                avatarDiv: {
+                    element: null,
+                }
             },
             mainColumn: {
                 comp: null,
@@ -66,21 +75,6 @@ export default class ProfileView extends MyView {
         };
     }
 
-    get subscriptionsDiv() {
-        this.setDOMProfileElements();
-        return this.vDOM.mainColumn.subscriptions.element;
-    }
-
-    get personalEventsDiv() {
-        this.setDOMProfileElements();
-        return this.vDOM.mainColumn.personalEvents.element;
-    }
-
-    get eventEditComp() {
-        this.setDOMProfileElements();
-        return this.vDOM.mainColumn.personalEvents.event_edit;
-    }
-
     /**
      * Render template
      * @param {
@@ -96,10 +90,7 @@ export default class ProfileView extends MyView {
      *      avatar: string,
      *      photos: string,
      *      email: string,
-     *      tags: {
-     *          title: string,
-     *          id: string,
-     *      }
+     *      tags: Array<Number>,
      *  } } profile -  user profile from server
      */
     render(profile) {
@@ -114,30 +105,12 @@ export default class ProfileView extends MyView {
             profile.avatar.path = 'default.png';
         }
 
-        if ('tags' in profile) {
-            if (!profile.tags) {
-                profile.tags = [];
-            } else {
-                profile.tags.forEach((tag) => {
-                    tag.activeClass = 'tag__container_active';
-                    tag.editable = true;
-                });
-            }
-        }
-
         // Create components
         const logoutButton = new Button({
             style: 're_btn re_btn__outline logout',
             state: null,
             text: 'Выйти',
             data_bind: 'logout',
-        });
-
-        const saveButton = new Button({
-            style: 're_btn re_btn__filled',
-            state: null,
-            text: 'Сохранить',
-            data_bind: 'saveMeta',
         });
 
         const settingsButton = new Button({
@@ -159,8 +132,11 @@ export default class ProfileView extends MyView {
                 profile: profile,
                 avatar: `${settings.aws}/users/${profile.avatar.path}`,
                 button_logout: logoutButton.data,
-                save_button: saveButton.data,
                 settings_button: settingsButton.data,
+                ADD: TextConstants.BASIC__ADD,
+                NO_TAGS: TextConstants.PROFILE__NO_TAGS,
+                YOUR_TAGS: TextConstants.PROFILE__YOUR_TAGS,
+                SOCIAL_NETWORKS: TextConstants.BASIC__SOCIAL_NETWORKS,
             })
         );
         document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
@@ -169,15 +145,29 @@ export default class ProfileView extends MyView {
                 profile: profile,
                 add_event_button: addEventButton.data,
                 select_options: Array(14).fill(undefined, undefined, undefined).map((_, idx) => 2 + idx),
+                ADD: TextConstants.BASIC__ADD,
+                PHOTOS: TextConstants.BASIC__PHOTOS,
+                EVENTS: TextConstants.BASIC__EVENTS,
+                NO_PHOTOS: TextConstants.BASIC__NO_PHOTOS,
+                YOU_VISIT: TextConstants.PROFILE__YOU_VISIT,
+                YOUR_EVENTS: TextConstants.PROFILE__YOUR_EVENTS,
             })
         );
 
         this.vDOM.mainColumn.personalEvents.event_edit = new EventEdit(
             document.querySelector('.event-edit')
         );
+        this.setDOMProfileElements();
+        this.renderTags(profile.tags);
     }
 
     setDOMProfileElements() {
+        while (!this.vDOM.leftColumn.avatarDiv.element) {
+            this.vDOM.leftColumn.avatarDiv.element = document.querySelector('.profile-left__avatar');
+        }
+        while (!this.vDOM.leftColumn.tagsDiv.element) {
+            this.vDOM.leftColumn.tagsDiv.element = document.querySelector('.profile-left__tags');
+        }
         while (!this.vDOM.mainColumn.subscriptions.element) {
             this.vDOM.mainColumn.subscriptions.element = document.querySelector('.profile-main__subscriptions');
         }
@@ -365,9 +355,81 @@ export default class ProfileView extends MyView {
         return {index: index, source: source};
     }
 
+    /**
+     *
+     * @param tagIDs {Array<Number>}
+     * @return {Promise<void>}
+     */
+    async renderTags(tagIDs) {
+        makeEmpty(this.tagsDiv);
+        if (tagIDs) {
+            tagIDs.forEach((tag) => {
+                let newTag = {...STATIC_TAGS[tag - 1]};
+                newTag.activeClass = 'tag__container_active';
+                newTag.editable = true;
+                this.tagsDiv.insertAdjacentHTML('beforeend', tagTemplate({...newTag}));
+            });
+        } else {
+            await this.renderEmptyTags();
+        }
+    }
+
+    async renderEmptyTags() {
+        this.showError(this.tagsDiv, TextConstants.PROFILE__NO_TAGS, null, null);
+    }
+
+    async renderPhotos(photos) {
+        console.log(photos);
+        makeEmpty(this.photosColumn);
+        if (photos) {
+            photos.forEach(photo => {
+                this.photosColumn.insertAdjacentHTML('beforeend', imageEditTemplate({
+                    src: `${settings.aws}/users/${photo.path}`,
+                }))
+            });
+            this.avatarDiv.querySelector('img').src = `${settings.aws}/users/${photos[0].path}`
+        } else {
+            await this.renderEmptyPhotos();
+        }
+    }
+
+    async renderEmptyPhotos() {
+        this.showError(this.photosColumn, TextConstants.BASIC__NO_PHOTOS, null, null);
+        this.renderAvatar();
+    }
+
+    async renderAvatar() {
+        const userPhotos = this.photosColumn.querySelectorAll('img');
+        if (userPhotos) {
+            this.avatarDiv.querySelector('img').src = userPhotos[0].src;
+        } else {
+            this.avatarDiv.querySelector('img').src = images.get('user-default');
+        }
+    }
+
     /***********************************************
                  Additional get functions
      ***********************************************/
+
+    get avatarDiv() {
+        return this.vDOM.leftColumn.avatarDiv.element;
+    }
+
+    get tagsDiv() {
+        return this.vDOM.leftColumn.tagsDiv.element;
+    }
+
+    get subscriptionsDiv() {
+        return this.vDOM.mainColumn.subscriptions.element;
+    }
+
+    get personalEventsDiv() {
+        return this.vDOM.mainColumn.personalEvents.element;
+    }
+
+    get eventEditComp() {
+        return this.vDOM.mainColumn.personalEvents.event_edit;
+    }
 
     get photosColumn() {
         return this.vDOM.mainColumn.photoColumns.element;

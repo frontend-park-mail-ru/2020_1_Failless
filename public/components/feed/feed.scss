@@ -45,6 +45,12 @@
       margin-bottom: 50px;
     }
 
+    &-body {
+      display: flex;
+      flex-flow: column;
+      min-height: 100%;
+    }
+
     &-footer {
       display: flex;
       align-items: center;
@@ -76,7 +82,7 @@
     }
 
     &_main {
-      flex-grow: 0;
+      flex-grow: 1;
       border-right: 1px solid $re--color-light-gray;
     }
 

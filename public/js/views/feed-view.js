@@ -161,7 +161,10 @@ export default class FeedView extends View {
      * TODO: fix it
      */
     async updateTags() {
-        let modelTags = this.model.tags;
+        this.model.feedRequest.tags.forEach(tagID => {
+            this.model.tagList[tagID - 1].activeClass = 'tag__container_active';
+        });
+        let modelTags = this.model.tagList;
         let tagNodes = this.vDOM.filters.tags;
 
         for (let iii = 0; iii < tagNodes.length; iii++) {

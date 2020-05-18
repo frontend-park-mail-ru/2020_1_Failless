@@ -9,6 +9,14 @@ const BasicTextsInterface = {
     AGE: '',
     DISMISS: '',
     YOU: '',
+    ADD: '',
+    PHOTOS: '',
+    NO_PHOTOS: '',
+    EVENTS: '',
+    YOUR_EVENTS: '',
+    YOU_VISIT: '',
+    SOCIAL_NETWORKS: '',
+    SAVE: '',
 };
 
 const EventTextsInterface = {
@@ -19,6 +27,11 @@ const EventTextsInterface = {
 
 const ProfileTextsInterface = {
     SUCCESSFUL_SAVE: '',
+    NO_TAGS: '',
+    YOUR_EVENTS: '',
+    YOU_VISIT: '',
+    YOUR_TAGS: '',
+    YOUR_PHOTOS: '',
 };
 
 const FiltersTextsInterface = {
@@ -34,6 +47,11 @@ const FeedTextsInterface = {
     SKIP: '',
     PERSONAL_EVENTS_HEADER: '',
     SUBSCRIPTIONS_HEADER: '',
+    NEW_MATCH: '',
+};
+
+const AuthTextsInterface = {
+    SUCCESSFUL_SIGNUP: '',
 };
 
 const Library = {
@@ -42,6 +60,7 @@ const Library = {
     Profile: ProfileTextsInterface,
     Filters: FiltersTextsInterface,
     Feed: FeedTextsInterface,
+    Auth: AuthTextsInterface,
 };
 
 export default Library;

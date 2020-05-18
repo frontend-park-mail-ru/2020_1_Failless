@@ -1,5 +1,5 @@
 <div class="big-search__grid">
-    {{#each events}}
-       {{> $Blocks/event/template followed=../followed}}
+    {{#each events as |event|}}
+        {{> $Blocks/event/template followed=../followed}}
     {{/each}}
 </div>

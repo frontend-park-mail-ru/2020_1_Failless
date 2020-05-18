@@ -10,6 +10,7 @@ import {toggleChatOnMobile} from 'Blocks/chat/chat';
 import {setChatListItemAsRead, toggleChatListItemActive} from 'Blocks/chat-list-item/chat-list-item';
 import {detectMobile} from 'Eventum/utils/basic';
 import {CircleRedirect} from 'Blocks/circle/circle';
+import NotificationController from 'Eventum/controllers/notification-controller';
 
 /**
  * @class ChatController
@@ -20,10 +21,12 @@ export default class ChatController extends Controller {
         this.view = new ChatView(parent);
         this.chat_id = null;
         this.ChatModel = ChatModel.instance;
+        this.timerId = null;
     }
 
     destructor() {
         this.view.destructor();
+        this.timerId = null;
         super.destructor();
     }
 
@@ -48,8 +51,12 @@ export default class ChatController extends Controller {
                             } else if (Object.prototype.hasOwnProperty.call(chats, 'message')) {
                                 this.view.showLeftError(chats.message);
                             } else {
-                                this.ChatModel.establishConnection(user.uid, this.receiveMessage)
-                                    .then(response => {
+                                this.ChatModel.establishConnection(profile.uid, this.receiveMessage).then(
+                                    (response) => {
+                                        console.log(response);
+
+                                        this.timerId = setInterval(this.#reestablishConnection, 100);
+
                                         this.ChatModel.chats = chats;
                                         this.view.renderChatList();
                                     });
@@ -204,6 +211,15 @@ export default class ChatController extends Controller {
         textarea.value = '';
         resizeTextArea.call(textarea);
     };
+
+    /**
+     * Re-establish conn to WS
+     */
+    #reestablishConnection = () => {
+        if (!this.ChatModel.isWSOpen()) {
+            this.ChatModel.establishConnection(this.uid, this.receiveMessage).then();
+        }
+    }
 
     receiveMessage = (event) => {
         // Find active chat

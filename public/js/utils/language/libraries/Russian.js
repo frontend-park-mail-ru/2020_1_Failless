@@ -8,6 +8,12 @@ const BasicTextsRussian = {
     FIND: 'Найти',
     AGE: 'Возраст',
     YOU: 'Вы'
+    ADD: 'Добавить',
+    PHOTOS: 'Фото',
+    NO_PHOTOS: 'Фотографий нет',
+    EVENTS: 'Мероприятия',
+    SOCIAL_NETWORKS: 'Социальные сети',
+    SAVE: 'Сохранить',
 };
 
 const EventTextsRussian = {
@@ -18,6 +24,11 @@ const EventTextsRussian = {
 
 const ProfileTextsRussian = {
     SUCCESSFUL_SAVE: 'Информация сохранена',
+    NO_TAGS: 'У вас пока нет ни одного тэга',
+    YOUR_EVENTS: 'Ваши мероприятия',
+    YOU_VISIT: 'Вы идёте',
+    YOUR_TAGS: 'Ваши теги',
+    YOUR_PHOTOS: 'Ваши фото',
 };
 
 const FiltersTextsRussian = {
@@ -33,6 +44,11 @@ const FeedTextsRussian = {
     SKIP: 'Пропустить',
     PERSONAL_EVENTS_HEADER: 'Куда зовёт пойти',
     SUBSCRIPTIONS_HEADER: 'Куда сам идёт',
+    NEW_MATCH: 'Пользователь ответил взаимностью! Загляните в сообщения!',
+};
+
+const AuthTextsRussian = {
+    SUCCESSFUL_SIGNUP: 'Регистрация прошла успешно',
 };
 
 const RussianLibrary = {
@@ -41,6 +57,7 @@ const RussianLibrary = {
     Profile: ProfileTextsRussian,
     Filters: FiltersTextsRussian,
     Feed: FeedTextsRussian,
+    Auth: AuthTextsRussian,
 };
 
 export default RussianLibrary;

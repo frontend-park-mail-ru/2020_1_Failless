@@ -2,40 +2,31 @@
     <h2>{{ profile.name }}{{#if profile.age}}, {{ profile.age }}{{/if}}</h2>
     <div class="profile-left__body">
         <form action="submit" id="form">
-            <div class="profile-left__avatar">
-                {{> $Blocks/avatar/template}}
+            <div class="profile-left__avatar" >
+                <input id="photoUpload" type="file" data-bind-event="photoUpload" multiple/>
+                {{> $Blocks/avatar/template }}
             </div>
             <div class="profile-left__options-field">
                 <h3>О себе</h3>
-                {{> $Blocks/textarea/template body=profile.about rows=10 name='about' placeholder='Расскажите о себе и своих увлечениях'}}
+                {{> $Blocks/textarea/template body=profile.about rows=10 name='about' placeholder='Расскажите о себе и своих увлечениях' data_bind_event='saveAbout'}}
             </div>
             <div class="profile-left__options-field">
                 <div class="profile-left__header">
                     <div class="section">
                         <div class="section__header section__header_3">
-                            <h3>Ваши тэги</h3>
-                            <a href="" class="tags-redirect" data-bind-event="showModalTags">Добавить</a>
+                            <h3>{{ YOUR_TAGS }}</h3>
+                            <a href="" class="tags-redirect" data-bind-event="showModalTags">{{ ADD }}</a>
                         </div>
                     </div>
                 </div>
-                <div class="profile-left__tags" data-bind-event="removeTags">
-                    {{#if profile.tags}}
-                        {{#each profile.tags as |tag|}}
-                            {{> $Blocks/tag/template }}
-                        {{/each}}
-                    {{else}}
-                        <div class="profile-left__center">
-                            <span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного тэга</span>
-                        </div>
-                    {{/if}}
-                </div>
+                <div class="profile-left__tags" data-bind-event="removeTags"></div>
             </div>
             <div class="profile-left__options-field">
                 <div class="profile-left__header">
                     <div class="section">
                         <div class="section__header section__header_3">
-                            <h3>Социальные сети</h3>
-                            <a href="">Добавить</a>
+                            <h3>{{ SOCIAL_NETWORKS }}</h3>
+                            <a href="">{{ ADD }}</a>
                         </div>
                     </div>
                 </div>
@@ -55,12 +46,9 @@
                 {{/if}}
             </div>
             <div class="profile-left__exit">
+                {{> $Blocks/button-comp/template settings_button}}
                 {{> $Blocks/button-comp/template button_logout}}
             </div>
         </form>
-    </div>
-    <div class="profile-left__footer">
-        {{> $Blocks/button-comp/template settings_button}}
-        {{> $Blocks/button-comp/template save_button}}
     </div>
 </div>

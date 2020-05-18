@@ -26,18 +26,6 @@ export default class FeedController extends Controller {
     constructor(parent) {
         super(parent);
         this.view = new FeedView(parent);
-        this.defaultFeedRequest = {
-            uid: null,
-            page: 1,
-            limit: settings.pageLimit,
-            query: '',
-            tags: [],
-            location: null,
-            minAge: MIN_AGE,
-            maxAge: MAX_AGE,
-            men: true,
-            women: true,
-        };
         this.model = FeedModel.instance;
     }
 
@@ -56,9 +44,9 @@ export default class FeedController extends Controller {
             this.model.userMessages = profileCheck(user);
             this.model.feedRequest.uid = user.uid;
             if (user.tags) {
-                this.model.feedRequest.tags = user.tags.map(tag => tag.tag_id);
-                this.#initTags(user.tags);
+                this.model.feedRequest.tags = [...user.tags];
             }
+            this.view.updateTags();
 
             // Fetch content to show
             this.#initDataList()
@@ -119,18 +107,6 @@ export default class FeedController extends Controller {
                 },
             ]);
         });
-    }
-
-    /**
-     * Set tags active equal to user's own tags
-     * @param userTags
-     * @return {Promise<void>}
-     */
-    async #initTags(userTags) {
-        userTags.forEach(userTag => {
-            this.model.tags[userTag.tag_id - 1].activeClass = 'tag__container_active';
-        });
-        await this.view.updateTags();
     }
 
     #followEvent = (linkElement) => {

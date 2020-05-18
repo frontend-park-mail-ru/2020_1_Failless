@@ -8,7 +8,7 @@
                 </svg>
             </div>
         </div>
-        <div class="modal__body">
+        <div class="modal__body {{ additional_class }}">
             {{#each tags as |tag|}}
                 {{> $Blocks/tag/template }}
             {{/each}}
@@ -19,7 +19,7 @@
         {{#if last_buttons}}
             <div class="modal__footer">
             {{#each last_buttons}}
-                <button class="re_btn re_btn__outline">{{ this.title }}</button>
+                <button class="re_btn re_btn__outline" data-bind-event="modalWindowAction">{{ this.title }}</button>
             {{/each}}
             </div>
         {{/if}}
