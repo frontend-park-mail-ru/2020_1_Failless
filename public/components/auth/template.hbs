@@ -7,6 +7,7 @@
                     <div class="auth__help">{{ this.title }}</div>
                     <input class="input input__auth" type="{{ this.type }}" data-bind-event="checkInput"
                            placeholder="{{ this.placeholder }}" {{#if this.autocomplete }} autocomplete="{{ this.autocomplete }}" {{/if}}
+                           {{#if this.id }} id="{{ this.id }}"  type="number" pattern="[0-9]*" inputmode="numeric" {{/if}}
                         {{#each this.others}} {{ this }}{{/each}}>
                 </div>
             {{/each}}

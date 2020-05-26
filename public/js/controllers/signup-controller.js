@@ -19,6 +19,12 @@ export default class SignUpController extends Controller {
         this.form = null;
         this.inputs = null;
         this.pending = false;
+        this.inputManager = {
+            braces: false,
+            i: 0,
+            text: '+7(XXX)XXX-XX-XX',
+            three: false,
+        }
     }
 
     destructor() {
@@ -54,6 +60,7 @@ export default class SignUpController extends Controller {
                     events: [
                         {type: 'focus', handler: this.removeErrorMessage},
                         {type: 'blur', handler: this.#checkInputHandler},
+                        {type: 'keydown', handler: this.#inputComponent},
                     ]
                 }
             ]);
@@ -126,7 +133,9 @@ export default class SignUpController extends Controller {
 
                 if (Object.prototype.hasOwnProperty.call(response, 'name')) {
                     Snackbar.instance.addMessage(TextConstants.AUTH__SUCCESSFUL_SIGNUP);
-                    setTimeout(() => {Router.redirectForward('/login');}, 1000);
+                    setTimeout(() => {
+                        Router.redirectForward('/login');
+                    }, 1000);
                 } else {
                     this.view.addErrorMessage(this.form, [response.message]);
                 }
@@ -149,33 +158,33 @@ export default class SignUpController extends Controller {
         const repeatPassword = this.form[4].value;
 
         switch (true) {
-        case (event.target === this.form[0]):
-            const nameCheck = ValidationModule.validateUserData(name, 'name');
-            this.view.addErrorMessage(this.form[0], nameCheck);
-            break;
-        case (event.target === this.form[1]):
-            const emailCheck = ValidationModule.validateUserData(email, 'email');
-            this.view.addErrorMessage(this.form[1], emailCheck);
-            break;
-        case (event.target === this.form[2]):
-            const phoneCheck = ValidationModule.validateUserData(phone, 'phone');
-            this.view.addErrorMessage(this.form[2], phoneCheck);
-            break;
-        case (event.target === this.form[3]):
-            const passwordCheck = ValidationModule.validateUserData(password, 'password');
-            this.view.addErrorMessage(this.form[3], passwordCheck);
+            case (event.target === this.form[0]):
+                const nameCheck = ValidationModule.validateUserData(name, 'name');
+                this.view.addErrorMessage(this.form[0], nameCheck);
+                break;
+            case (event.target === this.form[1]):
+                const emailCheck = ValidationModule.validateUserData(email, 'email');
+                this.view.addErrorMessage(this.form[1], emailCheck);
+                break;
+            case (event.target === this.form[2]):
+                const phoneCheck = ValidationModule.validateUserData(phone, 'phone');
+                this.view.addErrorMessage(this.form[2], phoneCheck);
+                break;
+            case (event.target === this.form[3]):
+                const passwordCheck = ValidationModule.validateUserData(password, 'password');
+                this.view.addErrorMessage(this.form[3], passwordCheck);
 
-            if (repeatPassword !== password) {
-                this.view.addErrorMessage(this.form[4], [TextConstants.AUTH__PASS_ERROR]);
-            }
-            break;
-        case (event.target === this.form[4]):
-            const repeatPasswordCheck = ValidationModule.validateUserData(repeatPassword, 'repeatPassword');
-            if (repeatPassword !== password) {
-                repeatPasswordCheck.push(TextConstants.VALID__PASS_NO_MATCH);
-            }
-            this.view.addErrorMessage(this.form[4], repeatPasswordCheck);
-            break;
+                if (repeatPassword !== password) {
+                    this.view.addErrorMessage(this.form[4], [TextConstants.AUTH__PASS_ERROR]);
+                }
+                break;
+            case (event.target === this.form[4]):
+                const repeatPasswordCheck = ValidationModule.validateUserData(repeatPassword, 'repeatPassword');
+                if (repeatPassword !== password) {
+                    repeatPasswordCheck.push(TextConstants.VALID__PASS_NO_MATCH);
+                }
+                this.view.addErrorMessage(this.form[4], repeatPasswordCheck);
+                break;
         }
     };
 
@@ -196,5 +205,65 @@ export default class SignUpController extends Controller {
         if (errorElement) {
             errorElement.remove();
         }
+    };
+
+    #inputComponent = (event) => {
+        if (event.target.id !== 'phone') {
+            return;
+        }
+        if ((event.which < 48 || event.which > 57) && event.code !== 'Backspace') {
+            if (event.code === 'Tab') {
+                return;
+            }
+            event.preventDefault();
+            return;
+        }
+
+
+        const input = this.view.getPhone();
+        console.log(input);
+        this.inputManager.text = input;
+        if (event.code === 'Backspace') {
+            switch (this.inputManager.i) {
+                case 2:
+                case 6:
+                case 10:
+                case 13: {
+                    this.inputManager.text = this.inputManager.text.substr(0, this.inputManager.text.length - 2);
+                    this.inputManager.i = this.inputManager.text.length;
+                    break;
+                }
+                default: {
+                    console.warn('strange len');
+                    console.warn(input);
+                }
+            }
+            this.view.updatePhone(this.inputManager.text);
+            return;
+        }
+        if (this.inputManager.i === 0) {
+            this.inputManager.text = '(' + this.inputManager.text;
+            this.inputManager.i++;
+        } else if (this.inputManager.i === 4) {
+            this.inputManager.text = this.inputManager.text + ')';
+            this.inputManager.i++;
+        } else if (this.inputManager.i === 8 || this.inputManager.i === 11) {
+            this.inputManager.text = this.inputManager.text + '-';
+            this.inputManager.i++;
+        }
+        this.inputManager.i++;
+
+        // const area = input.substr(0, 3);
+        // const pre = input.substr(3, 3);
+        // const tel = input.substr(6, 4);
+        // let output = '';
+        // if (area.length < 3) {
+        //     output = '(' + area;
+        // } else if (area.length === 3 && pre.length < 3) {
+        //     output = '(' + area + ')' + ' ' + pre;
+        // } else if (area.length === 3 && pre.length === 3) {
+        //     output = '(' + area + ')' + ' ' + pre + '-' + tel;
+        // }
+        this.view.updatePhone(this.inputManager.text);
     };
 }
