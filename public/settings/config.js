@@ -1,7 +1,7 @@
 const DEBUG = false;
 export default {
     url: DEBUG ? 'http://localhost' : 'https://eventum.xyz',
-    port: 3000,
+    port: 443,
     api: '/api/srv',
     chat: '/api/chats',
     img: 'img/',
