@@ -252,18 +252,6 @@ export default class SignUpController extends Controller {
             this.inputManager.i++;
         }
         this.inputManager.i++;
-
-        // const area = input.substr(0, 3);
-        // const pre = input.substr(3, 3);
-        // const tel = input.substr(6, 4);
-        // let output = '';
-        // if (area.length < 3) {
-        //     output = '(' + area;
-        // } else if (area.length === 3 && pre.length < 3) {
-        //     output = '(' + area + ')' + ' ' + pre;
-        // } else if (area.length === 3 && pre.length === 3) {
-        //     output = '(' + area + ')' + ' ' + pre + '-' + tel;
-        // }
         this.view.updatePhone(this.inputManager.text);
     };
 }
