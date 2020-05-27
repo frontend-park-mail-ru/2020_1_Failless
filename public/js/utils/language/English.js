@@ -4,6 +4,7 @@ const BasicTextsEnglish = {
     CANCEL: 'Cancel',
     CHANGE: 'Change',
     CHATS: 'Chats',
+    BIRTH: 'Date of birth',
     DESCRIPTION: 'Description',
     ERROR: 'Error',
     EVENTS: 'Events',
@@ -11,6 +12,7 @@ const BasicTextsEnglish = {
     FROM: 'From',
     GENDER: 'Gender',
     JOIN: 'Join',
+    LANGUAGE: 'Language',
     LOADING: 'Loading',
     LOCATION: 'Location',
     LOGIN: 'Login',
@@ -76,6 +78,9 @@ const FiltersTextsEnglish = {
 
 const FeedTextsEnglish = {
     NEW_MATCH: 'You matched with someone! Check your messages!',
+    NO_EVENTS: 'No events',
+    NO_SUBS: 'No subs',
+    PAY_TO_SKIP: 'Get full access to be able to skip users',
     PERSONAL_EVENTS_HEADER: 'Invites to',
     SUBSCRIPTIONS_HEADER: 'Wants to visit',
     EMPTY: 'No one was found<br>Ease the filters and try your luck again<br>If it did not help - wait for a while<br>and come back later'
@@ -85,9 +90,33 @@ const AuthTextsEnglish = {
     LOGIN_LABEL: 'Email or phone',
     LOGIN_TITLE: 'Login',
     LOGOUT: 'Logout',
+    NEW_PASS: 'New password',
+    OLD_PASS: 'Old password',
+    PASS_ERROR: 'Password does not match',
     REG_ACTION: 'Login',
     REPEAT_PASS: 'Repeat password',
     SUCCESSFUL_SIGNUP: 'Registration was successful',
+};
+
+const ValidTextsEnglish = {
+    PASS_EMPTY_OR_INVALID: 'Empty or invalid password',
+    PASS_FEW_NUMS: 'Password must contain at least 2 digits',
+    PASS_NO_LATIN: 'Password must contain only latin letters',
+    PASS_NO_MATCH: 'Passwords do not match',
+    PASS_NO_NUMS: 'Password must contain digits',
+    PASS_NUMS_AND_LATIN: 'Password must contain digits and latin letters',
+    PASS_SECOND_BAD: 'Second pass is empty or bad',
+    PASS_SHORT: 'Password must be at least 8 symbols long',
+    EMAIL_EMPTY_OR_INVALID: 'Empty or invalid email',
+    EMAIL_MSG: 'Please use correct email (like your@mail.com)',
+    EMAIL_LONG: 'Length exceeds 256 characters',
+    PHONE_EMPTY_OR_INVALID: 'Empty or invalid phone number',
+    PHONE_SHORT: 'Phone number should be at least 6 digits long',
+    PHONE_LONG: 'Length exceeds 14 digits',
+    PHONE_MSG: 'Please use correct phone number',
+    NAME_EMPTY_OR_INVALID: 'Empty or invalid name',
+    NAME_CAPITAL: 'Name should start with capital letter (like Jeff)',
+    NAME_LONG: 'Length exceeds 32 characters',
 };
 
 const ChatTextsEnglish = {
@@ -111,11 +140,10 @@ const LandingTextsEnglish = {
     RIGHTS: 'all rights reserved',
     SCREEN1_TITLE: 'How Eventum can help you?',
     LANDING__SCREEN1_1: 'Looking for a soul mate?',
-    LANDING__SCREEN1_2: 'Not only you can find yourself a significant other here, but also start your relationship with fun activity which you both found of. You will easily get accustomed here due to good old left/right swipe mechanics',
+    LANDING__SCREEN1_2: 'Not only you can find a significant other here, but also start your relationship with fun activity which you both are found of. You will easily get accustomed here due to good old left/right swipe mechanics',
     LANDING__SCREEN1_3: 'Looking for a good company?',
-    LANDING__SCREEN1_4: 'Here you can easily join a group with interests same as yours and attend different events together. Communicate with no problem in our chat',
-    SCREEN2_TITLE: 'How is behind Eventum?',
-    SHORT_DESCRIPTION: 'Social networking service which helps people find their company',
+    LANDING__SCREEN1_4: 'Here you can easily join a group with interests same as yours and attend favourite events together. Communicate with no problem in group chats',
+    SHORT_DESCRIPTION: 'Social networking service<br>which helps people find their company',
 };
 
 const TagsTextsEnglish = {
@@ -143,6 +171,7 @@ const English = {
     Filters: FiltersTextsEnglish,
     Feed: FeedTextsEnglish,
     Auth: AuthTextsEnglish,
+    Valid: ValidTextsEnglish,
     Chat: ChatTextsEnglish,
     Search: SearchTextsEnglish,
     Landing: LandingTextsEnglish,

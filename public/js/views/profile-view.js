@@ -144,7 +144,6 @@ export default class ProfileView extends MyView {
             'beforeend', profileMainTemplate({
                 TITLE: TextConstants.PROFILE__TITLE,
                 profile: profile,
-                add_event_button: addEventButton.data,
                 select_options: Array(14).fill(undefined, undefined, undefined).map((_, idx) => 2 + idx),
                 ADD: TextConstants.BASIC__ADD,
                 PHOTOS: TextConstants.BASIC__PHOTOS,
@@ -153,6 +152,19 @@ export default class ProfileView extends MyView {
                 YOU_VISIT: TextConstants.PROFILE__YOU_VISIT,
                 YOUR_EVENTS: TextConstants.PROFILE__YOUR_EVENTS,
                 LOADING: TextConstants.BASIC__LOADING,
+                event_edit: {
+                    add_event_button: addEventButton.data,
+                    ADD_PHOTO: TextConstants.EVENT__ADD_PHOTO,
+                    EVENT_TITLE: TextConstants.BASIC__TITLE,
+                    RANDOM_EVENT_TITLE: TextConstants.EVENT__RANDOM_TITLE,
+                    DESCRIPTION: TextConstants.BASIC__DESCRIPTION,
+                    RANDOM_EVENT_ABOUT: TextConstants.EVENT__RANDOM_ABOUT,
+                    TAGS: TextConstants.BASIC__TAGS,
+                    TIME: TextConstants.BASIC__TIME,
+                    MEMBER_AMOUNT: TextConstants.FILTERS__MEMBER_AMOUNT,
+                    SHOW_MEMBERS: TextConstants.EVENT__SHOW_MEMBERS,
+                    CANCEL: TextConstants.BASIC__CANCEL,
+                },
             })
         );
 

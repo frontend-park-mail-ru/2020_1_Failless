@@ -9,18 +9,6 @@ import {icons} from 'Eventum/utils/static-data';
 import TextConstants from 'Eventum/utils/language/text';
 
 export default class EventEdit extends Component {
-    data = {
-        ADD_PHOTO: TextConstants.EVENT__ADD_PHOTO,
-        TITLE: TextConstants.BASIC__TITLE,
-        RANDOM_EVENT_TITLE: TextConstants.EVENT__RANDOM_TITLE,
-        DESCRIPTION: TextConstants.BASIC__DESCRIPTION,
-        RANDOM_EVENT_ABOUT: TextConstants.EVENT__RANDOM_ABOUT,
-        TAGS: TextConstants.BASIC__TAGS,
-        TIME: TextConstants.BASIC__TIME,
-        MEMBER_AMOUNT: TextConstants.FILTERS__MEMBER_AMOUNT,
-        SHOW_MEMBERS: TextConstants.EVENT__SHOW_MEMBERS,
-        CANCEL: TextConstants.BASIC__CANCEL,
-    };
 
     /**
      * Create Button component

@@ -71,9 +71,9 @@ export default class EventComp extends Component {
         }
         this.data[this.type] = true;
         this.data.class = this.type; // basically Object.defineProperty
-        console.log(this.data.date);
-        // if (new Date(this.data.date).getUTCFullYear() === 1) {
-        //     this.data.date = null;
+        if (new Date(this.data.date).getUTCFullYear() === 1) {
+            this.data.date = null;
+        }
         // } else {
         //     this.data.date = new Date(this.data.date).toLocaleString();
         //     console.log(this.data.date);

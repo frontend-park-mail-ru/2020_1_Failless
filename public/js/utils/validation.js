@@ -1,5 +1,7 @@
 'use strict';
 
+import TextConstants from 'Eventum/utils/language/text';
+
 /**
  * The class implements methods for user input data validation before sending to server
  */
@@ -53,25 +55,25 @@ export default class ValidationModule {
         const errors = [];
     
         if (this.isEmpty(input) || !this.isString(input)) {
-            errors.push('Пустой или некорректный пароль');
+            errors.push(TextConstants.VALID__PASS_EMPTY_OR_INVALID);
         }
 
         if (input.length < 8) {
-            errors.push('Пароль должен содержать не менее 8 символов');
+            errors.push(TextConstants.VALID__PASS_SHORT);
         }
         if (!/[0-9]/.test(input)) {
-            errors.push('Пароль должен содержать цифры');
+            errors.push(TextConstants.VALID__PASS_NO_NUMS);
         }
         if (input.match(/\d+/g)) {
             if (input.match(/\d+/g).join('').length < 2) {
-                errors.push('Пароль должен содержать 2 цифры');
+                errors.push(TextConstants.VALID__PASS_FEW_NUMS);
             }
         }
         if (!/[A-z]/.test(input)) {
-            errors.push('Пароль должен содержать латинские буквы');
+            errors.push(TextConstants.VALID__PASS_NO_LATIN);
         }
         if (!/^[\w\dA-z]+$/.test(input)) {
-            errors.push('Пароль должен состоять из цифр и латинских букв');
+            errors.push(TextConstants.VALID__PASS_NUMS_AND_LATIN);
         }
     
         return errors;
@@ -86,7 +88,7 @@ export default class ValidationModule {
         let errors = [];
 
         if (this.isEmpty(input) || !this.isString(input)) { 
-            errors.push('Пустой или некорректный повторный пароль');
+            errors.push(TextConstants.VALID__PASS_SECOND_BAD);
         }
 
         return errors;
@@ -105,16 +107,16 @@ export default class ValidationModule {
         const anotherEmailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
         if (this.isEmpty(input) || !this.isString(input)) {
-            errors.push('Пустая или некорректная почта');
+            errors.push(TextConstants.VALID__EMAIL_EMPTY_OR_INVALID);
         }
         // if (!emailReg.test(input)) {
         //     errors.push('Введите корректный email-адрес (например, aaaa@aaa.aa)');
         // }
         if (anotherEmailReg.exec(input) === null) {
-            errors.push('Введите корректный email-адрес (например, aaaa@aaa.aa)');
+            errors.push(TextConstants.VALID__EMAIL_MSG);
         }
         if (input.length > 256) {
-            errors.push('Длина не должна превышать 256 символов');
+            errors.push(TextConstants.VALID__EMAIL_LONG);
         }
     
         return errors;
@@ -133,19 +135,19 @@ export default class ValidationModule {
         const regex = /^\+?([0-9]{1})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{7})$/;
 
         if (this.isEmpty(input) || !this.isString(input)) {
-            errors.push('Пустой или некорректный телефон');
+            errors.push(TextConstants.VALID__PHONE_EMPTY_OR_INVALID);
         }
 
         if (input.replace(/[^0-9\.]+/g, '').length < 6) {
-            errors.push('Длина не должна быть меньше 6 символов');
+            errors.push(TextConstants.VALID__PHONE_SHORT);
         }
 
         if (input.replace(/[^0-9\.]+/g, '').length > 14) {
-            errors.push('Длина не должна превышать 14 символов');
+            errors.push(TextConstants.VALID__PHONE_LONG);
         }
 
         if (regex.exec(input) === null) {
-            errors.push('Введите корректный телефон (например, 89997771234)');
+            errors.push(TextConstants.VALID__PHONE_MSG);
         }
 
         // const regex = /^\+?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{7})$/;
@@ -171,14 +173,14 @@ export default class ValidationModule {
         const errors = [];
 
         if (this.isEmpty(input) || !this.isString(input)) {
-            errors.push('Пустое или некорректное имя');
+            errors.push(TextConstants.VALID__NAME_EMPTY_OR_INVALID);
         }
 
         if (!/^[A-ZА-ЯЁ]/.test(input)) {
-            errors.push('Имя должно начинаться с заглавной буквы');
+            errors.push(TextConstants.VALID__NAME_CAPITAL);
         }
         if (input.length > 32) {
-            errors.push('Длина не должна превышать 32 символа');
+            errors.push(TextConstants.VALID__NAME_LONG);
         }
 
         return errors;

@@ -37,30 +37,13 @@
             </div>
         </div>
     </section>
-    <section class="landing__screen landing__screen_creators font__color_w">
-        <div class="landing__title_second"{{ SCREEN2_TITLE }}</div>
-        <div class="container">
-            <div class="landing__creators__row">
-                {{#each creators}}
-                    {{> $Blocks/creator-card/template }}
-                    <div class="separator separator_vertical separator_white_blue"></div>
-                {{/each}}
-            </div>
-            <div class="landing__creators__row">
-                {{#each mentors}}
-                    {{> $Blocks/creator-card/template }}
-                    <div class="separator separator_vertical separator_white_blue"></div>
-                {{/each}}
-            </div>
-        </div>
-    </section>
     <footer class="landing__screen landing__screen_footer">
         <div class="container">
             <div class="landing__footer__body">
                 <div class="landing__footer__column">
                     <div class="landing__footer__section">
                         <div class="landing__footer__logo gradient-text">EVENTUM</div>
-                        <div class="landing__footer__about">{{ SHORT_DESCRIPTION }}<br>{{ MOTTO }}</div>
+                        <div class="landing__footer__about">{{{ SHORT_DESCRIPTION }}}<br>{{ MOTTO }}</div>
                         <button class="re_btn__white font__size_small font_regular font__color_w" data-bind-event="signup">{{ JOIN }}</button>
                     </div>
                 </div>

@@ -68,6 +68,7 @@ export default class TextConstants {
     static get BASIC__CANCEL() {return localLibrary.Basic.CANCEL;}
     static get BASIC__CHANGE() {return localLibrary.Basic.CHANGE;}
     static get BASIC__CHATS() {return localLibrary.Basic.CHATS;}
+    static get BASIC__BIRTH() {return localLibrary.Basic.BIRTH;}
     static get BASIC__DESCRIPTION() {return localLibrary.Basic.DESCRIPTION;}
     static get BASIC__ERROR() {return localLibrary.Basic.ERROR;}
     static get BASIC__EVENTS() {return localLibrary.Basic.EVENTS;}
@@ -75,6 +76,7 @@ export default class TextConstants {
     static get BASIC__FROM() {return localLibrary.Basic.FROM;}
     static get BASIC__GENDER() {return localLibrary.Basic.GENDER;}
     static get BASIC__JOIN() {return localLibrary.Basic.JOIN;}
+    static get BASIC__LANGUAGE() {return localLibrary.Basic.LANGUAGE;}
     static get BASIC__LOADING() {return localLibrary.Basic.LOADING;}
     static get BASIC__LOCATION() {return localLibrary.Basic.LOCATION;}
     static get BASIC__LOGIN() {return localLibrary.Basic.LOGIN;}
@@ -119,6 +121,9 @@ export default class TextConstants {
 
     static get FEED__EMPTY() {return localLibrary.Feed.EMPTY;}
     static get FEED__NEW_MATCH() {return localLibrary.Feed.NEW_MATCH;}
+    static get FEED__NO_EVENTS() {return localLibrary.Feed.NO_EVENTS;}
+    static get FEED__NO_SUBS() {return localLibrary.Feed.NO_SUBS;}
+    static get FEED__PAY_TO_SKIP() {return localLibrary.Feed.PAY_TO_SKIP;}
     static get FEED__PERSONAL_EVENTS_HEADER() {return localLibrary.Feed.PERSONAL_EVENTS_HEADER;}
     static get FEED__SUBSCRIPTIONS_HEADER() {return localLibrary.Feed.SUBSCRIPTIONS_HEADER;}
 
@@ -141,8 +146,30 @@ export default class TextConstants {
     static get AUTH__LOGIN_TITLE() {return localLibrary.Auth.LOGIN_TITLE;}
     static get AUTH__LOGOUT() {return localLibrary.Auth.LOGOUT;}
     static get AUTH__REG_ACTION() {return localLibrary.Auth.REG_ACTION;}
+    static get AUTH__NEW_PASS() {return localLibrary.Auth.NEW_PASS;}
+    static get AUTH__OLD_PASS() {return localLibrary.Auth.OLD_PASS;}
+    static get AUTH__PASS_ERROR() {return localLibrary.Auth.PASS_ERROR;}
     static get AUTH__REPEAT_PASS() {return localLibrary.Auth.REPEAT_PASS;}
     static get AUTH__SUCCESSFUL_SIGNUP() {return localLibrary.Auth.SUCCESSFUL_SIGNUP;}
+
+    static get VALID__PASS_EMPTY_OR_INVALID() {return localLibrary.Valid.PASS_EMPTY_OR_INVALID;}
+    static get VALID__PASS_FEW_NUMS() {return localLibrary.Valid.PASS_FEW_NUMS;}
+    static get VALID__PASS_NO_LATIN() {return localLibrary.Valid.PASS_NO_LATIN;}
+    static get VALID__PASS_NO_MATCH() {return localLibrary.Valid.PASS_NO_MATCH;}
+    static get VALID__PASS_NO_NUMS() {return localLibrary.Valid.PASS_NO_NUMS;}
+    static get VALID__PASS_NUMS_AND_LATIN() {return localLibrary.Valid.PASS_NUMS_AND_LATIN;}
+    static get VALID__PASS_SECOND_BAD() {return localLibrary.Valid.PASS_SECOND_BAD;}
+    static get VALID__PASS_SHORT() {return localLibrary.Valid.PASS_SHORT;}
+    static get VALID__EMAIL_EMPTY_OR_INVALID() {return localLibrary.Valid.EMAIL_EMPTY_OR_INVALID;}
+    static get VALID__EMAIL_MSG() {return localLibrary.Valid.EMAIL_MSG;}
+    static get VALID__EMAIL_LONG() {return localLibrary.Valid.EMAIL_LONG;}
+    static get VALID__PHONE_EMPTY_OR_INVALID() {return localLibrary.Valid.PHONE_EMPTY_OR_INVALID;}
+    static get VALID__PHONE_SHORT() {return localLibrary.Valid.PHONE_SHORT;}
+    static get VALID__PHONE_LONG() {return localLibrary.Valid.PHONE_LONG;}
+    static get VALID__PHONE_MSG() {return localLibrary.Valid.PHONE_MSG;}
+    static get VALID__NAME_EMPTY_OR_INVALID() {return localLibrary.Valid.NAME_EMPTY_OR_INVALID;}
+    static get VALID__NAME_CAPITAL() {return localLibrary.Valid.NAME_CAPITAL;}
+    static get VALID__NAME_LONG() {return localLibrary.Valid.NAME_LONG;}
 
     static get CHAT__ATTENTION_MESSAGE() {return localLibrary.Chat.ATTENTION_MESSAGE;}
     static get CHAT__LEFT_CHAT() {return localLibrary.Chat.LEFT_CHAT;}
@@ -163,7 +190,6 @@ export default class TextConstants {
     static get LANDING__SCREEN1_2() {return localLibrary.Landing.LANDING__SCREEN1_2;}
     static get LANDING__SCREEN1_3() {return localLibrary.Landing.LANDING__SCREEN1_3;}
     static get LANDING__SCREEN1_4() {return localLibrary.Landing.LANDING__SCREEN1_4;}
-    static get LANDING__SCREEN2_TITLE() {return localLibrary.Landing.SCREEN2_TITLE;}
     static get LANDING__SHORT_DESCRIPTION() {return localLibrary.Landing.SHORT_DESCRIPTION;}
 
     static get TAGS__BAR() {return localLibrary.Tags.BAR;}

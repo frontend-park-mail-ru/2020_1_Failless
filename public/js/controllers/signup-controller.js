@@ -91,7 +91,7 @@ export default class SignUpController extends Controller {
         errors_list.push(ValidationModule.validateUserData(password, 'password'));
         errors_list.push(ValidationModule.validateUserData(repeatPassword, 'repeatPassword'));
         if (repeatPassword !== password) {
-            errors_list.push('Пароли не совпадают');
+            errors_list.push(TextConstants.AUTH__PASS_ERROR);
         }
 
         if (errors_list.some(val => val.length !== 0)) {
@@ -170,13 +170,13 @@ export default class SignUpController extends Controller {
             this.view.addErrorMessage(this.form[3], passwordCheck);
 
             if (repeatPassword !== password) {
-                this.view.addErrorMessage(this.form[4], ['Пароли не совпадают']);
+                this.view.addErrorMessage(this.form[4], [TextConstants.AUTH__PASS_ERROR]);
             }
             break;
         case (event.target === this.form[4]):
             const repeatPasswordCheck = ValidationModule.validateUserData(repeatPassword, 'repeatPassword');
             if (repeatPassword !== password) {
-                repeatPasswordCheck.push('Пароли не совпадают');
+                repeatPasswordCheck.push(TextConstants.VALID__PASS_NO_MATCH);
             }
             this.view.addErrorMessage(this.form[4], repeatPasswordCheck);
             break;

@@ -6,10 +6,12 @@
         </div>
     </div>
     <div class="event-edit__body">
-        <label class="event-edit__header event-edit__header_small" for="title">{{ TITLE }}</label>
-        <textarea class="event-edit__title" name="title" placeholder="{{ RANDOM_EVENT_TITLE }}" data-bind-event="resizeTextArea" rows="1"></textarea>
-        <label class="event-edit__header event-edit__header_small" for="about">{{ DESCRIPTION }}</label>
-        <textarea class="event-edit__about" name="about" placeholder="{{ RANDOM_EVENT_ABOUT }}" data-bind-event="resizeTextArea" rows="1"></textarea>
+        <label class="event-edit__header event-edit__header_medium" for="title">{{ EVENT_TITLE }}
+            <textarea class="event-edit__title" name="title" placeholder="{{ RANDOM_EVENT_TITLE }}" data-bind-event="resizeTextArea" rows="1"></textarea>
+        </label>
+        <label class="event-edit__header event-edit__header_medium" for="about">{{ DESCRIPTION }}
+            <textarea class="event-edit__about" name="about" placeholder="{{ RANDOM_EVENT_ABOUT }}" data-bind-event="resizeTextArea" rows="1"></textarea>
+        </label>
         <hr class="event__separator">
         <label class="event-edit__header event-edit__header_small">{{ TAGS }}</label>
         <div class="event-edit__tags" data-bind-event="showModalTags">
