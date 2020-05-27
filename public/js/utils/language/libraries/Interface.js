@@ -55,6 +55,33 @@ const AuthTextsInterface = {
     SUCCESSFUL_SIGNUP: '',
 };
 
+const ChatTextsInterface = {
+    ATTENTION_MESSAGE: '',
+    LEFT_CHAT: '',
+    MESSAGE_PLACEHOLDER: '',
+    NO_CHATS: '',
+};
+
+const SearchTextsInterface = {
+    NO_RESULTS: '',
+};
+
+const LandingTextsInterface = {
+    AUTHED_MSG: '',
+    MAIN_DESCRIPTION: '',
+    MOBILE_APPS: '',
+    MOTTO: '',
+    PREV_WORKS: '',
+    RIGHTS: '',
+    SCREEN1_TITLE: '',
+    LANDING__SCREEN1_1: '',
+    LANDING__SCREEN1_2: '',
+    LANDING__SCREEN1_3: '',
+    LANDING__SCREEN1_4: '',
+    SCREEN2_TITLE: '',
+    SHORT_DESCRIPTION: '',
+};
+
 const Library = {
     Basic: BasicTextsInterface,
     Event: EventTextsInterface,
@@ -62,6 +89,9 @@ const Library = {
     Filters: FiltersTextsInterface,
     Feed: FeedTextsInterface,
     Auth: AuthTextsInterface,
+    Chat: ChatTextsInterface,
+    Search: SearchTextsInterface,
+    Landing: LandingTextsInterface,
 };
 
 export default Library;

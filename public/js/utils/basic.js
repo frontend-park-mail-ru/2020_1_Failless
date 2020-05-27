@@ -1,6 +1,7 @@
 'use strict';
 
 import loadingTemplate from 'Blocks/loading/template.hbs';
+import TextConstants from 'Eventum/utils/language/text';
 
 const MOBILE_VIEW_PORT = 480;
 
@@ -23,7 +24,7 @@ function resizeTextArea() {
 }
 
 async function showLoading(element) {
-    element.insertAdjacentHTML('beforeend', loadingTemplate());
+    element.insertAdjacentHTML('beforeend', loadingTemplate({LOADING: TextConstants.BASIC__LOADING}));
 }
 
 export {makeEmpty, detectMobile, resizeTextArea, showLoading};

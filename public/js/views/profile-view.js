@@ -137,6 +137,7 @@ export default class ProfileView extends MyView {
                 NO_TAGS: TextConstants.PROFILE__NO_TAGS,
                 YOUR_TAGS: TextConstants.PROFILE__YOUR_TAGS,
                 SOCIAL_NETWORKS: TextConstants.BASIC__SOCIAL_NETWORKS,
+                ABOUT_PLACEHOLDER: TextConstants.PROFILE__ABOUT_PLACEHOLDER,
             })
         );
         document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
@@ -154,6 +155,7 @@ export default class ProfileView extends MyView {
                 CHANGE: TextConstants.BASIC__CHANGE,
                 YOU_GO: TextConstants.BASIC__YOU_GO,
                 VISIT: TextConstants.BASIC__VISIT,
+                LOADING: TextConstants.BASIC__LOADING,
             })
         );
 
@@ -203,7 +205,7 @@ export default class ProfileView extends MyView {
 
         let emptyEvent = document.createElement('div');
         emptyEvent.classList.add('event');
-        emptyEvent.insertAdjacentHTML('afterbegin', loadingTemplate());
+        emptyEvent.insertAdjacentHTML('afterbegin', loadingTemplate({LOADING: TextConstants.BASIC__LOADING}));
         return this.eventEditComp.element.insertAdjacentElement('afterend', emptyEvent);
     }
 

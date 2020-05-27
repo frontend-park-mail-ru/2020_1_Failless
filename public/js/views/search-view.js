@@ -52,7 +52,7 @@ export default class SearchView extends View {
      * Render template
      */
     render() {
-        this.parent.insertAdjacentHTML('beforeend', searchTemplate());
+        this.parent.insertAdjacentHTML('beforeend', searchTemplate({LOADING: TextConstants.BASIC__LOADING}));
         this.#setDOMElements();
     }
 
@@ -99,7 +99,7 @@ export default class SearchView extends View {
     renderNotFound() {
         const resultsArea = this.resultsAreaDiv;
         makeEmpty(resultsArea);
-        this.showError(resultsArea, 'Ничего не нашлось ', 'sad', null).then();
+        this.showError(resultsArea, TextConstants.SEARCH__NO_RESULTS, 'sad', null).then();
     }
 
     #setDOMElements = () => {
