@@ -1,51 +1,51 @@
 const BasicTextsRussian = {
-    GENDER: 'Пол',
-    MEN: 'Мужчины',
-    WOMEN: 'Женщины',
-    FROM: 'От',
-    TO: 'До',
-    LOCATION: 'Местоположение',
-    FIND: 'Найти',
-    AGE: 'Возраст',
-    YOU: 'Вы',
     ADD: 'Добавить',
-    PHOTOS: 'Фото',
-    NO_PHOTOS: 'Фотографий нет',
+    AGE: 'Возраст',
     EVENTS: 'Мероприятия',
-    SOCIAL_NETWORKS: 'Социальные сети',
-    SAVE: 'Сохранить',
+    FIND: 'Найти',
+    FROM: 'От',
+    GENDER: 'Пол',
+    LOCATION: 'Местоположение',
+    MEN: 'Мужчины',
     NEW_MESSAGE: 'Вам новое сообщение!',
+    NO_PHOTOS: 'Фотографий нет',
+    PHOTOS: 'Фото',
+    SAVE: 'Сохранить',
+    SOCIAL_NETWORKS: 'Социальные сети',
+    TO: 'До',
+    WOMEN: 'Женщины',
+    YOU: 'Вы',
 };
 
 const EventTextsRussian = {
+    LEAVE: 'Не идти',
     VISITED: 'Вы идёте',
     UNVISITED: 'Пойти',
-    LEAVE: 'Не идти',
 };
 
 const ProfileTextsRussian = {
-    SUCCESSFUL_SAVE: 'Информация сохранена',
     NO_TAGS: 'У вас пока нет ни одного тэга',
-    YOUR_EVENTS: 'Ваши мероприятия',
+    SUCCESSFUL_SAVE: 'Информация сохранена',
     YOU_VISIT: 'Вы идёте',
-    YOUR_TAGS: 'Ваши теги',
+    YOUR_EVENTS: 'Ваши мероприятия',
     YOUR_PHOTOS: 'Ваши фото',
+    YOUR_TAGS: 'Ваши теги',
 };
 
 const FiltersTextsRussian = {
-    TAGS_HEADER: 'Выберите теги',
     KEYWORDS_HEADER: 'Ключевые слова',
     KEYWORDS_PLACEHOLDER: 'Бар Люди как люди',
     MEMBER_AMOUNT: 'Кол-во участников',
+    TAGS_HEADER: 'Выберите теги',
 };
 
 const FeedTextsRussian = {
     DISLIKE: 'Дизлайк',
     LIKE: 'Лайк',
-    SKIP: 'Пропустить',
-    PERSONAL_EVENTS_HEADER: 'Куда зовёт пойти',
-    SUBSCRIPTIONS_HEADER: 'Куда сам идёт',
     NEW_MATCH: 'Пользователь ответил взаимностью! Загляните в сообщения!',
+    PERSONAL_EVENTS_HEADER: 'Куда зовёт пойти',
+    SKIP: 'Пропустить',
+    SUBSCRIPTIONS_HEADER: 'Куда сам идёт',
 };
 
 const AuthTextsRussian = {

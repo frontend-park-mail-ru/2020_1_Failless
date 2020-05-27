@@ -1,54 +1,54 @@
 const BasicTextsInterface = {
-    GENDER: '',
-    MEN: '',
-    WOMEN: '',
-    FROM: '',
-    TO: '',
-    LOCATION: '',
-    FIND: '',
+    ADD: '',
     AGE: '',
     DISMISS: '',
-    YOU: '',
-    ADD: '',
-    PHOTOS: '',
-    NO_PHOTOS: '',
     EVENTS: '',
-    YOUR_EVENTS: '',
-    YOU_VISIT: '',
-    SOCIAL_NETWORKS: '',
-    SAVE: '',
+    FIND: '',
+    FROM: '',
+    GENDER: '',
+    LOCATION: '',
+    MEN: '',
     NEW_MESSAGE: '',
+    NO_PHOTOS: '',
+    PHOTOS: '',
+    SAVE: '',
+    SOCIAL_NETWORKS: '',
+    TO: '',
+    WOMEN: '',
+    YOU: '',
+    YOU_VISIT: '',
+    YOUR_EVENTS: '',
 };
 
 const EventTextsInterface = {
+    LEAVE: '',
     VISITED: '',
     UNVISITED: '',
-    LEAVE: '',
 };
 
 const ProfileTextsInterface = {
-    SUCCESSFUL_SAVE: '',
     NO_TAGS: '',
-    YOUR_EVENTS: '',
+    SUCCESSFUL_SAVE: '',
     YOU_VISIT: '',
-    YOUR_TAGS: '',
+    YOUR_EVENTS: '',
     YOUR_PHOTOS: '',
+    YOUR_TAGS: '',
 };
 
 const FiltersTextsInterface = {
-    TAGS_HEADER: '',
     KEYWORDS_HEADER: '',
     KEYWORDS_PLACEHOLDER: '',
     MEMBER_AMOUNT: '',
+    TAGS_HEADER: '',
 };
 
 const FeedTextsInterface = {
     DISLIKE: '',
     LIKE: '',
-    SKIP: '',
-    PERSONAL_EVENTS_HEADER: '',
-    SUBSCRIPTIONS_HEADER: '',
     NEW_MATCH: '',
+    PERSONAL_EVENTS_HEADER: '',
+    SKIP: '',
+    SUBSCRIPTIONS_HEADER: '',
 };
 
 const AuthTextsInterface = {
