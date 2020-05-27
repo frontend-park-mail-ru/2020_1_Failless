@@ -1,8 +1,8 @@
 'use strict';
 
-import Library from 'Eventum/utils/language/libraries/Interface';
+import EnglishLibrary from 'Eventum/utils/language/English';
 
-let localLibrary = Library;
+let localLibrary = EnglishLibrary;
 
 export default class TextConstants {
     static LANGUAGES = {
@@ -12,12 +12,16 @@ export default class TextConstants {
     static currentLanguage = TextConstants.LANGUAGES.ENGLISH;
 
     /**
-     *
+     * Prepare local library for chosen language
      * @param lang {'ru' | 'en'}
      * @return {Promise<void>}
      */
     static async translateTo(lang) {
         if (TextConstants.currentLanguage === lang) {
+            return;
+        } else if (lang === this.LANGUAGES.ENGLISH) {
+            localLibrary = EnglishLibrary;
+            TextConstants.currentLanguage = lang;
             return;
         }
         if (!localStorage.getItem(`lib_${lang}`)) {
@@ -52,7 +56,11 @@ export default class TextConstants {
                 localStorage.setItem(`lib_${lang}`, JSON.stringify(newLib));
                 TextConstants.currentLanguage = lang;
             })
-            .catch(console.error);
+            .catch(e => {
+                console.error(e);
+                localLibrary = EnglishLibrary;
+                TextConstants.currentLanguage = this.LANGUAGES.ENGLISH;
+            });
     }
 
     static get BASIC__ADD() {return localLibrary.Basic.ADD;}
@@ -90,11 +98,8 @@ export default class TextConstants {
     static get FILTERS__MEMBER_AMOUNT() {return localLibrary.Filters.MEMBER_AMOUNT;}
     static get FILTERS__TAGS_HEADER() {return localLibrary.Filters.TAGS_HEADER;}
 
-    static get FEED__DISLIKE() {return localLibrary.Feed.DISLIKE;}
-    static get FEED__LIKE() {return localLibrary.Feed.LIKE;}
     static get FEED__NEW_MATCH() {return localLibrary.Feed.NEW_MATCH;}
     static get FEED__PERSONAL_EVENTS_HEADER() {return localLibrary.Feed.PERSONAL_EVENTS_HEADER;}
-    static get FEED__SKIP() {return localLibrary.Feed.SKIP;}
     static get FEED__SUBSCRIPTIONS_HEADER() {return localLibrary.Feed.SUBSCRIPTIONS_HEADER;}
 
     static get PROFILE__ABOUT_PLACEHOLDER() {return localLibrary.Profile.ABOUT_PLACEHOLDER;}

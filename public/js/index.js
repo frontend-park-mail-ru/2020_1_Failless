@@ -37,6 +37,6 @@ router.addRoute('/my/chats',    new ChatController(application));
 // if (window.navigator.language === 'ru-RU') {
 //     TextConstants.translateToRussian();
 // }
-TextConstants.translateTo(TextConstants.LANGUAGES.RUSSIAN)
+TextConstants.translateTo(TextConstants.LANGUAGES.ENGLISH)
     .then(() => router.route());
 
