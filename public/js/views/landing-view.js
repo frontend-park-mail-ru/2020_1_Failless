@@ -53,7 +53,7 @@ export default class LandingView extends View {
                     name: 'Сергей',
                     // eslint-disable-next-line no-irregular-whitespace
                     about: `Человек слова &laquoПринял!&raquo<br> Исправит всё,<br>что работает и не работает`,
-                    avatar: 'https://eventum.s3.eu-north-1.amazonaws.com/app/creators/Sergey.jpeg',
+                    avatar: 'https://eventum.s3.eu-north-1.amazonaws.com/app/creators/Sergey.jpg',
                     links: {
                         github: 'https://github.com/almashell',
                         vk: '',
