@@ -121,14 +121,14 @@ const ValidTextsEnglish = {
 };
 
 const ChatTextsEnglish = {
-    ATTENTION_MESSAGE: 'Be careful talking to strangers. Do not share private information',
+    ATTENTION_MESSAGE: 'Be careful talking to strangers<br>Do not share private information',
     LEFT_CHAT: 'Choose chat on the left',
     MESSAGE_PLACEHOLDER: 'Write something nice',
     NO_CHATS: 'Entropy is such a lonely word',
 };
 
 const SearchTextsEnglish = {
-    NO_RESULTS: 'Nothing was found. Try changing the filters',
+    NO_RESULTS: 'Nothing was found<br>Try changing the filters',
     PLACEHOLDER: 'Find events'
 };
 
