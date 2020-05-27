@@ -1,4 +1,4 @@
-const DEBUG = false;
+const DEBUG = true;
 export default {
     url: DEBUG ? 'http://localhost' : 'https://eventum.xyz',
     port: 443,

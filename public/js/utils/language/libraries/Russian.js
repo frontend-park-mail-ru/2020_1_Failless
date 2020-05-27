@@ -71,7 +71,7 @@ const ChatTextsRussian = {
 };
 
 const SearchTextsRussian = {
-    NO_RESULTS: 'Ничего не нашлось',
+    NO_RESULTS: 'L',
 };
 
 const LandingTextsRussian = {

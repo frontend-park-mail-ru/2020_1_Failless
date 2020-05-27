@@ -1,6 +1,5 @@
 'use strict';
 
-import RussianLibrary from 'Eventum/utils/language/libraries/Russian';
 import Library from 'Eventum/utils/language/libraries/Interface';
 
 // Some sort of encapsulation
@@ -14,12 +13,27 @@ const LANGUAGES = {
 let localLibrary = Library;
 
 export default class TextConstants {
-    static translateToRussian() {
+    static async translateToRussian() {
         if (TextConstants.currentLanguage === LANGUAGES.RUSSIAN) {
             return;
         }
-        TextConstants.currentLanguage = LANGUAGES.RUSSIAN;
-        localLibrary = RussianLibrary;
+        if (!localStorage.getItem('lib_ru')) {
+            await this.loadLib('ru');
+        } else {
+            let newLib = null;
+            try {
+                newLib = JSON.parse(localStorage.getItem('lib_ru'));
+            }
+            catch (e) {
+                console.error(e);
+            }
+            if (!newLib) {
+                await this.loadLib('ru');
+            } else {
+                localLibrary = newLib;
+            }
+            console.log(localLibrary);
+        }
     }
 
     static translateToEnglish() {
@@ -27,8 +41,22 @@ export default class TextConstants {
             return;
         }
         // TODO: make english
-        TextConstants.currentLanguage = LANGUAGES.RUSSIAN;
-        localLibrary = RussianLibrary;
+        TextConstants.currentLanguage = LANGUAGES.ENGLISH;
+    }
+
+    /**
+     *
+     * @param lang {'ru' | 'en'}
+     */
+    static loadLib(lang) {
+        return fetch(`/lang/${lang}.json`, {method: 'GET'})
+            .then(r => r.json())
+            .then(newLib => {
+                localLibrary = newLib;
+                localStorage.setItem('lib_ru', JSON.stringify(newLib));
+                TextConstants.currentLanguage = LANGUAGES.RUSSIAN;
+            })
+            .catch(console.error);
     }
 
     static get BASIC__ADD() {return localLibrary.Basic.ADD;}

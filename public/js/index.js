@@ -27,12 +27,6 @@ const application = document.getElementById('application');
 
 TextConstants.translateToRussian();
 
-// if (window.navigator.language === 'ru-RU') {
-//     TextConstants.translateToRussian();
-// } else {
-//     TextConstants.translateToEnglish();
-// }
-
 const router = new Router();
 router.addRoute('/',            new LandingController(application));
 router.addRoute('/login',       new LoginController(application));
@@ -41,5 +35,9 @@ router.addRoute('/search',      new SearchController(application));  // big & mi
 router.addRoute('/feed',        new FeedController(application));        // profiles
 router.addRoute('/my/profile',  new ProfileController(application));
 router.addRoute('/my/chats',    new ChatController(application));
+
+// if (window.navigator.language === 'ru-RU') {
+//     TextConstants.translateToRussian();
+// }
 
 router.route();
