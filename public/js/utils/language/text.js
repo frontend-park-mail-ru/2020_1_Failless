@@ -2,50 +2,46 @@
 
 import Library from 'Eventum/utils/language/libraries/Interface';
 
-// Some sort of encapsulation
-// since these are hidden in a module
-// TODO: wouldn't it be possible to access them via window.* ??
-const LANGUAGES = {
-    RUSSIAN: 'Russian',
-    ENGLISH: 'English',
-};
-
 let localLibrary = Library;
 
 export default class TextConstants {
-    static async translateToRussian() {
-        if (TextConstants.currentLanguage === LANGUAGES.RUSSIAN) {
-            return;
-        }
-        if (!localStorage.getItem('lib_ru')) {
-            await this.loadLib('ru');
-        } else {
-            let newLib = null;
-            try {
-                newLib = JSON.parse(localStorage.getItem('lib_ru'));
-            }
-            catch (e) {
-                console.error(e);
-            }
-            if (!newLib) {
-                await this.loadLib('ru');
-            } else {
-                localLibrary = newLib;
-            }
-            console.log(localLibrary);
-        }
-    }
-
-    static translateToEnglish() {
-        if (TextConstants.currentLanguage === LANGUAGES.ENGLISH) {
-            return;
-        }
-        // TODO: make english
-        TextConstants.currentLanguage = LANGUAGES.ENGLISH;
-    }
+    static LANGUAGES = {
+        RUSSIAN: 'ru',
+        ENGLISH: 'en',
+    };
+    static currentLanguage = TextConstants.LANGUAGES.ENGLISH;
 
     /**
      *
+     * @param lang {'ru' | 'en'}
+     * @return {Promise<void>}
+     */
+    static async translateTo(lang) {
+        if (TextConstants.currentLanguage === lang) {
+            return;
+        }
+        if (!localStorage.getItem(`lib_${lang}`)) {
+            await this.loadLib(lang);
+        } else {
+            let newLib = null;
+            try {
+                newLib = JSON.parse(localStorage.getItem(`lib_${lang}`));
+            }
+            catch (e) {
+                newLib = null;
+                console.error(e);
+            }
+            if (!newLib) {
+                await this.loadLib(`lib_${lang}`);
+            } else {
+                localLibrary = newLib;
+                TextConstants.currentLanguage = lang;
+            }
+        }
+    }
+
+    /**
+     * Downloads library, sets it as current + loads into localStorage
      * @param lang {'ru' | 'en'}
      */
     static loadLib(lang) {
@@ -53,8 +49,8 @@ export default class TextConstants {
             .then(r => r.json())
             .then(newLib => {
                 localLibrary = newLib;
-                localStorage.setItem('lib_ru', JSON.stringify(newLib));
-                TextConstants.currentLanguage = LANGUAGES.RUSSIAN;
+                localStorage.setItem(`lib_${lang}`, JSON.stringify(newLib));
+                TextConstants.currentLanguage = lang;
             })
             .catch(console.error);
     }

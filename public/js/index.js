@@ -25,8 +25,6 @@ const application = document.getElementById('application');
 //     });
 // }
 
-TextConstants.translateToRussian();
-
 const router = new Router();
 router.addRoute('/',            new LandingController(application));
 router.addRoute('/login',       new LoginController(application));
@@ -39,5 +37,6 @@ router.addRoute('/my/chats',    new ChatController(application));
 // if (window.navigator.language === 'ru-RU') {
 //     TextConstants.translateToRussian();
 // }
+TextConstants.translateTo(TextConstants.LANGUAGES.RUSSIAN)
+    .then(() => router.route());
 
-router.route();
