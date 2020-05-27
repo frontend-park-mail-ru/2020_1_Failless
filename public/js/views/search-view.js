@@ -52,7 +52,11 @@ export default class SearchView extends View {
      * Render template
      */
     render() {
-        this.parent.insertAdjacentHTML('beforeend', searchTemplate({LOADING: TextConstants.BASIC__LOADING}));
+        this.parent.insertAdjacentHTML('beforeend', searchTemplate({
+            LOADING: TextConstants.BASIC__LOADING,
+            PLACEHOLDER: TextConstants.SEARCH__PLACEHOLDER,
+            FIND: TextConstants.BASIC__SEARCH,
+        }));
         this.#setDOMElements();
     }
 

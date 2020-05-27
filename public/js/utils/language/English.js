@@ -1,8 +1,11 @@
 const BasicTextsEnglish = {
     ADD: 'Add',
     AGE: 'Age',
+    CANCEL: 'Cancel',
     CHANGE: 'Change',
     CHATS: 'Chats',
+    DESCRIPTION: 'Description',
+    ERROR: 'Error',
     EVENTS: 'Events',
     FIND: 'Find',
     FROM: 'From',
@@ -10,29 +13,52 @@ const BasicTextsEnglish = {
     JOIN: 'Join',
     LOADING: 'Loading',
     LOCATION: 'Location',
+    LOGIN: 'Login',
     MEN: 'Men',
+    NAME: 'Name',
     NEW_MESSAGE: 'You got new message!',
     NO_PHOTOS: 'No photos yet',
+    PASSWORD: 'Password',
+    PHONE: 'Phone',
     PHOTOS: 'Photos',
+    PROFILE: 'Profile',
+    RANDOM_NAME: 'Jordan',
     REPO: 'repository',
     REPOS: 'Repositories',
     SAVE: 'Save',
+    SEARCH: 'Search',
+    SEND: 'Send',
+    SETTINGS: 'Settings',
+    SIGNUP: 'Sign up',
     SOCIAL_NETWORKS: 'Social networks',
+    TAGS: 'Tags',
+    TIME: 'Time',
+    TITLE: 'Title',
     TO: 'To',
+    VISIT: 'Visit',
     WOMEN: 'Women',
     YOU: 'You',
-    YOU_GO: 'You attend',
 };
 
 const EventTextsEnglish = {
+    ADD_PHOTOS: 'Add photos',
     LEAVE: 'Leave',
+    RANDOM_ABOUT: 'Last one to finish wins another shot',
+    RANDOM_TITLE: 'Bar marathon',
     VISITED: 'You visit',
     UNVISITED: 'Go',
+    YOU_GO: 'You attend',
 };
 
 const ProfileTextsEnglish = {
+    ADD_ABOUT: 'Add info about yourself',
+    ADD_PHOTO: 'Add photo of yourself',
     ABOUT_PLACEHOLDER: 'Describe yourself like when your grandma asked how you been',
+    FIND_EVENT: 'Find events',
+    NO_EVENTS: "You don't have any events yet",
+    NO_SUBS: "You aren't planning on visiting anything yet",
     NO_TAGS: "You don't have any tags yet",
+    OPEN_PROFILE: 'Go to profile',
     SUCCESSFUL_SAVE: 'Information was saved',
     TITLE: 'Your profile',
     YOU_VISIT: 'You plan to visit',
@@ -52,14 +78,20 @@ const FeedTextsEnglish = {
     NEW_MATCH: 'You matched with someone! Check your messages!',
     PERSONAL_EVENTS_HEADER: 'Invites to',
     SUBSCRIPTIONS_HEADER: 'Wants to visit',
+    EMPTY: 'No one was found<br>Ease the filters and try your luck again<br>If it did not help - wait for a while<br>and come back later'
 };
 
 const AuthTextsEnglish = {
+    LOGIN_LABEL: 'Email or phone',
+    LOGIN_TITLE: 'Login',
+    LOGOUT: 'Logout',
+    REG_ACTION: 'Login',
+    REPEAT_PASS: 'Repeat password',
     SUCCESSFUL_SIGNUP: 'Registration was successful',
 };
 
 const ChatTextsEnglish = {
-    ATTENTION_MESSAGE: "Be careful talking to strangers. Do not share private information",
+    ATTENTION_MESSAGE: 'Be careful talking to strangers. Do not share private information',
     LEFT_CHAT: 'Choose chat on the left',
     MESSAGE_PLACEHOLDER: 'Write something nice',
     NO_CHATS: 'Entropy is such a lonely word',
@@ -67,6 +99,7 @@ const ChatTextsEnglish = {
 
 const SearchTextsEnglish = {
     NO_RESULTS: 'Nothing was found. Try changing the filters',
+    PLACEHOLDER: 'Find events'
 };
 
 const LandingTextsEnglish = {
@@ -85,6 +118,24 @@ const LandingTextsEnglish = {
     SHORT_DESCRIPTION: 'Social networking service which helps people find their company',
 };
 
+const TagsTextsEnglish = {
+    BAR: 'wanttoBAR',
+    CINEMA: 'wanttoCINEMA',
+    THEATRE: 'wanttoTHEATRE',
+    CLUB: 'wanttoCLUB',
+    CONCERT: 'wanttoCONCERT',
+    OUTSIDE: 'wantOUTSIDE',
+    RINK: 'wanttoPARK',
+    EXHIBITION: 'wanttoEXHIBITION',
+    SLEEP: 'wanttoSLEEP',
+    FIREWORKS: 'wanttoFIREWORKS',
+    SPORT: 'wantSPORT',
+    MUSEUM: 'wanttoMUSEUM',
+    LECTURE: 'wanttoLECTURE',
+    STUDY: 'wanttoSTUDY',
+    PARK: 'wanttoPARK',
+};
+
 const English = {
     Basic: BasicTextsEnglish,
     Event: EventTextsEnglish,
@@ -95,6 +146,7 @@ const English = {
     Chat: ChatTextsEnglish,
     Search: SearchTextsEnglish,
     Landing: LandingTextsEnglish,
+    Tags: TagsTextsEnglish,
 };
 
 export default English;

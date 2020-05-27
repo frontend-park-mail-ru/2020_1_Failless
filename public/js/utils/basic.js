@@ -27,4 +27,8 @@ async function showLoading(element) {
     element.insertAdjacentHTML('beforeend', loadingTemplate({LOADING: TextConstants.BASIC__LOADING}));
 }
 
-export {makeEmpty, detectMobile, resizeTextArea, showLoading};
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export {makeEmpty, detectMobile, resizeTextArea, showLoading, capitalizeFirstLetter};

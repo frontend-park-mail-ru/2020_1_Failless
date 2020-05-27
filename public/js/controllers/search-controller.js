@@ -5,6 +5,7 @@ import SearchView from 'Eventum/views/search-view';
 import EventModel from 'Eventum/models/event-model';
 import UserModel from 'Eventum/models/user-model';
 import {changeActionText} from 'Blocks/event/event';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class SearchController
@@ -127,19 +128,19 @@ export default class SearchController extends Controller {
                 if (event.target.previousElementSibling.classList.contains('event__circle_mid')) {
                     EventModel.joinMidEvent(profile.uid, eid)
                         .then((response) => {
-                            changeActionText(event.target, 'green', 'Вы идёте');
+                            changeActionText(event.target, 'green', TextConstants.EVENT__YOU_GO);
                             eventComponent.incrementMembers();
                         },
                         (error) => {
                             console.error(error);
-                            changeActionText(event.target, 'red', 'Ошибка');
+                            changeActionText(event.target, 'red', TextConstants.BASIC__ERROR);
                         });
                 } else if (event.target.previousElementSibling.classList.contains('event__circle_big')) {
                     EventModel.visitBigEvent(profile.uid, event.target.getAttribute('data-eid'))
-                        .then((response) => changeActionText(event.target, 'green', 'Вы идёте'),
+                        .then((response) => changeActionText(event.target, 'green', TextConstants.EVENT__YOU_GO),
                             (error) => {
                                 console.error(error);
-                                changeActionText(event.target, 'red', 'Ошибка');
+                                changeActionText(event.target, 'red', TextConstants.BASIC__ERROR);
                             });
                 } else {
                     console.log('wat, how you got here?');

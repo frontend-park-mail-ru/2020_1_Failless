@@ -1,5 +1,7 @@
 'use strict';
+
 import headerTemplate from 'Blocks/header/template.hbs';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * Draw header
@@ -16,28 +18,28 @@ export default function createHeader(base, logged) {
             buttons: !logged ? [
                 {
                     link: '/search',
-                    name: 'Поиск',
+                    name: TextConstants.BASIC__EVENTS,
                 },
                 {
                     link: '/signup',
-                    name: 'Регистрация',
+                    name: TextConstants.BASIC__SIGNUP,
                 },
                 {
                     link: '/login',
-                    name: 'Войти',
+                    name: TextConstants.BASIC__LOGIN,
                 },
             ] : [
                 {
                     link: '/search',
-                    name: 'Поиск',
+                    name: TextConstants.BASIC__EVENTS,
                 },
                 {
                     link: '/feed',
-                    name: 'Лента',
+                    name: TextConstants.BASIC__SEARCH,
                 },
                 {
                     link: '/my/profile',
-                    name: 'Профиль',
+                    name: TextConstants.BASIC__PROFILE,
                 },
             ],
         });

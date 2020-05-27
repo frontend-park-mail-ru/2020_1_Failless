@@ -109,21 +109,21 @@ export default class ProfileView extends MyView {
         const logoutButton = new Button({
             style: 're_btn re_btn__outline logout',
             state: null,
-            text: 'Выйти',
+            text: TextConstants.AUTH__LOGOUT,
             data_bind: 'logout',
         });
 
         const settingsButton = new Button({
             style: 're_btn re_btn__outline',
             state: null,
-            text: 'Настройки',
+            text: TextConstants.BASIC__SETTINGS,
             data_bind: 'showSettings',
         });
 
         const addEventButton = new Button({
             style: 're_btn re_btn__filled',
             state: null,
-            text: 'Добавить',
+            text: TextConstants.BASIC__ADD,
             data_bind: 'addNewEventOnClick',
         });
 
@@ -152,9 +152,6 @@ export default class ProfileView extends MyView {
                 NO_PHOTOS: TextConstants.BASIC__NO_PHOTOS,
                 YOU_VISIT: TextConstants.PROFILE__YOU_VISIT,
                 YOUR_EVENTS: TextConstants.PROFILE__YOUR_EVENTS,
-                CHANGE: TextConstants.BASIC__CHANGE,
-                YOU_GO: TextConstants.BASIC__YOU_GO,
-                VISIT: TextConstants.BASIC__VISIT,
                 LOADING: TextConstants.BASIC__LOADING,
             })
         );
@@ -264,7 +261,7 @@ export default class ProfileView extends MyView {
         const personalEvents = this.personalEventsDiv;
         makeEmpty(personalEvents);
         if (!events || (!events.mid_events || events.mid_events.length === 0) && (!events.small_events || events.small_events.length === 0)) {
-            personalEvents.insertAdjacentHTML('afterbegin', '<span class="font font_bold font__size_small font__color_lg">У вас пока нет ни одного эвента</span>');
+            personalEvents.insertAdjacentHTML('afterbegin', `<span class="font font_bold font__size_small font__color_lg">${TextConstants.PROFILE__NO_EVENTS}</span>`);
         } else {
             events.small_events.forEach((smallEvent) => {
                 let smallEventComponent = new SmallEventComponent(smallEvent, true);
@@ -281,7 +278,7 @@ export default class ProfileView extends MyView {
 
     async renderEventsError(error) {
         console.error(error);
-        this.showError(this.subscriptionsDiv, 'Error in subscriptions', 'warning', null);
+        this.showError(this.subscriptionsDiv, TextConstants.BASIC__ERROR, 'warning', null);
     }
 
     /**
@@ -329,8 +326,8 @@ export default class ProfileView extends MyView {
         const subsArea = this.subscriptionsDiv;
         makeEmpty(subsArea);
         subsArea.insertAdjacentHTML('afterbegin', errorTemplate({
-            message: 'Вы ещё никуда не идёте',
-            button: 'Найти эвент',
+            message: TextConstants.PROFILE__NO_SUBS,
+            button: TextConstants.PROFILE__FIND_EVENT,
         }));
     }
 
@@ -340,7 +337,7 @@ export default class ProfileView extends MyView {
      */
     async renderSubscriptionsError(error) {
         console.error(error);
-        this.showError(this.subscriptionsDiv, 'Error in subscriptions', 'warning', null);
+        this.showError(this.subscriptionsDiv, TextConstants.BASIC__ERROR, 'warning', null);
     }
 
     /**

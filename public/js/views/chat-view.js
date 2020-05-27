@@ -164,12 +164,6 @@ export default class ChatView extends MyView {
     /**
      * This function depends on non-empty chats
      * so check it somewhere outside
-     * @param chats[{
-     *     name: String,
-     *     time: String,
-     *     avatar: String,
-     *     last_message: String,
-     * }]
      * @return {Promise<void>}
      */
     async renderChatList() {

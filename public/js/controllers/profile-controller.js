@@ -38,12 +38,7 @@ export default class ProfileController extends Controller {
         this.user = null;
         this.activeModalWindow = null;
         this.images = [];
-        EventModel.getTagList().then((tags) => {
-            this.localTags = [...tags];
-        }).catch((onerror) => {
-            console.error(onerror);
-            this.localTags = [...STATIC_TAGS];
-        });
+        this.localTags = [...STATIC_TAGS];
     }
 
     destructor() {
@@ -212,7 +207,7 @@ export default class ProfileController extends Controller {
                                 {
                                     type: 'mouseover', handler: (event) => {
                                         if (event.target.matches('.event__link.font__color_green')) {
-                                            toggleActionText(event.target, 'Не идти');
+                                            toggleActionText(event.target, TextConstants.EVENT__LEAVE);
                                         }
                                     }
                                 },
@@ -228,7 +223,7 @@ export default class ProfileController extends Controller {
                                 {
                                     type: 'mouseout', handler: (event) => {
                                         if (event.target.matches('.event__link.font__color_red')) {
-                                            toggleActionText(event.target, 'Вы идёте');
+                                            toggleActionText(event.target, TextConstants.EVENT__YOU_GO);
                                         }
                                     }
                                 },
