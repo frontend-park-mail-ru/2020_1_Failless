@@ -47,6 +47,11 @@ export default class TextConstants {
     static get BASIC__SOCIAL_NETWORKS() {return localLibrary.Basic.SOCIAL_NETWORKS;}
     static get BASIC__SAVE() {return localLibrary.Basic.SAVE;}
     static get BASIC__NEW_MESSAGE() {return localLibrary.Basic.NEW_MESSAGE;}
+    static get BASIC__CHATS() {return localLibrary.Basic.CHATS;} // Чаты
+    static get BASIC__SEND() {return localLibrary.Basic.SEND;} // Отправить
+    static get BASIC__CHANGE() {return localLibrary.Basic.CHANGE;} // Изменить
+    static get BASIC__YOU_GO() {return localLibrary.Basic.YOU_GO;} // Вы идёте
+    static get BASIC__VISIT() {return localLibrary.Basic.VISIT;} // Пойти
 
     static get EVENT__VISITED() {return localLibrary.Event.VISITED;}
     static get EVENT__UNVISITED() {return localLibrary.Event.UNVISITED;}
@@ -70,7 +75,12 @@ export default class TextConstants {
     static get PROFILE__YOUR_TAGS() {return localLibrary.Profile.YOUR_TAGS;}
     static get PROFILE__NO_TAGS() {return localLibrary.Profile.NO_TAGS;}
     static get PROFILE__YOUR_PHOTOS() {return localLibrary.Profile.YOUR_PHOTOS;}
+    static get PROFILE__TITLE() {return localLibrary.Profile.TITLE;} // Профиль
 
     static get AUTH__SUCCESSFUL_SIGNUP() {return localLibrary.Auth.SUCCESSFUL_SIGNUP;}
 
+    static get CHAT__ATTENTION_MESSAGE() {return localLibrary.Chat.ATTENTION_MESSAGE;} // Будьте осторожны при разговоре с незнакомцами
+    static get CHAT__LEFT_CHAT() {return localLibrary.Chat.LEFT_CHAT;} // Выберите чат слева
+    static get CHAT__NO_CHATS() {return localLibrary.Chat.NO_CHATS;} // На горизонте тихо...
+    static get CHAT__MESSAGE_PLACEHOLDER() {return localLibrary.Chat.MESSAGE_PLACEHOLDER;} // Напишите что-нибудь хорошее
 }

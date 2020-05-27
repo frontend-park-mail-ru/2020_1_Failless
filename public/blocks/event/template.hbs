@@ -1,7 +1,7 @@
 {{# without_parent}}{{else}}<div class="event">{{/without_parent}}
     <div class="event__photos"></div>
     <div class="event__body">
-        <h3 class="event__title">{{ title }}</h3>
+        <h3 class="event__title">{{ TITLE }}</h3>
         {{#if description}}<p class="event__about">{{ description }}</p>{{/if}}
         {{#if tags}}
         <div class="event__tags">
@@ -15,7 +15,7 @@
         <footer class="event__footer">
             <div class="event__action">
                 <div class="event__circle event__circle_{{ class }}"></div>
-                <a data-eid="{{ eid }}" class="event__link font__color_{{#if own}}black">Изменить{{else}}{{#if followed}}green">Вы идёте{{else}}black">Пойти{{/if}}{{/if}}</a>
+                <a data-eid="{{ eid }}" class="event__link font__color_{{#if own}}black">{{ CHANGE }}{{else}}{{#if followed}}green">{{ YOU_GO }}{{else}}black">{{ VISIT }}{{/if}}{{/if}}</a>
             </div>
             {{#if small}}{{else}}
             <div class="event__visitors">

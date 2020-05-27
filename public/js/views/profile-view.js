@@ -141,7 +141,7 @@ export default class ProfileView extends MyView {
         );
         document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
             'beforeend', profileMainTemplate({
-                title: 'Профиль',
+                TITLE: TextConstants.PROFILE__TITLE,
                 profile: profile,
                 add_event_button: addEventButton.data,
                 select_options: Array(14).fill(undefined, undefined, undefined).map((_, idx) => 2 + idx),
@@ -151,6 +151,9 @@ export default class ProfileView extends MyView {
                 NO_PHOTOS: TextConstants.BASIC__NO_PHOTOS,
                 YOU_VISIT: TextConstants.PROFILE__YOU_VISIT,
                 YOUR_EVENTS: TextConstants.PROFILE__YOUR_EVENTS,
+                CHANGE: TextConstants.BASIC__CHANGE,
+                YOU_GO: TextConstants.BASIC__YOU_GO,
+                VISIT: TextConstants.BASIC__VISIT,
             })
         );
 
