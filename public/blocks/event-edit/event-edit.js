@@ -21,9 +21,7 @@ export default class EventEdit extends Component {
         this.element = node;
         this.template = EventEditTemplate;
         this.#setMinValueForDateTimeInput();
-        this.#setInitialMargins();
         this.didRender();
-        window.addEventListener('resize', this.#setInitialMargins.bind(this));
     }
 
     didRender() {
@@ -52,11 +50,6 @@ export default class EventEdit extends Component {
      */
     #setMinValueForDateTimeInput() {
         this.timeInput.min = new Date().toUTCString();
-    }
-
-    #setInitialMargins() {
-        this.element.style.marginTop = '-' + this.element.offsetHeight.toString() + 'px';
-        this.element.style.marginRight = '-' + this.element.offsetWidth.toString() + 'px';
     }
 
     show() {

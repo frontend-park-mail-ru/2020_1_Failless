@@ -30,10 +30,7 @@
   }
 
   &__group {
-    display: flex;
-    flex-flow: column;
-    justify-content: flex-start;
-    align-items: center;
+    width: 100%;
     margin-bottom: $re--big-padding;
     padding: 0 10px;
   }
