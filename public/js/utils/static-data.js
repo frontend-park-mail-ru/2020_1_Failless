@@ -2,27 +2,27 @@ import settings from 'Settings/config';
 import router from 'Eventum/core/router';
 import TextConstants from 'Eventum/utils/language/text';
 
-function setTags() {
-    return [
-        {name: TextConstants.TAGS__BAR,         tag_id: 1},
-        {name: TextConstants.TAGS__CINEMA,      tag_id: 2},
-        {name: TextConstants.TAGS__THEATRE,     tag_id: 3},
-        {name: TextConstants.TAGS__CLUB,        tag_id: 4},
-        {name: TextConstants.TAGS__CONCERT,     tag_id: 5},
-        {name: TextConstants.TAGS__OUTSIDE,     tag_id: 6},
-        {name: TextConstants.TAGS__RINK,        tag_id: 7},
-        {name: TextConstants.TAGS__EXHIBITION,  tag_id: 8},
-        {name: TextConstants.TAGS__SLEEP,       tag_id: 9},
-        {name: TextConstants.TAGS__FIREWORKS,   tag_id: 10},
-        {name: TextConstants.TAGS__SPORT,       tag_id: 11},
-        {name: TextConstants.TAGS__MUSEUM,      tag_id: 12},
-        {name: TextConstants.TAGS__LECTURE,     tag_id: 13},
-        {name: TextConstants.TAGS__STUDY,       tag_id: 14},
-        {name: TextConstants.TAGS__PARK,        tag_id: 15},
+function setTags(tc = TextConstants) {
+    STATIC_TAGS = [
+        {name: tc.TAGS__BAR,         tag_id: 1},
+        {name: tc.TAGS__CINEMA,      tag_id: 2},
+        {name: tc.TAGS__THEATRE,     tag_id: 3},
+        {name: tc.TAGS__CLUB,        tag_id: 4},
+        {name: tc.TAGS__CONCERT,     tag_id: 5},
+        {name: tc.TAGS__OUTSIDE,     tag_id: 6},
+        {name: tc.TAGS__RINK,        tag_id: 7},
+        {name: tc.TAGS__EXHIBITION,  tag_id: 8},
+        {name: tc.TAGS__SLEEP,       tag_id: 9},
+        {name: tc.TAGS__FIREWORKS,   tag_id: 10},
+        {name: tc.TAGS__SPORT,       tag_id: 11},
+        {name: tc.TAGS__MUSEUM,      tag_id: 12},
+        {name: tc.TAGS__LECTURE,     tag_id: 13},
+        {name: tc.TAGS__STUDY,       tag_id: 14},
+        {name: tc.TAGS__PARK,        tag_id: 15},
     ];
 }
 
-const STATIC_TAGS = setTags();
+let STATIC_TAGS = setTags(TextConstants);
 
 const MIN_AGE = 18;
 const MAX_AGE = 100;

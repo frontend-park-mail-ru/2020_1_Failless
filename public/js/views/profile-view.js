@@ -144,7 +144,6 @@ export default class ProfileView extends MyView {
             'beforeend', profileMainTemplate({
                 TITLE: TextConstants.PROFILE__TITLE,
                 profile: profile,
-                select_options: Array(14).fill(undefined, undefined, undefined).map((_, idx) => 2 + idx),
                 ADD: TextConstants.BASIC__ADD,
                 PHOTOS: TextConstants.BASIC__PHOTOS,
                 EVENTS: TextConstants.BASIC__EVENTS,
@@ -153,6 +152,7 @@ export default class ProfileView extends MyView {
                 YOUR_EVENTS: TextConstants.PROFILE__YOUR_EVENTS,
                 LOADING: TextConstants.BASIC__LOADING,
                 event_edit: {
+                    select_options: Array(14).fill(undefined, undefined, undefined).map((_, idx) => 2 + idx),
                     add_event_button: addEventButton.data,
                     ADD_PHOTO: TextConstants.EVENT__ADD_PHOTO,
                     EVENT_TITLE: TextConstants.BASIC__TITLE,
@@ -232,6 +232,7 @@ export default class ProfileView extends MyView {
             eventComponent = new SmallEventComponent(event, true);
             this.vDOM.mainColumn.personalEvents.events.small_events.push(eventComponent);
         } else if (type === 'mid') {
+            console.log(event);
             eventComponent = new MidEventComponent(event, true);
             this.vDOM.mainColumn.personalEvents.events.mid_events.push(eventComponent);
         } else {

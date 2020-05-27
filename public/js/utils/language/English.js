@@ -47,6 +47,7 @@ const EventTextsEnglish = {
     LEAVE: 'Leave',
     RANDOM_ABOUT: 'Last one to finish wins another shot',
     RANDOM_TITLE: 'Bar marathon',
+    SHOW_MEMBERS: 'Show members',
     VISITED: 'You visit',
     UNVISITED: 'Go',
     YOU_GO: 'You attend',

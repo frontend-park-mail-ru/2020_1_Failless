@@ -38,7 +38,6 @@ export default class ProfileController extends Controller {
         this.user = null;
         this.activeModalWindow = null;
         this.images = [];
-        this.localTags = [...STATIC_TAGS];
     }
 
     destructor() {
