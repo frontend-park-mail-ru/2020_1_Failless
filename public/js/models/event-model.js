@@ -211,7 +211,6 @@ export default class EventModel extends Model {
                 return response.json();
             },
             (error) => {
-                console.error(error);
                 throw new Error(error);
             });
     }

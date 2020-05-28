@@ -27,7 +27,6 @@ const application = document.getElementById('application');
 // }
 
 let lang = localStorage.getItem('cur_lang');
-console.log(lang);
 if (!lang) {
     if (window.navigator.language === 'ru-RU') {
         lang = TextConstants.LANGUAGES.RUSSIAN.short;
@@ -35,7 +34,6 @@ if (!lang) {
         lang = TextConstants.LANGUAGES.ENGLISH.short;
     }
 }
-console.log(lang);
 TextConstants.translateTo(lang)
     .then(() => {
         setStatic();

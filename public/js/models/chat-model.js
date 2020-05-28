@@ -53,7 +53,6 @@ export default class ChatModel extends Model {
     async establishConnection(uid, onMessage) {
         let socket = new WebSocket(`${settings.wsurl}:3000/ws/connect`);
         socket.onopen = () => {
-            console.log(socket);
             this.socket = socket;
 
             socket.send(JSON.stringify({uid: Number(uid)}));
@@ -61,7 +60,6 @@ export default class ChatModel extends Model {
             return socket;
         };
         socket.onerror = (error) => {
-            console.log(error);
             return null;
         };
     }
@@ -196,10 +194,7 @@ export default class ChatModel extends Model {
                         chat.users.set(user.uid, {...user})
                     });
                     chat.loaded = true;
-                } else {
-                    console.error('error with users')
                 }
-            })
-            .catch(console.error);
+            });
     }
 }

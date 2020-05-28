@@ -41,7 +41,6 @@ export default class TextConstants {
             }
             catch (e) {
                 newLib = null;
-                console.error(e);
             }
             if (!newLib) {
                 await this.loadLib(lang);
@@ -74,7 +73,6 @@ export default class TextConstants {
                 this.setCurrentLanguage(lang);
             })
             .catch(e => {
-                console.error(e);
                 localLibrary = EnglishLibrary;
                 this.setCurrentLanguage(this.LANGUAGES.ENGLISH.short);
             });
@@ -93,7 +91,6 @@ export default class TextConstants {
     }
 
     static async setCurrentLanguage(lang) {
-        console.log(lang);
         localStorage.setItem('cur_lang', lang);
     }
 
@@ -105,6 +102,7 @@ export default class TextConstants {
     static get BASIC__BIRTH() {return localLibrary.Basic.BIRTH;}
     static get BASIC__DESCRIPTION() {return localLibrary.Basic.DESCRIPTION;}
     static get BASIC__ERROR() {return localLibrary.Basic.ERROR;}
+    static get BASIC__ERROR_FUN() {return localLibrary.Basic.ERROR_FUN;}
     static get BASIC__EVENTS() {return localLibrary.Basic.EVENTS;}
     static get BASIC__FIND() {return localLibrary.Basic.FIND;}
     static get BASIC__FROM() {return localLibrary.Basic.FROM;}

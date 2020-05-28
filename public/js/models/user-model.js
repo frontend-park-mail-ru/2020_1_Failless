@@ -35,7 +35,6 @@ export default class UserModel extends Model {
                 });
             },
             (error) => {
-                console.log(error.toString());
                 throw new Error(error);
             });
     }
@@ -175,7 +174,6 @@ export default class UserModel extends Model {
                         }
                         return response.json().then((profile) => {
                             this.profile = profile;
-                            console.log(profile);
                             return profile;
                         });
                     },

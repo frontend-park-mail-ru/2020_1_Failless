@@ -233,11 +233,9 @@ export default class ProfileView extends MyView {
             eventComponent = new SmallEventComponent(event, true);
             this.vDOM.mainColumn.personalEvents.events.small_events.push(eventComponent);
         } else if (type === 'mid') {
-            console.log(event);
             eventComponent = new MidEventComponent(event, true);
             this.vDOM.mainColumn.personalEvents.events.mid_events.push(eventComponent);
         } else {
-            console.log('sorry not implemented for type', type);
             return;
         }
 
@@ -291,7 +289,6 @@ export default class ProfileView extends MyView {
     }
 
     async renderEventsError(error) {
-        console.error(error);
         this.showError(this.subscriptionsDiv, TextConstants.BASIC__ERROR, 'warning', null);
     }
 
@@ -350,7 +347,6 @@ export default class ProfileView extends MyView {
      * @return {Promise<void>}
      */
     async renderSubscriptionsError(error) {
-        console.error(error);
         this.showError(this.subscriptionsDiv, TextConstants.BASIC__ERROR, 'warning', null);
     }
 
@@ -395,7 +391,6 @@ export default class ProfileView extends MyView {
     }
 
     async renderPhotos(photos) {
-        console.log(photos);
         makeEmpty(this.photosColumn);
         if (photos && photos.length > 0) {
             photos.forEach(photo => {

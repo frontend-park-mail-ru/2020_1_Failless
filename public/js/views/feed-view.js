@@ -180,11 +180,8 @@ export default class FeedView extends View {
      * @param error
      */
     showFeedError(error) {
-        console.error(error);
-
         this.#clearColumns();
-
-        this.showError(this.centerColumnBodyDiv, error, icons.get('warning'), null);
+        this.showError(this.centerColumnBodyDiv, TextConstants.BASIC__ERROR, icons.get('warning'), null);
     }
 
     #setvDOM() {

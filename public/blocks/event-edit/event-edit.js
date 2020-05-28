@@ -152,7 +152,6 @@ export default class EventEdit extends Component {
         const files = this.photosDiv.querySelector('input').files;
 
         if (!files || files.length === 0) {
-            console.log('empty files');
             return;
         }
 

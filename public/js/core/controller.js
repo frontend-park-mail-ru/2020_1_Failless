@@ -6,6 +6,7 @@ import {logoutRedirect} from 'Eventum/utils/user-utils';
 import router from 'Eventum/core/router';
 import {detectMobile} from 'Eventum/utils/basic';
 import TextConstants from 'Eventum/utils/language/text';
+import Snackbar from 'Blocks/snackbar/snackbar';
 
 /**
  * @class Basic controller class
@@ -45,9 +46,9 @@ export default class Controller {
     action() {
         UserModel.getLogin()
             .then((user) => createHeader(this.parent, Object.prototype.hasOwnProperty.call(user, 'uid')))
-            .catch((onerror) => {
+            .catch(() => {
                 createHeader(this.parent, false);
-                console.log('No internet connection', onerror);})
+                Snackbar.instance.addMessage('No internet connection');})
             .then(() =>
                 this.initHandlers([
                     {
@@ -126,9 +127,8 @@ export default class Controller {
         } else if (href === '#!') {
             return;
         } else if (href.startsWith('lang')) {
-            console.log(href.slice(5));
             Promise.all([
-                console.log(this.view.showGlobalLoading()),
+                this.view.showGlobalLoading(),
                 TextConstants.setCurrentLanguage(href.slice(5))
             ]).then(() => {
                 location.reload();

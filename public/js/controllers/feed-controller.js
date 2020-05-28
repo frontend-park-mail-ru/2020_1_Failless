@@ -115,20 +115,14 @@ export default class FeedController extends Controller {
                 let eventComponent = this.view.findEventComponent(Number(eid));
 
                 if (!eventComponent) {
-                    console.error('No component was found');
-                    // TODO: do sth
                     return;
                 }
 
                 if (eventComponent.type === 'mid') {
                     return EventModel.joinMidEvent(profile.uid, eid)
                         .then((response) => eventComponent.state = true);
-                } else {
-                    console.log('we dont support that type yet');
                 }
-
-            },
-            error => console.error(error)
+            }
         );
     };
 
@@ -139,20 +133,14 @@ export default class FeedController extends Controller {
                 let eventComponent = this.view.findEventComponent(Number(eid));
 
                 if (!eventComponent) {
-                    console.error('No component was found');
-                    // TODO: do sth
                     return;
                 }
 
                 if (eventComponent.type === 'mid') {
                     EventModel.leaveMidEvent(profile.uid, eid)
                         .then((response) => eventComponent.state = false);
-                } else {
-                    console.log('we dont support that type yet');
                 }
-
-            },
-            error => console.error(error)
+            }
         );
     };
 

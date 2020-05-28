@@ -32,8 +32,6 @@ export default class SignUpController extends Controller {
     action() {
         UserModel.getLogin().then((user) => {
             if (!user) {
-                console.error('Server error');
-                console.log(user);
                 return;
             }
             if (Object.prototype.hasOwnProperty.call(user, 'uid')) {
@@ -114,7 +112,6 @@ export default class SignUpController extends Controller {
 
         const body = this.#getFromSignUp();
         if (!body) {
-            console.log('do nothing');
             return;
         }
         this.removeErrorMessage(event);
@@ -135,7 +132,6 @@ export default class SignUpController extends Controller {
                 }
             },
             (reason) => {
-                console.log(reason);
                 this.pending = false;
                 this.view.removeGlobalLoading();
             });

@@ -39,7 +39,6 @@ export default class ChatController extends Controller {
                 if (user) {
                     this.ChatModel.getChats({uid: user.uid, limit: 10, page: 0})
                         .then(chats => {
-                            console.log(chats);
                             if (!chats || chats.length === 0) {
                                 const errorArea = detectMobile() ? this.view.chatListBodyDiv : this.view.chatBodyDiv;
                                 this.view.renderEmptyList(errorArea).then(() => {
@@ -54,8 +53,6 @@ export default class ChatController extends Controller {
                             } else {
                                 this.ChatModel.establishConnection(user.uid, this.receiveMessage).then(
                                     (response) => {
-                                        console.log(response);
-
                                         this.timerId = setInterval(this.#reestablishConnection, 100);
 
                                         this.ChatModel.chats = chats;
@@ -66,7 +63,6 @@ export default class ChatController extends Controller {
                         (error) => {
                             this.view.showLeftError(error).then();
                             this.view.showCenterError(error).then();
-                            console.error(error);
                             this.ChatModel.socket.close();
                         });
                 } else {
@@ -208,8 +204,7 @@ export default class ChatController extends Controller {
         });
 
         UserModel.getProfile()
-            .then(profile => this.ChatModel.sendMessage({uid: profile.uid, message: message, chat_id: chat_id}))
-            .catch(console.error);
+            .then(profile => this.ChatModel.sendMessage({uid: profile.uid, message: message, chat_id: chat_id}));
         textarea.value = '';
         resizeTextArea.call(textarea);
     };
@@ -249,7 +244,6 @@ export default class ChatController extends Controller {
                         side: profile.uid === message.uid ? 'right' : 'left',
                         new: true,
                     });
-                }})
-            .catch(console.error);
+                }});
     }
 }

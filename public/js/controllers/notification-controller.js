@@ -17,7 +17,6 @@ export default class NotificationController {
      */
     static notify = (data = 'error') => {
         if (!'Notification' in window) {
-            console.error('haven`t Notification in window');
             return;
         }
 
