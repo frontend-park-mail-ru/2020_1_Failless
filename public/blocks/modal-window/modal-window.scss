@@ -32,6 +32,7 @@
     align-items: flex-start;
 
     &-icon {
+      cursor: pointer;
       margin-left: $re--big-padding;
       width: 15px;
       height: auto;
