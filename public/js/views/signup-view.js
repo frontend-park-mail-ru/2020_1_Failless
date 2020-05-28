@@ -2,6 +2,7 @@
 
 import View from 'Eventum/core/view.js';
 import authTemplate from 'Components/auth/template.hbs';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  *
@@ -26,13 +27,13 @@ export default class SignUpView extends View {
     render() {
         this.parent.innerHTML += authTemplate({
             data_bind: 'signup',
-            title: 'РЕГИСТРАЦИЯ',
+            title: TextConstants.BASIC__SIGNUP.toUpperCase(),
             title_style: 'auth__title__reg',
             input: [
                 {
-                    title: 'Имя',
+                    title: TextConstants.BASIC__NAME,
                     type: 'text',
-                    placeholder: 'Илья',
+                    placeholder: TextConstants.BASIC__RANDOM_NAME,
                     autocomplete: 'name',
                     name: 'name',
                     others: ['required', 'autofocus', 'signup'],
@@ -42,10 +43,10 @@ export default class SignUpView extends View {
                     type: 'email',
                     name: 'email',
                     autocomplete: 'email',
-                    placeholder: 'ilya@mail.com',
+                    placeholder: 'your@mail.com',
                 },
                 {
-                    title: 'Телефон',
+                    title: TextConstants.BASIC__PHONE,
                     type: 'tel',
                     autocomplete: 'tel',
                     name: 'phone',
@@ -53,21 +54,21 @@ export default class SignUpView extends View {
                     others: ['required'],
                 },
                 {
-                    title: 'Пароль',
+                    title: TextConstants.BASIC__PASSWORD,
                     type: 'password',
                     name: 'password',
                     placeholder: '*******',
                     others: ['required'],
                 },
                 {
-                    title: 'Повторите пароль',
+                    title: TextConstants.AUTH__REPEAT_PASS,
                     type: 'password',
                     name: 'passwordC',
                     placeholder: '*******',
                     others: ['required', 'second_password'],
                 },
             ],
-            button: 'Зарегистрироваться',
+            button: TextConstants.AUTH__REG_ACTION,
         });
     }
 }

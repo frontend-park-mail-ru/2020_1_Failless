@@ -213,7 +213,7 @@ export default class FeedController extends Controller {
         }
 
         if (event.target.closest('button').matches('.feed__button.feed__button-skip')) {
-            showMessageWithRedirect('Оформите платную подписку, чтобы получить возможность пропускать пользователей', 'Profile');
+            showMessageWithRedirect(TextConstants.FEED__PAY_TO_SKIP, 'Profile');
             return;
         }
 

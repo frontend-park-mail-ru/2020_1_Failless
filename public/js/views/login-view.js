@@ -1,7 +1,8 @@
 'use strict';
 
-import View from 'Eventum/core/view.js';
+import View from 'Eventum/core/view';
 import authTemplate from 'Components/auth/template.hbs';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class create LoginView class
@@ -26,22 +27,22 @@ export default class LoginView extends View {
     render() {
         this.parent.innerHTML += authTemplate({
             data_bind: 'login',
-            title: 'ВХОД',
+            title: TextConstants.AUTH__LOGIN_TITLE.toUpperCase(),
             input: [
                 {
-                    title: 'Телефон или Email',
+                    title: TextConstants.AUTH__LOGIN_LABEL,
                     type: 'text',
                     placeholder: 'me@example.com',
                     others: ['required', 'autofocus', 'login'],
                 },
                 {
-                    title: 'Пароль',
+                    title: TextConstants.BASIC__PASSWORD,
                     type: 'password',
                     placeholder: '*******',
                     others: ['required'],
                 },
             ],
-            button: 'Вход',
+            button: TextConstants.BASIC__LOGIN,
         });
     }
 }

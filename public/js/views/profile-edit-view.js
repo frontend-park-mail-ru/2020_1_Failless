@@ -4,6 +4,7 @@ import View from 'Eventum/core/view.js';
 import GetGender from 'Eventum/utils/get-gender.js';
 import profileEditTemplate from 'Components/profile-edit/template.hbs';
 import editFieldTemplate from 'Blocks/edit-field/template.hbs';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  *
@@ -31,7 +32,7 @@ export default class ProfileEditView extends View {
             fields: [
                 {
                     id: 'popupPasswd',
-                    name: 'Пароль',
+                    name: TextConstants.BASIC__PASSWORD,
                     value: '*'.repeat(profile.password),
                     button: 'Изменить',
                 },
@@ -42,28 +43,28 @@ export default class ProfileEditView extends View {
                 },
                 {
                     id: 'popupPhone',
-                    name: 'Телефон',
+                    name: TextConstants.BASIC__PHONE,
                     value: `+7 ${profile.phone}`,
                 },
-                {
-                    id: 'popupVerif',
-                    name: 'Верификация',
-                    value: profile.verified ? 'Да' : 'Нет',
-                    button: 'Подтвердить',
-                },
+                // {
+                //     id: 'popupVerif',
+                //     name: 'Верификация',
+                //     value: profile.verified ? 'Да' : 'Нет',
+                //     button: 'Подтвердить',
+                // },
                 {
                     id: 'popupSex',
-                    name: 'Пол',
+                    name: TextConstants.BASIC__GENDER,
                     value: GetGender(profile.gender),
                 },
                 {
                     id: 'popupBirth',
-                    name: 'Дата рождения',
+                    name: TextConstants.BASIC__BIRTH,
                     value: '01.01.2000', // todo: fix it
                 },
                 {
                     id: 'popupLang',
-                    name: 'Язык',
+                    name: TextConstants.BASIC__LANGUAGE,
                     value: 'Русский',
                 },
             ],
@@ -82,15 +83,15 @@ export default class ProfileEditView extends View {
                 id: 'passwordId',
                 fields: [
                     {
-                        name: 'Старый пароль',
+                        name: TextConstants.AUTH__OLD_PASS,
                         type: 'password',
                     },
                     {
-                        name: 'Новый пароль',
+                        name: TextConstants.AUTH__NEW_PASS,
                         type: 'password',
                     },
                     {
-                        name: 'Повторите пароль',
+                        name: TextConstants.AUTH__REPEAT_PASS,
                         type: 'password',
                     },
                 ],

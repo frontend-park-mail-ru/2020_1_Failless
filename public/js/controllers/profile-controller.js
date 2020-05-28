@@ -8,7 +8,6 @@ import {STATIC_TAGS} from 'Eventum/utils/static-data';
 import {highlightTag} from 'Eventum/utils/tag-logic';
 import {logoutRedirect} from 'Eventum/utils/user-utils';
 import EventModel from 'Eventum/models/event-model';
-import editTemplate from 'Blocks/edit-field/template.hbs';
 import imageEditTemplate from 'Blocks/image-edit/template.hbs';
 import {resizeTextArea} from 'Eventum/utils/basic';
 import Router from 'Eventum/core/router';
@@ -39,12 +38,6 @@ export default class ProfileController extends Controller {
         this.user = null;
         this.activeModalWindow = null;
         this.images = [];
-        EventModel.getTagList().then((tags) => {
-            this.localTags = [...tags];
-        }).catch((onerror) => {
-            console.error(onerror);
-            this.localTags = [...STATIC_TAGS];
-        });
     }
 
     destructor() {
@@ -213,7 +206,7 @@ export default class ProfileController extends Controller {
                                 {
                                     type: 'mouseover', handler: (event) => {
                                         if (event.target.matches('.event__link.font__color_green')) {
-                                            toggleActionText(event.target, 'Не идти');
+                                            toggleActionText(event.target, TextConstants.EVENT__LEAVE);
                                         }
                                     }
                                 },
@@ -229,7 +222,7 @@ export default class ProfileController extends Controller {
                                 {
                                     type: 'mouseout', handler: (event) => {
                                         if (event.target.matches('.event__link.font__color_red')) {
-                                            toggleActionText(event.target, 'Вы идёте');
+                                            toggleActionText(event.target, TextConstants.EVENT__YOU_GO);
                                         }
                                     }
                                 },
@@ -657,7 +650,6 @@ export default class ProfileController extends Controller {
     #drawUnfoldedLine = (event) => {
         event.preventDefault();
         console.log(event.target);
-        let template = editTemplate();ploy;
         if (event.target.tagName === 'A') {
             let filed = event.target.parentNode;
             switch (filed.id) {

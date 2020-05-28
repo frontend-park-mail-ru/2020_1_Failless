@@ -23,7 +23,9 @@
                             <input type="checkbox" />
                             <div class="header__item__sub-menu">
                                 {{#each sub_buttons}}
-                                    <a class="header__item__link" href="{{ link }}">{{ name }}</a>
+                                    <div class="header__item">
+                                        <a class="header__item__link" href="{{ link }}">{{ name }}</a>
+                                    </div>
                                 {{/each}}
                             </div>
                         {{/if}}

@@ -64,12 +64,18 @@ $header-icon-width: 20px;
       transform-origin: 0 0;
       display: none;
 
-      & .header__item__link {
-        padding-bottom: 15px;
-        border-bottom: 1px solid #F1F1F1;
+      & .header__item__link:hover {
+        & ~ .header__item__sub-menu {
+          display: block;
+        }
+      }
 
-        &:last-child {
-          border-bottom: none;
+      & > input[type="checkbox"] {
+        height: 100%;
+        width: 100%;
+
+        &:checked ~ .header__item__sub-menu {
+          display: block;
         }
       }
     }
@@ -78,7 +84,7 @@ $header-icon-width: 20px;
       display: none;
     }
 
-    &:hover .header__item__sub-menu {
+    &:hover > .header__item__sub-menu {
       display: block;
     }
   }

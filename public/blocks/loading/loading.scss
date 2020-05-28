@@ -29,6 +29,7 @@
     position: fixed;
     top: 0;
     background: radial-gradient(white, transparent);
+    z-index: $z-index-modal;
   }
 
   &_appear {

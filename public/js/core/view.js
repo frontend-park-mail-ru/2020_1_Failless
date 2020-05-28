@@ -5,6 +5,7 @@ import errorTemplate from 'Blocks/error/template.hbs';
 import loadingTemplate from 'Blocks/loading/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {icons} from 'Eventum/utils/static-data';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * Base view class
@@ -66,17 +67,17 @@ export default class View {
      */
     async showLoading(element) {
         makeEmpty(element);
-        element.insertAdjacentHTML('beforeend', loadingTemplate());
+        element.insertAdjacentHTML('beforeend', loadingTemplate({LOADING: TextConstants.BASIC__LOADING}));
     }
 
     async showGlobalLoading() {
-        document.body.insertAdjacentHTML('beforeend', loadingTemplate({global: 'global'}));
+        document.body.insertAdjacentHTML('beforeend', loadingTemplate({global: 'global', LOADING: TextConstants.BASIC__LOADING}));
         this.globalLoader = document.body.querySelector('.spinner_global');
         setTimeout(() => {
             if (this.globalLoader) {
                 this.globalLoader.classList.remove('spinner_appear');
             }
-        }, 200);
+        }, 500);
     }
 
     async removeGlobalLoading() {

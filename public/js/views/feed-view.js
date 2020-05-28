@@ -151,7 +151,7 @@ export default class FeedView extends View {
 
     async #showEmpty() {
         await this.#hideUI();
-        await this.showError(this.centerColumnBodyDiv, 'Больше никого не нашлось<br>Упростите критерии поиска и попытайте удачу снова<br>Если и это не помогло - полистайте эвенты в поиске и<br>возвращайтесь в ленту попозже', 'sad', null);
+        await this.showError(this.centerColumnBodyDiv, TextConstants.FEED__EMPTY, 'sad', null);
     }
 
     /**
@@ -238,12 +238,12 @@ export default class FeedView extends View {
 
     async #showEmptyPersonalEvents() {
         this.#clearPersonalEvents();
-        this.showError(this.personalEventsBodyDiv, 'Никуда не зовёт', null, null);
+        this.showError(this.personalEventsBodyDiv, TextConstants.FEED__NO_EVENTS, null, null);
     }
 
     async #showEmptySubscriptions() {
         this.#clearSubscriptions();
-        this.showError(this.subscriptionsBodyDiv, 'Никуда не идёт', null, null);
+        this.showError(this.subscriptionsBodyDiv, TextConstants.FEED__NO_SUBS, null, null);
     }
 
     async #hideUI() {

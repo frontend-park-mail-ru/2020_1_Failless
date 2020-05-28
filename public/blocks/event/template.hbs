@@ -15,7 +15,7 @@
         <footer class="event__footer">
             <div class="event__action">
                 <div class="event__circle event__circle_{{ class }}"></div>
-                <a data-eid="{{ eid }}" class="event__link font__color_{{#if own}}black">Изменить{{else}}{{#if followed}}green">Вы идёте{{else}}black">Пойти{{/if}}{{/if}}</a>
+                <a data-eid="{{ eid }}" class="event__link font__color_{{#if own}}black">{{ CHANGE }}{{else}}{{#if followed}}green">{{ YOU_GO }}{{else}}black">{{ VISIT }}{{/if}}{{/if}}</a>
             </div>
             {{#if small}}{{else}}
             <div class="event__visitors">

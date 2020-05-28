@@ -15,7 +15,7 @@
 <footer class="chat__footer {{#if active}}chat__footer_active{{/if}}">
 <!--    TODO: Add icon fill gradient  svg  -->
     <svg class="chat__add-icon"></svg>
-    <textarea class="chat__textarea" data-bind-event="messageInput" placeholder="Напишите что-нибудь хорошее" rows="1"></textarea>
-    <button class="chat__button re_btn re_btn__filled" data-bind-event="sendMessageOnClick">Отправить</button>
+    <textarea class="chat__textarea" data-bind-event="messageInput" placeholder="{{ PLACEHOLDER }}" rows="1"></textarea>
+    <button class="chat__button re_btn re_btn__filled" data-bind-event="sendMessageOnClick">{{ SEND }}</button>
     <div class="chat__send-icon" data-bind-event="sendMessageOnClick">{{{ send_icon }}}</div>
 </footer>
