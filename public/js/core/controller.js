@@ -4,6 +4,7 @@ import createHeader from 'Eventum/core/header';
 import UserModel from 'Eventum/models/user-model';
 import {logoutRedirect} from 'Eventum/utils/user-utils';
 import router from 'Eventum/core/router';
+import {detectMobile} from 'Eventum/utils/basic';
 
 /**
  * @class Basic controller class
@@ -209,9 +210,13 @@ export default class Controller {
      * Create slow header hiding and showing during scroll
      */
     stickyHeader = () => {
-        this.header = document.querySelector('.header');
-        if (!this.header) {
-            this.header = document.querySelector('header');
+        if (!this.header || !this.header_checkbox) {
+            this.header = document.querySelector('.header');
+            this.header_checkbox = this.header.querySelector('input[type="checkbox"]');
+        }
+
+        if (detectMobile()) {
+            this.header_checkbox.checked = false;
         }
 
         const currentScroll = window.pageYOffset;

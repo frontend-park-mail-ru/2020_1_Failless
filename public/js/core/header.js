@@ -28,6 +28,13 @@ export default function createHeader(base, logged) {
                     link: '/login',
                     name: TextConstants.BASIC__LOGIN,
                 },
+                {
+                    link: '#!',
+                    name: TextConstants.BASIC__SETTINGS,
+                    sub_buttons: {
+
+                    }
+                },
             ] : [
                 {
                     link: '/search',
