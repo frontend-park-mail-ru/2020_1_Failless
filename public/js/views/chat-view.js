@@ -79,16 +79,19 @@ export default class ChatView extends MyView {
             active: false,
             motivator: {
                 icon: icons.get('finger-left'),
-                message: 'Выберите чат слева',
+                message: TextConstants.CHAT__LEFT_CHAT,
             },
             send_icon: icons.get('arrow-up'),
             return_icon: icons.get('arrow-left'),
             more_icon: icons.get('dots'),
+            PLACEHOLDER: TextConstants.CHAT__MESSAGE_PLACEHOLDER,
+            SEND: TextConstants.BASIC__SEND,
         }));
         makeEmpty(this.leftColumn);
         this.leftColumn.insertAdjacentHTML('afterbegin', chatListTemplate({
             icon: icons.get('finger-up'),
-            message: 'Будьте осторожны при разговоре с незнакомцами',
+            MESSAGE: TextConstants.CHAT__ATTENTION_MESSAGE,
+            CHATS: TextConstants.BASIC__CHATS,
         }));
         (async () => {this.setDOMChatElements();})();
     }
@@ -132,8 +135,8 @@ export default class ChatView extends MyView {
         makeEmpty(errorArea);
         errorArea.insertAdjacentHTML('afterbegin', errorTemplate({
             icon:       icons.get('sad'),
-            message:    'На горизонте тихо...',
-            button:     'Искать!'
+            message:    TextConstants.CHAT__NO_CHATS,
+            button:     TextConstants.BASIC__FIND,
         }));
     }
 
@@ -161,12 +164,6 @@ export default class ChatView extends MyView {
     /**
      * This function depends on non-empty chats
      * so check it somewhere outside
-     * @param chats[{
-     *     name: String,
-     *     time: String,
-     *     avatar: String,
-     *     last_message: String,
-     * }]
      * @return {Promise<void>}
      */
     async renderChatList() {

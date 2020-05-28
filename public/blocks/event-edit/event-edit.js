@@ -6,6 +6,7 @@ import tagTemplate from 'Blocks/tag/template.hbs';
 import imageEditTemplate from 'Blocks/image-edit/template.hbs';
 import {makeEmpty} from 'Eventum/utils/basic';
 import {icons} from 'Eventum/utils/static-data';
+import TextConstants from 'Eventum/utils/language/text';
 
 export default class EventEdit extends Component {
 

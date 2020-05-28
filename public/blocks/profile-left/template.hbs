@@ -7,8 +7,8 @@
                 {{> $Blocks/avatar/template }}
             </div>
             <div class="profile-left__options-field">
-                <h3>О себе</h3>
-                {{> $Blocks/textarea/template body=profile.about rows=10 name='about' placeholder='Расскажите о себе и своих увлечениях' data_bind_event='saveAbout'}}
+                <h3>{{ ABOUT }}</h3>
+                {{> $Blocks/textarea/template body=profile.about rows=10 name='about' placeholder=ABOUT_PLACEHOLDER data_bind_event='saveAbout'}}
             </div>
             <div class="profile-left__options-field">
                 <div class="profile-left__header">

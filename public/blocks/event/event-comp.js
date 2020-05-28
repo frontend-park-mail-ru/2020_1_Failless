@@ -1,8 +1,11 @@
+'use strict';
+
 import Component from 'Eventum/core/component';
 import EventTemplate from 'Blocks/event/template.hbs';
 import {STATIC_TAGS} from 'Eventum/utils/static-data';
 import settings from 'Settings/config';
 import {showLoading} from 'Eventum/utils/basic';
+import TextConstants from 'Eventum/utils/language/text';
 
 export default class EventComp extends Component {
     fields = ['photos', 'amount', 'link'];
@@ -19,6 +22,9 @@ export default class EventComp extends Component {
         this.template = EventTemplate;
         this.data = data;
         this.data.own = own;
+        this.data.CHANGE = TextConstants.BASIC__CHANGE;
+        this.data.YOU_GO = TextConstants.EVENT__YOU_GO;
+        this.data.VISIT = TextConstants.BASIC__VISIT;
     }
 
     beforeRender() {
@@ -67,9 +73,11 @@ export default class EventComp extends Component {
         this.data.class = this.type; // basically Object.defineProperty
         if (new Date(this.data.date).getUTCFullYear() === 1) {
             this.data.date = null;
-        } else {
-            this.data.date = new Date(this.data.date).toLocaleString();
         }
+        // } else {
+        //     this.data.date = new Date(this.data.date).toLocaleString();
+        //     console.log(this.data.date);
+        // }
     }
 
     changeLink(color, message) {

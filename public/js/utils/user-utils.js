@@ -2,6 +2,7 @@
 
 import UserModel from 'Eventum/models/user-model';
 import router from 'Eventum/core/router';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * Handle click on login event
@@ -22,10 +23,10 @@ const logoutRedirect = (event) => {
 function profileCheck(user) {
     let message = [];
     if (user.about.length === 0) {
-        message.push('Добавьте описание');
+        message.push(TextConstants.PROFILE__ADD_ABOUT);
     }
     if (!user.photos) {
-        message.push('Добавьте фото');
+        message.push(TextConstants.PROFILE__ADD_PHOTO);
     }
     return message;
 }

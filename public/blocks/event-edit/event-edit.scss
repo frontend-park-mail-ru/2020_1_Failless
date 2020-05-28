@@ -78,7 +78,7 @@
 
   &__title {
     width: 100%;
-    padding: $re--medium-padding 0 0;
+    padding: 4px 0 0;
     color: $color-black;
     font-size: 12px;
     font-weight: 700;
@@ -86,20 +86,16 @@
     word-wrap: break-word;
     word-break: break-word;
 
-
     &::placeholder {
-      color: $color-black;
-      font-size: 12px;
-      font-weight: 700;
+      font-weight: 400;
     }
   }
 
   &__about {
     width: 100%;
-    margin-top: $re--small-padding;
     font-size: 10px;
     font-weight: 400;
-    padding: 0;
+    padding: 4px 0 0;
 
     &::placeholder {
       font-size: 10px;
@@ -113,6 +109,11 @@
 
     &_small {
       font-size: 10px;
+      font-weight: 500;
+    }
+
+    &_medium {
+      font-size: 12px;
       font-weight: 500;
     }
   }
