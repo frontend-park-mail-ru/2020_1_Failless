@@ -4,7 +4,7 @@
         <form action="submit" id="form">
             <div class="profile-left__avatar" >
                 <input id="photoUpload" type="file" data-bind-event="photoUpload" multiple/>
-                {{> $Blocks/avatar/template }}
+                {{> $Blocks/avatar/template avatar=profile.avatar }}
             </div>
             <div class="profile-left__options-field">
                 <h3>{{ ABOUT }}</h3>

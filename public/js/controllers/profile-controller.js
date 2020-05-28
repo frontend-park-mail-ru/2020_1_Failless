@@ -58,17 +58,6 @@ export default class ProfileController extends Controller {
                     return;
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
-                    // Prepare profile photos
-                    if (profile.photos) {
-                        profile.photos = profile.photos.map(photo => {
-                            return {
-                                src: `${settings.aws}/users/${photo.path}`,
-                                alt: photo.path,
-                                data_photo_id: this.images.push({img: photo.path, state: 'old'}),
-                            };
-                        });
-                    }
-
                     this.MatchModel = new MatchModel();
                     this.MatchModel.establishConnection(profile.uid, this.receiveMessage).then(
                         (response) => {
