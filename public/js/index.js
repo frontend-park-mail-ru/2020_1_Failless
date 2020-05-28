@@ -8,7 +8,7 @@ import SearchController from 'Eventum/controllers/search-controller.js';
 import ProfileController from 'Eventum/controllers/profile-controller.js';
 import ChatController from 'Eventum/controllers/chat-controller.js';
 import Router from 'Eventum/core/router.js';
-import {setTags} from 'Eventum/utils/static-data';
+import {setStatic} from 'Eventum/utils/static-data';
 // import 'Static/css/style.css';
 import 'Public/style.scss';
 import TextConstants from 'Eventum/utils/language/text';
@@ -27,7 +27,6 @@ const application = document.getElementById('application');
 // }
 
 let lang = localStorage.getItem('cur_lang');
-console.log(lang);
 if (!lang) {
     if (window.navigator.language === 'ru-RU') {
         lang = TextConstants.LANGUAGES.RUSSIAN.short;
@@ -35,10 +34,9 @@ if (!lang) {
         lang = TextConstants.LANGUAGES.ENGLISH.short;
     }
 }
-console.log(lang);
 TextConstants.translateTo(lang)
     .then(() => {
-        setTags();
+        setStatic();
         const router = new Router();
         router.addRoute('/',            new LandingController(application));
         router.addRoute('/login',       new LoginController(application));

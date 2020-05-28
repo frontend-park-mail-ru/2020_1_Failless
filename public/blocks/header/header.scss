@@ -100,6 +100,7 @@ $header-icon-width: 20px;
   }
 
   &__icon {
+    cursor: pointer;
     display: none;
     width: $header-icon-width;
     z-index: $z-index-header;

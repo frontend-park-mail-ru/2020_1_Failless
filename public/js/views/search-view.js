@@ -61,8 +61,7 @@ export default class SearchView extends View {
     }
 
     showSearchError = (error) => {
-        console.error(error);
-        this.showError(this.resultsAreaDiv, error, 'warning', null);
+        this.showError(this.resultsAreaDiv, TextConstants.BASIC__ERROR, 'warning', null);
     };
 
     renderResults(data) {

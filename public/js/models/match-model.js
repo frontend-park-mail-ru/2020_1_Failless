@@ -19,7 +19,6 @@ export default class MatchModel extends Model {
     async establishConnection(uid, onMessage) {
         let socket = new WebSocket(`${settings.wsurl}:3000/ws/match`);
         socket.onopen = () => {
-            console.log(socket);
             this.socket = socket;
 
             socket.send(JSON.stringify({uid: Number(uid)}));
@@ -27,7 +26,6 @@ export default class MatchModel extends Model {
             return socket;
         };
         socket.onerror = (error) => {
-            console.log(error);
             return null;
         };
     }

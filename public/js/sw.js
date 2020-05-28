@@ -15,12 +15,11 @@ const CACHE_URLS = [
 self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open(CACHE_NAME).then(function(cache) {
-            console.log('Install some cache');
             return cache.addAll(CACHE_URLS);
         }).then(function() {
             return self.skipWaiting();
         }).catch(function(err) {
-            console.log('Error with cache open ', err);
+            // console.log('Error with cache open ', err);
         })
     );
 });
@@ -49,7 +48,7 @@ self.addEventListener('fetch', function(event) {
                 }
                 return response;
             }).catch(function(error) {
-                console.warn('Constructing a fallback response, due to an error while fetching the real response:', error);
+                // console.warn('Constructing a fallback response, due to an error while fetching the real response:', error);
                 const fallbackResponse = {message: 'You are out of network! Play Chrome Dino... oh no! Sorry we are Progressive App!', status: 228};
                 return new Response(JSON.stringify(fallbackResponse), {
                     headers: {'Content-Type': 'application/json'}

@@ -54,26 +54,14 @@ export default class ProfileController extends Controller {
         UserModel.getProfile()
             .then((profile) => {
                 if (!profile) {
-                    console.error('Server error');
-                    console.log(profile);
+                    Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_FUN);
                     return;
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
-                    // Prepare profile photos
-                    if (profile.photos) {
-                        profile.photos = profile.photos.map(photo => {
-                            return {
-                                src: `${settings.aws}/users/${photo.path}`,
-                                alt: photo.path,
-                                data_photo_id: this.images.push({img: photo.path, state: 'old'}),
-                            };
-                        });
-                    }
-
                     this.MatchModel = new MatchModel();
                     this.MatchModel.establishConnection(profile.uid, this.receiveMessage).then(
                         (response) => {
-                            console.log(response);
+                            // console.log(response);
                         }
                     );
                     this.view.render(profile);
@@ -230,11 +218,12 @@ export default class ProfileController extends Controller {
                         },
                     ]);
                 } else {
-                    console.error('You have no rights for this page');
-                    console.log(profile);
+                    Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_NO_RIGHTS);
+                    setTimeout(() => Router.redirectForward('/'), 800);
                 }
             }).catch(onerror => {
-                console.error(onerror);
+                Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_NO_RIGHTS);
+                setTimeout(() => Router.redirectForward('/'), 1000);
             });
     }
 
@@ -245,6 +234,9 @@ export default class ProfileController extends Controller {
     #saveAbout = (event) => {
         // TODO: check if it's save
         UserModel.putAbout(event.target.value)
+            .then(() => {
+                UserModel.profile.about = event.target.value;
+            })
             .catch(Snackbar.instance.addMessage);
     };
 
@@ -286,7 +278,9 @@ export default class ProfileController extends Controller {
         Promise.all([
             this.view.renderTags(activeTagIDs),
             UserModel.putTags(activeTagIDs),
-        ]).catch(console.error);
+        ]).then(() => {
+            UserModel.profile.tags = activeTagIDs;
+        });
         this.editView.clear();
         this.editView = null;
     };
@@ -305,14 +299,18 @@ export default class ProfileController extends Controller {
                 }
             });
         }
-        console.log(requestImages);
-
         Promise.all([
             UserModel.putPhotos(requestImages),
             this.view.showLoading(this.view.photosColumn),
         ]).then(responses => {
             this.view.renderPhotos(responses[0]);
-        }).catch(Snackbar.instance.addMessage);
+            UserModel.profile.photos = responses[0].map(photo => {
+                return {alt: photo.path, src: `${settings.aws}/users/${photo.path}`}
+            });
+        }).catch((e) => {
+            Snackbar.instance.addMessage(e);
+            this.view.renderEmptyPhotos();
+        });
     };
 
     /***********************************************
@@ -336,8 +334,6 @@ export default class ProfileController extends Controller {
                 let eventIndexAndSource = this.view.findEventComponentIndex(Number(eid));
 
                 if (eventIndexAndSource.index === -1) {
-                    console.error('No component was found');
-                    // TODO: do sth
                     return;
                 }
 
@@ -351,10 +347,8 @@ export default class ProfileController extends Controller {
                         });
                 } else {
                     Snackbar.instance.addMessage('we dont support that type yet');
-                    console.log('we dont support that type yet');
                 }
-            },
-            error => console.error(error)
+            }
         );
     };
 
@@ -364,7 +358,6 @@ export default class ProfileController extends Controller {
         let data = eventEditComp.retrieveData();
         if (!eventEditComp.validateData(data)) {
             // TODO: show error
-            console.log('title is empty');
             return;
         }
 
@@ -387,7 +380,7 @@ export default class ProfileController extends Controller {
                     this.view.renderNewEventLoading(),
                 ]).then(responses => {
                     this.view.renderNewEvent(responses[0], 'small', responses[1]);
-                }).catch(console.error);
+                });
             } else {
                 request.tag_id = data.tags[0];
                 request.private = true;
@@ -397,7 +390,7 @@ export default class ProfileController extends Controller {
                     this.view.renderNewEventLoading(),
                 ]).then(responses => {
                     this.view.renderNewEvent(responses[0], 'mid', responses[1]);
-                }).catch(console.error);
+                });
             }
             eventEditComp.hide();
         });
@@ -422,7 +415,6 @@ export default class ProfileController extends Controller {
     #previewPhotos = (input) => {
         const files = input.files;
         if (!files || files.length === 0) {
-            console.log('empty files');
             return;
         }
 
@@ -541,7 +533,6 @@ export default class ProfileController extends Controller {
             tag.activeClass = '';
             return tag;
         });
-        console.log(tags);
         this.editView.render({
             title: TextConstants.PROFILE__YOUR_TAGS,
             tags: tags,
@@ -649,33 +640,26 @@ export default class ProfileController extends Controller {
      */
     #drawUnfoldedLine = (event) => {
         event.preventDefault();
-        console.log(event.target);
         if (event.target.tagName === 'A') {
             let filed = event.target.parentNode;
             switch (filed.id) {
             case 'popupPasswd': {
-                console.log('draw password field');
                 this.editView.renderPasswordForm(filed);
                 break;
             }
             case 'popupMail': {
-                console.log('draw email field');
                 break;
             }
             case 'popupSex': {
-                console.log('draw gender field');
                 break;
             }
             case 'popupPhone': {
-                console.log('draw phone field');
                 break;
             }
             case 'popupLang': {
-                console.log('draw lang field');
                 break;
             }
             case 'popupBirth': {
-                console.log('draw lang field');
                 break;
             }
             }
@@ -684,9 +668,7 @@ export default class ProfileController extends Controller {
 
     receiveMessage = (event) => {
         // Check where to insert the message
-        console.log(event.data);
         let message = JSON.parse(event.data);
-        console.log(message);
         if (this.uid !== message.uid) {
             NotificationController.notify(TextConstants.FEED__NEW_MATCH);
         }

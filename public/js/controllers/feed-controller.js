@@ -5,7 +5,6 @@ import UserModel from 'Eventum/models/user-model';
 import Controller from 'Eventum/core/controller';
 import FeedView from 'Eventum/views/feed-view';
 import settings from 'Settings/config';
-import {MAX_AGE, MIN_AGE} from 'Eventum/utils/static-data';
 import {highlightTag} from 'Eventum/utils/tag-logic';
 import {profileCheck} from 'Eventum/utils/user-utils';
 import {showMessageWithRedirect} from 'Eventum/utils/render';
@@ -13,6 +12,7 @@ import FeedModel from 'Eventum/models/feed-model';
 import {toggleActionText} from 'Blocks/event/event';
 import Router from 'Eventum/core/router';
 import TextConstants from 'Eventum/utils/language/text';
+import Snackbar from 'Blocks/snackbar/snackbar';
 
 /**
  * @class FeedController
@@ -106,6 +106,9 @@ export default class FeedController extends Controller {
                     ]
                 },
             ]);
+        }).catch(() => {
+            Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_NO_RIGHTS);
+            setTimeout(() => Router.redirectForward('/'), 1000);
         });
     }
 
@@ -116,20 +119,14 @@ export default class FeedController extends Controller {
                 let eventComponent = this.view.findEventComponent(Number(eid));
 
                 if (!eventComponent) {
-                    console.error('No component was found');
-                    // TODO: do sth
                     return;
                 }
 
                 if (eventComponent.type === 'mid') {
                     return EventModel.joinMidEvent(profile.uid, eid)
                         .then((response) => eventComponent.state = true);
-                } else {
-                    console.log('we dont support that type yet');
                 }
-
-            },
-            error => console.error(error)
+            }
         );
     };
 
@@ -140,20 +137,14 @@ export default class FeedController extends Controller {
                 let eventComponent = this.view.findEventComponent(Number(eid));
 
                 if (!eventComponent) {
-                    console.error('No component was found');
-                    // TODO: do sth
                     return;
                 }
 
                 if (eventComponent.type === 'mid') {
                     EventModel.leaveMidEvent(profile.uid, eid)
                         .then((response) => eventComponent.state = false);
-                } else {
-                    console.log('we dont support that type yet');
                 }
-
-            },
-            error => console.error(error)
+            }
         );
     };
 

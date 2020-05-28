@@ -4,6 +4,7 @@ import Controller from 'Eventum/core/controller';
 import LandingView from 'Eventum/views/landing-view';
 import Router from 'Eventum/core/router';
 import UserModel from 'Eventum/models/user-model';
+import Snackbar from 'Blocks/snackbar/snackbar';
 
 /**
  * @class LandingController
@@ -31,8 +32,7 @@ export default class LandingController extends Controller {
         super.action();
         UserModel.getLogin().then((user) => {
             if (!user) {
-                console.error('Server error');
-                console.log(user);
+                Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_FUN);
                 return;
             }
             if (Object.prototype.hasOwnProperty.call(user, 'uid')) {

@@ -7,6 +7,8 @@ const BasicTextsEnglish = {
     BIRTH: 'Date of birth',
     DESCRIPTION: 'Description',
     ERROR: 'Error',
+    ERROR_FUN: 'Something was lost on its way here<br>Please refresh',
+    ERROR_NO_RIGHTS: 'Sign up to see this page',
     EVENTS: 'Events',
     FIND: 'Find',
     FROM: 'From',

@@ -72,6 +72,7 @@
   font-weight: 300;
   @include transition(0.3s, ease-in-out);
   outline: none;
+  cursor: pointer;
 
   &__filled {
     color: $color-white;

@@ -13,9 +13,6 @@ const logoutRedirect = (event) => {
     UserModel.getLogout().then((ok) => {
         if (ok) {
             router.redirectForward('/');
-        } else {
-            // TODO: cool popup
-            console.log('Client error, stay here');
         }
     });
 };

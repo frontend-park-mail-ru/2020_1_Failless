@@ -96,16 +96,31 @@ export default class ProfileView extends MyView {
     render(profile) {
         super.render();
 
-        if (profile.events) {
-            profile.events.forEach((event) => determineClass(event));
+        let p = {...profile};
+
+        // Prepare profile photos
+        if (p.photos) {
+            p.photos = p.photos.map(photo => {
+                return {
+                    src: `${settings.aws}/users/${photo.path}`,
+                    alt: photo.path,
+                };
+            });
         }
 
-        // let allowEdit = true;
-        if (!profile.avatar.path) {
-            profile.avatar.path = 'default.png';
+        // Prepare profile events
+        if (p.events) {
+            p.events.forEach((event) => determineClass(event));
         }
 
-        // Create components
+        // Prepare avatar
+        if (!p.avatar.path) {
+            p.avatar = `${settings.aws}/users/default.png`;
+        } else {
+            p.avatar = `${settings.aws}/users/${profile.avatar.path}`;
+        }
+
+        // Create components TODO: remove
         const logoutButton = new Button({
             style: 're_btn re_btn__outline logout',
             state: null,
@@ -129,8 +144,7 @@ export default class ProfileView extends MyView {
 
         document.getElementsByClassName('my__left-column-body')[0].insertAdjacentHTML(
             'beforeend', profileLeftTemplate({
-                profile: profile,
-                avatar: `${settings.aws}/users/${profile.avatar.path}`,
+                profile: p,
                 button_logout: logoutButton.data,
                 settings_button: settingsButton.data,
                 ABOUT: TextConstants.PROFILE__ABOUT,
@@ -144,7 +158,7 @@ export default class ProfileView extends MyView {
         document.getElementsByClassName('my__main-column-body')[0].insertAdjacentHTML(
             'beforeend', profileMainTemplate({
                 TITLE: TextConstants.PROFILE__TITLE,
-                profile: profile,
+                profile: p,
                 ADD: TextConstants.BASIC__ADD,
                 PHOTOS: TextConstants.BASIC__PHOTOS,
                 EVENTS: TextConstants.BASIC__EVENTS,
@@ -233,11 +247,9 @@ export default class ProfileView extends MyView {
             eventComponent = new SmallEventComponent(event, true);
             this.vDOM.mainColumn.personalEvents.events.small_events.push(eventComponent);
         } else if (type === 'mid') {
-            console.log(event);
             eventComponent = new MidEventComponent(event, true);
             this.vDOM.mainColumn.personalEvents.events.mid_events.push(eventComponent);
         } else {
-            console.log('sorry not implemented for type', type);
             return;
         }
 
@@ -291,7 +303,6 @@ export default class ProfileView extends MyView {
     }
 
     async renderEventsError(error) {
-        console.error(error);
         this.showError(this.subscriptionsDiv, TextConstants.BASIC__ERROR, 'warning', null);
     }
 
@@ -350,7 +361,6 @@ export default class ProfileView extends MyView {
      * @return {Promise<void>}
      */
     async renderSubscriptionsError(error) {
-        console.error(error);
         this.showError(this.subscriptionsDiv, TextConstants.BASIC__ERROR, 'warning', null);
     }
 
@@ -395,7 +405,6 @@ export default class ProfileView extends MyView {
     }
 
     async renderPhotos(photos) {
-        console.log(photos);
         makeEmpty(this.photosColumn);
         if (photos && photos.length > 0) {
             photos.forEach(photo => {

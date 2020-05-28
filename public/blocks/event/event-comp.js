@@ -74,10 +74,6 @@ export default class EventComp extends Component {
         if (new Date(this.data.date).getUTCFullYear() === 1) {
             this.data.date = null;
         }
-        // } else {
-        //     this.data.date = new Date(this.data.date).toLocaleString();
-        //     console.log(this.data.date);
-        // }
     }
 
     changeLink(color, message) {

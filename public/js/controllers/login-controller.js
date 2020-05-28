@@ -5,6 +5,7 @@ import LoginView from 'Eventum/views/login-view';
 import UserModel from 'Eventum/models/user-model';
 import ValidationModule from 'Eventum/utils/validation';
 import router from 'Eventum/core/router';
+import Snackbar from 'Blocks/snackbar/snackbar';
 
 /**
  * @class LoginController
@@ -32,8 +33,7 @@ export default class LoginController extends Controller {
     action() {
         UserModel.getLogin().then((user) => {
             if (!user) {
-                console.error('Server error');
-                console.log(user);
+                Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_FUN);
                 return;
             }
             if (Object.prototype.hasOwnProperty.call(user, 'uid')) {

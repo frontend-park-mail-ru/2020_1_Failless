@@ -132,22 +132,15 @@ export default class SearchController extends Controller {
                             eventComponent.incrementMembers();
                         },
                         (error) => {
-                            console.error(error);
                             changeActionText(event.target, 'red', TextConstants.BASIC__ERROR);
                         });
                 } else if (event.target.previousElementSibling.classList.contains('event__circle_big')) {
                     EventModel.visitBigEvent(profile.uid, event.target.getAttribute('data-eid'))
                         .then((response) => changeActionText(event.target, 'green', TextConstants.EVENT__YOU_GO),
                             (error) => {
-                                console.error(error);
                                 changeActionText(event.target, 'red', TextConstants.BASIC__ERROR);
                             });
-                } else {
-                    console.log('wat, how you got here?');
                 }
-            },
-            (error) => {
-                console.error(error);
             }
         );
     };

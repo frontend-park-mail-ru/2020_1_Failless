@@ -47,9 +47,7 @@ export default class Router {
             let app = document.getElementById('application');
             app.innerHTML = '404 Not Found';
             
-            console.log(current);
-            console.log(this.urls);
-            console.error('Controller not found');
+            // console.error('Controller not found');
             return;
         }
         if (this.currentController) {

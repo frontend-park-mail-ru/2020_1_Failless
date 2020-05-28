@@ -11,6 +11,7 @@
 \*-------------------------------------------*/
 
 .link-uploader {
+  cursor: pointer;
   & label {
     @extend %a-link;
     text-align: right;

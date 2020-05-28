@@ -9,7 +9,12 @@
              -3px -3px 10px #fdfdfd;
   @include transition(0.3s, ease-in-out);
   transform: scale(0);
-  // add margin-top and margin-right dynamically
+  max-height: 0;
+
+  &_active {
+    max-height: 1000px;
+    transform: scale(1);
+  }
 
   & textarea {
     border-radius: 0;
@@ -23,12 +28,6 @@
 
   & label {
     display: block;
-  }
-
-  &_active {
-    margin-top: 0 !important;
-    margin-right: 0 !important;
-    transform: scale(1);
   }
 
   &__photos {
@@ -64,15 +63,13 @@
       margin: 50px;
     }
 
-    &:hover {
-      & .dark-overlay {
-        opacity: 1;
-      }
+    & .dark-overlay {
+      opacity: 1;
     }
   }
 
   &__body {
-    padding: 0 $re--medium-padding;
+    padding: 0 $re--medium-padding ($re--medium-padding / 2);
     text-align: left;
   }
 
