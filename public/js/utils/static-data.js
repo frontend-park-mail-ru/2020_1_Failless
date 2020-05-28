@@ -2,7 +2,10 @@ import settings from 'Settings/config';
 import router from 'Eventum/core/router';
 import TextConstants from 'Eventum/utils/language/text';
 
-function setTags(tc = TextConstants) {
+let STATIC_TAGS = [];
+let redirects = new Map();
+
+function setStatic(tc = TextConstants) {
     STATIC_TAGS = [
         {name: tc.TAGS__BAR,         tag_id: 1},
         {name: tc.TAGS__CINEMA,      tag_id: 2},
@@ -20,37 +23,34 @@ function setTags(tc = TextConstants) {
         {name: tc.TAGS__STUDY,       tag_id: 14},
         {name: tc.TAGS__PARK,        tag_id: 15},
     ];
+    redirects = new Map([
+        [
+            'SignIn',
+            {
+                button_title:   tc.AUTH__REG_ACTION,
+                handler:        (event) => {
+                    event.preventDefault();
+                    router.redirectForward('/signup');
+                }
+            },
+        ],
+        [
+            'Profile',
+            {
+                button_title:   tc.PROFILE__OPEN_PROFILE,
+                handler:        (event) => {
+                    event.preventDefault();
+                    router.redirectForward('/my/profile');
+                }
+            },
+        ]
+    ]);
 }
-
-let STATIC_TAGS = setTags(TextConstants);
 
 const MIN_AGE = 18;
 const MAX_AGE = 100;
 const MIN_LIMIT = 2;
 const MAX_LIMIT = 15;
-
-const redirects = new Map([
-    [
-        'SignIn',
-        {
-            button_title:   TextConstants.AUTH__REG_ACTION,
-            handler:        (event) => {
-                event.preventDefault();
-                router.redirectForward('/signup');
-            }
-        },
-    ],
-    [
-        'Profile',
-        {
-            button_title:   TextConstants.PROFILE__OPEN_PROFILE,
-            handler:        (event) => {
-                event.preventDefault();
-                router.redirectForward('/my/profile');
-            }
-        },
-    ],
-]);
 
 const icons = new Map([
     [
@@ -114,4 +114,4 @@ const images = new Map([
     ],
 ]);
 
-export {STATIC_TAGS, MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT, redirects, icons, images, setTags};
+export {STATIC_TAGS, MIN_AGE, MAX_AGE, MIN_LIMIT, MAX_LIMIT, redirects, icons, images, setStatic};
