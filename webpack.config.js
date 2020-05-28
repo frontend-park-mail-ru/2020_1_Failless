@@ -1,8 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     devtool: 'source-map',
     entry: './public/js/index.js',
     output: {
@@ -25,6 +26,43 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './public/index.html'
         }),
+	new WebpackPwaManifest({
+	   filename: 'manifest.json',
+	   name: 'Eventum',
+	   lang: 'ru',
+	   short_name: 'Eventum',
+	   start_url: '.',
+	   display: 'standalone',
+	   background_color: '#ffffff',
+	   theme_color: '#ffffff',
+	   description: '\"Eventum\" - We connect people',
+	   icons: [
+	     {
+	       src: 'public/static/icons/touch/favicon-32x32.png',
+	       size: '32x32',
+	       type: 'image/png',
+               purpose: 'any maskable'
+	     },
+	     {
+	       src: 'public/static/icons/touch/favicon-16x16.png',
+	       size: '16x16',
+	       type: 'image/png',
+               purpose: 'any maskable'
+	     },
+	     {
+	       src: 'public/static/icons/touch/android-chrome-192x192.png',
+	       sizes: [96, 128, 192, 256, 384],
+	       type: 'image/png',
+               purpose: 'any maskable'
+	     },
+	     {
+	       src: 'public/static/icons/touch/android-chrome-512x512.png',
+	       sizes: [512, 1024],
+	       type: 'image/png',
+               purpose: 'any maskable'
+	     },
+	   ],
+	}),	
     ],
     module: {
         rules: [
