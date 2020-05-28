@@ -1,6 +1,7 @@
 'use strict';
 
 import EnglishLibrary from 'Eventum/utils/language/English';
+import Snackbar from 'Blocks/snackbar/snackbar';
 
 let localLibrary = EnglishLibrary;
 
@@ -48,8 +49,17 @@ export default class TextConstants {
      * Downloads library, sets it as current + loads into localStorage
      * @param lang {'ru' | 'en'}
      */
-    static loadLib(lang) {
-        return fetch(`/lang/${lang}.json`, {method: 'GET'})
+    static async loadLib(lang) {
+        const controller = new AbortController();
+        const signal = controller.signal;
+        setTimeout(() => {
+            controller.abort();
+            if (TextConstants.currentLanguage === this.LANGUAGES.ENGLISH) {
+                Snackbar.instance.addMessage(TextConstants.ERROR__LIB_DOWNLOAD_FAILED);
+            }
+        }, 3000);
+
+        await fetch(`/lang/${lang}.json`, {method: 'GET', signal})
             .then(r => r.json())
             .then(newLib => {
                 localLibrary = newLib;
@@ -207,4 +217,6 @@ export default class TextConstants {
     static get TAGS__SPORT() {return localLibrary.Tags.SPORT;}
     static get TAGS__STUDY() {return localLibrary.Tags.STUDY;}
     static get TAGS__THEATRE() {return localLibrary.Tags.THEATRE;}
+
+    static get ERROR__LIB_DOWNLOAD_FAILED() {return localLibrary.Error.LIB_DOWNLOAD_FAILED;}
 }

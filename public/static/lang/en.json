@@ -154,5 +154,8 @@
 		"LECTURE": "wanttoLECTURE",
 		"STUDY": "wanttoSTUDY",
 		"PARK": "wanttoPARK"
+	},
+	"Error": {
+		"LIB_DOWNLOAD_FAILED": "Failed to download library for your language due to slow network connection"
 	}
 }

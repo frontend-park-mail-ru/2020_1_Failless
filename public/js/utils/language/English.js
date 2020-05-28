@@ -165,6 +165,10 @@ const TagsTextsEnglish = {
     PARK: 'wanttoPARK',
 };
 
+const ErrorTextsEnglish = {
+    LIB_DOWNLOAD_FAILED: 'Failed to download library for your language due to slow network connection',
+};
+
 const English = {
     Basic: BasicTextsEnglish,
     Event: EventTextsEnglish,
@@ -177,6 +181,7 @@ const English = {
     Search: SearchTextsEnglish,
     Landing: LandingTextsEnglish,
     Tags: TagsTextsEnglish,
+    Error: ErrorTextsEnglish,
 };
 
 export default English;
