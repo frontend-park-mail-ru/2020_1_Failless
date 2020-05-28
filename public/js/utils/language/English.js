@@ -54,6 +54,7 @@ const EventTextsEnglish = {
 };
 
 const ProfileTextsEnglish = {
+    ABOUT: 'About yourself',
     ADD_ABOUT: 'Add info about yourself',
     ADD_PHOTO: 'Add photo of yourself',
     ABOUT_PLACEHOLDER: 'Describe yourself like when your grandma asked how you been',

@@ -11,10 +11,15 @@ const libVersion = 1;
 
 export default class TextConstants {
     static LANGUAGES = {
-        RUSSIAN: 'ru',
-        ENGLISH: 'en',
+        RUSSIAN: {
+            short: 'ru',
+            full: 'Русский',
+        },
+        ENGLISH: {
+            short: 'en',
+            full: 'English',
+        },
     };
-    static currentLanguage = TextConstants.LANGUAGES.ENGLISH;
 
     /**
      * Prepare local library for chosen language
@@ -22,11 +27,9 @@ export default class TextConstants {
      * @return {Promise<void>}
      */
     static async translateTo(lang) {
-        if (TextConstants.currentLanguage === lang) {
-            return;
-        } else if (lang === this.LANGUAGES.ENGLISH) {
+        if (lang === this.LANGUAGES.ENGLISH.short) {
             localLibrary = EnglishLibrary;
-            TextConstants.currentLanguage = lang;
+            this.setCurrentLanguage(lang);
             return;
         }
         if (!localStorage.getItem(`lib_${lang}_v${libVersion}`)) {
@@ -44,7 +47,7 @@ export default class TextConstants {
                 await this.loadLib(lang);
             } else {
                 localLibrary = newLib;
-                TextConstants.currentLanguage = lang;
+                this.setCurrentLanguage(lang);
             }
         }
     }
@@ -58,7 +61,7 @@ export default class TextConstants {
         const signal = controller.signal;
         setTimeout(() => {
             controller.abort();
-            if (TextConstants.currentLanguage === this.LANGUAGES.ENGLISH) {
+            if (localStorage.getItem('cur_lang') === this.LANGUAGES.ENGLISH.short) {
                 Snackbar.instance.addMessage(TextConstants.ERROR__LIB_DOWNLOAD_FAILED);
             }
         }, 3000);
@@ -68,12 +71,12 @@ export default class TextConstants {
             .then(newLib => {
                 localLibrary = newLib;
                 localStorage.setItem(`lib_${lang}_v${libVersion}`, JSON.stringify(newLib));
-                TextConstants.currentLanguage = lang;
+                this.setCurrentLanguage(lang);
             })
             .catch(e => {
                 console.error(e);
                 localLibrary = EnglishLibrary;
-                TextConstants.currentLanguage = this.LANGUAGES.ENGLISH;
+                this.setCurrentLanguage(this.LANGUAGES.ENGLISH.short);
             });
         this.clearLocalStorage(TextConstants.currentLanguage);
     }
@@ -87,6 +90,11 @@ export default class TextConstants {
         for (let iii = 1; iii < libVersion; iii++) {
             localStorage.removeItem(`lib_${lang}_v${iii}`);
         }
+    }
+
+    static async setCurrentLanguage(lang) {
+        console.log(lang);
+        localStorage.setItem('cur_lang', lang);
     }
 
     static get BASIC__ADD() {return localLibrary.Basic.ADD;}
@@ -153,6 +161,7 @@ export default class TextConstants {
     static get FEED__PERSONAL_EVENTS_HEADER() {return localLibrary.Feed.PERSONAL_EVENTS_HEADER;}
     static get FEED__SUBSCRIPTIONS_HEADER() {return localLibrary.Feed.SUBSCRIPTIONS_HEADER;}
 
+    static get PROFILE__ABOUT() {return localLibrary.Profile.ABOUT;}
     static get PROFILE__ABOUT_PLACEHOLDER() {return localLibrary.Profile.ABOUT_PLACEHOLDER;}
     static get PROFILE__ADD_ABOUT() {return localLibrary.Profile.ADD_ABOUT;}
     static get PROFILE__ADD_PHOTO() {return localLibrary.Profile.ADD_PHOTO;}

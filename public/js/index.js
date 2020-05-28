@@ -26,10 +26,16 @@ const application = document.getElementById('application');
 //     });
 // }
 
-let lang = TextConstants.LANGUAGES.ENGLISH;
-if (window.navigator.language === 'ru-RU') {
-    lang = TextConstants.LANGUAGES.RUSSIAN;
+let lang = localStorage.getItem('cur_lang');
+console.log(lang);
+if (!lang) {
+    if (window.navigator.language === 'ru-RU') {
+        lang = TextConstants.LANGUAGES.RUSSIAN.short;
+    } else {
+        lang = TextConstants.LANGUAGES.ENGLISH.short;
+    }
 }
+console.log(lang);
 TextConstants.translateTo(lang)
     .then(() => {
         setTags();

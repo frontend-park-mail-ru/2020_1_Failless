@@ -77,7 +77,7 @@ export default class View {
             if (this.globalLoader) {
                 this.globalLoader.classList.remove('spinner_appear');
             }
-        }, 200);
+        }, 500);
     }
 
     async removeGlobalLoading() {

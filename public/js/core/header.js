@@ -30,10 +30,17 @@ export default function createHeader(base, logged) {
                 },
                 {
                     link: '#!',
-                    name: TextConstants.BASIC__SETTINGS,
-                    sub_buttons: {
-
-                    }
+                    name: TextConstants.BASIC__LANGUAGE,
+                    sub_buttons: [
+                        {
+                            link: `lang_${TextConstants.LANGUAGES.RUSSIAN.short}`,
+                            name: TextConstants.LANGUAGES.RUSSIAN.full,
+                        },
+                        {
+                            link: `lang_${TextConstants.LANGUAGES.ENGLISH.short}`,
+                            name: TextConstants.LANGUAGES.ENGLISH.full,
+                        }
+                    ]
                 },
             ] : [
                 {
@@ -47,6 +54,20 @@ export default function createHeader(base, logged) {
                 {
                     link: '/my/profile',
                     name: TextConstants.BASIC__PROFILE,
+                },
+                {
+                    link: '#!',
+                    name: TextConstants.BASIC__LANGUAGE,
+                    sub_buttons: [
+                        {
+                            link: `lang_${TextConstants.LANGUAGES.RUSSIAN.short}`,
+                            name: TextConstants.LANGUAGES.RUSSIAN.full,
+                        },
+                        {
+                            link: `lang_${TextConstants.LANGUAGES.ENGLISH.short}`,
+                            name: TextConstants.LANGUAGES.ENGLISH.full,
+                        }
+                    ]
                 },
             ],
         });

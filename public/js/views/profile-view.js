@@ -133,6 +133,7 @@ export default class ProfileView extends MyView {
                 avatar: `${settings.aws}/users/${profile.avatar.path}`,
                 button_logout: logoutButton.data,
                 settings_button: settingsButton.data,
+                ABOUT: TextConstants.PROFILE__ABOUT,
                 ADD: TextConstants.BASIC__ADD,
                 NO_TAGS: TextConstants.PROFILE__NO_TAGS,
                 YOUR_TAGS: TextConstants.PROFILE__YOUR_TAGS,

@@ -5,6 +5,7 @@ import UserModel from 'Eventum/models/user-model';
 import {logoutRedirect} from 'Eventum/utils/user-utils';
 import router from 'Eventum/core/router';
 import {detectMobile} from 'Eventum/utils/basic';
+import TextConstants from 'Eventum/utils/language/text';
 
 /**
  * @class Basic controller class
@@ -119,10 +120,19 @@ export default class Controller {
         let href = link.getAttribute('href');
         if (href === '') {
             href = '/';
-        }
-
-        if (href === '/logout') {
+        } else if (href === '/logout') {
             logoutRedirect(event);
+            return;
+        } else if (href === '#!') {
+            return;
+        } else if (href.startsWith('lang')) {
+            console.log(href.slice(5));
+            Promise.all([
+                console.log(this.view.showGlobalLoading()),
+                TextConstants.setCurrentLanguage(href.slice(5))
+            ]).then(() => {
+                location.reload();
+            });
             return;
         }
 
