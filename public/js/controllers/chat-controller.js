@@ -12,6 +12,7 @@ import {detectMobile} from 'Eventum/utils/basic';
 import {CircleRedirect} from 'Blocks/circle/circle';
 import NotificationController from 'Eventum/controllers/notification-controller';
 import TextConstants from 'Eventum/utils/language/text';
+import Snackbar from 'Blocks/snackbar/snackbar';
 
 /**
  * @class ChatController
@@ -33,10 +34,53 @@ export default class ChatController extends Controller {
 
     action() {
         super.action();
-        this.view.render();
-        UserModel.getLogin()
+        UserModel.getProfile()
             .then(user => {
                 if (user) {
+                    this.view.render();
+                    this.view.setDOMChatElements(); // do it once instead of calling getters and checking there
+                    this.initHandlers([
+                        {
+                            attr: 'circleRedirect',
+                            events: [
+                                {type: 'click', handler: CircleRedirect},
+                            ]
+                        },
+                        {
+                            attr: 'activateChatListItem',
+                            events: [
+                                {type: 'click', handler: this.#activateChatListItem},
+                            ]
+                        },
+                        {
+                            attr: 'sendMessageOnClick',
+                            many: true,
+                            events: [
+                                {type: 'click', handler: this.#sendMessage},
+                            ]
+                        },
+                        {
+                            attr: 'messageInput',
+                            events: [
+                                {type: 'input', handler: resizeTextArea},
+                                {type: 'keydown', handler: (event) => {
+                                    if (event.code === 'Enter') {
+                                        event.preventDefault();
+                                        this.#sendMessage();
+                                    }
+                                }},
+                            ]
+                        },
+                        {   // mobile only
+                            attr: 'toggleMobileChat',
+                            events: [
+                                {type: 'click', handler: () => {
+                                    toggleChatListItemActive(this.view.chatListBody.querySelector('.chat-list-item_active')).then();
+                                    toggleChatOnMobile.call(this.view.mainColumn);
+                                }},
+                            ]
+                        },
+                    ]);
                     this.ChatModel.getChats({uid: user.uid, limit: 10, page: 0})
                         .then(chats => {
                             if (!chats || chats.length === 0) {
@@ -66,53 +110,13 @@ export default class ChatController extends Controller {
                             this.ChatModel.socket.close();
                         });
                 } else {
-                    this.view.showCenterError('No profile?!').then();
+                    Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_NO_RIGHTS);
+                    setTimeout(() => Router.redirectForward('/'), 1000);
                 }})
-            .catch(error => this.view.showCenterError(error).then());
-
-        this.view.setDOMChatElements(); // do it once instead of calling getters and checking there
-        this.initHandlers([
-            {
-                attr: 'circleRedirect',
-                events: [
-                    {type: 'click', handler: CircleRedirect},
-                ]
-            },
-            {
-                attr: 'activateChatListItem',
-                events: [
-                    {type: 'click', handler: this.#activateChatListItem},
-                ]
-            },
-            {
-                attr: 'sendMessageOnClick',
-                many: true,
-                events: [
-                    {type: 'click', handler: this.#sendMessage},
-                ]
-            },
-            {
-                attr: 'messageInput',
-                events: [
-                    {type: 'input', handler: resizeTextArea},
-                    {type: 'keydown', handler: (event) => {
-                        if (event.code === 'Enter') {
-                            event.preventDefault();
-                            this.#sendMessage();
-                        }
-                    }},
-                ]
-            },
-            {   // mobile only
-                attr: 'toggleMobileChat',
-                events: [
-                    {type: 'click', handler: () => {
-                        toggleChatListItemActive(this.view.chatListBody.querySelector('.chat-list-item_active')).then();
-                        toggleChatOnMobile.call(this.view.mainColumn);
-                    }},
-                ]
-            },
-        ]);
+            .catch(() => {
+                Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_NO_RIGHTS);
+                setTimeout(() => Router.redirectForward('/'), 1000);
+            });
     }
 
     /**

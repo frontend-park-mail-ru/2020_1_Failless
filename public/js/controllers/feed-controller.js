@@ -12,6 +12,7 @@ import FeedModel from 'Eventum/models/feed-model';
 import {toggleActionText} from 'Blocks/event/event';
 import Router from 'Eventum/core/router';
 import TextConstants from 'Eventum/utils/language/text';
+import Snackbar from 'Blocks/snackbar/snackbar';
 
 /**
  * @class FeedController
@@ -105,6 +106,9 @@ export default class FeedController extends Controller {
                     ]
                 },
             ]);
+        }).catch(() => {
+            Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_NO_RIGHTS);
+            setTimeout(() => Router.redirectForward('/'), 1000);
         });
     }
 

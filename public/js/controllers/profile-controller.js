@@ -229,11 +229,12 @@ export default class ProfileController extends Controller {
                         },
                     ]);
                 } else {
-                    Snackbar.instance.addMessage('You have no rights for this page');
+                    Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_NO_RIGHTS);
                     setTimeout(() => Router.redirectForward('/'), 800);
                 }
             }).catch(onerror => {
-                // console.error(onerror);
+                Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_NO_RIGHTS);
+                setTimeout(() => Router.redirectForward('/'), 1000);
             });
     }
 

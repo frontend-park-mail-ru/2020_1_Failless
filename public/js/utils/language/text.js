@@ -7,7 +7,7 @@ let localLibrary = EnglishLibrary;
 
 // Change this value every time you change libraries
 // Also change library version in static/lang/*.json
-const libVersion = 1;
+const libVersion = 2;
 
 export default class TextConstants {
     static LANGUAGES = {
@@ -60,7 +60,7 @@ export default class TextConstants {
         const signal = controller.signal;
         setTimeout(() => {
             controller.abort();
-            if (localStorage.getItem('cur_lang') === this.LANGUAGES.ENGLISH.short) {
+            if (this.getCurrentLanguage() === this.LANGUAGES.ENGLISH.short) {
                 Snackbar.instance.addMessage(TextConstants.ERROR__LIB_DOWNLOAD_FAILED);
             }
         }, 3000);
@@ -75,8 +75,9 @@ export default class TextConstants {
             .catch(e => {
                 localLibrary = EnglishLibrary;
                 this.setCurrentLanguage(this.LANGUAGES.ENGLISH.short);
-            });
-        this.clearLocalStorage(TextConstants.currentLanguage);
+            })
+            .finally(() => this.clearLocalStorage(this.getCurrentLanguage()));
+
     }
 
     /**
@@ -88,6 +89,10 @@ export default class TextConstants {
         for (let iii = 1; iii < libVersion; iii++) {
             localStorage.removeItem(`lib_${lang}_v${iii}`);
         }
+    }
+
+    static getCurrentLanguage() {
+        return localStorage.getItem('cur_lang');
     }
 
     static async setCurrentLanguage(lang) {
@@ -103,6 +108,7 @@ export default class TextConstants {
     static get BASIC__DESCRIPTION() {return localLibrary.Basic.DESCRIPTION;}
     static get BASIC__ERROR() {return localLibrary.Basic.ERROR;}
     static get BASIC__ERROR_FUN() {return localLibrary.Basic.ERROR_FUN;}
+    static get BASIC__ERROR_NO_RIGHTS() {return localLibrary.Basic.ERROR_NO_RIGHTS;}
     static get BASIC__EVENTS() {return localLibrary.Basic.EVENTS;}
     static get BASIC__FIND() {return localLibrary.Basic.FIND;}
     static get BASIC__FROM() {return localLibrary.Basic.FROM;}
