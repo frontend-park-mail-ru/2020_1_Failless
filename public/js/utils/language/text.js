@@ -5,6 +5,10 @@ import Snackbar from 'Blocks/snackbar/snackbar';
 
 let localLibrary = EnglishLibrary;
 
+// Change this value every time you change libraries
+// Also change library version in static/lang/*.json
+const libVersion = 1;
+
 export default class TextConstants {
     static LANGUAGES = {
         RUSSIAN: 'ru',
@@ -25,19 +29,19 @@ export default class TextConstants {
             TextConstants.currentLanguage = lang;
             return;
         }
-        if (!localStorage.getItem(`lib_${lang}`)) {
+        if (!localStorage.getItem(`lib_${lang}_v${libVersion}`)) {
             await this.loadLib(lang);
         } else {
             let newLib = null;
             try {
-                newLib = JSON.parse(localStorage.getItem(`lib_${lang}`));
+                newLib = JSON.parse(localStorage.getItem(`lib_${lang}_v${libVersion}`));
             }
             catch (e) {
                 newLib = null;
                 console.error(e);
             }
             if (!newLib) {
-                await this.loadLib(`lib_${lang}`);
+                await this.loadLib(lang);
             } else {
                 localLibrary = newLib;
                 TextConstants.currentLanguage = lang;
@@ -59,11 +63,11 @@ export default class TextConstants {
             }
         }, 3000);
 
-        await fetch(`/lang/${lang}.json`, {method: 'GET', signal})
+        await fetch(`/lang/${lang}_v${libVersion}.json`, {method: 'GET', signal})
             .then(r => r.json())
             .then(newLib => {
                 localLibrary = newLib;
-                localStorage.setItem(`lib_${lang}`, JSON.stringify(newLib));
+                localStorage.setItem(`lib_${lang}_v${libVersion}`, JSON.stringify(newLib));
                 TextConstants.currentLanguage = lang;
             })
             .catch(e => {
@@ -71,6 +75,18 @@ export default class TextConstants {
                 localLibrary = EnglishLibrary;
                 TextConstants.currentLanguage = this.LANGUAGES.ENGLISH;
             });
+        this.clearLocalStorage(TextConstants.currentLanguage);
+    }
+
+    /**
+     * Deletes all old versions of the same library
+     * @param lang {'ru' | 'en'}
+     * @return {Promise<void>}
+     */
+    static async clearLocalStorage(lang) {
+        for (let iii = 1; iii < libVersion; iii++) {
+            localStorage.removeItem(`lib_${lang}_v${iii}`);
+        }
     }
 
     static get BASIC__ADD() {return localLibrary.Basic.ADD;}
