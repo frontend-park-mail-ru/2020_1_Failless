@@ -245,6 +245,9 @@ export default class ProfileController extends Controller {
     #saveAbout = (event) => {
         // TODO: check if it's save
         UserModel.putAbout(event.target.value)
+            .then(() => {
+                UserModel.profile.about = event.target.value;
+            })
             .catch(Snackbar.instance.addMessage);
     };
 
@@ -286,7 +289,9 @@ export default class ProfileController extends Controller {
         Promise.all([
             this.view.renderTags(activeTagIDs),
             UserModel.putTags(activeTagIDs),
-        ]).catch(console.error);
+        ]).then(() => {
+            UserModel.profile.tags = activeTagIDs;
+        }).catch(console.error);
         this.editView.clear();
         this.editView = null;
     };
@@ -312,6 +317,9 @@ export default class ProfileController extends Controller {
             this.view.showLoading(this.view.photosColumn),
         ]).then(responses => {
             this.view.renderPhotos(responses[0]);
+            UserModel.profile.photos = responses[0].map(photo => {
+                return {alt: photo.path, src: `${settings.aws}/users/${photo.path}`}
+            });
         }).catch((e) => {
             Snackbar.instance.addMessage(e);
             this.view.renderEmptyPhotos();

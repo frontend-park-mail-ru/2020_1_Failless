@@ -5,7 +5,6 @@ import UserModel from 'Eventum/models/user-model';
 import Controller from 'Eventum/core/controller';
 import FeedView from 'Eventum/views/feed-view';
 import settings from 'Settings/config';
-import {MAX_AGE, MIN_AGE} from 'Eventum/utils/static-data';
 import {highlightTag} from 'Eventum/utils/tag-logic';
 import {profileCheck} from 'Eventum/utils/user-utils';
 import {showMessageWithRedirect} from 'Eventum/utils/render';

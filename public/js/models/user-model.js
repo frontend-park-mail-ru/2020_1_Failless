@@ -44,11 +44,9 @@ export default class UserModel extends Model {
      * Get user login data from server
      * @return {Promise} promise to get user login data
      */
-    static getLogin() {
+    static async getLogin() {
         if (this.user) {
-            return new Promise((resolve) => {
-                resolve(this.user);
-            });
+            return this.user;
         }
         return NetworkModule.fetchGet({path: '/getuser'}).then(
             (response) => {
@@ -61,9 +59,7 @@ export default class UserModel extends Model {
                 });
             },
             (error) => {
-                return new Promise((resolve) => {
-                    resolve({err: error});
-                });
+                throw new Error(error);
             });
     }
 
