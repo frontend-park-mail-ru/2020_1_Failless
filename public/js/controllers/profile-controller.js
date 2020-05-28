@@ -312,7 +312,10 @@ export default class ProfileController extends Controller {
             this.view.showLoading(this.view.photosColumn),
         ]).then(responses => {
             this.view.renderPhotos(responses[0]);
-        }).catch(Snackbar.instance.addMessage);
+        }).catch((e) => {
+            Snackbar.instance.addMessage(e);
+            this.view.renderEmptyPhotos();
+        });
     };
 
     /***********************************************
