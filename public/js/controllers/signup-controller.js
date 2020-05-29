@@ -19,6 +19,12 @@ export default class SignUpController extends Controller {
         this.form = null;
         this.inputs = null;
         this.pending = false;
+        this.inputManager = {
+            braces: false,
+            i: 0,
+            text: '',
+            three: false,
+        };
     }
 
     destructor() {
@@ -54,6 +60,7 @@ export default class SignUpController extends Controller {
                     events: [
                         {type: 'focus', handler: this.removeErrorMessage},
                         {type: 'blur', handler: this.#checkInputHandler},
+                        {type: 'input', handler: this.#inputComponent},
                     ]
                 }
             ]);
@@ -72,13 +79,12 @@ export default class SignUpController extends Controller {
 
     /**
      * Get data from input form on sign up page
-     * @param {Event} event
      * @return {{password: *, phone: *, name: *, email: *}} input form
      */
     #getFromSignUp() {
         const name = this.form[0].value;
         const email = this.form[1].value;
-        const phone = this.form[2].value;
+        let phone = this.form[2].value.replace(/[()+\-]/g, '');
         const password = this.form[3].value;
         const repeatPassword = this.form[4].value;
 
@@ -94,6 +100,9 @@ export default class SignUpController extends Controller {
 
         if (errors_list.some(val => val.length !== 0)) {
             return void 0;
+        }
+        if (phone[0] === '7' || phone[0] === '8') {
+            phone = phone.substr(1, phone.length);
         }
 
         return {name, password, phone, email};
@@ -126,7 +135,9 @@ export default class SignUpController extends Controller {
 
                 if (Object.prototype.hasOwnProperty.call(response, 'name')) {
                     Snackbar.instance.addMessage(TextConstants.AUTH__SUCCESSFUL_SIGNUP);
-                    setTimeout(() => {Router.redirectForward('/login');}, 1000);
+                    setTimeout(() => {
+                        Router.redirectForward('/login');
+                    }, 1000);
                 } else {
                     this.view.addErrorMessage(this.form, [response.message]);
                 }
@@ -144,7 +155,7 @@ export default class SignUpController extends Controller {
     #checkInputHandler = (event) => {
         const name = this.form[0].value;
         const email = this.form[1].value;
-        const phone = this.form[2].value;
+        const phone = this.form[2].value.replace(/\D/g, '');
         const password = this.form[3].value;
         const repeatPassword = this.form[4].value;
 
@@ -196,5 +207,54 @@ export default class SignUpController extends Controller {
         if (errorElement) {
             errorElement.remove();
         }
+    };
+
+    #inputComponent = (event) => {
+        if (event.target.id !== 'phone') {
+            return;
+        }
+
+        const input = this.view.getPhone();
+        if (input.length > 16) {
+            this.view.updatePhone(this.inputManager.text);
+            return;
+        }
+        console.log(input.length, this.inputManager.text.length);
+        if (input.length < this.inputManager.text.length) {
+            this.inputManager.text = input;
+            switch (this.inputManager.i) {
+            case 1: {
+                this.inputManager.text = '';
+                break;
+            }
+            case 4:
+            case 7:
+            case 9: {
+                this.inputManager.text = this.inputManager.text.substr(0, this.inputManager.text.length - 1);
+                break;
+            }
+            }
+            this.inputManager.i--;
+            this.view.updatePhone(this.inputManager.text);
+            return;
+        }
+
+        if (input.charCodeAt(input.length - 1) < 48 || input.charCodeAt(input.length - 1) > 57) {
+            this.inputManager.text = input.substr(0, input.length - 1);
+            this.view.updatePhone(this.inputManager.text);
+            return;
+        }
+        this.inputManager.text = input;
+
+        if (this.inputManager.i === 0) {
+            this.inputManager.text = '+7(' + this.inputManager.text;
+        } else if (this.inputManager.i === 2) {
+            this.inputManager.text = this.inputManager.text + ')';
+        } else if (this.inputManager.i === 5 || this.inputManager.i === 7) {
+            this.inputManager.text = this.inputManager.text + '-';
+        }
+        this.inputManager.i++;
+
+        this.view.updatePhone(this.inputManager.text);
     };
 }

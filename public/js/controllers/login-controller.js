@@ -84,7 +84,7 @@ export default class LoginController extends Controller {
             email = login;
             errors_list.push(ValidationModule.validateUserData(email, 'email'));
         } else {
-            phone = login;
+            phone = login.replace(/[()+\-]/g, '');
             errors_list.push(ValidationModule.validateUserData(phone, 'phone'));
         }
         
@@ -92,6 +92,9 @@ export default class LoginController extends Controller {
             return void 0;
         }
 
+        if (phone[0] === '7' || phone[0] === '8') {
+            phone = phone.substr(1, phone.length);
+        }
         return {phone, email, password};
     }
 
@@ -106,7 +109,8 @@ export default class LoginController extends Controller {
             this.view.addErrorMessage(this.form[0], nameCheck);
             break;
         case (event.target === form[0]):
-            const emailCheck = ValidationModule.validateUserData(login, 'phone');
+            const phone = login.replace(/[()+\-]/g, '');
+            const emailCheck = ValidationModule.validateUserData(phone, 'phone');
             this.view.addErrorMessage(this.form[0], emailCheck);
             break;
         }
