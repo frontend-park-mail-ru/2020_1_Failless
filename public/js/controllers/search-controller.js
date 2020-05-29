@@ -4,8 +4,11 @@ import Controller from 'Eventum/core/controller';
 import SearchView from 'Eventum/views/search-view';
 import EventModel from 'Eventum/models/event-model';
 import UserModel from 'Eventum/models/user-model';
-import {changeActionText} from 'Blocks/event/event';
 import TextConstants from 'Eventum/utils/language/text';
+import {changeActionText} from 'Blocks/event/event';
+import {detectMobile} from 'Eventum/utils/basic';
+import {highlightTag} from 'Eventum/utils/tag-logic';
+import {icons} from 'Eventum/utils/static-data';
 
 /**
  * @class SearchController
@@ -19,7 +22,7 @@ export default class SearchController extends Controller {
     constructor(parent) {
         super(parent);
         this.view = new SearchView(parent);
-        this.pageDownloaded = 1;
+        this.pageDownloaded = 0;
     }
 
     destructor() {
@@ -33,23 +36,18 @@ export default class SearchController extends Controller {
     action() {
         super.action();
         this.view.render();
-        UserModel.getProfile().finally(
-            (profile) => { // User authorized
-                EventModel.getSearchEvents({uid: profile ? profile.uid : null, page: 1, limit: 10})
-                    .then((events) => {
-                        this.view.renderResults(events);
-                    }).catch((error) => {
-                        this.view.showSearchError(error);
-                    });
-            }
-        );
+        let uid = null;
+        UserModel.getProfile()
+            .then(profile => uid = profile.uid)
+            .catch(() => {})
+            .then(() => EventModel.getSearchEvents({uid: uid, page: 0, limit: 30}))
+            .then((events) => this.view.renderResults(events))
+            .catch(() => this.view.showSearchError());
         this.initHandlers([
             {
                 attr: 'sendRequestOnEnter',
-                many: true,
                 events: [
                     {type: 'keydown', handler: this.#completeRequest},
-                    {type: 'click', handler: this.#inputQuery},
                 ]
             },
             {
@@ -64,6 +62,31 @@ export default class SearchController extends Controller {
                     {type: 'click', handler: this.#completeRequest},
                 ]
             },
+            {
+                attr: 'highlightTag',
+                events: [
+                    {type: 'click', handler: highlightTag},
+                ]
+            },
+            {
+                attr: 'toggleFiltersActive',
+                events: [
+                    {type: 'click', handler: () => document.querySelector('.filters').classList.toggle('filters_active')},
+                ]
+            },
+            {
+                attr: 'removeFiltersActive',
+                many: true,
+                events: [
+                    {type: 'click', handler: () => {document.querySelector('.filters').classList.remove('filters_active');}},
+                ]
+            },
+            {
+                attr: 'applyFilters',
+                events: [
+                    {type: 'submit', handler: this.#applyFilters},
+                ]
+            },
         ]);
     }
 
@@ -73,20 +96,23 @@ export default class SearchController extends Controller {
      */
     #completeRequest = (event) => {
         if (event.code === 'Enter' || event.type === 'click') {
-            if (this.view.vDOM.attention) {
-                this.#removeQueryInput();
-            }
             event.preventDefault();
             const msg = document.querySelector('.big-search__message');
             if (msg) {
                 msg.remove();
             }
             this.removeErrorMessage(event);
-            let payload = document.querySelector('#searchInput').value; // TODO: fix this.uid
+            let payload = this.view.queryInput.value;
             UserModel.getProfile()
                 .then((profile) => {
                     return EventModel.getSearchEvents({
                         uid: profile.uid,
+                        page: this.pageDownloaded,
+                        limit: 30,
+                        query: payload
+                    });
+                }).catch(() => {
+                    return EventModel.getSearchEvents({
                         page: this.pageDownloaded,
                         limit: 30,
                         query: payload
@@ -97,12 +123,9 @@ export default class SearchController extends Controller {
                     } else if (Object.prototype.hasOwnProperty.call(events, 'message')) {
                         this.view.addErrorMessage(document.querySelector('.big-search__icon'), [events.message]);
                     } else {
-                        ++this.pageDownloaded;
+                        // ++this.pageDownloaded;
                         this.view.renderResults(events);
                     }
-                },
-                (error) => {
-                    this.view.showSearchError(error);
                 });
         }
     };
@@ -145,34 +168,36 @@ export default class SearchController extends Controller {
         );
     };
 
-    #inputQuery = (event) => {
-        const attention = this.view.renderQueryPanel();
-        event.target.removeEventListener('click', this.#inputQuery);
-        attention.addEventListener('click', this.#removeAfterClick);
-        document.addEventListener('keydown', this.#removeAfterEscape);
-    };
+    /**
+     *
+     * @param event
+     * @return {{keyWords: [],
+     *           maxAge: number,
+     *           men: boolean,
+     *           minAge: number,
+     *           limit: number,
+     *           tags: [],
+     *           women: boolean}}
+     */
+    #applyFilters = (event) => {
+        event.preventDefault();
 
-    #removeQueryInput = (event = null) => {
-        const input = this.view.destroyQueryPanel();
-        input.addEventListener('click', this.#inputQuery);
-        if (event) {
-            event.currentTarget.removeEventListener('click', this.#removeAfterClick);
-            document.removeEventListener('keydown', this.#removeAfterEscape);
-        }
-    };
+        let request = Object.assign({
+            uid: null,
+            page: this.pageDownloaded,
+            limit: 30,
+            query: this.view.queryInput.value, // TODO: NOT SAFE
+        }, this.view.vDOM.filters.getFilters());
 
-    #removeAfterEscape = (event) => {
-        if (event.key === 'Escape') {
-            this.#removeQueryInput(event);
-        } else if (event.key === 'Enter') {
-            this.#removeQueryInput(event);
-            this.#completeRequest(event);
+        if (detectMobile()) {
+            this.view.vDOM.filters.element.classList.remove('filters_active');
         }
-    };
 
-    #removeAfterClick = (event) => {
-        if (event.target.className === 'big-search__attention') {
-            this.#removeQueryInput(event);
-        }
+        UserModel.getProfile()
+            .then(user => request.uid = user.uid)
+            .catch(() => {})
+            .then(() => EventModel.getSearchEvents(request))
+            .then(events => this.view.renderResults(events))
+            .catch(() => this.view.showError(this.view.resultsAreaDiv, TextConstants.BASIC__ERROR, icons.get('warning'), null));
     };
 }

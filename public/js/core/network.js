@@ -13,10 +13,10 @@ export default class NetworkModule {
      * @param api
      * @return {Promise} Promise for the HTTP request
      */
-    static fetchGet = ({
+    static async fetchGet({
         path = '/',
         api = settings.api,
-    } = {}) => {
+    } = {}) {
         if (path.includes('undefined')) {
             throw new Error('Invalid path, boy');
         }
