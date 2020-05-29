@@ -22,19 +22,19 @@ export default class EventModel extends Model {
      * @param {{limit: Number, page: Number}} eventsRequest - request with query, limits and page
      * @return {Promise} promise to get user data
      */
-    static getSearchEvents(eventsRequest) {
+    static async getSearchEvents(eventsRequest) {
         let errors = this.invalidEventRequest(eventsRequest);
         if (errors.length !== 0) {
             throw new Error(...errors);
         }
-        return NetworkModule.fetchPost({path: '/events/search', body: eventsRequest}).then(
-            (response) => {
+        return NetworkModule.fetchPost({path: '/events/search', body: eventsRequest})
+            .then((response) => {
                 if (response.status > 499) {
                     throw new Error('Server error');
                 }
                 return response.json();
-            },
-            (error) => {
+            })
+            .catch((error) => {
                 throw new Error(error);
             });
     }

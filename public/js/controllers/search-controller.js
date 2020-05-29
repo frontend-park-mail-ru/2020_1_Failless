@@ -19,7 +19,7 @@ export default class SearchController extends Controller {
     constructor(parent) {
         super(parent);
         this.view = new SearchView(parent);
-        this.pageDownloaded = 1;
+        this.pageDownloaded = 0;
     }
 
     destructor() {
@@ -35,7 +35,7 @@ export default class SearchController extends Controller {
         this.view.render();
         UserModel.getProfile().finally(
             (profile) => { // User authorized
-                EventModel.getSearchEvents({uid: profile ? profile.uid : null, page: 1, limit: 10})
+                EventModel.getSearchEvents({uid: profile ? profile.uid : null, page: 0, limit: 30})
                     .then((events) => {
                         this.view.renderResults(events);
                     }).catch((error) => {
@@ -82,11 +82,17 @@ export default class SearchController extends Controller {
                 msg.remove();
             }
             this.removeErrorMessage(event);
-            let payload = document.querySelector('#searchInput').value; // TODO: fix this.uid
+            let payload = document.querySelector('#searchInput').value;
             UserModel.getProfile()
                 .then((profile) => {
                     return EventModel.getSearchEvents({
                         uid: profile.uid,
+                        page: this.pageDownloaded,
+                        limit: 30,
+                        query: payload
+                    });
+                }).catch(() => {
+                    return EventModel.getSearchEvents({
                         page: this.pageDownloaded,
                         limit: 30,
                         query: payload
@@ -97,12 +103,9 @@ export default class SearchController extends Controller {
                     } else if (Object.prototype.hasOwnProperty.call(events, 'message')) {
                         this.view.addErrorMessage(document.querySelector('.big-search__icon'), [events.message]);
                     } else {
-                        ++this.pageDownloaded;
+                        // ++this.pageDownloaded;
                         this.view.renderResults(events);
                     }
-                },
-                (error) => {
-                    this.view.showSearchError(error);
                 });
         }
     };
