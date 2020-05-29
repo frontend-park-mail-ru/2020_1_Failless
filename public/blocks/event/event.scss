@@ -14,10 +14,24 @@
     width: 100%;
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden;
+    max-height: 20vh;
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      max-height: 30vh;
+    }
 
     & img {
       width: 100%;
       object-fit: cover;
+
+      &:first-child {
+        border-top-left-radius: $re--border-radius;
+      }
+
+      &:last-child {
+        border-top-right-radius: $re--border-radius;
+      }
     }
   }
 

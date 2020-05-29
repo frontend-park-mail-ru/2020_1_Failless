@@ -128,12 +128,12 @@ export default class ProfileView extends MyView {
             data_bind: 'logout',
         });
 
-        const settingsButton = new Button({
-            style: 're_btn re_btn__outline',
-            state: null,
-            text: TextConstants.BASIC__SETTINGS,
-            data_bind: 'showSettings',
-        });
+        // const settingsButton = new Button({
+        //     style: 're_btn re_btn__outline',
+        //     state: null,
+        //     text: TextConstants.BASIC__SETTINGS,
+        //     data_bind: 'showSettings',
+        // });
 
         const addEventButton = new Button({
             style: 're_btn re_btn__filled',

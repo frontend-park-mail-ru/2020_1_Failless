@@ -1,29 +1,19 @@
 @import "../../modules/variables";
 
-.big-search {
-  margin-top: $header-height;
-  display: block;
-  align-items: center;
-  text-align: center;
+$filters-width: 200px;
 
-  &__attention {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1;
-  }
+.big-search {
+  width: calc(100% - (200px + 15px));
+  margin-left: 215px;
+  margin-top: $header-height + 10px;
 
   @media only screen and (max-width: $breakpoint-phone) {
     width: 100%;
-    padding-top: 0;
+    margin: $header-height 0;
   }
 
   &__header {
     margin: $re--big-padding 0;
-    //z-index: $z-index-subheader; // todo: check it
     z-index: 5;
     display: flex;
     justify-content: center;
@@ -39,8 +29,27 @@
     }
   }
 
+  &__filters {
+    position: fixed;
+    top: $header-height + 10px;
+    width: $filters-width;
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      z-index: $z-index-mobile-screen;
+
+      & > .filters {
+        top: $header-height;
+      }
+    }
+
+    & > .filters {
+      box-shadow: none;
+      border-radius: 0;
+      border-left: 1px solid $re--color-light-gray;
+    }
+  }
+
   &__search {
-    width: 504px;
     padding: 0 20px;
     background-color: $color-white;
     display: flex;
@@ -50,6 +59,17 @@
 
     @media only screen and (max-width: $breakpoint-phone) {
       border-radius: 0;
+      width: 100%;
+    }
+
+    & .filters__filter-icon {
+      margin: 0 0 0 2px;
+      width: 35px;
+      display: none;
+
+      @media only screen and (max-width: $breakpoint-phone) {
+        display: block;
+      }
     }
   }
 
@@ -93,7 +113,7 @@
     //column-gap: 0;
     counter-reset: item-counter;
 
-    @media screen and (orientation: portrait) and (min-width: 400px) {
+    @media screen and (orientation: portrait) and (min-width: $breakpoint-phone) {
       column-count: 1;
     }
 
@@ -105,16 +125,9 @@
       column-count: 3;
     }
 
-    @media screen and (min-width: 1100px) {
+    @media screen and (min-width: 1000px) {
       column-count: 4;
     }
-
-    @media screen and (min-width: 1400px) {
-      column-count: 5;
-    }
-  }
-
-  &__message {
   }
 
   &__results {
@@ -128,25 +141,9 @@
       margin-top: $header-height + 15px;
       padding: 0 $re--medium-padding;
     }
+  }
 
-    @media screen and (orientation: portrait) and (min-width: 600px) {
-      width: 504px;
-    }
-
-    @media screen and (orientation: landscape) and (min-width: 800px) {
-      width: 758px;
-    }
-
-    @media screen and (orientation: landscape) and (min-width: 1100px) {
-      width: 1012px;
-    }
-    @media screen and (orientation: landscape) and (min-width: 1400px) {
-      width: 1270px;
-    }
-
-
-    @media screen and (orientation: portrait) {
-      //width: 144px * 2;
-    }
+  &__container {
+    display: flex;
   }
 }

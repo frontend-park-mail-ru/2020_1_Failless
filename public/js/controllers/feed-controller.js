@@ -13,6 +13,7 @@ import {toggleActionText} from 'Blocks/event/event';
 import Router from 'Eventum/core/router';
 import TextConstants from 'Eventum/utils/language/text';
 import Snackbar from 'Blocks/snackbar/snackbar';
+import {detectMobile} from 'Eventum/utils/basic';
 
 /**
  * @class FeedController
@@ -167,20 +168,15 @@ export default class FeedController extends Controller {
             return;
         }
 
-        let filters = this.view.filterComp.getFilters();
-
-        let request = {
+        let request = Object.assign({
             uid: null,
             page: this.model.currentPageNumber,
             limit: 10,
-            query: filters.keyWords ? String(...filters.keyWords) : null,
-            tags: filters.tags,
-            Location: null,
-            minAge: filters.minAge,
-            maxAge: filters.maxAge,
-            men: filters.men,
-            women: filters.women,
-        };
+        }, this.view.filterComp.getFilters());
+
+        if (detectMobile()) {
+            document.querySelector('.filters').classList.remove('filters_active');
+        }
 
         UserModel.getProfile()
             .then(user => request.uid = user.uid)
@@ -203,10 +199,10 @@ export default class FeedController extends Controller {
             return;
         }
 
-        if (event.target.closest('button').matches('.feed__button.feed__button-skip')) {
-            showMessageWithRedirect(TextConstants.FEED__PAY_TO_SKIP, 'Profile');
-            return;
-        }
+        // if (event.target.closest('button').matches('.feed__button.feed__button-skip')) {
+        //     showMessageWithRedirect(TextConstants.FEED__PAY_TO_SKIP, 'Profile');
+        //     return;
+        // }
 
         const isLike = event.target.closest('button').matches('.feed__button.feed__button-approve');
         // Get id-s

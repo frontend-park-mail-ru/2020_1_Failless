@@ -30,23 +30,8 @@
                         </div>
                     </div>
                 </div>
-                {{#if profile.networks}}
-                    {{#each profile.networks}}
-                        <!-- TODO: add networks -->
-                    {{/each}}
-                {{else}}
-                    <div>
-                        <span class="icon icon__size_middle icon_color_lg icon__fb"></span>
-                        <span class="icon icon__size_middle icon_color_lg icon__inst"></span>
-                        <span class="icon icon__size_middle icon_color_lg icon__twitter"></span>
-                        <span class="icon icon__size_middle icon_color_lg icon__vk"></span>
-                        <span class="icon icon__size_middle icon_color_lg icon__ok"></span>
-                        <span class="icon icon__size_middle icon_color_lg icon__moimir"></span>
-                    </div>
-                {{/if}}
             </div>
             <div class="profile-left__exit">
-                {{> $Blocks/button-comp/template settings_button}}
                 {{> $Blocks/button-comp/template button_logout}}
             </div>
         </form>

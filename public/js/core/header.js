@@ -39,6 +39,10 @@ export default function createHeader(base, logged) {
                         {
                             link: `lang_${TextConstants.LANGUAGES.ENGLISH.short}`,
                             name: TextConstants.LANGUAGES.ENGLISH.full,
+                        },
+                        {
+                            link: `lang_${TextConstants.LANGUAGES.SPANISH.short}`,
+                            name: TextConstants.LANGUAGES.SPANISH.full,
                         }
                     ]
                 },

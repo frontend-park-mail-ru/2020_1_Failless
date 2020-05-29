@@ -16,6 +16,11 @@ export default class SignUpView extends View {
     constructor(parent) {
         super(parent);
         this.parent = parent;
+        this.vDOM = {
+            input: {
+                phone: null,
+            }
+        }
     }
 
     destructor() {
@@ -52,6 +57,7 @@ export default class SignUpView extends View {
                     name: 'phone',
                     placeholder: '+7 (800) 555-35-35',
                     others: ['required'],
+                    id: 'phone',
                 },
                 {
                     title: TextConstants.BASIC__PASSWORD,
@@ -70,5 +76,15 @@ export default class SignUpView extends View {
             ],
             button: TextConstants.AUTH__REG_ACTION,
         });
+        this.vDOM.input.phone = document.querySelector('#phone');
     }
+
+    getPhone = () => {
+        return this.vDOM.input.phone.value;
+    };
+
+    updatePhone = (text) => {
+        this.vDOM.input.phone.value = text;
+    }
+
 }

@@ -47,7 +47,7 @@ export default class EventComp extends Component {
                 let firstImageElement = this.photosDiv.querySelector('img');    // find image
                 firstImageElement.style.display = 'block';                      // show image
                 let height = this.photosDiv.offsetHeight - 5;                   // get height
-                firstImageElement.style.cssText = `height: ${height}px; width: auto;`;
+                firstImageElement.style.cssText = `height: ${height}px; width: 100%;`;
                 for (let iii = 1; iii < this.data.photos.length; iii++) {
                     let newImage = document.createElement('img');
                     newImage.src = `${settings.aws}/events/${this.data.photos[iii]}`;

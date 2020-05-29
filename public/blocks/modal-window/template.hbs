@@ -9,11 +9,14 @@
             </div>
         </div>
         <div class="modal__body {{ additional_class }}">
+            {{#if message}}
+                <p>{{ message }}</p>
+            {{/if}}
+            {{#each errors}}
+                <h2>{{ this }}</h2>
+            {{/each}}
             {{#each tags as |tag|}}
                 {{> $Blocks/tag/template }}
-            {{/each}}
-            {{#each message}}
-                <h2>{{ this }}</h2>
             {{/each}}
         </div>
         {{#if last_buttons}}

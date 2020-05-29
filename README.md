@@ -1,4 +1,4 @@
-# 2020_1_Failless
+# 2020_1_Failless   [![Build Status](https://travis-ci.com/frontend-park-mail-ru/2020_1_Failless.svg?branch=master)](https://travis-ci.com/frontend-park-mail-ru/2020_1_Failless)
 Фронтенд репозиторий команды Failless
 
 ## Что такое  __Eventum:__
@@ -9,7 +9,7 @@
 * Мы просто взяли лучшее из Tinder, KudaGo & Airbnb - и получили Eventum!
 
 #### [API in Swagger](https://app.swaggerhub.com/apis/rowbotman/Eventum/1.0.3-oas3)
-#### Сайт доступен по адресу https://eventum.rowbot.dev
+#### Сайт доступен по адресу https://eventum.xyz 
 #### [Backend репозиторий проекта](https://github.com/go-park-mail-ru/2020_1_Failless)
 
 

@@ -24,7 +24,6 @@ export default class FeedView extends View {
     constructor(parent) {
         super(parent);
         this.parent = parent;
-        // Basically call this.#emptyvDOM()
         this.#emptyvDOM();
         this.model = FeedModel.instance;
     }
@@ -79,17 +78,9 @@ export default class FeedView extends View {
         });
         this.vDOM.filters = new Filters({
             tags: this.model.tags,
-            TAGS_HEADER: TextConstants.FILTERS__TAGS_HEADER,
-            KEYWORDS_HEADER: TextConstants.FILTERS__KEYWORDS_HEADER,
-            KEYWORDS_PLACEHOLDER: TextConstants.FILTERS__KEYWORDS_PLACEHOLDER,
-            GENDER: TextConstants.BASIC__GENDER,
-            MEN: TextConstants.BASIC__MEN,
-            WOMEN: TextConstants.BASIC__WOMEN,
-            AGE: TextConstants.BASIC__AGE,
-            FROM: TextConstants.BASIC__FROM,
-            TO: TextConstants.BASIC__TO,
-            LOCATION: TextConstants.BASIC__LOCATION,
-            FIND: TextConstants.BASIC__FIND,
+            keywords: true,
+            gender: true,
+            age: true,
         });
         this.vDOM.filters.renderIn(this.parent.querySelector('.filters'));
         this.#setvDOM();
