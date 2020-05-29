@@ -106,12 +106,12 @@ export default class ProfileController extends Controller {
                                 {type: 'blur', handler: this.#saveAbout}
                             ]
                         },
-                        {
-                            attr: 'showSettings',
-                            events: [
-                                {type: 'click', handler: this.#profileSettings},
-                            ]
-                        },
+                        // {
+                        //     attr: 'showSettings',
+                        //     events: [
+                        //         {type: 'click', handler: this.#profileSettings},
+                        //     ]
+                        // },
                         {
                             attr: 'showModalTags',
                             many: true,

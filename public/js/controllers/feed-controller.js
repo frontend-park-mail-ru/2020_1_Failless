@@ -199,10 +199,10 @@ export default class FeedController extends Controller {
             return;
         }
 
-        if (event.target.closest('button').matches('.feed__button.feed__button-skip')) {
-            showMessageWithRedirect(TextConstants.FEED__PAY_TO_SKIP, 'Profile');
-            return;
-        }
+        // if (event.target.closest('button').matches('.feed__button.feed__button-skip')) {
+        //     showMessageWithRedirect(TextConstants.FEED__PAY_TO_SKIP, 'Profile');
+        //     return;
+        // }
 
         const isLike = event.target.closest('button').matches('.feed__button.feed__button-approve');
         // Get id-s
