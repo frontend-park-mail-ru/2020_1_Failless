@@ -5,21 +5,6 @@ import FiltersTemplate from 'Blocks/filters/template.hbs';
 import SliderManager from 'Blocks/slider/set-slider';
 import TextConstants from 'Eventum/utils/language/text';
 
-const staticData = {
-    TAGS_HEADER: TextConstants.FILTERS__TAGS_HEADER,
-    KEYWORDS_HEADER: TextConstants.FILTERS__KEYWORDS_HEADER,
-    KEYWORDS_PLACEHOLDER: TextConstants.FILTERS__KEYWORDS_PLACEHOLDER,
-    GENDER: TextConstants.BASIC__GENDER,
-    MEN: TextConstants.BASIC__MEN,
-    WOMEN: TextConstants.BASIC__WOMEN,
-    AGE: TextConstants.BASIC__AGE,
-    FROM: TextConstants.BASIC__FROM,
-    TO: TextConstants.BASIC__TO,
-    LOCATION: TextConstants.BASIC__LOCATION,
-    FIND: TextConstants.BASIC__FIND,
-    MEMBER_AMOUNT: TextConstants.FILTERS__MEMBER_AMOUNT,
-};
-
 export default class Filters extends Component {
     /**
      * @param data {{
@@ -34,7 +19,20 @@ export default class Filters extends Component {
         super(data);
         this.cssClass = 'filters';
         this.template = FiltersTemplate;
-        this.data = Object.assign({}, data, staticData);
+        this.data = Object.assign({}, data, {
+            TAGS_HEADER: TextConstants.FILTERS__TAGS_HEADER,
+            KEYWORDS_HEADER: TextConstants.FILTERS__KEYWORDS_HEADER,
+            KEYWORDS_PLACEHOLDER: TextConstants.FILTERS__KEYWORDS_PLACEHOLDER,
+            GENDER: TextConstants.BASIC__GENDER,
+            MEN: TextConstants.BASIC__MEN,
+            WOMEN: TextConstants.BASIC__WOMEN,
+            AGE: TextConstants.BASIC__AGE,
+            FROM: TextConstants.BASIC__FROM,
+            TO: TextConstants.BASIC__TO,
+            LOCATION: TextConstants.BASIC__LOCATION,
+            FIND: TextConstants.BASIC__FIND,
+            MEMBER_AMOUNT: TextConstants.FILTERS__MEMBER_AMOUNT,
+        });
         this.fields = ['tags', 'keywords', 'men-checkbox', 'women-checkbox', 'slider-min', 'slider-max', 'slider-limit'];
     }
 
