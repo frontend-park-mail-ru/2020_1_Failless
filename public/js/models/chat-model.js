@@ -51,7 +51,7 @@ export default class ChatModel extends Model {
     }
 
     async establishConnection(uid, onMessage) {
-        let socket = new WebSocket(`${settings.wsurl}:3000/ws/connect`);
+        let socket = new WebSocket(`${settings.wsurl}:${settings.port}/ws/connect`);
         socket.onopen = () => {
             this.socket = socket;
 

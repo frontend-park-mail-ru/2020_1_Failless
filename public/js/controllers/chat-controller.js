@@ -24,11 +24,19 @@ export default class ChatController extends Controller {
         this.chat_id = null;
         this.ChatModel = ChatModel.instance;
         this.timerId = null;
+        this.active_page = false;
     }
 
     destructor() {
         this.view.destructor();
-        this.timerId = null;
+        // все чаты неактивны 
+        this.ChatModel.chats.forEach((chat, chatId) => {
+            if (chat.active) {
+                chat.active = false;
+            }
+        });
+        this.active_page = false;
+        // this.timerId = null;
         super.destructor();
     }
 
@@ -95,13 +103,21 @@ export default class ChatController extends Controller {
                             } else if (Object.prototype.hasOwnProperty.call(chats, 'message')) {
                                 this.view.showLeftError(chats.message);
                             } else {
-                                this.ChatModel.establishConnection(user.uid, this.receiveMessage).then(
-                                    (response) => {
-                                        this.timerId = setInterval(this.#reestablishConnection, 100);
-
-                                        this.ChatModel.chats = chats;
-                                        this.view.renderChatList();
-                                    });
+                                if (!this.ChatModel.socket) {
+                                    this.ChatModel.establishConnection(user.uid, this.receiveMessage).then(
+                                        (response) => {
+                                            if (!this.timerId) {
+                                                this.timerId = setInterval(this.#reestablishConnection, 10000);
+                                            }
+                                            this.ChatModel.chats = chats;
+                                            this.view.renderChatList();
+                                            this.active_page = true;
+                                        });
+                                } else {
+                                    this.ChatModel.chats = chats;
+                                    this.view.renderChatList();
+                                    this.active_page = true;
+                                }
                             }
                         },
                         (error) => {
@@ -214,17 +230,22 @@ export default class ChatController extends Controller {
     };
 
     /**
-     * Re-establish conn to WS
+     * Re-establish conn to WS with empty message
      */
     #reestablishConnection = () => {
-        if (!this.ChatModel.isWSOpen()) {
-            this.ChatModel.establishConnection(this.uid, this.receiveMessage).then();
-        }
+        let chat_id = -1;
+        // Ищем активный чат
+        this.ChatModel.chats.forEach((chat) => {
+            if (chat.active === true) {
+                chat_id = chat.chat_id;
+            }
+        });
+        UserModel.getProfile().then(profile => this.ChatModel.sendMessage({uid: profile.uid, message: "", chat_id: chat_id}));
     };
 
     receiveMessage = (event) => {
         // Find active chat
-        let activeChatId = 0;
+        let activeChatId = -1;
         for (let [chatId, chat] of this.ChatModel.chats) {
             if (chat.active) {
                 activeChatId = chatId;
@@ -239,15 +260,19 @@ export default class ChatController extends Controller {
                 if (message.uid !== profile.uid) {
                     NotificationController.notify(TextConstants.BASIC__NEW_MESSAGE);
                 }
-                this.view.updateLastMessage(message, profile.uid === message.uid);
-                if (activeChatId && message.chat_id === activeChatId) {
-                    let chat = this.ChatModel.chats.get(message.chat_id);
-                    this.view.renderMessage({
-                        avatar: (profile.uid === message.uid || chat.user_count === 2) ? null : chat.users.get(message.uid).avatar,
-                        body: message.message,
-                        side: profile.uid === message.uid ? 'right' : 'left',
-                        new: true,
-                    });
-                }});
+                // проверка, чтобы шли уведомления, но не было попытки отобразить
+                if (this.active_page) {
+                    this.view.updateLastMessage(message, profile.uid === message.uid);
+                    if (activeChatId && message.chat_id === activeChatId) {
+                        let chat = this.ChatModel.chats.get(message.chat_id);
+                        this.view.renderMessage({
+                            avatar: (profile.uid === message.uid || chat.user_count === 2) ? null : chat.users.get(message.uid).avatar,
+                            body: message.message,
+                            side: profile.uid === message.uid ? 'right' : 'left',
+                            new: true,
+                        });
+                    }
+                }
+            });
     }
 }
