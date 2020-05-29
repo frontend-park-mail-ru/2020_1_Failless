@@ -8,6 +8,7 @@ import TextConstants from 'Eventum/utils/language/text';
 import {changeActionText} from 'Blocks/event/event';
 import {detectMobile} from 'Eventum/utils/basic';
 import {highlightTag} from 'Eventum/utils/tag-logic';
+import {icons} from 'Eventum/utils/static-data';
 
 /**
  * @class SearchController
@@ -35,16 +36,13 @@ export default class SearchController extends Controller {
     action() {
         super.action();
         this.view.render();
-        UserModel.getProfile().finally(
-            (profile) => { // User authorized
-                EventModel.getSearchEvents({uid: profile ? profile.uid : null, page: 0, limit: 30})
-                    .then((events) => {
-                        this.view.renderResults(events);
-                    }).catch((error) => {
-                        this.view.showSearchError(error);
-                    });
-            }
-        );
+        let uid = null;
+        UserModel.getProfile()
+            .then(profile => uid = profile.uid)
+            .catch(() => {})
+            .then(() => EventModel.getSearchEvents({uid: uid, page: 0, limit: 30}))
+            .then((events) => this.view.renderResults(events))
+            .catch(() => this.view.showSearchError());
         this.initHandlers([
             {
                 attr: 'sendRequestOnEnter',
@@ -197,8 +195,9 @@ export default class SearchController extends Controller {
 
         UserModel.getProfile()
             .then(user => request.uid = user.uid)
+            .catch(() => {})
             .then(() => EventModel.getSearchEvents(request))
             .then(events => this.view.renderResults(events))
-            .catch(error => this.view.showFeedError(error));
+            .catch(() => this.view.showError(this.view.resultsAreaDiv, TextConstants.BASIC__ERROR, icons.get('warning'), null));
     };
 }
