@@ -65,6 +65,11 @@ $filters-width: 200px;
     & .filters__filter-icon {
       margin: 0 0 0 2px;
       width: 35px;
+      display: none;
+
+      @media only screen and (max-width: $breakpoint-phone) {
+        display: block;
+      }
     }
   }
 
