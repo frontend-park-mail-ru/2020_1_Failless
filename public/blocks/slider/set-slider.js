@@ -7,14 +7,25 @@ export default class SliderManager {
     constructor() {
         this.sliders = [];
         this.lonelySliders = [];
+        this.type = 'age';
+        this.min = MIN_AGE;
     }
 
-    setSliders({slider1, initialValue1}, {slider2, initialValue2}) {
+    setSliders({slider1, initialValue1}, {slider2, initialValue2}, type) {
         let minSliderIndex = this.#registerSlider(slider1, initialValue1, function(offset, maxOffset) {return offset <= maxOffset;}, true);
         let maxSliderIndex = this.#registerSlider(slider2, initialValue2, function(offset, maxOffset) {return offset >= maxOffset;}, true);
 
-        this.#configureSlider(this.sliders[minSliderIndex], this.#moveSliders, MAX_AGE, MIN_AGE);
-        this.#configureSlider(this.sliders[maxSliderIndex], this.#moveSliders, MAX_AGE, MIN_AGE);
+        if (type === 'age') {
+            this.min = MIN_AGE;
+            this.#configureSlider(this.sliders[minSliderIndex], this.#moveSliders, MIN_AGE, MAX_AGE);
+            this.#configureSlider(this.sliders[maxSliderIndex], this.#moveSliders, MIN_AGE, MAX_AGE);
+        } else {
+            this.min = MIN_LIMIT;
+            this.#configureSlider(this.sliders[minSliderIndex], this.#moveSliders, MIN_LIMIT, MAX_LIMIT);
+            this.#configureSlider(this.sliders[maxSliderIndex], this.#moveSliders, MIN_LIMIT, MAX_LIMIT);
+        }
+
+        this.type = type;
 
         // Set maxOffset
         this.sliders[minSliderIndex].maxOffset = this.#rightOffset();
@@ -46,15 +57,15 @@ export default class SliderManager {
 
     // TODO: DRY
     #moveSliders = (activeSlider) => {
-        let offset = CONST_OFFSET + this.sliders[0].step * (activeSlider.value - MIN_AGE);
+        let offset = CONST_OFFSET + this.sliders[0].step * (activeSlider.value - this.min);
         // Detect which slider is active
         if (activeSlider.name === 'slider_min') {
-            offset = CONST_OFFSET + this.sliders[0].step * (activeSlider.value - MIN_AGE);
+            offset = CONST_OFFSET + this.sliders[0].step * (activeSlider.value - this.min);
 
             if (this.sliders[0].checkOffset(offset, this.sliders[0].maxOffset)) {
                 this.sliders[0].currentValue = activeSlider.value;
             } else {
-                this.sliders[0].currentValue = this.sliders[1].currentValue - 1;
+                this.sliders[0].currentValue = this.sliders[1].currentValue;
                 offset = this.sliders[0].maxOffset;
             }
 
@@ -63,12 +74,12 @@ export default class SliderManager {
             this.sliders[0].thumbLabel.style.left = offset.toString() + 'px';
             this.sliders[1].maxOffset = this.#leftOffset();
         } else {
-            offset = CONST_OFFSET + this.sliders[1].step * (activeSlider.value - MIN_AGE);
+            offset = CONST_OFFSET + this.sliders[1].step * (activeSlider.value - this.min);
 
             if (this.sliders[1].checkOffset(offset, this.sliders[1].maxOffset)) {
                 this.sliders[1].currentValue = activeSlider.value;
             } else {
-                this.sliders[1].currentValue = Number(this.sliders[0].currentValue) + 1;
+                this.sliders[1].currentValue = Number(this.sliders[0].currentValue);
                 offset = this.sliders[1].maxOffset;
             }
 
@@ -80,11 +91,11 @@ export default class SliderManager {
     };
 
     #rightOffset() {
-        return CONST_OFFSET + (this.sliders[1].currentValue - MIN_AGE - 1) * this.sliders[0].step;
+        return CONST_OFFSET + (this.sliders[1].currentValue - this.min) * this.sliders[0].step;
     }
 
     #leftOffset() {
-        return CONST_OFFSET + (this.sliders[0].currentValue - MIN_AGE + 1) * this.sliders[1].step;
+        return CONST_OFFSET + (this.sliders[0].currentValue - this.min) * this.sliders[1].step;
     }
 
     #moveOne = (activeSlider) => {
@@ -99,7 +110,7 @@ export default class SliderManager {
         this.lonelySliders[0].thumbLabel.style.left = offset.toString() + 'px';
     };
 
-    #configureSlider(slider, movementFunc, max, min) {
+    #configureSlider(slider, movementFunc, min, max) {
         // Set step
         slider.step = (slider.maxWidth - 25) / (max - min);
 

@@ -42,7 +42,8 @@
         {{#if user_limit}}
         <section class="filters__section filters__section_user-limit">
             <div class="filters__header">{{ MEMBER_AMOUNT }}</div>
-            {{> $Blocks/slider/template class="filters__slider-limit" min=3 max=16 value=10 step=1 name="slider-limit"}}
+            {{> $Blocks/slider/template class="filters__slider-limit-min" label=FROM min=3 max=15 value=3 step=1 name="slider_min"}}
+            {{> $Blocks/slider/template class="filters__slider-limit-max" label=TO min=3 max=15 value=15 step=1 name="slider_max"}}
         </section>
         {{/if}}
         {{#if location}}

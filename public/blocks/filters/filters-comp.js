@@ -4,6 +4,7 @@ import Component from 'Eventum/core/component';
 import FiltersTemplate from 'Blocks/filters/template.hbs';
 import SliderManager from 'Blocks/slider/set-slider';
 import TextConstants from 'Eventum/utils/language/text';
+import {MAX_LIMIT, MIN_AGE, MIN_LIMIT} from 'Eventum/utils/static-data';
 
 export default class Filters extends Component {
     /**
@@ -33,17 +34,17 @@ export default class Filters extends Component {
             FIND: TextConstants.BASIC__FIND,
             MEMBER_AMOUNT: TextConstants.FILTERS__MEMBER_AMOUNT,
         });
-        this.fields = ['tags', 'keywords', 'men-checkbox', 'women-checkbox', 'slider-min', 'slider-max', 'slider-limit'];
+        this.fields = ['tags', 'keywords', 'men-checkbox', 'women-checkbox', 'slider-min', 'slider-max', 'slider-limit-min', 'slider-limit-max'];
     }
 
     didRender() {
         super.didRender();
         this.tags = Array.prototype.slice.call(this.tagsDiv.querySelectorAll('.tag__container'));
         if (this.data.age) {
-            this.initSliders();
+            this.initAgeSliders();
         }
         if (this.data.user_limit) {
-            this.initSlider();
+            this.initLimitSliders();
         }
     }
 
@@ -76,30 +77,31 @@ export default class Filters extends Component {
         }
 
         if (this.data.user_limit) {
-            let limit = this.limitSlider.getAttribute('slider_value');
-            if (limit !== '?') {
-                options.user_limit = Number(limit);
-            }
+            options.minAmount = Number(this.limitMinSlider.getAttribute('slider_value'));
+            options.maxAmount = Number(this.limitMaxSlider.getAttribute('slider_value'));
         }
 
         return options;
     }
 
-    async initSlider() {
+    async initLimitSliders() {
         // Set two sliders and connect each other
-        this.singleSliderManager = new SliderManager();
-        this.singleSliderManager.setSlider(
-            this.element.querySelector('.filters__section_user-limit').querySelector('.slider'), 10);
+        this.doubleSliderManager = new SliderManager();
+        let sliders = this.element.querySelector('.filters__section_user-limit').querySelectorAll('.slider');
+        this.doubleSliderManager.setSliders(
+            {slider1: sliders[0], initialValue1: MIN_LIMIT},
+            {slider2: sliders[1], initialValue2: MAX_LIMIT},
+            'limit');
     }
 
-    // TODO: warning, depends on sliders order!!!
-    async initSliders() {
+    async initAgeSliders() {
         // Set two sliders and connect each other
         this.doubleSliderManager = new SliderManager();
         let sliders = this.element.querySelector('.filters__section_age').querySelectorAll('.slider');
         this.doubleSliderManager.setSliders(
-            {slider1: sliders[0], initialValue1: 18},
-            {slider2: sliders[1], initialValue2: 25});
+            {slider1: sliders[0], initialValue1: MIN_AGE},
+            {slider2: sliders[1], initialValue2: 25},
+            'age');
     }
 
     /***********************************************
@@ -130,7 +132,11 @@ export default class Filters extends Component {
         return this.vDOM['slider-max'];
     }
 
-    get limitSlider() {
-        return this.vDOM['slider-limit'];
+    get limitMinSlider() {
+        return this.vDOM['slider-limit-min'];
+    }
+
+    get limitMaxSlider() {
+        return this.vDOM['slider-limit-max'];
     }
 }
