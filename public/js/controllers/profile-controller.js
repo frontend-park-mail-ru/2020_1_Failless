@@ -32,16 +32,18 @@ export default class ProfileController extends Controller {
     constructor(parent) {
         super(parent);
         this.view = new ProfileView(parent);
-        this.MatchModel = null;
+        this.MatchModel = MatchModel.instance;
         this.editView = null;
         this.image = '';
         this.user = null;
         this.activeModalWindow = null;
         this.images = [];
+        this.timerId = null;
     }
 
     destructor() {
         this.view.destructor();
+        // this.timerId = null;
         super.destructor();
     }
 
@@ -58,12 +60,15 @@ export default class ProfileController extends Controller {
                     return;
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
-                    this.MatchModel = new MatchModel();
-                    this.MatchModel.establishConnection(profile.uid, this.receiveMessage).then(
-                        (response) => {
-                            // console.log(response);
-                        }
-                    );
+                    if (!this.MatchModel.socket) {
+                        this.MatchModel.establishConnection(profile.uid, this.receiveMessage).then(
+                            (response) => {
+                                if (!this.timerId) {
+                                    this.timerId = setInterval(this.#reestablishConnection, 10000);
+                                }
+                            }
+                        );
+                    }
                     this.view.render(profile);
                     EventModel.getUserOwnEvents(profile.uid).then(
                         (events) => {
@@ -672,6 +677,13 @@ export default class ProfileController extends Controller {
         if (this.uid !== message.uid) {
             NotificationController.notify(TextConstants.FEED__NEW_MATCH);
         }
+    };
+
+    /**
+     * Re-establish conn to WS
+     */
+    #reestablishConnection = () => {
+        this.MatchModel.sendMessage();
     };
 
 }
