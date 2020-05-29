@@ -85,7 +85,7 @@ export default class SignUpController extends Controller {
     #getFromSignUp() {
         const name = this.form[0].value;
         const email = this.form[1].value;
-        const phone = this.form[2].value;
+        let phone = this.form[2].value.replace(/\D/g, '');;
         const password = this.form[3].value;
         const repeatPassword = this.form[4].value;
 
@@ -101,6 +101,9 @@ export default class SignUpController extends Controller {
 
         if (errors_list.some(val => val.length !== 0)) {
             return void 0;
+        }
+        if (phone[0] === '7' || phone[0] === '8') {
+            phone = phone.substr(1, phone.length);
         }
 
         return {name, password, phone, email};
@@ -153,7 +156,7 @@ export default class SignUpController extends Controller {
     #checkInputHandler = (event) => {
         const name = this.form[0].value;
         const email = this.form[1].value;
-        const phone = this.form[2].value;
+        const phone = this.form[2].value.replace(/\D/g, '');
         const password = this.form[3].value;
         const repeatPassword = this.form[4].value;
 
