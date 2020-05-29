@@ -1,23 +1,39 @@
 import Model from 'Eventum/core/model';
 import settings from 'Settings/config';
-import NetworkModule from 'Eventum/core/network';
-import UserModel from 'Eventum/models/user-model';
+
+let matchModelSymbol = Symbol('Model for match');
+let matchModelEnforcer = Symbol('The only object that can create MatchModel');
 
 /**
- * @class ChatModel
+ * @class MatchModel
  */
 export default class MatchModel extends Model {
 
     /**
-     * Create ChatModel object
+     * Create MatchModel object
      */
-    constructor() {
+    constructor(enforcer) {
         super();
+        if (enforcer !== matchModelEnforcer) {
+            throw 'Instantiation failed: use MatchModel.instance instead of new()';
+        }
+
         this.socket = null;
     }
 
+    static get instance() {
+        if (!this[matchModelSymbol]) {
+            this[matchModelSymbol] = new MatchModel(matchModelEnforcer);
+        }
+        return this[matchModelSymbol];
+    }
+
+    static set instance(v) {
+        throw 'Can\'t change constant property!';
+    }
+
     async establishConnection(uid, onMessage) {
-        let socket = new WebSocket(`${settings.wsurl}:3000/ws/match`);
+        let socket = new WebSocket(`${settings.wsurl}:${settings.port}/ws/match`);
         socket.onopen = () => {
             this.socket = socket;
 
@@ -28,5 +44,12 @@ export default class MatchModel extends Model {
         socket.onerror = (error) => {
             return null;
         };
+    }
+
+    /**
+     * Ping - pong
+     */
+    async sendMessage() {
+        this.socket.send(JSON.stringify({}));
     }
 }
