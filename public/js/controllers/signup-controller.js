@@ -79,13 +79,12 @@ export default class SignUpController extends Controller {
 
     /**
      * Get data from input form on sign up page
-     * @param {Event} event
      * @return {{password: *, phone: *, name: *, email: *}} input form
      */
     #getFromSignUp() {
         const name = this.form[0].value;
         const email = this.form[1].value;
-        let phone = this.form[2].value.replace(/\D/g, '');;
+        let phone = this.form[2].value.replace(/[()+\-]/g, '');
         const password = this.form[3].value;
         const repeatPassword = this.form[4].value;
 
