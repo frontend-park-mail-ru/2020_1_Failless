@@ -49,7 +49,7 @@ function setStatic(tc = TextConstants) {
 
 const MIN_AGE = 18;
 const MAX_AGE = 100;
-const MIN_LIMIT = 2;
+const MIN_LIMIT = 3;
 const MAX_LIMIT = 15;
 
 const icons = new Map([
