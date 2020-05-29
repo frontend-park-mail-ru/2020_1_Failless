@@ -19,6 +19,10 @@ export default class TextConstants {
             short: 'en',
             full: 'English',
         },
+        SPANISH: {
+            short: 'es',
+            full: 'Español',
+        }
     };
 
     /**

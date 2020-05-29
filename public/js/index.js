@@ -27,9 +27,12 @@ const application = document.getElementById('application');
 // }
 
 let lang = localStorage.getItem('cur_lang');
+let winLang = window.navigator.language;
 if (!lang) {
-    if (window.navigator.language === 'ru-RU') {
+    if (winLang === 'ru-RU' || winLang === 'ru') {
         lang = TextConstants.LANGUAGES.RUSSIAN.short;
+    } else if (winLang === 'es' || winLang.startsWith('es')) {
+        lang = TextConstants.LANGUAGES.SPANISH.short;
     } else {
         lang = TextConstants.LANGUAGES.ENGLISH.short;
     }
