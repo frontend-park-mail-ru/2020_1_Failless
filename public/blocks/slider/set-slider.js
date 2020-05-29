@@ -25,7 +25,7 @@ export default class SliderManager {
         this.#configureSlider(
             this.lonelySliders[this.#registerSlider(slider, initialValue, null, false)],
             this.#moveOne,
-            MAX_LIMIT,
+            MAX_LIMIT + 1,  // TODO: remember that
             MIN_LIMIT);
     }
 
@@ -90,7 +90,11 @@ export default class SliderManager {
     #moveOne = (activeSlider) => {
         this.lonelySliders[0].currentValue = activeSlider.value;
         let offset = CONST_OFFSET + this.lonelySliders[0].step * (this.lonelySliders[0].currentValue - MIN_LIMIT);
-        this.lonelySliders[0].thumbLabel.setAttribute('slider_value', this.lonelySliders[0].currentValue);
+        if (+activeSlider.value === MAX_LIMIT + 1) {
+            this.lonelySliders[0].thumbLabel.setAttribute('slider_value', '?');
+        } else {
+            this.lonelySliders[0].thumbLabel.setAttribute('slider_value', this.lonelySliders[0].currentValue);
+        }
         this.lonelySliders[0].input.value = this.lonelySliders[0].currentValue;
         this.lonelySliders[0].thumbLabel.style.left = offset.toString() + 'px';
     };

@@ -78,7 +78,10 @@ export default class Filters extends Component {
         }
 
         if (this.data.user_limit) {
-            options.user_limit = Number(this.limitSlider.getAttribute('slider_value'));
+            let limit = this.limitSlider.getAttribute('slider_value');
+            if (limit !== '?') {
+                options.user_limit = Number(limit);
+            }
         }
 
         return options;
