@@ -9,6 +9,7 @@ import {changeActionText} from 'Blocks/event/event';
 import {detectMobile} from 'Eventum/utils/basic';
 import {highlightTag} from 'Eventum/utils/tag-logic';
 import {icons} from 'Eventum/utils/static-data';
+import Snackbar from 'Blocks/snackbar/snackbar';
 
 /**
  * @class SearchController
@@ -141,6 +142,11 @@ export default class SearchController extends Controller {
         let eventComponent = this.view.vDOM.results.grid.events.find((event) => {
             return event.data.eid === Number(eid);
         });
+
+        if (eventComponent.data.member_amount >= eventComponent.data.limit) {
+            Snackbar.instance.addMessage(TextConstants.EVENT__INVITE_SENT);
+            return;
+        }
 
         UserModel.getProfile().then(
             (profile) => {

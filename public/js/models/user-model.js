@@ -163,7 +163,6 @@ export default class UserModel extends Model {
      */
     static async getProfile() {
         return this.getLogin().then(user => {
-            console.log(user);
             if (user !== null) {
                 if (this.profile) {
                     return this.profile;

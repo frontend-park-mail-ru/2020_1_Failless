@@ -219,7 +219,6 @@ export default class SignUpController extends Controller {
             this.view.updatePhone(this.inputManager.text);
             return;
         }
-        console.log(input.length, this.inputManager.text.length);
         if (input.length < this.inputManager.text.length) {
             this.inputManager.text = input;
             switch (this.inputManager.i) {

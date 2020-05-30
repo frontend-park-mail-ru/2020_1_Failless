@@ -27,7 +27,6 @@ export default class EventModel extends Model {
         if (errors.length !== 0) {
             throw new Error(...errors);
         }
-        console.log(eventsRequest);
         return NetworkModule.fetchPost({path: '/events/search', body: eventsRequest})
             .then((response) => {
                 if (response.status > 499) {

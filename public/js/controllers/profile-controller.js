@@ -215,7 +215,6 @@ export default class ProfileController extends Controller {
                     ]);
                 }
             }).catch(onerror => {
-                console.log(onerror);
                 Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_NO_RIGHTS);
                 setTimeout(() => Router.redirectForward('/'), 1000);
             });
