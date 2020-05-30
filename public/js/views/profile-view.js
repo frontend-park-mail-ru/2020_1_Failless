@@ -289,16 +289,20 @@ export default class ProfileView extends MyView {
         if (!events || (!events.mid_events || events.mid_events.length === 0) && (!events.small_events || events.small_events.length === 0)) {
             personalEvents.insertAdjacentHTML('afterbegin', `<span class="font font_bold font__size_small font__color_lg">${TextConstants.PROFILE__NO_EVENTS}</span>`);
         } else {
-            events.small_events.forEach((smallEvent) => {
-                let smallEventComponent = new SmallEventComponent(smallEvent, true);
-                this.vDOM.mainColumn.personalEvents.events.small_events.push(smallEventComponent);
-                smallEventComponent.renderAsElement(personalEvents, 'beforeend');
-            });
-            events.mid_events.forEach((midEvent) => {
-                let midEventComponent = new MidEventComponent(midEvent, true);
-                this.vDOM.mainColumn.personalEvents.events.mid_events.push(midEventComponent);
-                midEventComponent.renderAsElement(personalEvents, 'beforeend');
-            });
+            if (events.small_events && events.small_events.length > 0) {
+                events.small_events.forEach((smallEvent) => {
+                    let smallEventComponent = new SmallEventComponent(smallEvent, true);
+                    this.vDOM.mainColumn.personalEvents.events.small_events.push(smallEventComponent);
+                    smallEventComponent.renderAsElement(personalEvents, 'beforeend');
+                });
+            }
+            if (events.mid_events && events.mid_events.length > 0) {
+                events.mid_events.forEach((midEvent) => {
+                    let midEventComponent = new MidEventComponent(midEvent, true);
+                    this.vDOM.mainColumn.personalEvents.events.mid_events.push(midEventComponent);
+                    midEventComponent.renderAsElement(personalEvents, 'beforeend');
+                });
+            }
         }
     }
 
