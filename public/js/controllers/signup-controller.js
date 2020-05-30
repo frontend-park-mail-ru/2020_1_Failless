@@ -246,7 +246,7 @@ export default class SignUpController extends Controller {
         }
         this.inputManager.text = input;
 
-        if (this.inputManager.i === 0) {
+        if (this.inputManager.i === 0 && input.length === 1) {
             this.inputManager.text = '+7(' + this.inputManager.text;
         } else if (this.inputManager.i === 2) {
             this.inputManager.text = this.inputManager.text + ')';
