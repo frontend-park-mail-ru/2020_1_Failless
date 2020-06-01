@@ -7,7 +7,7 @@ let localLibrary = EnglishLibrary;
 
 // Change this value every time you change libraries
 // Also change library version in static/lang/*.json
-const libVersion = 2;
+const libVersion = 3;
 
 export default class TextConstants {
     static LANGUAGES = {
@@ -148,6 +148,7 @@ export default class TextConstants {
     static get BASIC__YOU() {return localLibrary.Basic.YOU;}
 
     static get EVENT__ADD_PHOTO() {return localLibrary.Event.ADD_PHOTOS;}
+    static get EVENT__INVITE_SENT() {return localLibrary.Event.INVITE_SENT;}
     static get EVENT__LEAVE() {return localLibrary.Event.LEAVE;}
     static get EVENT__RANDOM_ABOUT() {return localLibrary.Event.RANDOM_ABOUT;}
     static get EVENT__RANDOM_TITLE() {return localLibrary.Event.RANDOM_TITLE;}

@@ -6,6 +6,25 @@ import TextConstants from 'Eventum/utils/language/text';
 export default class MidEvent extends EventComp {
     visited = false;
 
+    /**
+     *
+     * @param data {{
+     *     class: 'mid',
+     *     date: string,
+     *     description: string,
+     *     eid: Number,
+     *     limit: Number,
+     *     member_amount: Number,
+     *     mid: boolean,
+     *     own: boolean,
+     *     photos: Array<String>,
+     *     public: boolean,
+     *     tags: Array<Number>,
+     *     title: string,
+     *     uid: Number
+     * }}
+     * @param own
+     */
     constructor(data, own) {
         super(data, own);
         this.type = 'mid';

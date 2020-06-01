@@ -60,15 +60,6 @@ export default class ProfileController extends Controller {
                     return;
                 }
                 if (Object.prototype.hasOwnProperty.call(profile, 'about')) {
-                    if (!this.MatchModel.socket) {
-                        this.MatchModel.establishConnection(profile.uid, this.receiveMessage).then(
-                            (response) => {
-                                if (!this.timerId) {
-                                    this.timerId = setInterval(this.#reestablishConnection, 10000);
-                                }
-                            }
-                        );
-                    }
                     this.view.render(profile);
                     EventModel.getUserOwnEvents(profile.uid).then(
                         (events) => {
@@ -87,7 +78,7 @@ export default class ProfileController extends Controller {
                         }
                     );
                     (async () => {
-                        this.view.leftHeaderDiv.querySelectorAll('.circle')[2].classList.add('circle_active');
+                        this.view.leftHeaderDiv.querySelectorAll('.circle')[1].classList.add('circle_active');
                     })();
                     this.user = profile;
 
@@ -222,13 +213,22 @@ export default class ProfileController extends Controller {
                             ]
                         },
                     ]);
-                } else {
-                    Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_NO_RIGHTS);
-                    setTimeout(() => Router.redirectForward('/'), 800);
                 }
             }).catch(onerror => {
                 Snackbar.instance.addMessage(TextConstants.BASIC__ERROR_NO_RIGHTS);
                 setTimeout(() => Router.redirectForward('/'), 1000);
+            });
+         UserModel.getLogin()
+            .then(user => {
+                if (!this.MatchModel.socket) {
+                    this.MatchModel.establishConnection(user.uid, this.receiveMessage).then(
+                        (response) => {
+                            if (!this.timerId) {
+                                this.timerId = setInterval(this.#reestablishConnection, 10000);
+                            }
+                        }
+                    );
+                }
             });
     }
 

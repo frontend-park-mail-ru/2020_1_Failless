@@ -9,6 +9,8 @@ import {changeActionText} from 'Blocks/event/event';
 import {detectMobile} from 'Eventum/utils/basic';
 import {highlightTag} from 'Eventum/utils/tag-logic';
 import {icons} from 'Eventum/utils/static-data';
+import Snackbar from 'Blocks/snackbar/snackbar';
+import {showMessageWithRedirect} from 'Eventum/utils/render';
 
 /**
  * @class SearchController
@@ -142,8 +144,13 @@ export default class SearchController extends Controller {
             return event.data.eid === Number(eid);
         });
 
-        UserModel.getProfile().then(
-            (profile) => {
+        if (eventComponent.data.member_amount >= eventComponent.data.limit) {
+            Snackbar.instance.addMessage(TextConstants.EVENT__INVITE_SENT);
+            return;
+        }
+
+        UserModel.getProfile()
+            .then(profile => {
                 if (!profile) {
                     // TODO: Show registration modal window
                     return;
@@ -153,19 +160,17 @@ export default class SearchController extends Controller {
                         .then((response) => {
                             changeActionText(event.target, 'green', TextConstants.EVENT__YOU_GO);
                             eventComponent.incrementMembers();
-                        },
-                        (error) => {
-                            changeActionText(event.target, 'red', TextConstants.BASIC__ERROR);
-                        });
-                } else if (event.target.previousElementSibling.classList.contains('event__circle_big')) {
-                    EventModel.visitBigEvent(profile.uid, event.target.getAttribute('data-eid'))
-                        .then((response) => changeActionText(event.target, 'green', TextConstants.EVENT__YOU_GO),
-                            (error) => {
-                                changeActionText(event.target, 'red', TextConstants.BASIC__ERROR);
-                            });
+                        })
+                        .catch(error => changeActionText(event.target, 'red', TextConstants.BASIC__ERROR));
+                // } else if (event.target.previousElementSibling.classList.contains('event__circle_big')) {
+                //     EventModel.visitBigEvent(profile.uid, event.target.getAttribute('data-eid'))
+                //         .then((response) => changeActionText(event.target, 'green', TextConstants.EVENT__YOU_GO),
+                //             (error) => {
+                //                 changeActionText(event.target, 'red', TextConstants.BASIC__ERROR);
+                //             });
                 }
-            }
-        );
+            })
+            .catch(() => showMessageWithRedirect(TextConstants.BASIC__ERROR_NO_RIGHTS, 'SignIn'));
     };
 
     /**

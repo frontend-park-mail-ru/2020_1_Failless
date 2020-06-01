@@ -123,6 +123,11 @@ export default class FeedController extends Controller {
                     return;
                 }
 
+                if (eventComponent.data.member_amount >= eventComponent.data.limit) {
+                    Snackbar.instance.addMessage(TextConstants.EVENT__INVITE_SENT);
+                    return;
+                }
+
                 if (eventComponent.type === 'mid') {
                     return EventModel.joinMidEvent(profile.uid, eid)
                         .then((response) => eventComponent.state = true);

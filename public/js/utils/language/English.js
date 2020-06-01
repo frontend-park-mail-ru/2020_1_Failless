@@ -46,6 +46,7 @@ const BasicTextsEnglish = {
 
 const EventTextsEnglish = {
     ADD_PHOTOS: 'Add photos',
+    INVITE_SENT: 'You are late to the party<br>but your invite was sent',
     LEAVE: 'Leave',
     RANDOM_ABOUT: 'Last one to finish wins another shot',
     RANDOM_TITLE: 'Bar marathon',

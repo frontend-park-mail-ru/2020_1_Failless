@@ -161,9 +161,9 @@ export default class UserModel extends Model {
      * Send user profile data to server
      * @return {Promise} promise to set new user data
      */
-    static getProfile() {
+    static async getProfile() {
         return this.getLogin().then(user => {
-            if (user) {
+            if (user !== null) {
                 if (this.profile) {
                     return this.profile;
                 }

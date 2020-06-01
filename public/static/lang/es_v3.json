@@ -46,6 +46,7 @@
 	},
 	"Event": {
 		"ADD_PHOTOS": "Añadir fotos",
+		"INVITE_SENT": "No hay más lugares<br>Pero su solicitud ha sido enviada",
 	    "LEAVE": "Dejar",
 		"RANDOM_ABOUT": "¿Probamos conexión?",
 		"RANDOM_TITLE": "El día nuevo - nuevos horizontes",
