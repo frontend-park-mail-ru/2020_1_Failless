@@ -48,6 +48,10 @@ $people-img: "https://eventum.s3.eu-north-1.amazonaws.com/app/2.jpg";
       background: rgba(18, 194, 233, 1); // TODO: check alpha
     }
 
+    &_events {
+      background: $color-white;
+    }
+
     &_footer {
       background: $color-black;
       text-align: left;
@@ -235,6 +239,50 @@ $people-img: "https://eventum.s3.eu-north-1.amazonaws.com/app/2.jpg";
     font-weight: bold;
     font-size: 26px;
     color: $color-white;
+  }
+}
+
+/*-------------------------------------------*\
+     Events
+\*-------------------------------------------*/
+
+.events-section {
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__img {
+    width: 20%;
+    position: relative;
+    transform: perspective(20px) rotateY(0.5deg);
+
+    & img {
+      width: 100%;
+      border-radius: 4px;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      z-index: -1;
+      width: 92%;
+      height: 92%;
+      border-radius: 50%;
+      box-shadow: 0 0 50px -3px $color-blue;
+    }
+  }
+
+  &__text {
+    width: 60%;
+    text-align: left;
+  }
+
+  &__examples {
+    font-style: italic;
+    font-size: 13px;
   }
 }
 

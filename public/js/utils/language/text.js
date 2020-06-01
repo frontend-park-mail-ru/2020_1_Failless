@@ -229,11 +229,15 @@ export default class TextConstants {
     static get LANDING__MOTTO() {return localLibrary.Landing.MOTTO;}
     static get LANDING__PREV_WORKS() {return localLibrary.Landing.PREV_WORKS;}
     static get LANDING__RIGHTS() {return localLibrary.Landing.RIGHTS;}
-    static get LANDING__SCREEN1_TITLE() {return localLibrary.Landing.SCREEN1_TITLE;}
-    static get LANDING__SCREEN1_1() {return localLibrary.Landing.LANDING__SCREEN1_1;}
-    static get LANDING__SCREEN1_2() {return localLibrary.Landing.LANDING__SCREEN1_2;}
-    static get LANDING__SCREEN1_3() {return localLibrary.Landing.LANDING__SCREEN1_3;}
-    static get LANDING__SCREEN1_4() {return localLibrary.Landing.LANDING__SCREEN1_4;}
+    static get LANDING__SECTION1_TITLE() {return localLibrary.Landing.SECTION1_TITLE;}
+    static get LANDING__SECTION1_1() {return localLibrary.Landing.SECTION1_1;}
+    static get LANDING__SECTION1_2() {return localLibrary.Landing.SECTION1_2;}
+    static get LANDING__SECTION1_3() {return localLibrary.Landing.SECTION1_3;}
+    static get LANDING__SECTION1_4() {return localLibrary.Landing.SECTION1_4;}
+    static get LANDING__SECTION2_TITLE() {return localLibrary.Landing.SECTION2_TITLE;}
+    static get LANDING__SECTION2_1() {return localLibrary.Landing.SECTION2_1;}
+    static get LANDING__SECTION2_2() {return localLibrary.Landing.SECTION2_2;}
+    static get LANDING__SECTION2_3() {return localLibrary.Landing.SECTION2_3;}
     static get LANDING__SHORT_DESCRIPTION() {return localLibrary.Landing.SHORT_DESCRIPTION;}
 
     static get TAGS__BAR() {return localLibrary.Tags.BAR;}
