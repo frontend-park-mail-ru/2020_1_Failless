@@ -1,6 +1,7 @@
 'use strict';
 
 import UserModel from 'Eventum/models/user-model';
+import settings from 'Settings/config';
 
 /**
  * @class create Router class
@@ -41,6 +42,9 @@ export default class Router {
      * @private
      */
     #handle = (current) => {
+        if (settings.mode === 'debug') {
+            current = '/service'
+        }
         let controller = this.urls.get(current);
         if (!controller) {
             // todo: 404 handler

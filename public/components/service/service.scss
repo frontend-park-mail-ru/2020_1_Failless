@@ -1,0 +1,126 @@
+@import "../../modules/variables";
+
+$people-img: "https://eventum.s3.eu-north-1.amazonaws.com/app/2.jpg";
+
+.service {
+  width: 100%;
+  height: 100%;
+  z-index: $z-index-modal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: darken;
+  background-image:
+              linear-gradient(
+                  135deg,
+                  rgba(8, 41, 55, 0.75) 0%,
+                  rgba(44, 21, 55, 0.75) 50%,
+                  rgba(55, 15, 19, 0.75) 100%),
+              url($people-img);
+
+  &__body {
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+  }
+
+  &__icon {
+    width: 140px;
+    fill: url(#gradient-svg);
+    margin-bottom: $re--big-padding;
+  }
+
+  &__message {
+    color: $re--color-light-gray;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  &__notify {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    &:focus-within {
+      & .service__input {
+        border: $gradient-blue;
+      }
+
+      & .service__button {
+        cursor: pointer;
+        background-position: 50% 50%;
+      }
+    }
+  }
+
+  &__input {
+    outline: none;
+    color: $re--color-light-gray;
+    background: none;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid #f1f1f1;
+    border-top-left-radius: $re--border-radius;
+    border-bottom-left-radius: $re--border-radius;
+    padding: 5px;
+    font-weight: 300;
+
+    @include transition(0.3s, ease-in-out);
+
+    &::placeholder {
+      font-weight: 300;
+      color: $re--color-light-gray;
+      font-size: 14px;
+    }
+  }
+
+  &__button {
+    border-top-right-radius: $re--border-radius;
+    border-bottom-right-radius: $re--border-radius;
+    border: 1px solid $re--color-light-gray;
+    border-left: none;
+    color: $color-white;
+    padding: 8px 14px;
+    background: $extended-gradient;
+    background-size: 300% 300%;
+    background-position: 0% 50%;
+    cursor: not-allowed;
+
+    @include transition(0.3s, ease-in-out);
+  }
+
+  &__footer {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    font-size: 23px;
+    position: fixed;
+    bottom: 0;
+    margin-bottom: 3px;
+    color: $re--color-light-gray;
+
+    & p {
+      margin: 0;
+    }
+  }
+
+  &__eventum {
+    font-weight: 500;
+    color: $re--color-light-gray;
+  }
+
+  &__credits {
+    margin: 5px 0;
+    text-align: center;
+    color: $re--color-gray;
+    font-size: 6px;
+
+    & a {
+      color: $re--color-gray;
+    }
+  }
+}

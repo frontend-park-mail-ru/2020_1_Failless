@@ -7,9 +7,9 @@ import FeedController from 'Eventum/controllers/feed-controller.js';
 import SearchController from 'Eventum/controllers/search-controller.js';
 import ProfileController from 'Eventum/controllers/profile-controller.js';
 import ChatController from 'Eventum/controllers/chat-controller.js';
+import ServiceController from 'Eventum/controllers/service-controller';
 import Router from 'Eventum/core/router.js';
 import {setStatic} from 'Eventum/utils/static-data';
-// import 'Static/css/style.css';
 import 'Public/style.scss';
 import TextConstants from 'Eventum/utils/language/text';
 
@@ -48,6 +48,7 @@ TextConstants.translateTo(lang)
         router.addRoute('/feed',        new FeedController(application));        // profiles
         router.addRoute('/my/profile',  new ProfileController(application));
         router.addRoute('/my/chats',    new ChatController(application));
+        router.addRoute('/service',     new ServiceController(application));
         router.route();
     });
 
