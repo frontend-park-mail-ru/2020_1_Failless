@@ -24,6 +24,7 @@ $people-img: "https://eventum.s3.eu-north-1.amazonaws.com/app/2.jpg";
     display: flex;
     align-items: center;
     flex-flow: column;
+    margin-bottom: 8%;
   }
 
   &__icon {
@@ -44,36 +45,27 @@ $people-img: "https://eventum.s3.eu-north-1.amazonaws.com/app/2.jpg";
     display: flex;
     align-items: center;
     justify-content: space-around;
-
-    &:focus-within {
-      & .service__input {
-        border: $gradient-blue;
-      }
-
-      & .service__button {
-        cursor: pointer;
-        background-position: 50% 50%;
-      }
-    }
   }
 
   &__input {
-    outline: none;
-    color: $re--color-light-gray;
+    width: 200px;
+    height: calc(100% + 1px);
+    padding: 5px;
     background: none;
+    color: $re--color-light-gray;
     font-size: 14px;
+    font-weight: 300;
     text-align: center;
     border: 1px solid #f1f1f1;
     border-top-left-radius: $re--border-radius;
     border-bottom-left-radius: $re--border-radius;
-    padding: 5px;
-    font-weight: 300;
+    outline: none;
 
     @include transition(0.3s, ease-in-out);
 
     &::placeholder {
       font-weight: 300;
-      color: $re--color-light-gray;
+      color: $re--color-gray;
       font-size: 14px;
     }
   }
@@ -85,12 +77,24 @@ $people-img: "https://eventum.s3.eu-north-1.amazonaws.com/app/2.jpg";
     border-left: none;
     color: $color-white;
     padding: 8px 14px;
-    background: $extended-gradient;
+    background: $extended-gradient-reverse;
     background-size: 300% 300%;
-    background-position: 0% 50%;
-    cursor: not-allowed;
-
     @include transition(0.3s, ease-in-out);
+
+    &_first {
+      background-position: 0% 0%;
+      cursor: not-allowed;
+    }
+
+    &_second {
+      background-position: 50% 50%;
+      cursor: pointer;
+    }
+
+    &_third {
+      background-position: 100% 100%;
+      cursor: pointer;
+    }
   }
 
   &__footer {

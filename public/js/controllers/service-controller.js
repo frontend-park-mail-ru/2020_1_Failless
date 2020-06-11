@@ -20,5 +20,6 @@ export default class ServiceController extends Controller {
     action() {
         super.action();
         this.view.render();
+        this.addEventHandler(document.body, 'click', this.view.inputHandler.bind(this.view));
     }
 }
