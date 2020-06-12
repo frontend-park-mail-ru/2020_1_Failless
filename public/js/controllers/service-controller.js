@@ -35,7 +35,9 @@ export default class ServiceController extends Controller {
         this.addEventHandler(document.body, 'click', (event) => {
             if (!event.target.matches('.service__input') && this.view.input.value === '') {
                 this.view.input.placeholder = 'Email';
-                this.view.buttonColor('first');
+                if (!this.view.button.classList.contains('service__button_third')) {
+                    this.view.buttonColor('first');
+                }
             }
         });
         this.addEventHandler(window, 'keydown', (event) => {
@@ -64,12 +66,16 @@ export default class ServiceController extends Controller {
         let input = this.view.input;
         if (input.value !== '' && this.#emailCorrect().length !== 0) {
             this.view.showInvalidEmail();
+            this.view.buttonColor('first');
         } else {
             this.#sendEmail(input.value);
             this.view.clearInput();
-            Snackbar.instance.addMessage('Email has been sent. Thank you');
+            Snackbar.instance.addMessage(`Email has been sent.<br>Don't forget to check in spam folder`);
+            this.view.buttonColor('third');
+            setTimeout(() => {
+                this.view.buttonColor('first');
+            }, 5000);
         }
-        this.view.buttonColor('first');
         input.blur();
     }
 
