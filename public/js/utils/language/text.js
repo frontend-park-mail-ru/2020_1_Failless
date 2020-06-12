@@ -7,7 +7,7 @@ let localLibrary = EnglishLibrary;
 
 // Change this value every time you change libraries
 // Also change library version in static/lang/*.json
-const libVersion = 3;
+const libVersion = 4;
 
 export default class TextConstants {
     static LANGUAGES = {
@@ -253,4 +253,8 @@ export default class TextConstants {
     static get TAGS__THEATRE() {return localLibrary.Tags.THEATRE;}
 
     static get ERROR__LIB_DOWNLOAD_FAILED() {return localLibrary.Error.LIB_DOWNLOAD_FAILED;}
+
+    static get SERVICE__EMAIL_SENT() {return localLibrary.Service.EMAIL_SENT;}
+    static get SERVICE__NOTIFY() {return localLibrary.Service.NOTIFY;}
+    static get SERVICE__CONSTRUCTION() {return localLibrary.Service.CONSTRUCTION;}
 }

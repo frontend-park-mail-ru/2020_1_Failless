@@ -7,6 +7,7 @@ import router from 'Eventum/core/router';
 import {detectMobile} from 'Eventum/utils/basic';
 import TextConstants from 'Eventum/utils/language/text';
 import Snackbar from 'Blocks/snackbar/snackbar';
+import settings from 'Settings/config';
 
 /**
  * @class Basic controller class
@@ -44,6 +45,9 @@ export default class Controller {
      * Create action and render header
      */
     action() {
+        if (settings.mode === 'debug') {
+            return;
+        }
         UserModel.getLogin()
             .then((user) => createHeader(this.parent, Object.prototype.hasOwnProperty.call(user, 'uid')))
             .catch(() => {

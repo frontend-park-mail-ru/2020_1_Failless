@@ -28,6 +28,14 @@ $extended-gradient: linear-gradient(
                 $color-purple,
                 $color-also-red,
                 $color-red);
+$extended-gradient-reverse: linear-gradient(
+                135deg,
+                $color-red,
+                $color-also-red,
+                $color-purple,
+                $color-also-purple,
+                $color-blue,
+                $color-also-blue);
 $re--gradient-left: linear-gradient(
                   135deg,
                   $color-blue 0%,

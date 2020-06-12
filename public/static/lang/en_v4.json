@@ -161,5 +161,10 @@
 	},
 	"Error": {
 		"LIB_DOWNLOAD_FAILED": "Failed to download library for your language due to slow network connection"
+	},
+	"Service": {
+		"EMAIL_SENT": "Email has been sent<br>Thank you",
+		"NOTIFY": "Notify",
+		"CONSTRUCTION": "Right now we're working hard on bringing the service back to life<br>We can tell you when we are done<br>Thank you for patience"
 	}
 }

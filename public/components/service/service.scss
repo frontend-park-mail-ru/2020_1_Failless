@@ -1,0 +1,166 @@
+@import "../../modules/variables";
+
+$people-img: "https://eventum.s3.eu-north-1.amazonaws.com/app/2.jpg";
+
+.service {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: darken;
+  background-image:
+              linear-gradient(
+                  135deg,
+                  rgba(8, 41, 55, 0.75) 0%,
+                  rgba(44, 21, 55, 0.75) 50%,
+                  rgba(55, 15, 19, 0.75) 100%),
+              url($people-img);
+
+  &__body {
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    margin-bottom: 18vh;
+  }
+
+  &__icon {
+    width: 140px;
+    fill: url(#gradient-svg);
+    margin-bottom: $re--big-padding;
+  }
+
+  &__message {
+    color: $re--color-light-gray;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  &__notify {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      height: 34px;
+    }
+  }
+
+  &__input {
+    width: 200px;
+    height: 100%;
+    padding: 5px;
+    background: none;
+    color: $re--color-light-gray;
+    font-size: 14px;
+    font-weight: 300;
+    text-align: center;
+    border: 1px solid #f1f1f1;
+    border-top-left-radius: $re--border-radius;
+    border-bottom-left-radius: $re--border-radius;
+    outline: none;
+    @include transition(0.3s, ease-in-out);
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      width: auto;
+      flex-shrink: 1;
+      font-size: 11px;
+    }
+
+    &::placeholder {
+      font-weight: 300;
+      color: $re--color-gray;
+      font-size: 14px;
+
+      @media only screen and (max-width: $breakpoint-phone) {
+        font-size: 11px;
+      }
+    }
+
+    &_error {
+      border-color: red;
+    }
+  }
+
+  &__button {
+    height: 100%;
+    border-top-right-radius: $re--border-radius;
+    border-bottom-right-radius: $re--border-radius;
+    border: 1px solid $re--color-light-gray;
+    border-left: none;
+    color: $color-white;
+    padding: 8px 14px;
+    background: $extended-gradient-reverse;
+    background-size: 300% 300%;
+    @include transition(0.3s, ease-in-out);
+
+    @media only screen and (max-width: $breakpoint-phone) {
+      font-size: 11px;
+      line-height: 17px;
+    }
+
+    &_first {
+      background-position: 0% 0%;
+      cursor: not-allowed;
+    }
+
+    &_second {
+      background-position: 50% 50%;
+      cursor: pointer;
+    }
+
+    &_third {
+      background-position: 100% 100%;
+      cursor: pointer;
+    }
+
+    &_error {
+      cursor: not-allowed;
+      border-color: red;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    font-size: 23px;
+    position: fixed;
+    bottom: 0;
+    margin-bottom: 3px;
+    color: $re--color-light-gray;
+
+    & p {
+      margin: 0;
+    }
+  }
+
+  &__eventum {
+    font-weight: 500;
+    color: $re--color-light-gray;
+  }
+
+  &__credits {
+    margin: 5px 0;
+    text-align: center;
+    color: $re--color-gray;
+    font-size: 6px;
+
+    & a {
+      color: $re--color-gray;
+    }
+  }
+
+  &__error {
+    font-size: 10px;
+    color: red;
+    position: absolute;
+    top: -12px;
+    left: 0px;
+  }
+}
