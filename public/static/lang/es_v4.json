@@ -161,5 +161,10 @@
 	},
 	"Error": {
 		"LIB_DOWNLOAD_FAILED": "No se logró cargar la biblioteca para su idioma"
+	},
+	"Service": {
+		"EMAIL_SENT": "El correo ha sido enviado<br>Agradecer",
+		"NOTIFY": "Notificar",
+		"CONSTRUCTION": "Ahora mismo estamos trabajando duro para devolver el servicio a la vida<br>Podemos decirle cuando hayamos terminado<br>Gracias por la paciencia"
 	}
 }

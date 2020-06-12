@@ -2,6 +2,7 @@
 
 import View from 'Eventum/core/view';
 import ServiceTemplate from 'Components/service/template.hbs';
+import TextConstants from 'Eventum/utils/language/text';
 
 export default class ServiceView extends View {
     /**
@@ -19,8 +20,8 @@ export default class ServiceView extends View {
 
     render() {
         this.parent.innerHTML = ServiceTemplate({
-            MESSAGE: 'В данный момент мы в поте лица наводим марафет всему сервису<br>Мы можем сообщить вам, как только всё снова заработает<br>Благодарим Вас за терпение',
-            BUTTON: 'Уведомить',
+            MESSAGE: TextConstants.SERVICE__CONSTRUCTION,
+            BUTTON: TextConstants.SERVICE__NOTIFY,
         });
         this.setvDOM();
     }
@@ -112,12 +113,12 @@ export default class ServiceView extends View {
         this.button.classList.remove('service__button_error');
     }
 
-    async showInvalidEmail() {
+    async showInvalidEmail(error) {
         this.input.classList.add('service__input_error');
         this.button.classList.add('service__button_error');
 
         if (this.parent.querySelectorAll('.service__error').length === 0) {
-            this.#createError()
+            this.#createError(error)
                 .then(error => this.input.insertAdjacentElement('beforebegin', error));
         }
     }
@@ -125,9 +126,9 @@ export default class ServiceView extends View {
     /**
      * @return {Promise<HTMLDivElement>}
      */
-    async #createError() {
+    async #createError(error) {
         let div = document.createElement('div');
-        div.innerText = 'Invalid email';
+        div.innerText = error;
         div.classList.add('service__error');
         return div;
     }

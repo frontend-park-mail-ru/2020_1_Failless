@@ -5,6 +5,7 @@ import ServiceView from 'Eventum/views/service-view';
 import EmailModel from 'Eventum/models/email-model';
 import Snackbar from 'Blocks/snackbar/snackbar';
 import ValidationModule from 'Eventum/utils/validation';
+import TextConstants from 'Eventum/utils/language/text';
 
 export default class ServiceController extends Controller {
     /**
@@ -64,13 +65,14 @@ export default class ServiceController extends Controller {
 
     #handleClickOnButton() {
         let input = this.view.input;
-        if (input.value !== '' && this.#emailCorrect().length !== 0) {
-            this.view.showInvalidEmail();
+        let errors = this.#emailCorrect();
+        if (input.value !== '' && errors.length !== 0) {
+            this.view.showInvalidEmail(errors[0]);
             this.view.buttonColor('first');
         } else {
             this.#sendEmail(input.value);
             this.view.clearInput();
-            Snackbar.instance.addMessage(`Email has been sent.<br>Don't forget to check in spam folder`);
+            Snackbar.instance.addMessage(TextConstants.SERVICE__EMAIL_SENT);
             this.view.buttonColor('third');
             setTimeout(() => {
                 this.view.buttonColor('first');

@@ -173,6 +173,12 @@ const ErrorTextsEnglish = {
     LIB_DOWNLOAD_FAILED: 'Failed to download library for your language due to slow network connection',
 };
 
+const ServiceTextsEnglish = {
+    EMAIL_SENT: "Email has been sent.<br>Don't forget to check in spam folder",
+    NOTIFY: 'Notify',
+    CONSTRUCTION: "Right now we're working hard on bringing the service back to life<br>We can tell you when we are done<br>Thank you for patience",
+};
+
 const English = {
     Basic: BasicTextsEnglish,
     Event: EventTextsEnglish,
@@ -186,6 +192,7 @@ const English = {
     Landing: LandingTextsEnglish,
     Tags: TagsTextsEnglish,
     Error: ErrorTextsEnglish,
+    Service: ServiceTextsEnglish,
 };
 
 export default English;
