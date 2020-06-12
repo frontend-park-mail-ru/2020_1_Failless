@@ -37,6 +37,11 @@ export default class ServiceController extends Controller {
                 this.view.input.placeholder = 'Email';
                 this.view.buttonColor('first');
             }
+        });
+        this.addEventHandler(window, 'keydown', (event) => {
+            if (event.code === 'Enter') {
+                this.#handleClickOnButton();
+            }
         })
     }
 
@@ -49,18 +54,24 @@ export default class ServiceController extends Controller {
             }
             this.view.buttonColor('second');
         } else if (event.target.matches('.service__button')) {
-            if (input.value !== '' && this.#emailCorrect().length !== 0) {
-                this.view.showInvalidEmail();
-            } else {
-                this.#sendEmail(input.value);
-                this.view.clearInput();
-                Snackbar.instance.addMessage('Email has been sent. Thank you');
-            }
-            this.view.buttonColor('first');
+            this.#handleClickOnButton();
         } else if (input.value === '') {
             input.placeholder = 'Email';
         }
     };
+
+    #handleClickOnButton() {
+        let input = this.view.input;
+        if (input.value !== '' && this.#emailCorrect().length !== 0) {
+            this.view.showInvalidEmail();
+        } else {
+            this.#sendEmail(input.value);
+            this.view.clearInput();
+            Snackbar.instance.addMessage('Email has been sent. Thank you');
+        }
+        this.view.buttonColor('first');
+        input.blur();
+    }
 
     async #sendEmail(email) {
         await EmailModel.sendNotify(email);
