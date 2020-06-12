@@ -6,12 +6,6 @@ let snackbarSymbol = Symbol('snackbar component');
 let snackbarEnforcer = Symbol('The only object that can create SnackBar');
 
 export default class Snackbar extends Component {
-    /**
-     * State which component could be in
-     * @type {'hidden' | 'active'}
-     */
-    state = 'hidden';
-
     constructor(enforcer) {
         super({});
         if (enforcer !== snackbarEnforcer) {
@@ -22,6 +16,7 @@ export default class Snackbar extends Component {
         this.messages = [];
         this.cssClass = 'snackbar';
         this.index = 0;
+        this.state = 'hidden';
     }
 
     static get instance() {
