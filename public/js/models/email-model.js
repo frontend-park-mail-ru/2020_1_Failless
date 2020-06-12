@@ -1,5 +1,6 @@
 import Model from 'Eventum/core/model';
-// import NetworkModule from 'Eventum/core/network';
+import NetworkModule from 'Eventum/core/network';
+import settings from 'Settings/config';
 
 export default class EmailModel extends Model {
     constructor() {
@@ -7,8 +8,15 @@ export default class EmailModel extends Model {
     }
 
     static async sendNotify(email) {
-        console.log('Sending email on ', email);
-        return true;
-        // await NetworkModule.fetchPost();
+        return NetworkModule.fetchPost({path: '/construction', body: {email: email}, api: settings.email})
+            .then((response) => {
+                if (response.status > 499) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
+            .catch((error) => {
+                throw new Error(error);
+            });
     }
 }
