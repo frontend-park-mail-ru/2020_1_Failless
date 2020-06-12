@@ -39,48 +39,6 @@ export default class ServiceView extends View {
     }
 
     /**
-     * Animate elements of notifier
-     * @param event {Event}
-     */
-    inputHandler(event) {
-        if (event.target.matches('.service__input')) {
-            this.animateInput();
-        } else if (event.target.matches('.service__button')) {
-            this.handleButton();
-        } else {
-            this.outerClick();
-        }
-    }
-
-    handleButton() {
-        this.buttonColor('third');
-    }
-
-    /**
-     * Animate input (hide placeholder)
-     */
-    animateInput() {
-        let input = this.input;
-        if (input.value === '') {
-            input.placeholder = '';
-        }
-        this.buttonColor('second');
-    }
-
-    outerClick() {
-        let input = this.input;
-
-        if (input.value === '') {
-            input.placeholder = 'Email';
-            this.buttonColor('first');
-        } else {
-            this.buttonColor('third');
-        }
-
-        input.classList.remove('service__input_active');
-    }
-
-    /**
      * @param color {'first' | 'second' | 'third'}
      */
     buttonColor(color) {
