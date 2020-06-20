@@ -66,7 +66,7 @@ export default class ServiceController extends Controller {
     #handleClickOnButton() {
         let input = this.view.input;
         let errors = this.#emailCorrect();
-        if (input.value !== '' && errors.length !== 0) {
+        if (errors.length !== 0) {
             this.view.showInvalidEmail(errors[0]);
             this.view.buttonColor('first');
         } else {
